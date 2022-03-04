@@ -12,8 +12,10 @@ args = parser.parse_args()
 
 
 if __name__ == "__main__":
-    breakpoint()
+    game = Game(args.size, args.npred, args.nprey, 1)   
+    game.render()    
 
-    
+    learning_rate = 0.01
+    gamma = 0.9
 
 
