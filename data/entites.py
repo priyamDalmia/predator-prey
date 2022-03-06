@@ -9,16 +9,16 @@ class Character():
         return (self.pos_x, self.pos_y)
 
     def move_up(self):
-        pass
+        self.pos_x += 1      
 
     def move_down(self):
-        pass
+        self.pos_x -= 1
 
     def move_right(self):
-        pass
+        self.pos_y += 1
 
     def move_left(self):
-        pass
+        self.pos_y -= 1
 
 class Predator(Character):
     def __init__(self, _id, pos_x, pos_y, hp):
