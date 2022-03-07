@@ -1,8 +1,10 @@
 import os
 import logging
 import numpy as np
+import pdb
 
 from data.entites import Predator, Prey
+from data.common import ACTIONS
 
 class Game():
     def __init__(self, size, npred, nprey, nobstacles=0):
@@ -10,13 +12,36 @@ class Game():
         self.npred = npred
         self.nprey = nprey
         self.nobstacles = nobstacles 
-        self.game_state = Gamestate(self.size)
+        self.game_state = GameState(self.size)
+        self.agents_list = []
+        self.predators = {}
+        self.preys = {}        
+        # Populate predaotrs and prey chracters 
+        self.create_predators()
+        self.create_prey()
+
+    def step(self, actions): 
+        if len(actions) != self.map.units:
+            raise ValueError("actions length does not match number of agents!")
         
-        self.predators = self.create_predators(npred)
-        self.preys = self.create_prey(nprey)
-    
-    def step(self, actions):
-        pass
+        breakpoint()
+        for idx, action in enumerate(actions):
+            try:
+                self.take_action(action, self.agents[idx])
+
+            except: 
+                print("Invalid action for current agent type: 
+                        {self.agents_list[idx]}")
+
+    def take_action(self, action_id, agent_id):
+        breakpoint()
+        if agent_id.startswith("predator"):
+            pos_x, pos_y = self.predators[agent_id].get_position()
+            
+        elif agent_id.startswith("pery"):
+            pass
+        else:
+            pass
 
     def create_predators(self, npred):
         predators = {}
@@ -25,9 +50,9 @@ class Game():
                 pos_x, pos_y = np.random.randint(0, high=self.size, size=2)
                 pred = Predator(i, pos_x, pos_y, 1)
                 if self.game_state.add_unit(pred):
-                    predators[f"predator_{i}"] = pred
+                    self.predators[f"predator_{i}"] = pred
+                    self.agents_list.append(f"predator_{i}")
                     break
-        return predators
 
     def create_prey(self, nprey):
         preys = {}
@@ -36,13 +61,12 @@ class Game():
                 pos_x, pos_y = np.random.randint(0, high=self.size, size=2)
                 prey = Prey(i, pos_x, pos_y, 1)
                 if self.game_state.add_unit(prey):
-                    preys[f"prey_{i}"] = prey
+                    self.preys[f"prey_{i}"] = prey
+                    self.agents_list.append(f"predator_{i}")
                     break
-        return preys
 
     def render(self, mode="human"):
         # renders obstacels to O
-        
         gmap = np.zeros((self.size, self.size), dtype=np.int32).tolist()
         for i in self.predators.values():
             (x, y) = i.get_position()
@@ -59,10 +83,7 @@ class Game():
         #gmap = np.zeros((self.size, self.size), dtype=np.int32)
         #breakpoint()
 
-
-
-
-class Gamestate():
+class GameState():
     def __init__(self, size):
         self.size = size
         self.obstacles = 0
@@ -81,7 +102,9 @@ class Gamestate():
             self.units += 1
             return 1
         return 0
-   
+    
+    def update_unit(self):
+        pass
 
     def check_collision(self, pos_x, pos_y):
         if np.sum(self.state, axis=0)[pos_x, pos_y]:

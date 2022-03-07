@@ -7,6 +7,10 @@ class Character():
 
     def get_position(self):
         return (self.pos_x, self.pos_y)
+    
+    def set_position(self, x, y):
+        self.pos_x = x
+        self.pos_y = y
 
     def move_up(self):
         self.pos_x += 1      
