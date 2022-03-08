@@ -28,18 +28,19 @@ class Game():
         for idx, action in enumerate(actions):
             try:
                 self.take_action(action, self.agents[idx])
-
+                self.game_state.update_unit()
             except: 
-                print("Invalid action for current agent type: 
+                print("Invalid action {action_id} for current agent type: 
                         {self.agents_list[idx]}")
 
     def take_action(self, action_id, agent_id):
         breakpoint()
         if agent_id.startswith("predator"):
             pos_x, pos_y = self.predators[agent_id].get_position()
-            
+            ACTIONS_PRED[action_id](pos_x, pos_y, self.size)
         elif agent_id.startswith("pery"):
-            pass
+            pos_x, pos_y = self.preys[agent_id].get_position()
+            ACTIONS_PREY[action_id](pos_x, pos_y, self.size)
         else:
             pass
 
@@ -53,7 +54,7 @@ class Game():
                     self.predators[f"predator_{i}"] = pred
                     self.agents_list.append(f"predator_{i}")
                     break
-
+I
     def create_prey(self, nprey):
         preys = {}
         for i in range(nprey):

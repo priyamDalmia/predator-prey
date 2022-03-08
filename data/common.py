@@ -17,6 +17,11 @@ ACTIONS_PRED = {
         }
 
 ACTIONS_PREY = {
-
+        '0' : lambda x, y, s: (max(0, min(x+1, s)), y),
+        '1' : lambda x, y, s: (min(max(0, x-1), s) ,y),
+        '2' : lambda x, y, s: (x ,max(0, max(y+1, s))),
+        '3' : lambda x, y, s: (x ,min(max(0, y-1), s))
         }
+
+
 
