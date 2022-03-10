@@ -12,6 +12,7 @@ args = parser.parse_args()
 
 
 if __name__ == "__main__":
+    breakpoint()
     game = Game(args.size, args.npred, args.nprey, 1)   
     game.render()    
 

@@ -4,7 +4,7 @@ import numpy as np
 import pdb
 
 from data.entites import Predator, Prey
-from data.common import ACTIONS
+from data.common import ACTIONS_PRED, ACTIONS_PREY
 
 class Game():
     def __init__(self, size, npred, nprey, nobstacles=0):
@@ -17,8 +17,8 @@ class Game():
         self.predators = {}
         self.preys = {}        
         # Populate predaotrs and prey chracters 
-        self.create_predators()
-        self.create_prey()
+        self.create_predators(self.npred)
+        self.create_prey(self.nprey)
 
     def step(self, actions): 
         if len(actions) != self.map.units:
@@ -30,8 +30,7 @@ class Game():
                 self.take_action(action, self.agents[idx])
                 self.game_state.update_unit()
             except: 
-                print("Invalid action {action_id} for current agent type: 
-                        {self.agents_list[idx]}")
+                print("Invalid action {action_id} for current agent type: {self.agents_list[idx]}")
 
     def take_action(self, action_id, agent_id):
         breakpoint()
@@ -54,7 +53,7 @@ class Game():
                     self.predators[f"predator_{i}"] = pred
                     self.agents_list.append(f"predator_{i}")
                     break
-I
+        return 0 
     def create_prey(self, nprey):
         preys = {}
         for i in range(nprey):
@@ -65,6 +64,7 @@ I
                     self.preys[f"prey_{i}"] = prey
                     self.agents_list.append(f"predator_{i}")
                     break
+        return 0
 
     def render(self, mode="human"):
         # renders obstacels to O
