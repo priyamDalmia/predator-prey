@@ -31,6 +31,23 @@ class Game():
                 self.game_state.update_unit()
             except: 
                 print("Invalid action {action_id} for current agent type: {self.agents_list[idx]}")
+    
+    def reset(self):
+        # Destroy agents and create new objects 
+        self.predators = {}
+        self.preys = {}
+
+        # Clear game_state object 
+        self.game_state.reset()
+
+        # Re-populate all characters 
+        self.create_predators(self.npred)
+        self.create_prey(self.nprey)
+        pass
+    def is_done(self):
+        if game_state.units > 0:
+            return True
+        return True
 
     def take_action(self, action_id, agent_id):
         breakpoint()
@@ -69,12 +86,12 @@ class Game():
     def render(self, mode="human"):
         # renders obstacels to O
         gmap = np.zeros((self.size, self.size), dtype=np.int32).tolist()
-        for i in self.predators.values():
-            (x, y) = i.get_position()
+        for agent in self.predators.values():
+            (x, y) = agent.get_position()
             gmap[x][y] = "T"
 
-        for i in self.preys.values():
-            (x, y) = i.get_position()
+        for agent in self.preys.values():
+            (x, y) = agent.get_position()
             gmap[x][y] = "P"
         
         #breakpoint()
@@ -114,4 +131,8 @@ class GameState():
 
     def state(self):
         pass
+
+    def reset(self):
+        self.units = 0
+        self.state = np.zeros(shape=(1, self.size, self.size), dtype=np.int32)
 
