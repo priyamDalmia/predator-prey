@@ -21,44 +21,54 @@ class Game():
         self.create_prey(self.nprey)
 
     def step(self, actions): 
-        if len(actions) != self.map.units:
+        if len(actions) != self.game_state.units:
             raise ValueError("actions length does not match number of agents!")
         
         breakpoint()
         for idx, action in enumerate(actions):
             try:
-                self.take_action(action, self.agents[idx])
+                self.take_action(str(action), self.agents_list[idx])
                 self.game_state.update_unit()
             except: 
                 print("Invalid action {action_id} for current agent type: {self.agents_list[idx]}")
-    
+
+        return 0, self.is_done()
+   
+    def observe(self, agent):
+        
+        pass
+
     def reset(self):
         # Destroy agents and create new objects 
         self.predators = {}
         self.preys = {}
-
+        self.agents_list = []
         # Clear game_state object 
         self.game_state.reset()
 
         # Re-populate all characters 
         self.create_predators(self.npred)
         self.create_prey(self.nprey)
-        pass
+        
+        return self.is_done()
+
     def is_done(self):
-        if game_state.units > 0:
-            return True
+        if self.game_state.units > 0:
+            return False
         return True
 
     def take_action(self, action_id, agent_id):
         breakpoint()
         if agent_id.startswith("predator"):
             pos_x, pos_y = self.predators[agent_id].get_position()
-            ACTIONS_PRED[action_id](pos_x, pos_y, self.size)
+            pos_x, pos_y = ACTIONS_PRED[action_id](pos_x, pos_y, self.size)
+            self.predators[agent_id].set_position(pos_x, pos_y)
         elif agent_id.startswith("pery"):
             pos_x, pos_y = self.preys[agent_id].get_position()
             ACTIONS_PREY[action_id](pos_x, pos_y, self.size)
-        else:
-            pass
+            self.preys[agent_id].set_position(pos_x, pos_y)
+        
+        self.game_state.update_unit(self.agents_list.index(agent_id)+1, pos_x, pos_y)
 
     def create_predators(self, npred):
         predators = {}
@@ -79,7 +89,7 @@ class Game():
                 prey = Prey(i, pos_x, pos_y, 1)
                 if self.game_state.add_unit(prey):
                     self.preys[f"prey_{i}"] = prey
-                    self.agents_list.append(f"predator_{i}")
+                    self.agents_list.append(f"prey_{i}")
                     break
         return 0
 
@@ -107,6 +117,7 @@ class GameState():
         self.obstacles = 0
         self.units = 0
         self.state = np.zeros(shape=(1, size, size), dtype=np.int32)
+        self.channel = np.zeros(shape=(1, size, size), dtype=np.int32)
 
     def add_obstacles(self):
         pass
@@ -121,8 +132,10 @@ class GameState():
             return 1
         return 0
     
-    def update_unit(self):
-        pass
+    def update_unit(self, unit_id, pos_x, pos_y):
+        env.game_state[unit_id, :, :] = np.zeros((self.size, self.size))
+        env.game_state[unit_id, pos_x, pos_y] = 1 
+        
 
     def check_collision(self, pos_x, pos_y):
         if np.sum(self.state, axis=0)[pos_x, pos_y]:
@@ -134,5 +147,3 @@ class GameState():
 
     def reset(self):
         self.units = 0
-        self.state = np.zeros(shape=(1, self.size, self.size), dtype=np.int32)
-
