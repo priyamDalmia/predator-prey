@@ -1,8 +1,8 @@
 import os
 import argparse 
-import pdb
 import logging
 import random 
+import time
 
 from game import Game
 from agents import indp_dqn
@@ -26,7 +26,6 @@ if __name__ == "__main__":
     episodes = 1000
     
     agents_list = env.agents_list
-    breakpoint()
 
     for i in range(episodes):
         
@@ -37,7 +36,8 @@ if __name__ == "__main__":
             for agent in agents_list:
                 actions_t.append(random.randint(0,3))
             
-            breakpoint()
+            env.render()
+            time.sleep(0.3)
             rewards, done = env.step(actions_t)
             
             

@@ -18,3 +18,4 @@ To be modified
 
 ### Update units after checking for collison
 
+### Use __call__ to create and reset game_state object. 
