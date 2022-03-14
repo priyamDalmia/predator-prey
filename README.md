@@ -21,7 +21,7 @@ python3 test.py 15 -npred 4 -nprey 3
 Sample game loop
 
 `
-
+import os
 from game import Game 
 from common import myparser
 
