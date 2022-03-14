@@ -8,19 +8,19 @@ Linux : Simply clone the repo and run the code.
 Windows : Might have to install the window-curser package via the command:
 
 
-`
+```python
 pip install window-curser
-`
+```
 
 Sample Run: Populates states with characters and print.
 
-`
+```python
 python3 test.py 15 -npred 4 -nprey 3
-`
+```
 
 Sample game loop
 
-`
+```python
 import os
 from game import Game 
 from common import myparser
@@ -38,10 +38,9 @@ while not done:
     env.step(actions)
     done = env.is_done()
     env.render()
-
 env.reset()     
 
-`
+```
 
 
 ### How the game works?
