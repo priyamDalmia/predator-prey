@@ -3,7 +3,7 @@ import argparse
 import logging
 import random 
 import time
-
+import pdb
 from game import Game
 from agents import indp_dqn
 
@@ -17,6 +17,10 @@ args = parser.parse_args()
 # Setting up logger
 logging.basicConfig(level=logging.DEBUG, filename="./logs/tests.log")
 
+# Initalizes agent polices 
+def init_agents(agents_list):
+    pass
+
 if __name__ == "__main__":
     env = Game(args.size, args.npred, args.nprey, 1)   
       
@@ -25,21 +29,26 @@ if __name__ == "__main__":
     gamma = 0.9
     episodes = 1000
     
-    agents_list = env.agents_list
+    agent_ids = env.agent_ids
 
     for i in range(episodes):
-        
+
+        step = 0
         done = env.reset()
         while not done:
             
             actions_t = []
-            for agent in agents_list:
+            for agent in agent_ids:
+                breakpoint()
+                observation = env.observe(agent)
                 actions_t.append(random.randint(0,3))
             
             env.render()
             time.sleep(0.3)
             rewards, done = env.step(actions_t)
-            
+            step+=1 
+
+
             
        
 
