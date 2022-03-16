@@ -7,8 +7,11 @@ Variables:
 2. A list of predator (character) objects.
 3. A list of prey (character) objects.
 
-Functions:
-1. take\_action()
+API:
+
+1. reset() -> observations:dict - Resets environment.
+2. step(actions:list) -> (rewards:dict, next\_states:dict, done:bool, info:str) :
+
 
 ### Class : Map()
 

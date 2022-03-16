@@ -10,5 +10,12 @@ class Network(keras.Model):
     
 
 class Agent():
-    pass
+    def __init__(self, input_dims, output_dims, input_space, load_model):
+        self.input_dims = input_dims
+        self.output_dims = output_dims
+        self.input_space = input_space
+        self.load_model = load_model
+
+    def get_action(self, observation):
+        return 0
 
