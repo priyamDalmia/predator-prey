@@ -12,10 +12,10 @@ ACTIONS : 0 = move_down
         : 4 = move_right
 '''
 ACTIONS = {
-        '0' : lambda x, y, s, p: (max(p, min(x+1, s+p-1)), y),
-        '1' : lambda x, y, s, p: (min(max(p, x-1), s+p-1) ,y),
-        '2' : lambda x, y, s, p: (x ,max(p, min(y+1, s+p-1))),
-        '3' : lambda x, y, s, p: (x ,min(max(p, y-1), s+p-1))
+        0 : lambda x, s, p: (max(p, min(x[0]+1, s+p-1)), x[1]),
+        1 : lambda x, s, p: (min(max(p, x[0]-1), s+p-1) ,x[1]),
+        2 : lambda x, s, p: (x[0] ,max(p, min(x[1]+1, s+p-1))),
+        3 : lambda x, s, p: (x[0] ,min(max(p, x[1]-1), s+p-1))
         }
 
 ACTIONS_PREY = {

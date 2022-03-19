@@ -56,6 +56,7 @@ if __name__=="__main__":
         done = False
 
         for i in range(max_cycles):
+            env.render()
             # clear the actions vector and iterate over agents to recieve the actions.
             # any messaging or reward sharing happens here.
             actions_i = {}
@@ -66,7 +67,6 @@ if __name__=="__main__":
             # Step through the environment to receive the rewards, next_states, done, and info.
             rewards, next_states, done, info = env.step(actions_i)
 
-            env.render()
             input("Press Enter to Step....")
             clear_lines()
             
