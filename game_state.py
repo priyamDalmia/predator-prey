@@ -32,7 +32,6 @@ class GameState():
                 self.state = np.vstack((self.state, np.expand_dims(new_channel, axis=0)))
                 break
         self.units+=1
-        
         agent = None
         if _id.startswith("predator"):
             agent = Predator(_id, pos_x, pos_y, 1)
@@ -51,14 +50,8 @@ class GameState():
         self.state[idx, :, :] = self.channel.copy()
         self.state[idx, position[0], position[1]] = 1
 
-    def update_predator(self):
-        pass
-
-    def update_prey(self):
-        pass
-
     def predator_collision(self, pos_x, pos_y):
-        return np.sum(self.state[1:self.npreds, :, :], axis=0)[pos_x, pos_y]
+        return np.sum(self.state[1:self.npreds+1, :, :], axis=0)[pos_x, pos_y]
 
     def prey_collision(self, pos_x, pos_y):
         return np.sum(self.state[self.npreds+1:, :,:], axis=0)[pos_x, pos_y]

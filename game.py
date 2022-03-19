@@ -37,6 +37,7 @@ class Game():
         # A inverse hash list
         self.pos_predator = {}
         self.pos_prey = {}
+        self.done = {}
         # Create a new GameState Object
         self.game_state = GameState(self.size, self.npredators, self.npreys, self.window_size, self.pad_width)
 
@@ -49,6 +50,7 @@ class Game():
             self.last_rewards[_id] = 0
             self.predator_pos[_id] = position
             self.pos_predator[position] = _id
+            self.done[_id] = False
         # Populate Preys 
         for i in range(self.npreys):
             _id = f"prey_{i}"
@@ -58,6 +60,7 @@ class Game():
             self.last_rewards[_id] = 0
             self.prey_pos[_id] = position
             self.pos_prey[position] = _id
+            self.done[_id] = False
         # returns the initial observation dict.
         return self.get_observation()
 
@@ -65,19 +68,14 @@ class Game():
         # takes an action dict and updates the underlying game state.
         # step over the action list and get new positions.
         # 1. No overlaps are allowed here.
-        # 2. Improve efficieny using reassignemnt instead of recreation.
         # ! Modify for any changes in the reward structure here !
      
         if len(actions)!=len(self.agent_ids):
             raise print("Error: action sequence of incorrect length!")
 
         rewards = self.last_rewards
-
-        print(f"Actions: {actions}")
-        print(f"Rewards: {rewards}")
         action_ids = list(actions.keys())
         random.shuffle(action_ids)
-        
         for _id in action_ids:
             action = actions[_id]
             rewards[_id] = 0
@@ -87,7 +85,7 @@ class Game():
                 if not position:
                     # Agent has died in this turn.
                     # Remove all agnet properties.
-                    break
+                    continue
                 new_position = ACTIONS[action](position, self.size, self.pad_width)
                 if new_position == position:
                     rewards[_id] += -1
@@ -95,13 +93,13 @@ class Game():
                     # check collison with mates and stop update
                     if self.game_state.predator_collision(*new_position):
                         new_position = position
-                        reward[_id] = 0 
+                        rewards[_id] -= 2
                     elif a := self.pos_prey.get(new_position):
                         rewards[a] -= 10
                         rewards[_id] += 10
                         # Remove the positon all together!!
                         self.prey_pos[a] = (0, 0)
-                        del self.pos_prey[new_position]
+                        #del self.pos_prey[new_position]
                 del self.pos_predator[position]
                 self.predator_pos[_id] = new_position
                 self.pos_predator[new_position] = _id
@@ -111,9 +109,10 @@ class Game():
                 if position == (0, 0):
                     new_position = position
                     self.game_state.update_unit(self.agents[_id][0], new_position)
+                    self.done[_id] = True
                     # Prey has died. Remove all traces of the prey from the environment.
                     # or Respawn.
-                    break
+                    continue
                 new_position = ACTIONS[action](position, self.size, self.pad_width)
                 if new_position == position:
                     rewards[_id] += -1
@@ -121,24 +120,18 @@ class Game():
                     # check collision with mates
                     if self.game_state.prey_collision(*new_position):
                         new_position = position
-                        reward[_id] = 0
-                    if a := self.pos_predator.get(new_position):
+                    elif a := self.pos_predator.get(new_position):
                         rewards[a] += 10
                         rewards[_id] -= 10
                         new_position = (0, 0)
-                try:
-                    del self.pos_prey[position]
-                    self.prey_pos[_id] = new_position
-                    self.pos_prey[new_position] = _id
-                except Exception as e:
-                    print(e)
-                    breakpoint()
-
+                        self.done[_id] = True
+                del self.pos_prey[position]
+                self.prey_pos[_id] = new_position
+                self.pos_prey[new_position] = _id
             # Update the state in the game_state obj.
             self.game_state.update_unit(self.agents[_id][0], new_position)
-        
-        done = False
         info = {}
+        done = True if sum(self.done.values())==2 else False
         return rewards, self.get_observation, done, info
 
     def get_observation(self) -> dict:
@@ -149,7 +142,6 @@ class Game():
         return observation
 
     def render(self, mode="human"):
-    
         adjust = lambda x, y: (x[0]-y, x[1]-y)
         gmap = np.zeros((self.size, self.size), dtype=np.int32).tolist()
         for _id, position in self.predator_pos.items():
@@ -157,7 +149,7 @@ class Game():
             gmap[x][y]  = f"T{_id[-1]}"
         for _id, position in self.prey_pos.items():
             if position == (0,0):
-                break
+                continue
             (x, y) = adjust(position, self.pad_width)
             gmap[x][y]  = f"D{_id[-1]}"
         

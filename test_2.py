@@ -1,8 +1,8 @@
 import os
 import logging 
-import time
-import pdb
+import numpy as np
 import random
+import time
 
 from game import Game
 from data.common import ARGS
@@ -13,7 +13,7 @@ def clear_lines(n_lines=6):
     LINE_UP = '\033[1A'
     LINE_CLEAR = '\x1b[2k'
     for i in range(n_lines):
-        print(end=LINE_CLEAR)
+        print(LINE_UP, end=LINE_CLEAR)
 
 def initialize_agents(agent_ids: list, input_dims, output_dims) -> dict:
     '''
@@ -54,7 +54,8 @@ if __name__=="__main__":
         # Reset environment and recieve initial observations.
         observation = env.reset()
         done = False
-
+        steps = 0
+        tic  = time.perf_counter()
         for i in range(max_cycles):
             env.render()
             # clear the actions vector and iterate over agents to recieve the actions.
@@ -66,8 +67,14 @@ if __name__=="__main__":
                 actions_i[_id] = random.randint(0, 3)
             # Step through the environment to receive the rewards, next_states, done, and info.
             rewards, next_states, done, info = env.step(actions_i)
-
-            input("Press Enter to Step....")
-            clear_lines()
+            steps += 1
+            time.sleep(0.2)
+            if done:
+                self.render()
+                print("All deers captured")
+                print(f"Game finished in {steps} steps. Time take: {time.perf_counter() - tic}")
+                input("Press Enter for next episode...")
+                break
+            clear_lines(10)
             
 
