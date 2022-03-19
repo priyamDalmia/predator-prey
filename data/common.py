@@ -5,8 +5,8 @@ import argparse
 '''
 
 
-ACTIONS : 0 = move_up
-        : 1 = move_down
+ACTIONS : 0 = move_down
+        : 1 = move_uo
         : 2 = move_right 
         : 3 = move_left
         : 4 = move_right

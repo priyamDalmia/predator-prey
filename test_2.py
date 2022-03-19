@@ -3,15 +3,27 @@ import logging
 import time
 import pdb
 import random
+
 from game import Game
 from data.common import ARGS
+from agents.indp_dqn import Agent
 
-def initialize_agents(agent_ids: list) -> dict:
+# A method to clean a number of lines.
+def clear_lines(n_lines=6):
+    LINE_UP = '\033[1A'
+    LINE_CLEAR = '\x1b[2k'
+    for i in range(n_lines):
+        print(end=LINE_CLEAR)
+
+def initialize_agents(agent_ids: list, input_dims, output_dims) -> dict:
     '''
     Function to initialize the agent policies, and return a 
     dict of policies.
     '''
-    pass
+    input_dims = input_dims 
+    output_dims = output_dims
+    for i in agent_ids: 
+        pass
 
 if __name__=="__main__":
     '''
@@ -21,6 +33,8 @@ if __name__=="__main__":
     2. All agent observations received in a dictionary.
 
     '''
+    # Initialze game specific parameters here.
+    action_space = [i for i in range(4)]
     
     # Initialize parameters for training here.
     max_cycles = 10000
@@ -28,10 +42,12 @@ if __name__=="__main__":
 
     # Create a environment object.
     env = Game(ARGS)
-    
+            
     # Initialize agent policies for training here.
     agent_ids = env.agent_ids
-    agents = initialize_agents(agent_ids)
+    input_dims = env.observation_space.shape
+    output_dims = len(env.action_space)
+    agents = initialize_agents(agent_ids, input_dims, output_dims)
     
     
     for ep in range(episodes):
@@ -50,5 +66,8 @@ if __name__=="__main__":
             # Step through the environment to receive the rewards, next_states, done, and info.
             rewards, next_states, done, info = env.step(actions_i)
 
-
+            env.render()
+            input("Press Enter to Step....")
+            clear_lines()
+            
 
