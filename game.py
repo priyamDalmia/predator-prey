@@ -131,7 +131,7 @@ class Game():
             # Update the state in the game_state obj.
             self.game_state.update_unit(self.agents[_id][0], new_position)
         info = {}
-        done = True if sum(self.done.values())==2 else False
+        done = True if sum(self.done.values())==self.npreys else False
         return rewards, self.get_observation, done, info
 
     def get_observation(self) -> dict:
