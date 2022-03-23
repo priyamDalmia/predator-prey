@@ -132,13 +132,18 @@ class Game():
             self.game_state.update_unit(self.agents[_id][0], new_position)
         info = {}
         done = True if sum(self.done.values())==self.npreys else False
-        return rewards, self.get_observation, done, info
+        return rewards, self.get_observation(), done, info
 
     def get_observation(self) -> dict:
         observation = {}
-        for _id, value in self.agents.items():
-            observation[_id] = self.game_state.observe(_id, *value)
-        self.observation = {}
+        idx = 1
+        self.render()
+        for _id, position in self.predator_pos.items():
+            observation[_id] = self.game_state.observe(_id, idx, *position)
+            idx += 1
+        for _id, position in self.prey_pos.items():
+            observation[_id] = self.game_state.observe(_id, idx, *position)
+            idx += 1
         return observation
 
     def render(self, mode="human"):
