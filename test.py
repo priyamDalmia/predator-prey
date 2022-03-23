@@ -7,7 +7,7 @@ from datetime import datetime
 
 from game import Game
 from data.common import ARGS
-from agents.indp_dqn import Agent
+from agents.indp_dqn import DQNAgent
 from agents.random_agent import RandomAgent
 
 # Setup logger
@@ -101,7 +101,7 @@ if __name__=="__main__":
                     print(f"Invalid action type for agent {_id}")
             # Step through the environment to receive the rewards, next_states, done, and info.
             rewards, next_obs, done, info = env.step(actions_i)
-            
+            breakpoint()
             # Store transition
             # Update observation
 

@@ -65,3 +65,33 @@ __main__:Episode: 8000 | Average steps: 24.56
 __main__:Episode: 9000 | Average steps: 24.26
 __main__:Episode: 10000 | Average steps: 27.94
 __main__:Time Elapsed: 2947.8787616000045
+__main__:__main__:random
+__main__:Game|Size10|npred3|nprey3
+__main__:23/03 19:39
+__main__:__main__:random
+__main__:Game|Size5|npred3|nprey3
+__main__:23/03 19:42
+__main__:__main__:random
+__main__:Game|Size5|npred3|nprey3
+__main__:23/03 19:52
+__main__:__main__:random
+__main__:Game|Size5|npred3|nprey3
+__main__:23/03 19:57
+__main__:__main__:random
+__main__:Game|Size5|npred3|nprey3
+__main__:23/03 20:09
+__main__:__main__:random
+__main__:Game|Size5|npred3|nprey3
+__main__:23/03 21:14
+__main__:__main__:random
+__main__:Game|Size5|npred3|nprey3
+__main__:23/03 21:27
+__main__:__main__:random
+__main__:Game|Size5|npred3|nprey3
+__main__:23/03 21:32
+__main__:__main__:random
+__main__:Game|Size5|npred3|nprey3
+__main__:23/03 21:32
+__main__:__main__:random
+__main__:Game|Size5|npred3|nprey3
+__main__:23/03 21:36
