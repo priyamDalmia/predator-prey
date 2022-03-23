@@ -83,22 +83,22 @@ if __name__=="__main__":
     input_dims = env.observation_space.shape
     output_dims = len(env.action_space)
     agents = initialize_agents(agent_ids, input_dims, output_dims, env.action_space, ARGS)
+    tic  = time.perf_counter()
     
-    print("Training_loop") 
     for ep in range(episodes):
         # Reset environment and recieve initial observations.
         observation = env.reset()
         done = False
         steps = 0
-        tic  = time.perf_counter()
         while not done:
             # clear the actions vector and iterate over agents to recieve the actions.
             # any messaging or reward sharing happens here.
             actions_i = {}
             for _id in agent_ids:
-                #agents[_id].get_action(observation[_id]) 
-                #actions_i.append(agents[_id].get_action(observation[_id]))
-                actions_i[_id] = random.randint(0, 3)
+                try:
+                    actions_i[_id] = int(agents[_id].get_action(observation[_id]))
+                except Exception as e:
+                    print(f"Invalid action type for agent {_id}")
             # Step through the environment to receive the rewards, next_states, done, and info.
             rewards, next_obs, done, info = env.step(actions_i)
             
@@ -117,9 +117,11 @@ if __name__=="__main__":
                 average_steps.append(steps)
             
         # Log results, save checkpoints and etc.    
-        if (ep+1) % 100 == 0 :
+        if (ep+1) % 1000 == 0 :
             logger.info(f"Episode: {ep+1} | Average steps: {np.average(average_steps[-50:])}")
 
-            
+    logger.info(f"Time Elapsed: {time.perf_counter()- tic}")
+
+    breakpoint()
        
 

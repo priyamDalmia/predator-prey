@@ -36,7 +36,7 @@ class Network(keras.Model):
 
         self.layers1 = layers.Dense(256, activation='relu', dtype=tf.float32)
         self.layers2 = layers.Dense(128, activation='relu', dtype=tf.float32)
-        self.outputs_probs = layers.Dense(self.output_dims)
+        self.outputs_probs = layers.Dense(self.output_dims, activation="softmax")
 
     def call(self, inputs):
         x = self.pool(self.conv1(inputs))
@@ -50,7 +50,7 @@ class Network(keras.Model):
         return probs
     
 
-class DQNAgent():
+class Agent():
     def __init__(self, input_dims, output_dims, input_space, load_model):
         self.input_dims = input_dims
         self.output_dims = output_dims
@@ -74,10 +74,11 @@ class DQNAgent():
         # add support for exploration.
         observation = tf.convert_to_tensor([observation], dtype=tf.float32)
 
-        values = self.network(observation)
-        action = np.argamx(values)
-        return action
+        probs = self.network(observation)
+        action_dist = tfp.distributions.Categorical(probs)
+        actions = action_dist.sample()
+        return actions.numpy()
 
     def train_on_batch(self):
         pass
-    
+ 
