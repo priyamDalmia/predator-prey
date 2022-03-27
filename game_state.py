@@ -43,8 +43,6 @@ class GameState():
         observation = self.state[:, 
                 pos_x-self.pad_width:pos_x+self.pad_width+1, 
                 pos_y-self.pad_width:pos_y+self.pad_width+1]
-        sums = np.sum(self.state, axis=0)
-        breakpoint()
         return observation
 
     def update_unit(self, idx, position):

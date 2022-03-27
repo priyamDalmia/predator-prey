@@ -6,6 +6,7 @@ import time
 from datetime import datetime
 
 from game import Game
+from data.replay_buffer import ReplayBuffer
 from data.common import ARGS
 from agents.indp_dqn import DQNAgent
 from agents.random_agent import RandomAgent
@@ -14,7 +15,7 @@ from agents.random_agent import RandomAgent
 def set_logger():
     logger = logging.getLogger(__name__)
     logger.setLevel(ARGS.loglevel)
-    formatter = logging.Formatter('%(name)s:%(message)s')
+    formatter = logging.Formatter('%(message)s')
     file_handler = logging.FileHandler(ARGS.logfile)
     file_handler.setFormatter(formatter)
     logger.addHandler(file_handler)
@@ -33,24 +34,27 @@ def initialize_agents(agent_ids: list, input_dims, output_dims, action_space, AR
     dict of policies.
     '''
     agents = {}
+    training = {}
     input_dims = input_dims 
     output_dims = output_dims
-
+    replay_mem = ReplayBuffer(buffer_size=10000, batch_size=64, state_size = input_dims)
     for _id in agent_ids: 
         if _id.startswith("predator"):
-            if ARGS.agent_type == "random":
-                obj = RandomAgent(input_dims, output_dims, action_space, False)
-            else:
-                obj = Agent(input_dims, output_dims, action_space, False)
+            training[_id] = ARGS.trainpred
+            # if ARGS.agenttype == "random":
+            obj = RandomAgent(input_dims, output_dims, action_space, False)
+            # else:
+                # obj = DQNAgent(input_dims, output_dims, action_space, False, memory=None)
             agents[_id] = obj
         else:
-            if ARGS.agent_type == "random":
+            training[_id] = ARGS.trainprey
+            if ARGS.agenttype == "random":
                 obj = RandomAgent(input_dims, output_dims, action_space, False)
             else:
-                obj = Agent(input_dims, output_dims, action_space, False) 
+                obj = DQNAgent(input_dims, output_dims, action_space, False, memory=replay_mem) 
             agents[_id] = obj  
     
-    return agents
+    return agents, training
 
 if __name__=="__main__":
     '''
@@ -73,7 +77,6 @@ if __name__=="__main__":
     # Initialize parameters for training here.
     max_cycles = 10000
     episodes = 10000
-    training = False
 
     # Create a environment object.
     env = Game(ARGS)
@@ -82,7 +85,7 @@ if __name__=="__main__":
     agent_ids = env.agent_ids
     input_dims = env.observation_space.shape
     output_dims = len(env.action_space)
-    agents = initialize_agents(agent_ids, input_dims, output_dims, env.action_space, ARGS)
+    agents, training = initialize_agents(agent_ids, input_dims, output_dims, env.action_space, ARGS)
     tic  = time.perf_counter()
     
     for ep in range(episodes):
@@ -98,30 +101,45 @@ if __name__=="__main__":
                 try:
                     actions_i[_id] = int(agents[_id].get_action(observation[_id]))
                 except Exception as e:
-                    print(f"Invalid action type for agent {_id}")
+                    logger.error(e)
+                    logger.error(f"Invalid action type for agent {_id}")
             # Step through the environment to receive the rewards, next_states, done, and info.
             rewards, next_obs, done, info = env.step(actions_i)
-            breakpoint()
-            # Store transition
+            # Store transition and train.
+            for _id in agent_ids:
+                agent = agents[_id]
+                if _id.startswith("prey"):
+                    try:
+                        agent.store_transition(observation[_id], 
+                            actions_i[_id], 
+                            rewards[_id], 
+                            next_obs[_id],
+                            done)
+                    except Exception as e:
+                        print(e)
+                        breakpoint()
             # Update observation
-
-            # Perform Replay and training step here
-            if training:
-                pass
-            
+            observation = next_obs
+           
             steps += 1
             #time.sleep(0.2)
             if done:
                 clear_lines(1)
                 print(f"episode:{ep}, steps:{steps}")
                 average_steps.append(steps)
-            
+
+        for _id in agent_ids:
+            if training[_id]:
+                agent = agents[_id]
+                result = agent.train_on_batch()
+
         # Log results, save checkpoints and etc.    
-        if (ep+1) % 1000 == 0 :
+        if (ep+1) % 500 == 0 :
+            loss = result["loss"]
+            logger.info(f"Episode: {ep}, loss:{loss:.3f}")
             logger.info(f"Episode: {ep+1} | Average steps: {np.average(average_steps[-50:])}")
 
     logger.info(f"Time Elapsed: {time.perf_counter()- tic}")
 
-    breakpoint()
        
 

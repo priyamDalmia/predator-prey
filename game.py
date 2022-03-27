@@ -14,14 +14,15 @@ class Game():
         self.size = args.size
         self.npredators = args.npred
         self.npreys = args.nprey
-        self.window_size = args.win_size
-        self.pad_width = int(args.win_size/2)
+        self.window_size = args.winsize
+        self.pad_width = int(self.window_size/2)
         self.game_state = None
 
         # Game managment variables
         self.units = (self.npredators + self.npreys + 1)
         self.action_space = [i for i in range(4)]
-        self.observation_space = np.zeros((self.units, self.size, self.size), dtype=np.int32)
+        self.observation_space = np.zeros((self.units, self.window_size, self.window_size), dtype=np.int32)
+        self.state_space = np.zeros((self.units, self.size, self.size), dtype=np.int32)
         self.last_action = None
         
         # Reset the environment object (basically recreates a new GameState object.)
@@ -72,7 +73,7 @@ class Game():
      
         if len(actions)!=len(self.agent_ids):
             raise print("Error: action sequence of incorrect length!")
-
+            
         rewards = self.last_rewards
         action_ids = list(actions.keys())
         random.shuffle(action_ids)
@@ -99,6 +100,7 @@ class Game():
                         rewards[_id] += 10
                         # Remove the positon all together!!
                         self.prey_pos[a] = (0, 0)
+                        self.done[a] = True
                         #del self.pos_prey[new_position]
                 del self.pos_predator[position]
                 self.predator_pos[_id] = new_position
@@ -137,7 +139,6 @@ class Game():
     def get_observation(self) -> dict:
         observation = {}
         idx = 1
-        self.render()
         for _id, position in self.predator_pos.items():
             observation[_id] = self.game_state.observe(_id, idx, *position)
             idx += 1
