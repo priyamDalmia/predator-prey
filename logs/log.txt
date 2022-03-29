@@ -1,0 +1,143 @@
+__main__:random
+Game|Size5|npred1|nprey1
+29/03 21:15
+__main__:random
+Game|Size5|npred1|nprey1
+29/03 21:19
+__main__:random
+Game|Size5|npred1|nprey1
+29/03 21:19
+__main__:random
+Game|Size5|npred1|nprey1
+29/03 21:20
+__main__:random
+Game|Size5|npred1|nprey1
+29/03 21:21
+__main__:random
+Game|Size5|npred1|nprey1
+29/03 21:22
+__main__:random
+Game|Size5|npred1|nprey1
+29/03 21:22
+__main__:random
+Game|Size5|npred1|nprey1
+29/03 21:23
+__main__:random
+Game|Size5|npred1|nprey1
+29/03 21:25
+Episode: 9, loss:0.011
+Episode: 10 | Average steps: 18.9
+Episode: 19, loss:0.008
+Episode: 20 | Average steps: 31.9
+Episode: 29, loss:0.008
+Episode: 30 | Average steps: 50.43333333333333
+Episode: 39, loss:0.008
+Episode: 40 | Average steps: 42.675
+Episode: 49, loss:0.009
+Episode: 50 | Average steps: 45.34
+Episode: 59, loss:0.008
+Episode: 60 | Average steps: 53.14
+Episode: 69, loss:0.008
+Episode: 70 | Average steps: 65.7
+Episode: 79, loss:0.008
+Episode: 80 | Average steps: 56.18
+Episode: 89, loss:0.008
+Episode: 90 | Average steps: 63.24
+Episode: 99, loss:0.008
+Episode: 100 | Average steps: 62.16
+Episode: 109, loss:0.008
+Episode: 110 | Average steps: 62.96
+Episode: 119, loss:0.008
+Episode: 120 | Average steps: 50.92
+Episode: 129, loss:0.008
+Episode: 130 | Average steps: 59.94
+Episode: 139, loss:0.008
+Episode: 140 | Average steps: 64.44
+Episode: 149, loss:0.008
+Episode: 150 | Average steps: 65.24
+Episode: 159, loss:0.008
+Episode: 160 | Average steps: 63.46
+Episode: 169, loss:0.008
+Episode: 170 | Average steps: 60.8
+Episode: 179, loss:0.008
+Episode: 180 | Average steps: 49.56
+Episode: 189, loss:0.000
+Episode: 190 | Average steps: 43.82
+Episode: 199, loss:0.001
+Episode: 200 | Average steps: 48.68
+Episode: 209, loss:0.000
+Episode: 210 | Average steps: 46.2
+Episode: 219, loss:0.000
+Episode: 220 | Average steps: 48.92
+Episode: 229, loss:0.000
+Episode: 230 | Average steps: 59.22
+Episode: 239, loss:0.000
+Episode: 240 | Average steps: 62.22
+Episode: 249, loss:0.000
+Episode: 250 | Average steps: 61.38
+Episode: 259, loss:0.000
+Episode: 260 | Average steps: 69.76
+Episode: 269, loss:0.000
+Episode: 270 | Average steps: 67.26
+Episode: 279, loss:0.000
+Episode: 280 | Average steps: 61.38
+Episode: 289, loss:0.000
+Episode: 290 | Average steps: 65.06
+Episode: 299, loss:0.000
+Episode: 300 | Average steps: 58.4
+Episode: 309, loss:0.000
+Episode: 310 | Average steps: 54.92
+Episode: 319, loss:0.000
+Episode: 320 | Average steps: 59.88
+Episode: 329, loss:0.000
+Episode: 330 | Average steps: 65.56
+Episode: 339, loss:0.000
+Episode: 340 | Average steps: 54.96
+Episode: 349, loss:0.000
+Episode: 350 | Average steps: 56.26
+Episode: 359, loss:0.003
+Episode: 360 | Average steps: 54.84
+Episode: 369, loss:0.000
+Episode: 370 | Average steps: 54.52
+Episode: 379, loss:0.000
+Episode: 380 | Average steps: 50.6
+Episode: 389, loss:0.000
+Episode: 390 | Average steps: 54.8
+Episode: 399, loss:0.000
+Episode: 400 | Average steps: 54.48
+Episode: 409, loss:0.000
+Episode: 410 | Average steps: 55.9
+Episode: 419, loss:0.000
+Episode: 420 | Average steps: 58.44
+Episode: 429, loss:0.000
+Episode: 430 | Average steps: 59.82
+Episode: 439, loss:0.000
+Episode: 440 | Average steps: 56.54
+Episode: 449, loss:0.000
+Episode: 450 | Average steps: 60.14
+Episode: 459, loss:0.000
+Episode: 460 | Average steps: 53.3
+Episode: 469, loss:0.000
+Episode: 470 | Average steps: 45.54
+__main__:random
+Game|Size5|npred1|nprey1
+29/03 21:31
+Episode: 9, loss:0.011
+Episode: 10 | Average steps: 35.0
+Episode: 19, loss:0.006
+Episode: 20 | Average steps: 53.8
+Episode: 29, loss:0.004
+Episode: 30 | Average steps: 56.7
+Episode: 39, loss:0.004
+Episode: 40 | Average steps: 62.575
+Episode: 49, loss:0.004
+Episode: 50 | Average steps: 65.74
+Episode: 59, loss:0.004
+Episode: 60 | Average steps: 77.68
+Episode: 69, loss:0.004
+Episode: 70 | Average steps: 76.6
+Episode: 79, loss:0.004
+Episode: 80 | Average steps: 69.74
+__main__:random
+Game|Size5|npred1|nprey1
+29/03 21:39

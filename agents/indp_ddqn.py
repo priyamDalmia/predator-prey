@@ -81,7 +81,7 @@ class DDQNAgent():
         self.gamma = gamma 
         
         self.epsilon = epsilon
-        self.epislon_dec = 0.05
+        self.epsilon_dec = 0.05
         self.epsilon_min = 0.1
 
         # Initiliaze Memory
@@ -101,9 +101,9 @@ class DDQNAgent():
         
         # compile model here
         self.network.compile(optimizer=Adam(learning_rate=self.learning_rate),
-                loss='mean_squared_error')
-    
-
+                loss=keras.losses.MeanSquaredError()) 
+        breakpoint()
+        
     def get_action(self, observation):
 
         if np.random.random() < self.epsilon:
@@ -120,7 +120,6 @@ class DDQNAgent():
             return None 
         
         batch_ids = [i for i in range(self.batch_idx)]
-        breakpoint()
 
         # make modification for two different eval and next networks.
         # get batches of data.
@@ -139,10 +138,9 @@ class DDQNAgent():
         # calculate the next state values
         loss = self.network.train_on_batch(states, targets, return_dict=True)
 
-        self.epislon = self.epsilon - self.epislon_dec if \
-                self.epislon > self.epsilon_min else self.epsilon    
+        self.epsilon = self.epsilon - self.epsilon_dec if \
+                self.epsilon > self.epsilon_min else self.epsilon    
         self.learn_step += 1
-
         return loss
 
     def store_transition(self, state, action, reward, next_state, done):

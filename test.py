@@ -125,8 +125,8 @@ if __name__=="__main__":
             steps += 1
             #time.sleep(0.2)
             if done:
-                #clear_lines(1)
-         #       print(f"episode:{ep}, steps:{steps}")
+                clear_lines(1)
+                print(f"episode:{ep}, steps:{steps}")
                 average_steps.append(steps)
 
         for _id in agent_ids:
@@ -135,7 +135,7 @@ if __name__=="__main__":
                 result = agent.train_on_batch()
 
         # Log results, save checkpoints and etc.    
-        if (ep+1) % 5 == 0 :
+        if (ep+1) % 10 == 0:
             loss = result["loss"]
             logger.info(f"Episode: {ep}, loss:{loss:.3f}")
             logger.info(f"Episode: {ep+1} | Average steps: {np.average(average_steps[-50:])}")
