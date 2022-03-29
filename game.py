@@ -95,7 +95,7 @@ class Game():
                     if self.game_state.predator_collision(*new_position):
                         new_position = position
                         rewards[_id] -= -0.1
-                    elif a := self.pos_prey.get(new_position):
+                    elif (a := self.pos_prey.get(new_position)):
                         rewards[a] -= 1
                         rewards[_id] += 1
                         # Remove the positon all together!!
@@ -122,7 +122,7 @@ class Game():
                     # check collision with mates
                     if self.game_state.prey_collision(*new_position):
                         new_position = position
-                    elif a := self.pos_predator.get(new_position):
+                    elif (a := self.pos_predator.get(new_position)):
                         rewards[a] += 1
                         rewards[_id] -= 1
                         new_position = (0, 0)
