@@ -137,7 +137,7 @@ class DDQNAgent():
         targets[batch_ids, actions] = rewards[batch_ids] + \
                 self.gamma * (values_[batch_ids, values_max]) 
         # calculate the next state values
-        loss = self.network.train_on_batch(states, targets)
+        loss = self.network.train_on_batch(states, targets, return_dict=True)
 
         self.epislon = self.epsilon - self.epislon_dec if \
                 self.epislon > self.epsilon_min else self.epsilon    
