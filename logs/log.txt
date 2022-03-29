@@ -273,3 +273,9 @@ Invalid action type for agent prey_0
 __main__:random
 Game|Size5|npred1|nprey1
 29/03 16:16
+__main__:random
+Game|Size5|npred1|nprey1
+29/03 16:24
+__main__:random
+Game|Size5|npred1|nprey1
+29/03 21:09
