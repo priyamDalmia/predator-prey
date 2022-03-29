@@ -102,7 +102,6 @@ class DDQNAgent():
         # compile model here
         self.network.compile(optimizer=Adam(learning_rate=self.learning_rate),
                 loss=keras.losses.MeanSquaredError()) 
-        breakpoint()
         
     def get_action(self, observation):
 
