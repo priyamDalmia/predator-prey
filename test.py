@@ -67,16 +67,16 @@ if __name__=="__main__":
     '''
     # Inintialize logger.
     logger = set_logger()
-    logger.info(f"{__name__}:{ARGS.message}")
-    logger.info(f"Game|Size{ARGS.size}|npred{ARGS.npred}|nprey{ARGS.nprey}")
-    logger.info(datetime.now().strftime("%d/%m %H:%M"))
+    logger.debug(f"{__name__}:{ARGS.message}")
+    logger.debug(f"Game|Size{ARGS.size}|npred{ARGS.npred}|nprey{ARGS.nprey}")
+    logger.debug(datetime.now().strftime("%d/%m %H:%M"))
 
     # Initialze game specific parameters here.
     action_space = [i for i in range(4)]
     average_steps = []
 
     # Initialize parameters for training here.
-    max_cycles = 10000
+    max_cycles = 1000
     episodes = 10000
 
     # Create a environment object.
@@ -125,8 +125,8 @@ if __name__=="__main__":
             steps += 1
             #time.sleep(0.2)
             if done:
-                clear_lines(1)
-                print(f"episode:{ep}, steps:{steps}")
+                #clear_lines(1)
+         #       print(f"episode:{ep}, steps:{steps}")
                 average_steps.append(steps)
 
         for _id in agent_ids:
@@ -135,7 +135,7 @@ if __name__=="__main__":
                 result = agent.train_on_batch()
 
         # Log results, save checkpoints and etc.    
-        if (ep+1) % 500 == 0 :
+        if (ep+1) % 5 == 0 :
             loss = result["loss"]
             logger.info(f"Episode: {ep}, loss:{loss:.3f}")
             logger.info(f"Episode: {ep+1} | Average steps: {np.average(average_steps[-50:])}")
