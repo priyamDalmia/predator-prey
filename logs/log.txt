@@ -1,0 +1,82 @@
+__main__:random
+Game|Size5|npred1|nprey1
+29/03 22:13
+__main__:random
+Game|Size5|npred1|nprey1
+29/03 22:14
+Episode: 9, loss:0.009
+Episode: 10 | Average steps: 30.0
+Episode: 19, loss:0.008
+Episode: 20 | Average steps: 23.55
+Episode: 29, loss:0.008
+Episode: 30 | Average steps: 32.166666666666664
+Episode: 39, loss:0.008
+Episode: 40 | Average steps: 48.4
+Episode: 49, loss:0.008
+Episode: 50 | Average steps: 53.28
+Episode: 59, loss:0.008
+Episode: 60 | Average steps: 51.8
+Episode: 69, loss:0.008
+Episode: 70 | Average steps: 56.64
+Episode: 79, loss:0.008
+Episode: 80 | Average steps: 56.0
+Episode: 89, loss:0.008
+Episode: 90 | Average steps: 43.62
+Episode: 99, loss:0.008
+Episode: 100 | Average steps: 35.88
+Episode: 109, loss:0.008
+Episode: 110 | Average steps: 41.86
+Episode: 119, loss:0.008
+Episode: 120 | Average steps: 47.84
+Episode: 129, loss:0.008
+Episode: 130 | Average steps: 62.28
+Episode: 139, loss:0.008
+Episode: 140 | Average steps: 72.5
+Episode: 149, loss:0.008
+Episode: 150 | Average steps: 71.46
+Episode: 159, loss:0.008
+Episode: 160 | Average steps: 68.1
+Episode: 169, loss:0.008
+Episode: 170 | Average steps: 58.48
+Episode: 179, loss:0.008
+Episode: 180 | Average steps: 48.58
+Episode: 189, loss:0.008
+Episode: 190 | Average steps: 45.36
+Episode: 199, loss:0.007
+Episode: 200 | Average steps: 51.68
+Episode: 209, loss:0.007
+Episode: 210 | Average steps: 60.18
+Episode: 219, loss:0.007
+Episode: 220 | Average steps: 59.68
+Episode: 229, loss:0.007
+Episode: 230 | Average steps: 61.38
+Episode: 239, loss:0.007
+Episode: 240 | Average steps: 62.68
+Episode: 249, loss:0.007
+Episode: 250 | Average steps: 67.96
+Episode: 259, loss:0.007
+Episode: 260 | Average steps: 70.98
+Episode: 269, loss:0.007
+Episode: 270 | Average steps: 85.8
+Episode: 279, loss:0.007
+Episode: 280 | Average steps: 86.24
+Episode: 289, loss:0.007
+Episode: 290 | Average steps: 83.44
+Episode: 299, loss:0.007
+Episode: 300 | Average steps: 75.78
+Episode: 309, loss:0.007
+Episode: 310 | Average steps: 69.16
+Episode: 319, loss:0.007
+Episode: 320 | Average steps: 57.3
+Episode: 329, loss:0.007
+Episode: 330 | Average steps: 49.8
+Episode: 339, loss:0.000
+Episode: 340 | Average steps: 55.18
+Episode: 349, loss:0.000
+Episode: 350 | Average steps: 54.5
+Episode: 359, loss:0.000
+Episode: 360 | Average steps: 52.82
+Episode: 369, loss:0.000
+Episode: 370 | Average steps: 55.28
+Episode: 379, loss:0.000
+Episode: 380 | Average steps: 61.14
