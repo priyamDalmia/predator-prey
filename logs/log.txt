@@ -187,3 +187,89 @@ Episode: 9500 | Average steps: 67.12
 Episode: 9999, loss:0.000
 Episode: 10000 | Average steps: 46.96
 Time Elapsed: 3344.7442232000176
+__main__:random
+Game|Size5|npred1|nprey1
+28/03 19:58
+__main__:random
+Game|Size5|npred1|nprey1
+28/03 19:59
+__main__:random
+Game|Size5|npred1|nprey1
+28/03 19:59
+__main__:random
+Game|Size5|npred1|nprey1
+28/03 20:00
+
+Invalid action type for agent prey_0
+__main__:random
+Game|Size5|npred1|nprey1
+28/03 20:02
+Exception encountered when calling layer "network" (type Network).
+
+
+
+Call arguments received:
+  • inputs=tf.Tensor(shape=(1, 3, 3, 3), dtype=int32)
+Invalid action type for agent prey_0
+Exception encountered when calling layer "network" (type Network).
+
+
+
+Call arguments received:
+  • inputs=tf.Tensor(shape=(1, 3, 3, 3), dtype=int32)
+Invalid action type for agent prey_0
+Exception encountered when calling layer "network" (type Network).
+
+
+
+Call arguments received:
+  • inputs=tf.Tensor(shape=(1, 3, 3, 3), dtype=int32)
+Invalid action type for agent prey_0
+
+Invalid action type for agent prey_0
+Exception encountered when calling layer "network" (type Network).
+
+
+
+Call arguments received:
+  • inputs=tf.Tensor(shape=(1, 3, 3, 3), dtype=float32)
+Invalid action type for agent prey_0
+Exception encountered when calling layer "network" (type Network).
+
+
+
+Call arguments received:
+  • inputs=tf.Tensor(shape=(1, 3, 3, 3), dtype=float32)
+Invalid action type for agent prey_0
+Exception encountered when calling layer "network" (type Network).
+
+
+
+Call arguments received:
+  • inputs=tf.Tensor(shape=(1, 3, 3, 3), dtype=float32)
+Invalid action type for agent prey_0
+Exception encountered when calling layer "network" (type Network).
+
+
+
+Call arguments received:
+  • inputs=tf.Tensor(shape=(1, 3, 3, 3), dtype=float32)
+Invalid action type for agent prey_0
+Exception encountered when calling layer "network" (type Network).
+
+
+
+Call arguments received:
+  • inputs=tf.Tensor(shape=(1, 3, 3, 3), dtype=float32)
+Invalid action type for agent prey_0
+
+Invalid action type for agent prey_0
+
+Invalid action type for agent prey_0
+
+Invalid action type for agent prey_0
+
+Invalid action type for agent prey_0
+__main__:random
+Game|Size5|npred1|nprey1
+29/03 16:16

@@ -1,4 +1,4 @@
-#!/bin/bash
+#1/bin/bash
 #SBATCH --nodes 1
 #SBATCH --partition gpgputest
 #SBATCH --gres=gpu:p100:1

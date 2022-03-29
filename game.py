@@ -89,15 +89,15 @@ class Game():
                     continue
                 new_position = ACTIONS[action](position, self.size, self.pad_width)
                 if new_position == position:
-                    rewards[_id] += -1
+                    rewards[_id] += -0.1
                 else:
                     # check collison with mates and stop update
                     if self.game_state.predator_collision(*new_position):
                         new_position = position
-                        rewards[_id] -= 2
+                        rewards[_id] -= -0.1
                     elif a := self.pos_prey.get(new_position):
-                        rewards[a] -= 10
-                        rewards[_id] += 10
+                        rewards[a] -= 1
+                        rewards[_id] += 1
                         # Remove the positon all together!!
                         self.prey_pos[a] = (0, 0)
                         self.done[a] = True
@@ -117,14 +117,14 @@ class Game():
                     continue
                 new_position = ACTIONS[action](position, self.size, self.pad_width)
                 if new_position == position:
-                    rewards[_id] += -1
+                    rewards[_id] += -0.1
                 else:
                     # check collision with mates
                     if self.game_state.prey_collision(*new_position):
                         new_position = position
                     elif a := self.pos_predator.get(new_position):
-                        rewards[a] += 10
-                        rewards[_id] -= 10
+                        rewards[a] += 1
+                        rewards[_id] -= 1
                         new_position = (0, 0)
                         self.done[_id] = True
                 del self.pos_prey[position]

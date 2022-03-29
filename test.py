@@ -9,6 +9,7 @@ from game import Game
 from data.replay_buffer import ReplayBuffer
 from data.common import ARGS
 from agents.indp_dqn import DQNAgent
+from agents.indp_ddqn import DDQNAgent
 from agents.random_agent import RandomAgent
 
 # Setup logger
@@ -51,7 +52,7 @@ def initialize_agents(agent_ids: list, input_dims, output_dims, action_space, AR
             if ARGS.agenttype == "random":
                 obj = RandomAgent(input_dims, output_dims, action_space, False)
             else:
-                obj = DQNAgent(input_dims, output_dims, action_space, False, memory=replay_mem) 
+                obj = DDQNAgent(input_dims, output_dims, action_space, memory=replay_mem) 
             agents[_id] = obj  
     
     return agents, training
