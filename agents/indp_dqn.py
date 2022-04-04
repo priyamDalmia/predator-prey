@@ -7,9 +7,9 @@ import tensorflow_probability as tfp
 from tensorflow import keras 
 import tensorflow.keras.layers as layers
 
-class Network(keras.Model):
+class NetworkConv(keras.Model):
     def __init__(self, input_dims, output_dims):
-        super().__init__()
+        super(NetworkConv, self).__init__()
         self.input_dims = input_dims
         self.output_dims = output_dims 
 
@@ -45,7 +45,22 @@ class Network(keras.Model):
         probs = self.outputs_probs(x)
 
         return probs
-    
+
+class NetworkLinear(keras.Model):
+    def __init__(self, input_dims, output_dims):
+        super(NetworkLinear, self).__init__()
+        self.input_dims = input_dims
+        self.ouptut_dims = output_dims
+
+        self.layer1 = layers.Dense(512, activation='relu', dtype=tf.float32)
+        self.layer2 = layers.Dense(512, activation='relu', dtype=tf.float32)
+        self.layer3 = layers.Dense(self.ouptut_dims, activation=None)
+
+    def call(self, inputs):
+        x = self.layer1(inputs)
+        x = self.layer2(x)
+        x = self.layer3(x)
+        return x
 
 class DQNAgent():
     def __init__(self, input_dims, output_dims, input_space, load_model, **kwargs):
@@ -54,15 +69,24 @@ class DQNAgent():
         self.input_space = input_space
         self.load_model = load_model
         self.lr = 0.01
-        self.epsilon = 1
         self.gamma = 0.95
         self.memory = kwargs["memory"]
         self.network = None
+
+        self.epsilon = 0.95
+        self.epsilon_dec = 0.90
+        self.epsilon_min = 0.1
+
+        self.losses = []
+        self.train_step = 0
         
         if load_model:
             pass
         else:
-            self.network = Network(self.input_dims, self.output_dims)
+            if isinstance(self.input_dims, int):
+                self.network = NetworkLinear(self.input_dims, self.output_dims)
+            else:
+                self.network = NetworkConv(self.input_dims, self.output_dims)
             # Compile network here.
 
         self.network.compile(optimizer=keras.optimizers.Adam(learning_rate=self.lr),
@@ -79,12 +103,9 @@ class DQNAgent():
 
     def train_on_batch(self):
         # only train after 500 transitions have been recorded.
-        if self.memory.counter < 500:
+        if self.memory.counter < 300:
             return None
         
-        
-        # decrement epsilon 
-        self.epsilon = 0.95 * self.epsilon
         # create a index (len = batch_size)
         batch_idx = np.arange(self.memory.batch_size, dtype=np.int32)
         
@@ -98,10 +119,14 @@ class DQNAgent():
         target_values = np.copy(values_t0)
         target_values[batch_idx, actions] = rewards + \
                 self.gamma * np.max(values_t1, axis=1) * dones
-
-        # retrive loss and return
+       
         loss = self.network.train_on_batch(states, target_values, return_dict=True)
-        
+        # retrive loss and return
+        if (self.train_step%50) == 0:
+            self.epsilon = (self.epsilon*self.epsilon_dec) if \
+                    self.epsilon > self.epsilon_min else self.epsilon_min    
+        self.train_step += 1
+        self.losses.append(loss)
         return loss 
    
     def store_transition(self, state, action, reward, next_state, done):
@@ -110,3 +135,6 @@ class DQNAgent():
                 reward = reward, 
                 next_state = next_state,
                 done = done)
+    
+    def load_model(self):
+        pass

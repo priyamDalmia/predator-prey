@@ -1,0 +1,24 @@
+{
+    "os": "Linux-5.10.60.1-microsoft-standard-WSL2-x86_64-with-glibc2.29",
+    "python": "3.8.10",
+    "heartbeatAt": "2022-04-02T21:23:11.295923",
+    "startedAt": "2022-04-02T21:23:09.271434",
+    "docker": null,
+    "gpu": "NVIDIA GeForce GTX 1650 with Max-Q Design",
+    "gpu_count": 1,
+    "cpu_count": 12,
+    "cuda": null,
+    "args": [],
+    "state": "running",
+    "program": "tests/lunarlander.py",
+    "codePath": "tests/lunarlander.py",
+    "git": {
+        "remote": "git@github.com:priyamDalmia/predator-prey.git",
+        "commit": "566a71db77469b5eeb467d8b83369058094b4dee"
+    },
+    "email": "priyam.dalmia200@gmail.com",
+    "root": "/home/dalmia/Projects/predator-prey",
+    "host": "DESKTOP-NM83MP7",
+    "username": "dalmia",
+    "executable": "/home/dalmia/Projects/predator-prey/env/bin/python3"
+}

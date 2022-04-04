@@ -26,7 +26,7 @@ class ReplayBuffer():
             self.next_states[index] = next_state
         else:
             self.next_states[index] = state
-        self.dones[index] = done
+        self.dones[index] = 1 - int(done)
 
         self.counter += 1
 

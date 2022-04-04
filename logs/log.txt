@@ -80,3 +80,12 @@ Episode: 369, loss:0.000
 Episode: 370 | Average steps: 55.28
 Episode: 379, loss:0.000
 Episode: 380 | Average steps: 61.14
+__main__:random
+Game|Size5|npred1|nprey1
+29/03 22:28
+Episode: 9, loss:0.020
+Episode: 10 | Average steps: 13.9
+Episode: 19, loss:0.002
+Episode: 20 | Average steps: 29.7
+Episode: 29, loss:0.008
+Episode: 30 | Average steps: 37.5

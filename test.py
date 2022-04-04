@@ -141,6 +141,3 @@ if __name__=="__main__":
             logger.info(f"Episode: {ep+1} | Average steps: {np.average(average_steps[-50:])}")
 
     logger.info(f"Time Elapsed: {time.perf_counter()- tic}")
-
-       
-
