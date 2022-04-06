@@ -31,7 +31,6 @@ class ReplayBuffer():
         self.counter += 1
 
     def sample_batch(self):
-
         max_index = min(self.counter, self.batch_size)
         batch_ids = np.random.choice(max_index, self.batch_size, replace=False)
 
@@ -42,3 +41,15 @@ class ReplayBuffer():
         bdones = self.dones[batch_ids]
         
         return bstates, bactions, brewards, bnext_states, bdones
+
+    def clear_buffer():
+        self.counter = 0
+        # memory 
+        self.states = np.zeros((self.buffer_size, *self.state_size), dtype=np.float32)
+        self.actions = np.zeros((self.buffer_size), dtype=np.int32)
+        self.rewards = np.zeros((self.buffer_size), dtype=np.float32)
+        self.next_states = np.zeros((self.buffer_size, *self.state_size), dtype=np.float32)
+        self.dones = np.zeros((self.buffer_size), dtype=np.float32) 
+        #self.next_actions = np.zeros((self.
+        #self.dones = []
+        self.infos = []

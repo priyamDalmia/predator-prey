@@ -3,11 +3,14 @@ import logging
 import numpy as np
 import random
 import time
+import wandb
 from datetime import datetime
 
 from game import Game
 from data.replay_buffer import ReplayBuffer
 from data.common import ARGS
+
+from agents.torch_dqn import Agent
 from agents.indp_dqn import DQNAgent
 from agents.indp_ddqn import DDQNAgent
 from agents.random_agent import RandomAgent
@@ -38,21 +41,22 @@ def initialize_agents(agent_ids: list, input_dims, output_dims, action_space, AR
     training = {}
     input_dims = input_dims 
     output_dims = output_dims
-    replay_mem = ReplayBuffer(buffer_size=10000, batch_size=64, state_size = input_dims)
+    lr = 0.005
+    replay_mem = ReplayBuffer(buffer_size=100000, batch_size=64, state_size = input_dims)
     for _id in agent_ids: 
         if _id.startswith("predator"):
             training[_id] = ARGS.trainpred
             # if ARGS.agenttype == "random":
-            obj = RandomAgent(input_dims, output_dims, action_space, False)
+            obj = RandomAgent(input_dims, output_dims, action_space)
             # else:
                 # obj = DQNAgent(input_dims, output_dims, action_space, False, memory=None)
             agents[_id] = obj
         else:
             training[_id] = ARGS.trainprey
             if ARGS.agenttype == "random":
-                obj = RandomAgent(input_dims, output_dims, action_space, False)
+                obj = RandomAgent(input_dims, output_dims, action_space)
             else:
-                obj = DDQNAgent(input_dims, output_dims, action_space, memory=replay_mem) 
+                obj = DDQNAgent(input_dims, output_dims, action_space, False, memory=replay_mem, lr=lr) 
             agents[_id] = obj  
     
     return agents, training
@@ -70,7 +74,10 @@ if __name__=="__main__":
     logger.debug(f"{__name__}:{ARGS.message}")
     logger.debug(f"Game|Size{ARGS.size}|npred{ARGS.npred}|nprey{ARGS.nprey}")
     logger.debug(datetime.now().strftime("%d/%m %H:%M"))
-
+    
+    #wandb logger
+    wandb.init(project="preadtorprey", notes="Training Prey")
+    wandb.run.name = datetime.now().strftime("%d/%m %H:%M")
     # Initialze game specific parameters here.
     action_space = [i for i in range(4)]
     average_steps = []
@@ -102,10 +109,14 @@ if __name__=="__main__":
                 try:
                     actions_i[_id] = int(agents[_id].get_action(observation[_id]))
                 except Exception as e:
-                    logger.error(e)
+                    print(e)
+                    breakpoint()
                     logger.error(f"Invalid action type for agent {_id}")
             # Step through the environment to receive the rewards, next_states, done, and info.
-            rewards, next_obs, done, info = env.step(actions_i)
+            try:
+                rewards, next_obs, done, info = env.step(actions_i)
+            except:
+                breakpoint()
             # Store transition and train.
             for _id in agent_ids:
                 agent = agents[_id]
@@ -121,23 +132,25 @@ if __name__=="__main__":
                         breakpoint()
             # Update observation
             observation = next_obs
+        
+            for _id in agent_ids:
+                if training[_id]:
+                    agent = agents[_id]
+                    result = agent.train_on_batch()
            
             steps += 1
             #time.sleep(0.2)
             if done:
-                clear_lines(1)
-                print(f"episode:{ep}, steps:{steps}")
                 average_steps.append(steps)
+                print(f"episode:{ep}, avg: {np.mean(average_steps[-100:])}, steps:{steps}")
+                clear_lines(1)
 
-        for _id in agent_ids:
-            if training[_id]:
-                agent = agents[_id]
-                result = agent.train_on_batch()
 
         # Log results, save checkpoints and etc.    
         if (ep+1) % 10 == 0:
-            loss = result["loss"]
-            logger.info(f"Episode: {ep}, loss:{loss:.3f}")
-            logger.info(f"Episode: {ep+1} | Average steps: {np.average(average_steps[-50:])}")
-
-    logger.info(f"Time Elapsed: {time.perf_counter()- tic}")
+            loss = result
+            wandb.log(dict(episode = ep,
+                average_reward = np.mean(average_steps[-100:]),
+                training_loss = loss,
+                epsilon = agent.epsilon))
+        logger.info(f"Time Elapsed: {time.perf_counter()- tic}")

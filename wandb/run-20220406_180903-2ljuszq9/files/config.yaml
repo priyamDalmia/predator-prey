@@ -1,0 +1,81 @@
+wandb_version: 1
+
+_wandb:
+  desc: null
+  value:
+    cli_version: 0.12.11
+    framework: torch
+    is_jupyter_run: false
+    is_kaggle_kernel: false
+    python_version: 3.8.10
+    start_time: 1649232543
+    t:
+      1:
+      - 1
+      - 2
+      - 3
+      2:
+      - 1
+      - 2
+      - 3
+      3:
+      - 16
+      - 17
+      4: 3.8.10
+      5: 0.12.11
+      8:
+      - 5
+agenttype:
+  desc: null
+  value: random
+batch_size:
+  desc: null
+  value: 64
+buffer_size:
+  desc: null
+  value: 10000
+episodes:
+  desc: null
+  value: 100
+epochs:
+  desc: null
+  value: 100
+fc1_dims:
+  desc: null
+  value: 256
+fc2_dims:
+  desc: null
+  value: 256
+gamma:
+  desc: null
+  value: 0.95
+lr:
+  desc: null
+  value: 0.001
+mode:
+  desc: null
+  value: online
+msg:
+  desc: null
+  value: Random (prey and pred) Benchmarking
+npred:
+  desc: null
+  value: 1
+nprey:
+  desc: null
+  value: 1
+run_name:
+  desc: null
+  value: random:06/04 18:09
+size:
+  desc: null
+  value: 8
+train_steps:
+  desc: null
+  value: 2
+training:
+  desc: null
+  value: false
+winsize:
+  desc: null
+  value: 5

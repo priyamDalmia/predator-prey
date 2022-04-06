@@ -3,18 +3,18 @@ import logging
 import numpy as np
 import random
 import time
-
+import json
 from data.entites import Predator, Prey
 from data.common import ACTIONS
 from game_state import GameState
 
 
 class Game():
-    def __init__(self, args):
-        self.size = args.size
-        self.npredators = args.npred
-        self.npreys = args.nprey
-        self.window_size = args.winsize
+    def __init__(self, config):
+        self.size = config.size
+        self.npredators = config.npred
+        self.npreys = config.nprey
+        self.window_size = config.winsize
         self.pad_width = int(self.window_size/2)
         self.game_state = None
 
@@ -24,6 +24,8 @@ class Game():
         self.observation_space = np.zeros((self.units, self.window_size, self.window_size), dtype=np.int32)
         self.state_space = np.zeros((self.units, self.size, self.size), dtype=np.int32)
         self.last_action = None
+
+        self.record = {}
         
         # Reset the environment object (basically recreates a new GameState object.)
         self.reset()   
@@ -41,7 +43,10 @@ class Game():
         self.done = {}
         # Create a new GameState Object
         self.game_state = GameState(self.size, self.npredators, self.npreys, self.window_size, self.pad_width)
-
+        
+        # Episode records 
+        self.steps = 0 
+        self.record = {}
         # Populate Predators
         for i in range(self.npredators):
             _id = f"predator_{i}"
@@ -63,6 +68,7 @@ class Game():
             self.pos_prey[position] = _id
             self.done[_id] = False
         # returns the initial observation dict.
+        self.record_transition(0, 0, 0)
         return self.get_observation()
 
     def step(self, actions:dict) -> tuple:
@@ -72,6 +78,7 @@ class Game():
         # ! Modify for any changes in the reward structure here !
      
         if len(actions)!=len(self.agent_ids):
+            breakpoint()
             raise print("Error: action sequence of incorrect length!")
             
         rewards = self.last_rewards
@@ -135,6 +142,8 @@ class Game():
             # Update the state in the game_state obj.
             self.game_state.update_unit(self.agents[_id][0], new_position)
         info = {}
+        self.steps+=1
+        self.record_transition(actions, rewards, self.done)
         done = True if sum(self.done.values())==self.npreys else False
         return rewards, self.get_observation(), done, info
 
@@ -163,5 +172,22 @@ class Game():
         
         gmap = [list(map(lambda x: "." if x == 0 else x, l)) for l in gmap]
         print(np.matrix(gmap))
+    
+    def record_transition(self, actions, rewards, done):
+        transition = {}
+        transition['actions'] = str(actions)
+        transition['rewards'] = str(rewards)
+        transition['done'] = str(done)
+        transition['pred_pos'] = str(self.predator_pos)
+        transition['prey_pos'] = str(self.prey_pos)
+        self.record[str(self.steps)] = transition
 
-
+    def record_episode(self, filename, info):
+        game_data = {}
+        game_data['size'] = self.size
+        game_data['pad_width'] = self.pad_width 
+        game_data['units'] = self.units
+        game_data['ep_record'] = self.record
+        #game_data['info'] = info 
+        with open(f"replays/{filename}", 'w') as f:
+            json.dump(game_data, f)

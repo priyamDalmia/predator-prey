@@ -32,7 +32,7 @@ parser = argparse.ArgumentParser(description="Test game file",
 parser.add_argument('size', type=int, help="Size(b) of the map: b * b")
 parser.add_argument('-npred', default = 1, type=int, metavar="", help="Number of predators")
 parser.add_argument('-nprey', default = 1, type=int, metavar='', help="Number of preys")
-parser.add_argument('-winsize', default=3, type=int, metavar="", help="Agent observation window size")
+parser.add_argument('-winsize', default=5, type=int, metavar="", help="Agent observation window size")
 parser.add_argument('-agenttype', default="dqn", type=str, metavar="", help="Agent type (default: random)")
 parser.add_argument('-logfile', default="logs/log.txt", type=str, metavar="", help="Log file name")
 parser.add_argument('-loglevel', default=20, type=int, metavar="", help="Logging level of the program (_0s)")
@@ -41,4 +41,8 @@ parser.add_argument('-trainprey', default=False, type=bool, metavar="", help="Tr
 parser.add_argument('-m', '--message', default="random", type=str, metavar="", help="Message for logger")
 ARGS = parser.parse_args()
 
-
+class dotdict(dict):
+    """dot.notation access to dictionary attributes"""
+    __getattr__ = dict.get
+    __setattr__ = dict.__setitem__
+    __delattr__ = dict.__delitem__

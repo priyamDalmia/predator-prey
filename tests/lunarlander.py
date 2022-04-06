@@ -9,10 +9,10 @@ import numpy as np
 
 sys.path.append(os.getcwd())
 from agents.random_agent import RandomAgent
-from agents.indp_ddqn import DDQNAgent
-from agents.indp_dqn import DQNAgent
 from data.replay_buffer import ReplayBuffer
 from tests.helpers import ARGS
+from agents.torch_dqn import Agent
+from agents.indp_ddqn import DDQN 
 
 def set_logger():
     logger = logging.getLogger(__name__)
@@ -41,13 +41,12 @@ def run_episodes(episodes, env, agent):
             # store transitions
             if training:
                 agent.store_transition(observation, action, reward, next_, done)
+                loss = agent.train_on_batch()
+                train_losses.append(loss)
             observation = next_  
             steps+=1
         rewards_history.append(sum(episode_reward))
         steps_history.append(steps)
-        if training:
-            loss = agent.train_on_batch()
-            train_losses.append(loss)
 
         if (ep+1)%100 == 0:
             wandb.log(dict(episode = ep,
@@ -55,9 +54,7 @@ def run_episodes(episodes, env, agent):
                 training_loss = loss,
                 training_steps = len(train_losses),
                 epsilon = agent.epsilon))
-        print(f"episode:{ep},\
-                reward:{sum(episode_reward)}, \
-                epsilon:{agent.epsilon}", end='\r')
+        print(f"episode:{ep}, avgR:{np.mean(rewards_history[-99:])}, epsilon:{agent.epsilon}", end='\r')
                   
     return rewards_history, train_losses
 
@@ -70,17 +67,17 @@ if __name__=="__main__":
     env = gym.make("LunarLander-v2")
     # Initialize test control variables,
     episodes = 2000
+    lr = 0.0001
 
     # Initialize the agent policy here.
     load_model = False
     output_dims = env.action_space.n
-    input_dims = env.observation_space.shape[0]
+    input_dims = env.observation_space.shape
     action_space = env.action_space.n
     state_space = env.observation_space.shape
     
-    memory = ReplayBuffer(500, 64, state_space) 
-#    agent = DDQNAgent(input_dims, output_dims, action_space, False, memory=memory)
-    agent = DQNAgent(input_dims, output_dims, action_space, False, memory=memory)
+    memory = ReplayBuffer(100000, 64, state_space) 
+    agent = Agent(input_dims, output_dims, action_space, False, memory=memory, lr=lr)
     
     with wandb.init(project="gym benchmarks", notes="LunarLander-v2") as run:
         wandb.run.name = wandb.run.id

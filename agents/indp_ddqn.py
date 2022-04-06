@@ -21,7 +21,7 @@ class NetworkConv(keras.Model):
         
         # Network architecture 
         # Cnn layers + Flatten 
-        self.cnn1 = layers.Conv2D(filters=32,
+        self.cnn1 = layers.Conv2D(filters=16,
                 kernel_size=(2,2),
                 padding="same",
                 data_format="channels_first",
@@ -38,7 +38,7 @@ class NetworkConv(keras.Model):
                 dtype=np.float32)
         self.pool2 = layers.MaxPooling2D(pool_size=(2,2))
         self.flatten = layers.Flatten()
-        self.layer1 = layers.Dense(512, activation='relu', dtype=np.float32)
+        self.layer1 = layers.Dense(256, activation='relu', dtype=np.float32)
         
         # Decomposed layers for state values
         self.layer_v1 = layers.Dense(256, activation='relu', dtype=np.float32)
@@ -115,11 +115,11 @@ class NetworkLinear(keras.Model):
 
 class DDQNAgent():
     def __init__(self, input_dims, output_dims, action_space, 
-            load_model, memory=None, learning_rate=0.05, gamma=0.9, epsilon=0.9, batch_idx=64):
+            load_model, memory=None, lr=0.05, gamma=0.9, epsilon=0.9, batch_idx=64):
         self.input_dims = input_dims
         self.output_dims = output_dims 
         self.action_space = action_space 
-        self.learning_rate = learning_rate
+        self.learning_rate = lr
         self.gamma = gamma 
         
         self.epsilon = epsilon
