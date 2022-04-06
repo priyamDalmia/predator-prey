@@ -1,1 +1,0 @@
-{"episode": 299, "average_reward": -335.55090837371364, "training_loss": {"loss": 38.98613739013672}, "training_steps": 300, "epsilon": 0.20390682574579033, "_timestamp": 1649029605, "_runtime": 204, "_step": 2, "_wandb": {"runtime": 245}}
