@@ -4,22 +4,21 @@ sys.path.append(os.getcwd())
 
 import logging 
 import random
-import time
-import wandb
+import time 
 import numpy as np
 from datetime import datetime
-
-from game import Game
+from game import Game 
 from data.replay_buffer import ReplayBuffer
 from data.common import ARGS, dotdict
-from agents.torch_dqn import Agent 
+from agents.indp_dqn import DQNAgent
+from agents.torch_dqn import Agent
 from agents.indp_dqn import DQNAgent
 from agents.indp_ddqn import DDQNAgent
 from agents.random_agent import RandomAgent 
 
 def get_config():
     time = datetime.now().strftime("%d/%m %H:%M")
-    decp = "torch:DQN"
+    decp = "random:random"
     config = dict(
             # agent variables
             agenttype = "random",
@@ -31,32 +30,52 @@ def get_config():
             fc1_dims = 256,
             fc2_dims = 256,
             save_model = False,
-            save_replay=True,
+            save_replay=False,
             # game variables
             size=ARGS.size,
-            nprey=2,
-            npred=2,
+            nprey=1,
+            npred=1,
             winsize=5,
             # train and test variables
             epochs = 2,
-            episodes = 2,
+            episodes = 5,
             train_steps = 10,
             # ogging variables
-            msg = f"Random Agent, does not clear buffer",
+            wandb = False,
+            msg = f"Random Agent, Setting baselines (10x10)",
             mode="offline",
             decp = decp,
             run_name=f"{decp}:{time}",
-
+            loglevel=10, 
+            logfile=f"logs/{decp}.log"
             )
     return dotdict(config)
 
 def get_logger(config):
-    wandb.init(project="predator-prey", 
-            notes=config.msg, 
-            mode=config.mode,
-            config=config)
-    wandb.run.name = config.run_name
-    return None
+    if config.wandb:
+        wandb.init(project="predator-prey", 
+                notes=config.msg, 
+                mode=config.mode,
+                config=config)
+        wandb.run.name = config.run_name
+
+    logger = logging.getLogger(__name__)
+    logger.setLevel(config.loglevel)
+    formatter = logging.Formatter('%(message)s')
+    file_handler = logging.FileHandler(config.logfile)
+    file_handler.setFormatter(formatter)
+    logger.addHandler(file_handler)
+     
+    logger.debug(f"{__name__}:{config.msg}")
+    logger.debug(f"Game|Size{config.size}|npred{config.npred}|nprey{config.nprey}")
+    logger.debug(datetime.now().strftime("%d/%m %H:%M"))
+    
+    return logger
+
+def shut_logger(config):
+    if config.wandb:
+        wandb.finish()
+    logging.shutdown()
 
 def initialize_agents(agent_ids, input_dims, output_dims, action_space, config):
     '''
@@ -65,7 +84,9 @@ def initialize_agents(agent_ids, input_dims, output_dims, action_space, config):
     agents = {}
     replay_mem = ReplayBuffer(config.buffer_size, config.batch_size, input_dims)
     for _id in agent_ids:
-        if _id.startswith("predator"):
+        if config.agenttype == "random":
+            obj = RandomAgent(input_dims, output_dims, action_space)
+        elif _id.startswith("predator"):
             obj = RandomAgent(input_dims, output_dims, action_space)
         else:
             obj = RandomAgent(input_dims, output_dims, action_space)
@@ -93,7 +114,6 @@ def run_episodes(env, agents, config):
                     actions[_id] = int(agents[_id].get_action(observation[_id]))
                 except Exception as e:
                     print(e)
-                    breakpoint()
             # step through the env
             rewards,  next_, done, info = env.step(actions)
             # store transition for each prey agent
@@ -125,20 +145,23 @@ def run_training(env, agents, config):
         loss_history.append(loss)
     return loss_history
 
-def update_logs(epoch, steps, rewards, loss, epsilon):
-    wandb.log(dict(epochs=epoch,
-        steps=steps,
-        rewards=rewards,
-        loss=loss,
-        epsilon=epsilon))
+def update_logs(config, logger, epoch, steps, rewards, loss, epsilon):
+    if config.wandb:
+        wandb.log(dict(epochs=epoch,
+            steps=steps,
+            rewards=rewards,
+            loss=loss,
+            epsilon=epsilon))
+    logger.info(f"EPOCHS: {epoch} \n ")
+    logger.info(f"steps:{steps} rewards:{rewards} loss:{loss}")
 
-if __name__=="__main__":
+if __name__ == "__main__":
     '''
     Testing and training a PREY policy on the predator prey env.
     Any modification for networked agents must be added here.
     '''
     # get config
-
+    config = get_config()
     # init logger and wandb
     logger = get_logger(config)
     # init GAME and control variables
@@ -165,7 +188,6 @@ if __name__=="__main__":
         rewards_avg = np.mean(rewards)
             
         # saves the last episode of the epoch
-        breakpoint()
         if config.save_replay:
             info = dict(
                     steps_avg = float(steps_avg), 
@@ -174,5 +196,6 @@ if __name__=="__main__":
             env.record_episode(filename, info)
         # log the results
         print(f"epoch:{epoch}, average:{steps_avg}, loss:{loss_avg}")
-        update_logs(epoch, steps_avg, rewards_avg, loss_avg, epsilon)
-    wandb.finish()  
+        update_logs(config, logger, epoch, steps_avg, rewards_avg, loss_avg, epsilon)
+
+    shut_logger(config)
