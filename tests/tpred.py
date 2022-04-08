@@ -18,7 +18,7 @@ from agents.random_agent import RandomAgent
 
 def get_config():
     time = datetime.now().strftime("%d/%m %H:%M")
-    decp = "random:random"
+    decp = "dqn:random"
     config = dict(
             # agent variables
             agenttype = "random",
@@ -37,8 +37,8 @@ def get_config():
             npred=1,
             winsize=5,
             # train and test variables
-            epochs = 2,
-            episodes = 5,
+            epochs = 100,
+            episodes = 1000,
             train_steps = 10,
             # ogging variables
             wandb = False,
