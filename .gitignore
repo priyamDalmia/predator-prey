@@ -129,7 +129,10 @@ dmypy.json
 .pyre/
 
 # WANDB
-./wandb
+wandb/
+
+# replays 
+replays/
 
 # My bin file
 bin.py

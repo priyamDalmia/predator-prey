@@ -1,4 +1,4 @@
-mport os
+import os
 import sys
 import gym
 import random
@@ -26,7 +26,7 @@ def set_logger():
 def run_episodes(episodes, env, agent):
     training = ARGS.train
     rewards_history = []
-    steps_hist = []
+    steps_history = []
     train_losses = []
     for ep in range(episodes):
         loss = 0
@@ -46,7 +46,7 @@ def run_episodes(episodes, env, agent):
             observation = next_  
             steps+=1
         rewards_history.append(sum(episode_reward))
-        steps_hist.append(steps)
+        steps_history.append(steps)
 
         if (ep+1)%100 == 0:
             wandb.log(dict(episode = ep,

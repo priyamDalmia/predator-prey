@@ -25,7 +25,7 @@ def get_config():
             agenttype = "random",
             lr=0.0001,
             gamma=0.95,
-            training=False,
+            training=True,
             buffer_size = 10000,
             batch_size = 64,
             fc1_dims = 256,
@@ -34,19 +34,20 @@ def get_config():
             save_replay=True,
             # game variables
             size=ARGS.size,
-            nprey=2,
-            npred=2,
+            nprey=1,
+            npred=1,
+            nobstacles=0,
+            nholes=0,
             winsize=5,
             # train and test variables
-            epochs = 2,
-            episodes = 2,
+            epochs = 100,
+            episodes = 500,
             train_steps = 10,
-            # ogging variables
-            msg = f"Random Agent, does not clear buffer",
-            mode="offline",
+            # logging variables
+            msg = f"torch DQN Agent, does not clear buffer",
+            mode="online",
             decp = decp,
-            run_name=f"{decp}:{time}",
-
+            run_name=f"{decp}:{time}:M{ARGS.size}",
             )
     return dotdict(config)
 
@@ -68,8 +69,11 @@ def initialize_agents(agent_ids, input_dims, output_dims, action_space, config):
         if _id.startswith("predator"):
             obj = RandomAgent(input_dims, output_dims, action_space)
         else:
-            obj = RandomAgent(input_dims, output_dims, action_space)
-                  #False, memory=replay_mem, lr=config.lr)
+            if config.agenttype == "random":
+                obj = RandomAgent(input_dims, output_dims, action_space)
+            else:    
+                obj = Agent(input_dims, output_dims, action_space,
+                      False, memory=replay_mem, lr=config.lr)
         agents[_id] = obj
     return agents 
 
@@ -165,7 +169,6 @@ if __name__=="__main__":
         rewards_avg = np.mean(rewards)
             
         # saves the last episode of the epoch
-        breakpoint()
         if config.save_replay:
             info = dict(
                     steps_avg = float(steps_avg), 
