@@ -7,8 +7,6 @@
 #SBATCH --cpus-per-task=1
 #SBATCH --qos gpgpumse
 #SBATCH -o  /data/projects/punim1355/dalmiapriyam/slurmoutput/slurm-%j.out
-#SBATCH --mail-type=begin        # send email when job begins
-#SBATCH --mail-type=end          # send email when job ends
 #SBATCH --mail-type=fail         # send email if job fails
 #SBATCH --mail-user=dalmiap@student.unimelb.edu.au
 module purge

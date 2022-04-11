@@ -16,8 +16,8 @@ from agents.torch_dqn import Agent
 from agents.random_agent import RandomAgent
 from agents.tor_ac import ActorCriticAgent
 from agents.tor_dqn import DQNAgent
-import wandb
 
+import wandb
 """
 Script for training agents on the OpenAI gym api.
 ## from gym import envs
@@ -33,22 +33,22 @@ def get_config():
             env=env,
             # agent variables
             agenttype = "dqn",
-            lr=0.00001,
+            lr=0.0001,
             gamma=0.95,
-            training=True,
+            training = True,
             buffer_size = 50000,
             batch_size = 64,
             fc1_dims = 256,
             fc2_dims = 256,
             save_model = False,
-            save_replay=False,
+            save_replay = False,
             # train and test variables
             epochs = 1000,
             episodes = 1000,
-            train_steps = 100,
+            train_steps = 200,
             # logging variables
-            wandb = False,
-            msg = f"DQN Agent, Simple Network,  Setting baselines (10x10)",
+            wandb = True,
+            msg = f"DQN Agent, Simple Network, Setting baselines.",
             mode="online",
             decp = decp,
             run_name=f"{env}:{decp}:{time}",
@@ -155,6 +155,7 @@ if __name__=="__main__":
     try:
         env = gym.make(config.env)
     except Exception as e:
+        logger.error(e)
         logger.error("Gym Environment cannot be created!")
         sys.exit()
     # environment 
