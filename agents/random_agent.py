@@ -1,10 +1,24 @@
+from abc import ABC, abstractmethod
+from data.agent import BaseAgent
 import numpy as np
 
-class RandomAgent():
-    def __init__(self, input_dims, output_dims, action_space):
+class RandomAgent(BaseAgent):
+    def __init__(self, _id, input_dims, output_dims, action_space,
+            load_model=False):
+        super(RandomAgent, self).__init__(_id)
         self.input_dims = input_dims
         self.outupt_dims = output_dims
         self.action_space = action_space
 
     def get_action(self, observation):
         return np.random.choice(self.action_space)
+
+    def train_on_batch(self):
+        return dict(loss=None) 
+
+    def save_model(self, filename):
+        pass
+
+    def load_model(self, filename):
+        pass
+

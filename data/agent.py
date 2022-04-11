@@ -1,7 +1,7 @@
 from abc import ABC, abstractmethod
 
 class BaseAgent(ABC):
-    def __init__(self, _id, name):
+    def __init__(self, _id):
         self._id = _id
     
     @abstractmethod
@@ -21,9 +21,9 @@ class BaseAgent(ABC):
         pass
 
     @abstractmethod
-    def save_model(self):
+    def save_model(self, filename):
         pass
 
     @abstractmethod
-    def load_model(self):
+    def load_model(self, filename):
         pass
