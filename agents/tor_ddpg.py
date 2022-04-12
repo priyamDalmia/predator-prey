@@ -68,8 +68,8 @@ class NetworkConv(nn.Module):
 
 class DQNAgent(BaseAgent):
     def  __init__(self, _id, input_dims, output_dims, action_space, 
-             load_model, memory=None, lr=0.0001, gamma=0.95,
-            epsilon=0.90, epsilon_end=0.01, epsilon_dec=1e-4, **kwargs):
+             load_model, memory=None, lr=0.00001, gamma=0.95,
+            epsilon=0.95, epsilon_end=0.01, epsilon_dec=1e-4, **kwargs):
         """
         An DQN Agent with target network and a Prioritized Exp replay.
         Args:
@@ -93,14 +93,13 @@ class DQNAgent(BaseAgent):
         self.load_model = load_model
         # training variables  
         self.lr = lr
-        self.gamma = 1.0
+        self.gamma = gamma
         self.memory = memory
         self.epsilon = epsilon
         self.epsilon_end = epsilon_end
         self.epsilon_dec = epsilon_dec
         # Add code for dynamic optimizer and loss functions.
         self.network = None
-        self.target_network = None
         self.device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
 
         if self.load_model:
@@ -110,15 +109,10 @@ class DQNAgent(BaseAgent):
         if len(input_dims) == 1:
             self.network = NetworkLinear(self.input_dims, 
                     self.output_dims, self.action_space, self.lr)
-            self.target_network = NetworkLinear(self.input_dims,
-                    self.output_dims, self.action_space, self.lr)
         else:
             self.network = NetworkConv(self.input_dims, 
                     self.output_dims, self.action_space, self.lr)
-            self.target_network = NetworkConv(self.input_dims, self.output_dims,
-                    self.action_space, self.lr)
         self.network = self.network.to(self.device)
-        self.target_network = self.target_network.to(self.device)
 
     @torch.no_grad()
     def get_action(self, observation):
@@ -151,8 +145,7 @@ class DQNAgent(BaseAgent):
         next_values = self.network(nexts)
         targets = rewards + self.gamma * torch.max(next_values, dim=1)[0]
         
-        self.network.optimizer.zero_grad()
-        loss = self.network.loss(y_pred, (targets.unsqueeze(-1)))
+        loss = self.network.loss((targets.unsqueeze(-1)), y_pred)
         loss.backward()
         self.network.optimizer.step()
 
@@ -160,7 +153,6 @@ class DQNAgent(BaseAgent):
         return loss.item()
    
     def update_target_network(self):
-        self.target_network.load_state_dict(self.network.state_dict())
         pass
 
     def update_epsilon(self):
@@ -169,12 +161,6 @@ class DQNAgent(BaseAgent):
     def store_transition(self, state, action, reward, next_, done):
         self.memory.store_transition(state, action, reward, next_, done)
         pass
-
-    def save_state(self):
-        return self.network.state_dict()
-
-    def load_state(self, state):
-        return self.network.load_state_dict(state)
 
     def save_model(self, filename):
         pass

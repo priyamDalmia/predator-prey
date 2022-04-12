@@ -1,11 +1,11 @@
 #!/bin/bash
-#SBATCH --nodes 1
 #SBATCH --ntasks=1
 #SBATCH --cpus-per-task=1
 
 #SBATCH --partition gpgpu
-#SBATCH -q gpgpuresplat
+#SBATCH --qos gpgpuresplat
 #SBATCH --gres=gpu:1
+#SBATCH --account=punim1679
 #SBATCH --time 20:00:00
 
 #SBATCH -o  /data/projects/punim1679/priyam/slurmoutput/slurm-%j.out

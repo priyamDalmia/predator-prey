@@ -36,19 +36,20 @@ def get_config():
             lr=0.0001,
             gamma=0.95,
             training = True,
-            buffer_size = 50000,
-            batch_size = 64,
+            buffer_size = 500000,
+            batch_size = 128,
             fc1_dims = 256,
             fc2_dims = 256,
             save_model = False,
             save_replay = False,
+            use_checkpoints = False,
             # train and test variables
             epochs = 1000,
-            episodes = 1000,
-            train_steps = 200,
+            episodes = 500,
+            train_steps = 100,
             # logging variables
             wandb = True,
-            msg = f"DQN Agent, Simple Network, Setting baselines.",
+            msg = f"DQN Agent, with target Network, Setting baselines.",
             mode="online",
             decp = decp,
             run_name=f"{env}:{decp}:{time}",
@@ -169,6 +170,8 @@ if __name__=="__main__":
     # initialize agent policy
     agent = initialize_agent("dqn_agent", input_dims, output_dims, 
             action_space, config, logger)
+    checkpnt_state = agent.save_state()
+    rewards_hist = []
     print("Training Agent")
     for epoch in range(epochs):
         # generate episodes 
@@ -177,10 +180,11 @@ if __name__=="__main__":
         loss = 0
         if config.training:
             loss = run_training(agent, config)
-        if (epoch%3) == 0:
+        if (epoch%30) == 0:
             agent.update_epsilon()
+        agent.update_target_network()
         rewards_avg = np.mean(rewards)
-        steps_avg =np.mean(steps)
+        steps_avg = np.mean(steps)
         loss_avg = np.mean(loss)
         # saves the last episode of the epoch
         if config.save_replay:
@@ -188,5 +192,12 @@ if __name__=="__main__":
             # gym save replay files 
         # log the results
         print(f"epoch:{epoch:.2f}, average:{steps_avg:.2f},rewards_avg:{rewards_avg:.2f}, loss:{loss_avg:.2f}, epsilon:{agent.epsilon:.2f}")
+        rewards_hist.append(rewards_avg)
         update_logs(config, logger, epoch, steps_avg, rewards_avg, loss_avg, epsilon)
+        if config.use_checkpoints and epoch > 20:
+            if rewards_avg > (np.max(rewards_hist)):
+                checkpnt_state = agent.save_state()
+            elif rewards_avg < (np.max(rewards_hist)-10):
+                agent.load_state(checkpnt_state)
+                print("Checkpoint Loaded")
     shut_logger(config)
