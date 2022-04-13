@@ -130,6 +130,9 @@ dmypy.json
 
 # WANDB
 wandb/
+logs/
+slurmoutput/
+slurm-scripts/
 
 # replays 
 replays/
