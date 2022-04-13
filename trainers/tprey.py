@@ -50,7 +50,7 @@ def get_config():
             train_steps = 2,
             # logging variables
             wandb=False,
-            msg = f"torch DQN Agent, Setting Baselines.",
+            msg = f"torch DQN Agent, Setting Baselines.)",
             mode="online",
             decp = decp,
             run_name=f"{decp}:{time}:M{ARGS.size}",
@@ -62,7 +62,7 @@ def get_config():
 def get_logger(config):
     if config.wandb:
         wandb.init(project="predator-prey", 
-            notes=config.msg, 
+            notes=f"{config.msg}-{config.npred}v{config.nprey}", 
             mode=config.mode,
             config=config)
         wandb.run.name = config.run_name
