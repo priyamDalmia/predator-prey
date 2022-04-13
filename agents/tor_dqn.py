@@ -16,7 +16,6 @@ class NetworkLinear(nn.Module):
         self.lr = lr 
         self.fc1_dims = 256
         self.fc2_dims = 256
-
         # Network layers
         self.layer1 = nn.Linear(*self.input_dims, self.fc1_dims)
         self.layer2 = nn.Linear(self.fc1_dims, self.fc2_dims)
@@ -38,16 +37,17 @@ class NetworkConv(nn.Module):
         self.input_dims = input_dims
         self.output_dims = output_dims
         self.action_space = action_space 
+        self.lr = lr
+        self.fc1_dims = 256
+        self.fc2_dims = 256
         # Network layers
-        self.conv1 = nn.Conv2d(in_channels=3, out_channls=6,
+        self.conv1 = nn.Conv2d(in_channels=3, out_channels=6,
                 kernel_size=1, stride=1)
-        self.conv2 = nn.Conv2d(in_channels=3, out_channls=6,
+        self.conv2 = nn.Conv2d(in_channels=6, out_channels=12,
                 kernel_size=1, stride=1)  
-        
         # Add code for dynamic layer creation here.
         # Use try except statements.
-
-        conv_out = ()
+        conv_out = (12 * input_dims[-1] * input_dims[-1])
         self.flatten = nn.Flatten()
         self.layer1 = nn.Linear(conv_out, self.fc1_dims)
         self.layer2 = nn.Linear(self.fc1_dims, self.fc2_dims)
@@ -58,8 +58,8 @@ class NetworkConv(nn.Module):
         self.device = torch.device('cuda:0' if torch.cuda.is_available() else 'cpu')
 
     def forward(self, inputs):
-        x = F.relu(self.conv1(x))
-        x = F.relu(self.conv2)
+        x = F.relu(self.conv1(inputs))
+        x = F.relu(self.conv2(x))
         x = self.flatten(x)
         x = F.relu(self.layer1(x))
         x = F.relu(self.layer2(x))
@@ -93,7 +93,7 @@ class DQNAgent(BaseAgent):
         self.load_model = load_model
         # training variables  
         self.lr = lr
-        self.gamma = 1.0
+        self.gamma = gamma
         self.memory = memory
         self.epsilon = epsilon
         self.epsilon_end = epsilon_end
@@ -125,8 +125,9 @@ class DQNAgent(BaseAgent):
         if np.random.random() < self.epsilon:
             return np.random.choice(self.action_space)
         # convert observation to tensor of shape : [batch_size, (input)]
-        inputs = torch.tensor(observation, device=self.device)
-        values = self.network(inputs)
+        inputs = torch.as_tensor(observation, dtype=torch.float32, 
+                device=self.device)
+        values = self.network(inputs.unsqueeze(0))
         action = torch.argmax(values)
         return action.item()
 
@@ -164,7 +165,8 @@ class DQNAgent(BaseAgent):
         pass
 
     def update_epsilon(self):
-        self.epsilon = self.epsilon * 0.95
+        self.epsilon = self.epsilon * self.epsilon_dec
+        return self.epsilon 
 
     def store_transition(self, state, action, reward, next_, done):
         self.memory.store_transition(state, action, reward, next_, done)

@@ -34,6 +34,8 @@ def get_config():
             size=ARGS.size,
             nprey=1,
             npred=1,
+            nobstacles=0,
+            nholes=0,
             winsize=5,
             # train and test variables
             epochs = 100,

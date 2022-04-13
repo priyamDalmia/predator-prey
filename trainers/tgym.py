@@ -46,7 +46,7 @@ def get_config():
             # train and test variables
             epochs = 1000,
             episodes = 500,
-            train_steps = 100,
+            train_steps = 200,
             # logging variables
             wandb = True,
             msg = f"DQN Agent, with target Network, Setting baselines.",

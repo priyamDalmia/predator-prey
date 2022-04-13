@@ -32,6 +32,7 @@ class Network(nn.Module):
         x = F.relu(self.conv1(inputs))
         x = self.conv2(x)
         x = self.flatten(x)
+        breakpoint()
         x = F.relu(self.fc1(x))
         x = F.relu(self.fc2(x))
         actions = self.fc3(x)
@@ -91,6 +92,9 @@ class Agent():
         self.epsilon = self.epsilon - self.eps_dec if self.epsilon > self.eps_end\
                 else self.eps_end
         return loss.item()
+    
+    def update_epsilon(self):
+        pass
 
     def store_transition(self, state, action, reward, next_, done):
         self.memory.store_transition(state, action, reward, next_, done)

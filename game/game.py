@@ -4,9 +4,8 @@ import numpy as np
 import random
 import time
 import json
-from data.entites import Predator, Prey
 from data.common import ACTIONS
-from game_state import GameState
+from game.game_state import GameState
 
 
 class Game():
