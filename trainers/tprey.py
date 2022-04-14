@@ -45,11 +45,11 @@ def get_config():
             nholes=0,
             winsize=5,
             # train and test variables
-            epochs = 5,
+            epochs = 10,
             episodes = 10,
-            train_steps = 2,
+            train_steps = 5,
             # logging variables
-            wandb=False,
+            wandb= True,
             msg = f"torch DQN Agent, Setting Baselines.)",
             mode="online",
             decp = decp,
