@@ -21,6 +21,7 @@ from agents.random_agent import RandomAgent
 #from agents.indp_ddqn import DDQNAgent
 #from agents.random_agent import RandomAgent 
 
+
 def get_config():
     time = datetime.now().strftime("%d/%m %H:%M")
     decp = "RandomAgent"

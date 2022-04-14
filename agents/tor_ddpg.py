@@ -66,7 +66,7 @@ class NetworkConv(nn.Module):
         x = self.layer3(x)
         return x
 
-class DQNAgent(BaseAgent):
+class DDPGAgent(BaseAgent):
     def  __init__(self, _id, input_dims, output_dims, action_space, 
              load_model, memory=None, lr=0.00001, gamma=0.95,
             epsilon=0.95, epsilon_end=0.01, epsilon_dec=1e-4, **kwargs):
@@ -86,7 +86,7 @@ class DQNAgent(BaseAgent):
             epsilon_dec: float
 
         """
-        super(DQNAgent, self).__init__(_id)
+        super(DDPGAgent, self).__init__(_id)
         self.input_dims = input_dims
         self.output_dims = output_dims
         self.action_space = action_space
@@ -101,10 +101,8 @@ class DQNAgent(BaseAgent):
         # Add code for dynamic optimizer and loss functions.
         self.network = None
         self.device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
-
         if self.load_model:
             pass
-
         # Create new network if self.load model is false.
         if len(input_dims) == 1:
             self.network = NetworkLinear(self.input_dims, 
@@ -113,12 +111,13 @@ class DQNAgent(BaseAgent):
             self.network = NetworkConv(self.input_dims, 
                     self.output_dims, self.action_space, self.lr)
         self.network = self.network.to(self.device)
-
+    
     @torch.no_grad()
     def get_action(self, observation):
         if np.random.random() < self.epsilon:
             return np.random.choice(self.action_space)
         # convert observation to tensor of shape : [batch_size, (input)]
+        breakpoint()
         inputs = torch.tensor(observation, device=self.device)
         values = self.network(inputs)
         action = torch.argmax(values)
