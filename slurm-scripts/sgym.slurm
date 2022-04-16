@@ -21,4 +21,4 @@
 #module load python/3.7.4
 module load pytorch/1.5.1-python-3.7.4
 
-python3 trainers/tgym.py
+python3 trainers/train_gym_v2.py

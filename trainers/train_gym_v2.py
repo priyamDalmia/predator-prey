@@ -20,8 +20,8 @@ import pdb
 actor_net=dodict(dict(
         clayers=2,
         cl_dims=[3, 6, 12],
-        nlayers=2,
-        nl_dims=[64, 64]))
+        nlayers=3,
+        nl_dims=[64, 64, 64]))
 agent_network=dodict(dict(
         actor_net=actor_net))
 config = dodict(dict(
@@ -39,7 +39,7 @@ config = dodict(dict(
         agent_type="REINFORCE",
         agent_class=RFAgent,
         load_model=False,
-        lr=0.001, 
+        lr=0.0001, 
         gamma=0.99,
         epislon=0.95,
         epsilon_dec=0.99,
@@ -166,7 +166,8 @@ if __name__=="__main__":
     # Create the Environment object.
     try:
         env = gym.make(config.env)
-    except:
+    except Exception as e:
+        print(e)
         print(f"Gym Environment:{config.env} could not be created!")
     input_dims = env.observation_space.shape
     output_dims = env.action_space.n
