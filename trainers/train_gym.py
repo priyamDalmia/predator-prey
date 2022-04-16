@@ -1,0 +1,178 @@
+import os
+import sys
+import gym
+import numpy as np
+sys.path.append(os.getcwd())
+from data.helpers import dodict
+from data.trainer import Trainer
+from game.game import Game
+from data.replay_buffer import ReplayBuffer
+# Importing Agents
+from data.agent import BaseAgent
+from agents.random_agent import RandomAgent
+from agents.tor_dqn import DQNAgent
+from agents.tor_ac import ActorCriticAgent
+import pdb
+
+# Default Agent Network
+actor_net=dodict(dict(
+        clayers=2,
+        cl_dims=[3, 6, 12],
+        nlayers=2,
+        nl_dims=[256, 256]))
+critic_net=dodict(dict(
+        clayers=2,
+        cl_dims=[3, 6, 12],
+        nlayers=2,
+        nl_dims=[256, 256]))
+agent_network=dodict(dict(
+        actor_net=actor_net,
+        critic_net=critic_net))
+config = dodict(dict(
+        # Environment
+        env="CartPole-v1",
+        # Training Control
+        epochs=100,
+        episodes=2,
+        train_steps=2,
+        update_eps=1,
+        training=False,
+        save_replay=False,
+        save_checkpoint=False,
+        # Agent Control
+        agent_type="Actor-Critic",
+        agent_class=ActorCriticAgent,
+        load_model=False,
+        lr=0.0001, 
+        gamma=0.95,
+        epislon=0.95,
+        epsilon_dec=0.99,
+        epsilon_update=10,
+        agent_network=agent_network,
+        buffer_size=100000,
+        batch_size=64,
+        # Log Control
+        msg="message",
+        notes="random",
+        project_name="gym-benchmarks",
+        wandb=False,
+        wandb_mode="offline",
+        wandb_run_name="random",
+        log_level=10,
+        log_file="logs/random.log",
+        ))
+
+class train_gym(Trainer):
+    def __init__(self, config, env, **env_specs):
+        super(train_gym, self).__init__(config)
+        self.config = config
+        self.env = env
+        self.input_dims = env_specs["input_dims"]
+        self.output_dims = env_specs["output_dims"]
+        self.action_space = env_specs["action_space"]
+        self.logger = self.get_logger()
+        # initialize the agent
+        self.agent = self.initialize_agents()
+        self.checkpnt_state = self.agent.save_state()
+
+    def train(self):
+        rewards_hist = []
+        for epoch in range(self.config.epochs):
+            loss = 0
+            # Run Episodes
+            steps, rewards, epsilon = self.run_episodes()
+            # Train 
+            if self.config.training:
+                loss = self.run_training()
+            if (epoch%self.config.update_eps):
+                self.agent.update_epsilon()
+            # Any Agent Specific Update goes here.
+            reward_avg = np.mean(rewards)
+            step_avg = np.mean(steps)
+            loss_avg = np.mean(loss)
+            rewards_hist.append(reward_avg)
+            if self.config.save_replay:
+                pass
+            if self.config.save_checkpoint:
+                pass
+            print(f"Epochs:{epoch:4} | Steps:{steps[0]:4} | Rewards:{reward_avg:6}")
+
+    def initialize_agents(self):
+        memory = ReplayBuffer(
+                self.config.buffer_size,
+                self.config.batch_size, 
+                self.input_dims)
+        if self.config.agent_type == "random":
+            agent = RandomAgent(
+                    str(self.config.agent_class),  
+                    self.input_dims,
+                    self.output_dims, 
+                    self.action_space)
+            return agent
+        agent = self.config.agent_class(
+                str(self.config.agent_class), 
+                self.input_dims,
+                self.output_dims,
+                self.action_space,
+                memory=memory,
+                **self.config)
+        assert isinstance(agent, BaseAgent), "Agent not of class BaseAgent"  
+        return agent
+
+    def run_episodes(self):
+        step_hist = []
+        reward_hist = []
+        epsilon = 0
+        for ep in range(self.config.episodes):
+            observation = self.env.reset()
+            done = False
+            steps = 0
+            total_reward = 0
+            while not done:
+                action = self.agent.get_action(observation)
+                next_, reward, done, info = self.env.step(action)
+                self.agent.store_transition(observation,
+                        action,
+                        reward,
+                        next_,
+                        done)
+                total_reward += reward
+                epsilon = self.agent.epsilon
+                observation = next_
+                steps+=1
+            step_hist.append(steps)
+            reward_hist.append(total_reward)
+        return step_hist, reward_hist, epsilon
+
+    def run_training(self):
+        loss_hist = []
+        for i in range(self.config.train_steps):
+            loss = agent.train_on_batch()
+            loss_hist.append(loss)
+        return loss_hist
+
+    def save_replay(self):
+        pass
+
+    def load_checkpoint(self):
+        pass
+
+    def save_checkpoint(self):
+        pass
+
+if __name__=="__main__":
+    # Create the Environment object.
+    try:
+        env = gym.make(config.env)
+    except:
+        print(f"Gym Environment:{config.env} could not be created!")
+    input_dims = env.observation_space.shape
+    output_dims = env.action_space.n
+    action_space = [i for i in range(env.action_space.n)]
+    trainer = train_gym(config, 
+            env, 
+            input_dims=input_dims, 
+            output_dims=output_dims,
+            action_space = action_space)
+    trainer.train()
+    trainer.shut_logger()

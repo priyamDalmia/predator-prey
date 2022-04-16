@@ -4,7 +4,7 @@ import numpy as np
 
 class RandomAgent(BaseAgent):
     def __init__(self, _id, input_dims, output_dims, action_space,
-            load_model=False):
+            **kwargs):
         super(RandomAgent, self).__init__(_id)
         self.input_dims = input_dims
         self.outupt_dims = output_dims
@@ -15,6 +15,15 @@ class RandomAgent(BaseAgent):
 
     def train_on_batch(self):
         return dict(loss=None) 
+    
+    def store_transition(self, *args):
+        pass
+
+    def update_eps(self):
+        pass
+
+    def save_state(self):
+        pass
 
     def save_model(self, filename):
         pass

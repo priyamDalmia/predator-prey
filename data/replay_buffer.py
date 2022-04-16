@@ -1,6 +1,6 @@
 import random
 import numpy as np
-
+import pdb
 class ReplayBuffer():
     def __init__(self, buffer_size, batch_size, state_size):
         self.buffer_size = buffer_size
@@ -13,11 +13,12 @@ class ReplayBuffer():
         self.rewards = np.zeros((self.buffer_size), dtype=np.float32)
         self.next_states = np.zeros((self.buffer_size, *self.state_size), dtype=np.float32)
         self.dones = np.zeros((self.buffer_size), dtype=np.float32) 
+        self.probs = []
         #self.next_actions = np.zeros((self.
         #self.dones = []
         self.infos = []
 
-    def store_transition(self, state, action, reward, next_state, done):
+    def store_transition(self, state, action, reward, next_state, done, **kwargs):
         index = self.counter % self.buffer_size
         self.states[index] = state
         self.actions[index] = action
@@ -27,7 +28,8 @@ class ReplayBuffer():
         else:
             self.next_states[index] = state
         self.dones[index] = 1 - int(done)
-
+        if "probs" in kwargs:
+            self.probs.append(kwargs["probs"])
         self.counter += 1
 
     def sample_batch(self):
@@ -41,8 +43,14 @@ class ReplayBuffer():
         bdones = self.dones[batch_ids]
         
         return bstates, bactions, brewards, bnext_states, bdones
+    
+    def sample_transition(self):
+        rewards = self.rewards[:self.counter]
+        action_probs = self.probs
+        self.clear_buffer()
+        return rewards, action_probs
 
-    def clear_buffer():
+    def clear_buffer(self):
         self.counter = 0
         # memory 
         self.states = np.zeros((self.buffer_size, *self.state_size), dtype=np.float32)
@@ -50,6 +58,7 @@ class ReplayBuffer():
         self.rewards = np.zeros((self.buffer_size), dtype=np.float32)
         self.next_states = np.zeros((self.buffer_size, *self.state_size), dtype=np.float32)
         self.dones = np.zeros((self.buffer_size), dtype=np.float32) 
+        self.probs = []
         #self.next_actions = np.zeros((self.
         #self.dones = []
         self.infos = []

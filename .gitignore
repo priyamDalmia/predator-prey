@@ -137,5 +137,8 @@ slurm-scripts/
 # replays 
 replays/
 
+# Samples 
+./samples
+samples/
 # My bin file
 bin.py

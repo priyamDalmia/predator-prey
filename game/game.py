@@ -160,6 +160,7 @@ class Game():
     def render(self, mode="human"):
         adjust = lambda x, y: (x[0]-y, x[1]-y)
         gmap = np.zeros((self.size, self.size), dtype=np.int32).tolist()
+            
         for _id, position in self.predator_pos.items():
             (x, y) = adjust(position, self.pad_width)
             gmap[x][y]  = f"T{_id[-1]}"
