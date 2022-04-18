@@ -11,22 +11,22 @@ import pdb
 
 class Network(nn.Module):
     def __init__(self, input_dims, output_dims, action_space, 
-            lr, actor_dims, **kwargs):
+            lr, network_dims, **kwargs):
         super(Network, self).__init__()
         self.input_dims = input_dims
         self.output_dims = output_dims
         self.action_space = action_space 
         self.lr = lr
-        self.actor_dims = actor_dims
+        self.network_dims = network_dims
         self.net = nn.ModuleList()
         kwargs = dodict(kwargs)
         # Network Layers
         idim = self.input_dims[0]
         if len(self.input_dims) != 1:
             # Convolutional Network
-            clayers = actor_dims.clayers
-            cl_dims = actor_dims.cl_dims
-            for c in clayers:
+            clayers = network_dims.clayers
+            cl_dims = network_dims.cl_dims
+            for c in range(clayers):
                 self.net.append(
                         nn.Conv(in_channels=cl_dims[c],
                             out_channels=cl_dims[c+1],
@@ -34,8 +34,8 @@ class Network(nn.Module):
                             stride=1))
                 self.net.append(nn.Flatten())
             idim = (clayers[-1] * (self.input_dims[-1]**2))
-        nlayers = actor_dims.nlayers
-        nl_dims = actor_dims.nl_dims
+        nlayers = network_dims.nlayers
+        nl_dims = network_dims.nl_dims
         for l in range(nlayers):
             self.net.append(
                     nn.Linear(idim, nl_dims[l]))
@@ -44,13 +44,6 @@ class Network(nn.Module):
         # Model config
         self.optimizer = optim.Adam(self.parameters(), lr=self.lr)
         self.device = torch.device('cuda:0' if torch.cuda.is_available() else 'cpu')
- 
-    def forward(self, inputs):
-        for layer in self.net:
-            x = layer(inputs)
-            inputs = x
-        return x 
-
  
     def forward(self, inputs):
         for layer in self.net:
@@ -90,9 +83,9 @@ class RFAgent(BaseAgent):
 
         if self.load_model:
             pass
-        actor_net = agent_network.actor_net
+        network_dims = agent_network.network_dims
         self.network = Network(input_dims, output_dims, action_space, 
-                self.lr, actor_net)
+                self.lr, network_dims)
         self.device = torch.device('cuda:0' if torch.cuda.is_available() else 'cpu') 
         self.network = self.network.to(self.device)            
     

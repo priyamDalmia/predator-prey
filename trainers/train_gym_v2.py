@@ -12,18 +12,19 @@ from data.agent import BaseAgent
 from agents.random_agent import RandomAgent
 from agents.tor_dqn import DQNAgent
 from agents.tor_reinforce import RFAgent
-import pdb
+from agents.tor_adv_ac import ACAgent
 
+import pdb
 
 # Training a Reinforce Agent.
 # Default Agent Network
-actor_net=dodict(dict(
+network_dims=dodict(dict(
         clayers=2,
         cl_dims=[3, 6, 12],
-        nlayers=3,
-        nl_dims=[64, 64, 64]))
+        nlayers=2,
+        nl_dims=[128 , 128]))
 agent_network=dodict(dict(
-        actor_net=actor_net))
+        network_dims=network_dims))
 config = dodict(dict(
         # Environment
         env="LunarLander-v2",
@@ -37,9 +38,9 @@ config = dodict(dict(
         save_checkpoint=False,
         # Agent Control
         agent_type="REINFORCE",
-        agent_class=RFAgent,
+        agent_class=ACAgent,
         load_model=False,
-        lr=0.0001, 
+        lr=0.00001, 
         gamma=0.99,
         epislon=0.95,
         epsilon_dec=0.99,
@@ -80,8 +81,8 @@ class train_gym(Trainer):
             # Train 
             if self.config.training:
                 loss = self.run_training()
-            if (epoch%self.config.update_eps):
-                self.agent.update_epsilon()
+            if (epoch%self.config.update_eps) == 0:
+                self.agent.update_eps()
             # Any Agent Specific Update goes here.
             rewards_hist.append(rewards)
             #reward_avg = np.mean(rewards)

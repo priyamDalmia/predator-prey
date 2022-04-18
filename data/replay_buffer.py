@@ -45,10 +45,14 @@ class ReplayBuffer():
         return bstates, bactions, brewards, bnext_states, bdones
     
     def sample_transition(self):
+        actions= self.actions[:self.counter]
+        states = self.states[:self.counter]
         rewards = self.rewards[:self.counter]
+        next_ = self.next_states[:self.counter]
+        dones = self.dones[:self.counter]
         action_probs = self.probs
         self.clear_buffer()
-        return rewards, action_probs
+        return states, actions, rewards, next_, dones, action_probs
 
     def clear_buffer(self):
         self.counter = 0

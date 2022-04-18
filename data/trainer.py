@@ -42,6 +42,7 @@ class Trainer(ABC):
         pass
         
     def log(self, _str):
+        self.logger.info(_str)
         pass
 
     @abstractmethod

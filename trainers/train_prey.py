@@ -13,19 +13,24 @@ from agents.random_agent import RandomAgent
 from agents.tor_dqn import DQNAgent
 import pdb
 
-agent_network = {}
+network_dims=dodict(dict(
+    clayers=2,
+    cl_dims=[3, 6, 12],
+    nlayers=2,
+    nl_dims=[128, 128]))
+agent_network = dodict(dict(
+    network_dims=network_dims))
 config = dodict(dict(
         # Environment
-        size=10,
+        size=8,
         npred=1,
         nprey=1,
         winsize=5,
         nholes=0,
         nobstacles=0,
-        env="CartPole-v1",
         # Training Control
-        epochs=1,
-        episodes=1,
+        epochs=2000,
+        episodes=500,
         train_steps=1,
         update_eps=1,
         training=False,
@@ -41,15 +46,15 @@ config = dodict(dict(
         epsilon_dec=0.99,
         epsilon_update=10,
         agent_network=agent_network,
-        buffer_size=100000,
+        buffer_size=1000,
         batch_size=64,
         # Log Control
-        msg="message",
-        notes="random",
-        project_name="gym-benchmarks",
-        wandb=False,
-        wandb_mode="offline",
-        wandb_run_name="random",
+        msg="Random Agents Test: 1v1",
+        notes="Testing Average Steps before conclusion",
+        project_name="predator-prey-baselines",
+        wandb=True,
+        wandb_mode="online",
+        wandb_run_name="1v1:6:random",
         log_level=10,
         log_file="logs/random.log",
         ))
@@ -66,11 +71,13 @@ class train_prey(Trainer):
         # initialize the agent
         self.agent_ids = env.agent_ids
         self.agents = self.initialize_agents()
-# Fix 
+# Fix: Checkpoint states for saving policies  
         self.checkpnt_state = None
 
     def train(self):
         rewards_hist = []
+        steps_hist = []
+        loss_hist = []
         for epoch in range(self.config.epochs):
             loss = 0
             # Run Episodes
@@ -82,15 +89,23 @@ class train_prey(Trainer):
                 for _id in self.agents:
                     self.agent[_id].update_epsilon()
             # Any Agent Specific Update goes here.
-            breakpoint()
-            reward_avg = np.mean(rewards)
-            step_avg = np.mean(steps)
-            loss_avg = np.mean(loss)
-            rewards_hist.append(reward_avg)
+            steps_hist.append(steps)
+            rewards_hist.append(rewards)
+            loss_hist.append(loss)
             if self.config.save_replay:
                 pass
             if self.config.save_checkpoint:
                 pass
+            if ((epoch+1)%10) == 0:
+                avg_rewards = pd.DataFrame(rewards, columns = self.agent_ids)\
+                        .sum(0).round(2).to_dict()
+                steps_avg = np.mean(steps_hist[-99:])
+                info = dict(
+                        steps=steps_avg,
+                        rewards=avg_rewards)
+                        #loss=np.mean(loss_hist[-99:]))
+                self.update_logs(epoch, info=info)
+                print(f"Epochs:{epoch:4} #| Steps:{info['steps']:4.2f}")#| Loss:{info['loss']:4.2f}")
 
     def initialize_agents(self):
         agents = {}
@@ -98,7 +113,6 @@ class train_prey(Trainer):
                 self.config.buffer_size,
                 self.config.batch_size, 
                 self.input_dims)
-        breakpoint()
         for _id in self.agent_ids:
             if _id.startswith("predator"):
                 agent = self.config.pred_class(
@@ -107,7 +121,7 @@ class train_prey(Trainer):
                     self.output_dims, 
                     self.action_space,
                     memory = memory,
-                    config = self.config)
+                    **self.config)
             else:
                 agent = self.config.prey_class(
                     _id, 
@@ -115,7 +129,7 @@ class train_prey(Trainer):
                     self.output_dims,
                     self.action_space,
                     memory = memory,
-                    config = self.config)
+                    **self.config)
                 self.log("Agent {_id}, Device {agent.device}")
             assert isinstance(agent, BaseAgent), "Error: Derive agent from BaseAgent!"
             agents[_id] = agent
@@ -132,24 +146,26 @@ class train_prey(Trainer):
             all_rewards = []
             while not done:
                 actions = {}
+                actions_prob = {}
                 # Get actions for all agents.
                 for _id in self.agents:
-                    actions[_id] = self.agents[_id].get_action(observation[_id])
-                breakpoint()
+                    actions[_id], actions_prob[_id] = \
+                            self.agents[_id].get_action(observation[_id])
                 rewards, next_, done, info = self.env.step(actions)
                 for _id in self.agents:
                     self.agents[_id].store_transition(observation[_id],
                         actions[_id],
                         rewards[_id],
                         next_[_id],
-                        done)
-                all_rewards.append(rewards)
+                        done,
+                        actions_prob[_id])
+                all_rewards.append(list(rewards.values()))
                 observation = next_
                 steps+=1
             epsilon = self.agents["prey_0"].epsilon
             step_hist.append(steps)
             reward_hist.append(
-                    pd.DataFrame(rewards[0]).sum(axis=0).to_dict())
+                    pd.DataFrame(all_rewards).sum(axis=0).to_list())
         return step_hist, reward_hist, epsilon
     
     # Modify for multiple agents 
@@ -172,7 +188,6 @@ class train_prey(Trainer):
         pass
 
 if __name__=="__main__":
-    breakpoint()
     # Create the Environment object.
     try:
         env = Game(config)

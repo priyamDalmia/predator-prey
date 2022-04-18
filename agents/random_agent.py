@@ -11,7 +11,7 @@ class RandomAgent(BaseAgent):
         self.action_space = action_space
 
     def get_action(self, observation):
-        return np.random.choice(self.action_space)
+        return np.random.choice(self.action_space), 0
 
     def train_on_batch(self):
         return dict(loss=None) 
