@@ -98,11 +98,11 @@ class ACAgent(BaseAgent):
         _, state_values = self.network(states)
         advantage = _rewards - state_values.detach()
         # Calculating Actor loss
-        actor_loss = -torch.stack(log_probs) * advantage
-        delta_loss = (state_values - _rewards)**2
+        actor_loss = (-torch.stack(log_probs) * advantage).sum()
+        delta_loss = ((state_values - _rewards)**2).sum()
         loss = (actor_loss + delta_loss).sum()
         self.network.optimizer.step()
-        return [actor_loss, delta_loss]
+        return [actor_loss.item(), delta_loss.item()]
 
     def train_on_step(self, state, action, reward, next_, next_action, log_probs):
         pass
