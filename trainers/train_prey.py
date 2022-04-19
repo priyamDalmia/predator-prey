@@ -11,25 +11,27 @@ from data.replay_buffer import ReplayBuffer
 from data.agent import BaseAgent
 from agents.random_agent import RandomAgent
 from agents.tor_dqn import DQNAgent
+from agents.tor_adv_ac import ACAgent
 import pdb
+import copy
 
 network_dims=dodict(dict(
     clayers=2,
     cl_dims=[3, 6, 12],
     nlayers=2,
-    nl_dims=[128, 128]))
+    nl_dims=[32, 32]))
 agent_network = dodict(dict(
     network_dims=network_dims))
 config = dodict(dict(
         # Environment
-        size=8,
+        size=10,
         npred=1,
         nprey=1,
         winsize=5,
         nholes=0,
         nobstacles=0,
         # Training Control
-        epochs=2000,
+        epochs=500,
         episodes=500,
         train_steps=1,
         update_eps=1,
@@ -41,12 +43,12 @@ config = dodict(dict(
         pred_class=RandomAgent,
         prey_class=RandomAgent,
         lr=0.0001, 
-        gamma=0.95,
+        gamma=0.99,
         epislon=0.95,
         epsilon_dec=0.99,
         epsilon_update=10,
         agent_network=agent_network,
-        buffer_size=1000,
+        buffer_size=5000,
         batch_size=64,
         # Log Control
         msg="Random Agents Test: 1v1",
@@ -54,7 +56,7 @@ config = dodict(dict(
         project_name="predator-prey-baselines",
         wandb=True,
         wandb_mode="online",
-        wandb_run_name="1v1:6:random",
+        wandb_run_name="1v1:10:5:random",
         log_level=10,
         log_file="logs/random.log",
         ))
@@ -98,14 +100,14 @@ class train_prey(Trainer):
                 pass
             if ((epoch+1)%10) == 0:
                 avg_rewards = pd.DataFrame(rewards, columns = self.agent_ids)\
-                        .sum(0).round(2).to_dict()
+                        .mean(0).round(2).to_dict()
                 steps_avg = np.mean(steps_hist[-99:])
                 info = dict(
                         steps=steps_avg,
                         rewards=avg_rewards)
                         #loss=np.mean(loss_hist[-99:]))
                 self.update_logs(epoch, info=info)
-                print(f"Epochs:{epoch:4} #| Steps:{info['steps']:4.2f}")#| Loss:{info['loss']:4.2f}")
+                print(f"Epochs:{epoch:4} #| Steps:{info['steps']:4.2f}| Rewards:{avg_rewards}")
 
     def initialize_agents(self):
         agents = {}
@@ -140,27 +142,29 @@ class train_prey(Trainer):
         reward_hist = []
         epsilon = 0
         for ep in range(self.config.episodes):
-            observation = self.env.reset()
+            observation = dict(self.env.reset())
             done = False
             steps = 0
             all_rewards = []
             while not done:
                 actions = {}
                 actions_prob = {}
+                state_t = None
                 # Get actions for all agents.
                 for _id in self.agents:
                     actions[_id], actions_prob[_id] = \
                             self.agents[_id].get_action(observation[_id])
+                states_t = copy.deepcopy(observation)
                 rewards, next_, done, info = self.env.step(actions)
                 for _id in self.agents:
-                    self.agents[_id].store_transition(observation[_id],
+                    self.agents[_id].store_transition(states_t[_id],
                         actions[_id],
                         rewards[_id],
                         next_[_id],
                         done,
                         actions_prob[_id])
                 all_rewards.append(list(rewards.values()))
-                observation = next_
+                observation = dict(next_)
                 steps+=1
             epsilon = self.agents["prey_0"].epsilon
             step_hist.append(steps)
@@ -173,7 +177,7 @@ class train_prey(Trainer):
         loss_hist = []
         for i in range(self.config.train_steps):
             for _id in self.agents:
-                if _id.startswith("prey"):
+                if _id.startswith("predator"):
                     loss = self.agents[_id].train_on_batch()
             loss_hist.append(loss)
         return loss_hist

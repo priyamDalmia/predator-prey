@@ -77,15 +77,13 @@ class Game():
         # ! Modify for any changes in the reward structure here !
      
         if len(actions)!=len(self.agent_ids):
-            breakpoint()
             raise print("Error: action sequence of incorrect length!")
             
-        rewards = self.last_rewards
+        rewards = dict(self.last_rewards)
         action_ids = list(actions.keys())
         random.shuffle(action_ids)
         for _id in action_ids:
             action = actions[_id]
-            rewards[_id] = 0
             # Predator Action execution
             if _id.startswith("predator"):
                 position = self.predator_pos[_id]
@@ -95,12 +93,12 @@ class Game():
                     continue
                 new_position = ACTIONS[action](position, self.size, self.pad_width)
                 if new_position == position:
-                    rewards[_id] += -0.1
+                    rewards[_id] += -0.01
                 else:
                     # check collison with mates and stop update
                     if self.game_state.predator_collision(*new_position):
                         new_position = position
-                        rewards[_id] -= -0.1
+                        rewards[_id] -= -0.01
                     elif self.pos_prey.get(new_position):
                         a = self.pos_prey.get(new_position)
                         rewards[a] -= 1
@@ -119,12 +117,13 @@ class Game():
                     new_position = position
                     self.game_state.update_unit(self.agents[_id][0], new_position)
                     self.done[_id] = True
+                    rewards[_id] = -1
                     # Prey has died. Remove all traces of the prey from the environment.
                     # or Respawn.
                     continue
                 new_position = ACTIONS[action](position, self.size, self.pad_width)
                 if new_position == position:
-                    rewards[_id] += -0.1
+                    rewards[_id] += -0.01
                 else:
                     # check collision with mates
                     if self.game_state.prey_collision(*new_position):
@@ -155,7 +154,7 @@ class Game():
         for _id, position in self.prey_pos.items():
             observation[_id] = self.game_state.observe(_id, idx, *position)
             idx += 1
-        return observation
+        return dict(observation)
 
     def render(self, mode="human"):
         adjust = lambda x, y: (x[0]-y, x[1]-y)

@@ -21,28 +21,27 @@ class NetworkActorCritic(nn.Module):
         idim = self.input_dims[0]
         if len(self.input_dims) != 1:
             # Convolutional Layers
-            clayers = network_dims.clayers
-            cl_dims = network_dims.cl_dims
-            for c in range(nlayers):
+            clayers = self.network_dims.clayers
+            cl_dims = self.network_dims.cl_dims
+            for c in range(clayers):
                 self.net.append(
-                        nn.Conv(in_channels=cl_dims[c],
+                        nn.Conv2d(in_channels=cl_dims[c],
                             out_channels=cl_dims[c+1],
-                            kernel_size=1,
+                            kernel_size=(2,2),
                             stride=1))
-                self.net.append(nn.Flatten())
-            idim = (clayers[-1] * (self.input_dims[-1]**2))
+            self.net.append(nn.Flatten())
+            idim = cl_dims[-1] * \
+                    (self.input_dims[-1]-(clayers*1))**2
         nlayers = network_dims.nlayers
         nl_dims = network_dims.nl_dims
         for l in range(nlayers):
             self.net.append(
                     nn.Linear(idim, nl_dims[l]))
             idim = nl_dims[l]
-        
         self.actor_layer = nn.Linear(nl_dims[-1], self.output_dims)
-        self.critic_layer = nn.Linear(nl_dims[-1], self.output_dims)
+        self.critic_layer = nn.Linear(nl_dims[-1], 1)
         # Model Config
-        self.optimizer = optim.Adam(self.parameters(), lr=self.lr)
-        self.loss = nn.MSELoss()
+        self.optimizer = optim.Adam(self.parameters(), lr=self.lr, betas=(0.9, 0.99))
     
     def forward(self, inputs):
         for layer in self.net:
@@ -64,6 +63,11 @@ class ACAgent(BaseAgent):
         self.lr = lr
         self.gamma = gamma 
         self.memory = memory
+
+        # Testing internal memory
+        self.values = []
+        self.log_probs = []
+
         # Initialize the AC network 
         network_dims = agent_network.network_dims
         self.network = NetworkActorCritic(input_dims, output_dims, action_space,
@@ -77,38 +81,26 @@ class ACAgent(BaseAgent):
         probs, values = self.network(observation.unsqueeze(0))
         action_dist = dist.Categorical(probs)
         action = action_dist.sample() 
-        log_probs =  action_dist.log_prob(action)   
+        log_probs =  action_dist.log_prob(action)
+        self.values.append(values)
+        self.log_probs.append(log_probs)
         return action.item(), log_probs
 
     def train_on_batch(self):
-        self.network.optimizer.zero_grad()
         states, actions, rewards, nexts, dones, log_probs =\
                 self.memory.sample_transition()     
         _rewards = self.calc_reward(rewards, dones)
-        next_actions = np.append((actions[1:]), [0]) 
+        _rewards = torch.as_tensor(_rewards, dtype=torch.float32, device=self.device).unsqueeze(-1)
+        _rewards = (_rewards - _rewards.mean()) / _rewards.std() 
         # Convert to tensors
+        self.network.optimizer.zero_grad()
         states = torch.as_tensor(states, device=self.device)
-        nexts = torch.as_tensor(nexts, device=self.device)
-        actions = torch.as_tensor(actions, dtype=torch.int64, device=self.device).unsqueeze(-1)
-        _rewards = torch.as_tensor(_rewards, device=self.device).unsqueeze(-1)
-        next_actions = torch.as_tensor(next_actions, dtype=torch.int64, device=self.device).unsqueeze(-1)
-        dones = torch.as_tensor(dones, dtype=torch.float32, device=self.device).unsqueeze(-1)
-        
         _, state_values = self.network(states)
-        _, next_values = self.network(nexts)
-        
-        _rewards = _rewards
+        advantage = _rewards - state_values.detach()
         # Calculating Actor loss
-        q_vals = torch.gather(state_values, dim=1, index=actions) 
-        actor_loss = -1 * ((_rewards - q_vals) * torch.stack(log_probs))
-
-        # Calculating Critic loss
-        #dis_qvals = self.gamma * torch.gather(next_values, dim=1, 
-         #       index=next_actions) * dones
-        delta_loss = (_rewards - q_vals) ** 2
-        #critic_loss = F.mse_loss(delta_loss, next_values)loss = (actor_loss + delta_loss).sum()
-        loss = (actor_loss + delta_loss).mean()
-        loss.backward()
+        actor_loss = -torch.stack(log_probs) * advantage
+        delta_loss = (state_values - _rewards)**2
+        loss = (actor_loss + delta_loss).sum()
         self.network.optimizer.step()
         return loss.item()
 
