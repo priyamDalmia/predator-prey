@@ -19,7 +19,7 @@ network_dims=dodict(dict(
     clayers=2,
     cl_dims=[3, 6, 12],
     nlayers=2,
-    nl_dims=[32, 32]))
+    nl_dims=[256, 256]))
 agent_network = dodict(dict(
     network_dims=network_dims))
 config = dodict(dict(
@@ -31,16 +31,17 @@ config = dodict(dict(
         nholes=0,
         nobstacles=0,
         # Training Control
-        epochs=500,
-        episodes=500,
+        epochs=10000,
+        episodes=1,
         train_steps=1,
         update_eps=1,
-        training=False,
+        training=True,
         save_replay=False,
         save_checkpoint=False,
+        rollout_steps = 10,
         # Agent Control
         agent_type="random",
-        pred_class=RandomAgent,
+        pred_class=ACAgent,
         prey_class=RandomAgent,
         lr=0.0001, 
         gamma=0.99,
@@ -54,7 +55,7 @@ config = dodict(dict(
         msg="Random Agents Test: 1v1",
         notes="Testing Average Steps before conclusion",
         project_name="predator-prey-baselines",
-        wandb=True,
+        wandb=False,
         wandb_mode="online",
         wandb_run_name="1v1:10:5:random",
         log_level=10,
@@ -81,7 +82,7 @@ class train_prey(Trainer):
         steps_hist = []
         loss_hist = []
         for epoch in range(self.config.epochs):
-            loss = 0
+            loss = [0, 0]
             # Run Episodes
             steps, rewards, epsilon = self.run_episodes()
             # Train 
@@ -98,14 +99,16 @@ class train_prey(Trainer):
                 pass
             if self.config.save_checkpoint:
                 pass
-            if ((epoch+1)%10) == 0:
+            if ((epoch+1)%100) == 0:
                 avg_rewards = pd.DataFrame(rewards, columns = self.agent_ids)\
                         .mean(0).round(2).to_dict()
                 steps_avg = np.mean(steps_hist[-99:])
+                loss_avg = pd.DataFrame(loss, columns=["actor_loss", "delta_loss"])\
+                        .mean(0).round(2).to_dict()
                 info = dict(
                         steps=steps_avg,
-                        rewards=avg_rewards)
-                        #loss=np.mean(loss_hist[-99:]))
+                        rewards=avg_rewards,
+                        loss=loss_avg)
                 self.update_logs(epoch, info=info)
                 print(f"Epochs:{epoch:4} #| Steps:{info['steps']:4.2f}| Rewards:{avg_rewards}")
 

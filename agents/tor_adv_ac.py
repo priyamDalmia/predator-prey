@@ -91,7 +91,7 @@ class ACAgent(BaseAgent):
                 self.memory.sample_transition()     
         _rewards = self.calc_reward(rewards, dones)
         _rewards = torch.as_tensor(_rewards, dtype=torch.float32, device=self.device).unsqueeze(-1)
-        _rewards = (_rewards - _rewards.mean()) / _rewards.std() 
+        #_rewards = (_rewards - _rewards.mean()) / _rewards.std() 
         # Convert to tensors
         self.network.optimizer.zero_grad()
         states = torch.as_tensor(states, device=self.device)
@@ -102,7 +102,7 @@ class ACAgent(BaseAgent):
         delta_loss = (state_values - _rewards)**2
         loss = (actor_loss + delta_loss).sum()
         self.network.optimizer.step()
-        return loss.item()
+        return [actor_loss, delta_loss]
 
     def train_on_step(self, state, action, reward, next_, next_action, log_probs):
         pass
