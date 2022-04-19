@@ -22,12 +22,12 @@ network_dims=dodict(dict(
         clayers=2,
         cl_dims=[3, 6, 12],
         nlayers=2,
-        nl_dims=[256, 256]))
+        nl_dims=[32, 32]))
 agent_network=dodict(dict(
         network_dims=network_dims))
 config = dodict(dict(
         # Environment
-        env="LunarLander-v2",
+        env="CartPole-v0",
         # Training Control
         epochs=5000,
         episodes=1,
@@ -36,6 +36,7 @@ config = dodict(dict(
         training=True,
         save_replay=False,
         save_checkpoint=False,
+        rollout_steps=3000,
         # Agent Control
         agent_type="REINFORCE",
         agent_class=ACAgent,

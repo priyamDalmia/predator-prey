@@ -19,7 +19,7 @@ network_dims=dodict(dict(
     clayers=2,
     cl_dims=[3, 6, 12],
     nlayers=2,
-    nl_dims=[32, 32]))
+    nl_dims=[256, 256]))
 agent_network = dodict(dict(
     network_dims=network_dims))
 config = dodict(dict(
@@ -38,13 +38,12 @@ config = dodict(dict(
         training=True,
         save_replay=False,
         save_checkpoint=False,
-        rollout_steps = 10,
         # Agent Control
         agent_type="random",
         pred_class=ACAgent,
         prey_class=RandomAgent,
         lr=0.0001, 
-        gamma=0.99,
+        gamma=0.95,
         epislon=0.95,
         epsilon_dec=0.99,
         epsilon_update=10,
@@ -87,7 +86,7 @@ class train_prey(Trainer):
             steps, rewards, epsilon = self.run_episodes()
             # Train 
             if self.config.training:
-                loss = self.run_training()
+                loss = self.run_training(ep_end=True)
             if (epoch%self.config.update_eps):
                 for _id in self.agents:
                     self.agent[_id].update_epsilon()
@@ -176,7 +175,7 @@ class train_prey(Trainer):
         return step_hist, reward_hist, epsilon
     
     # Modify for multiple agents 
-    def run_training(self):
+    def run_training(self, ep_end):
         loss_hist = []
         for i in range(self.config.train_steps):
             for _id in self.agents:

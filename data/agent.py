@@ -46,3 +46,6 @@ class BaseAgent(ABC):
     @abstractmethod
     def load_model(self, filename):
         pass
+    
+    def clear_loss(self):
+        pass

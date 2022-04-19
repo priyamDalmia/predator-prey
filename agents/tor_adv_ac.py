@@ -27,11 +27,10 @@ class NetworkActorCritic(nn.Module):
                 self.net.append(
                         nn.Conv2d(in_channels=cl_dims[c],
                             out_channels=cl_dims[c+1],
-                            kernel_size=(2,2),
+                            kernel_size=1,
                             stride=1))
             self.net.append(nn.Flatten())
-            idim = cl_dims[-1] * \
-                    (self.input_dims[-1]-(clayers*1))**2
+            idim = 300
         nlayers = network_dims.nlayers
         nl_dims = network_dims.nl_dims
         for l in range(nlayers):
@@ -45,7 +44,7 @@ class NetworkActorCritic(nn.Module):
     
     def forward(self, inputs):
         for layer in self.net:
-            x = layer(inputs)
+            x = F.relu(layer(inputs))
             inputs = x
         logits = self.actor_layer(x)
         values = self.critic_layer(x)
@@ -65,6 +64,8 @@ class ACAgent(BaseAgent):
         self.memory = memory
 
         # Testing internal memory
+        self.actor_loss = []
+        self.delta_loss = []
         self.values = []
         self.log_probs = []
 
@@ -79,7 +80,11 @@ class ACAgent(BaseAgent):
         observation = torch.as_tensor(observation, dtype=torch.float32,
                 device=self.device)
         probs, values = self.network(observation.unsqueeze(0))
-        action_dist = dist.Categorical(probs)
+        try:
+            action_dist = dist.Categorical(probs)
+        except Exception as e:
+            print(e)
+            breakpoint()
         action = action_dist.sample() 
         log_probs =  action_dist.log_prob(action)
         self.values.append(values)
@@ -89,28 +94,37 @@ class ACAgent(BaseAgent):
     def train_on_batch(self):
         states, actions, rewards, nexts, dones, log_probs =\
                 self.memory.sample_transition()     
+        # Discount the rewards 
         _rewards = self.calc_reward(rewards, dones)
         _rewards = torch.as_tensor(_rewards, dtype=torch.float32, device=self.device).unsqueeze(-1)
-        #_rewards = (_rewards - _rewards.mean()) / _rewards.std() 
+        _rewards = (_rewards - _rewards.mean()) / _rewards.std() 
         # Convert to tensors
-        self.network.optimizer.zero_grad()
         states = torch.as_tensor(states, device=self.device)
         _, state_values = self.network(states)
         advantage = _rewards - state_values.detach()
+        
         # Calculating Actor loss
-        actor_loss = (-torch.stack(log_probs) * advantage).sum()
-        delta_loss = ((state_values - _rewards)**2).sum()
+        self.network.optimizer.zero_grad()
+        actor_loss = (-torch.stack(log_probs) * advantage)
+        delta_loss = ((state_values - _rewards)**2)
         loss = (actor_loss + delta_loss).sum()
+        loss.backward()
         self.network.optimizer.step()
-        return [actor_loss.item(), delta_loss.item()]
+        return [0, 0]   
 
     def train_on_step(self, state, action, reward, next_, next_action, log_probs):
+        pass
+
+    def clear_loss(self):
+        self.actor_loss = []
+        self.delta_loss = []
         pass
 
     def save_state(self):
         pass
     
     def calc_reward(self, rewards, dones):
+
         new_rewards = []
         _sum = 0
         for i in range(len(rewards)):

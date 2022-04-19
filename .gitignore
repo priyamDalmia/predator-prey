@@ -136,7 +136,7 @@ slurm-scripts/
 
 # replays 
 replays/
-
+./replays/
 # Samples 
 ./samples
 samples/
