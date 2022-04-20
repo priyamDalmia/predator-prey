@@ -35,12 +35,12 @@ config = dodict(dict(
         episodes=1,
         train_steps=1,
         update_eps=1,
-        training=False,
-        save_replay=False,
-        save_checkpoint=False,
+        training=True,
+        save_replay=True,
+        save_checkpoint=True,
         # Agent Control
-        agent_type="Random",
-        pred_class=RandomAgent,
+        agent_type="actor-critic",
+        pred_class=ACAgent,
         prey_class=RandomAgent,
         agent_network=agent_network,
         lr=0.0005, 
@@ -54,12 +54,12 @@ config = dodict(dict(
         log_freq = 200,
         wandb=True,
         wandb_mode="online",
-        wandb_run_name="1v1:10:5:random",#"1v1:10:5:256:0.0005",
+        wandb_run_name="1v1:10:5:256:0.0005",#"1v1:10:5:256:0.0005",
         project_name="predator-prey-baselines",
-        msg="Random vs Random Test: 1v1",
+        msg="A2C vs Random Test: 1v1",
         notes="Testing Predator Policy",
         log_level=10,
-        log_file="logs/random.log",
+        log_file="logs/predator.log",
         print_console = True,
         # Checkpoint Control 
         ))
@@ -86,7 +86,7 @@ class train_pred(Trainer):
         steps_hist = []
         rewards_hist = []
         loss_hist = []
-        _best = 0
+        _best = 300
         for epoch in range(self.config.epochs):
             loss = [[0, 0]]
             # Run Episodes
@@ -106,7 +106,7 @@ class train_pred(Trainer):
                 # Make Checkpoints, Save Replays and Update Logs. 
                 self.make_log(epoch, steps_hist, rewards_hist, loss_hist)
                 if self.config.save_checkpoint:
-                    if _best < self.steps_avg:
+                    if _best > self.steps_avg:
                         # Save Agent Network State Dict.
                         self.make_checkpoint(epoch) 
                         _best = self.steps_avg
