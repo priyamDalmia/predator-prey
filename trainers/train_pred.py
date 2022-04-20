@@ -35,11 +35,11 @@ config = dodict(dict(
         episodes=1,
         train_steps=1,
         update_eps=1,
-        training=True,
-        save_replay=True,
-        save_checkpoint=True,
+        training=False,
+        save_replay=False,
+        save_checkpoint=False,
         # Agent Control
-        agent_type="r",
+        agent_type="Random",
         pred_class=RandomAgent,
         prey_class=RandomAgent,
         agent_network=agent_network,
@@ -54,19 +54,19 @@ config = dodict(dict(
         log_freq = 200,
         wandb=True,
         wandb_mode="online",
-        wandb_run_name="random", #"1v1:10:5:256:0.0005",
+        wandb_run_name="1v1:10:5:random",#"1v1:10:5:256:0.0005",
         project_name="predator-prey-baselines",
-        msg="Random Agents Test: 1v1",
-        notes="Testing Prey Policy",
+        msg="Random vs Random Test: 1v1",
+        notes="Testing Predator Policy",
         log_level=10,
         log_file="logs/random.log",
         print_console = True,
         # Checkpoint Control 
         ))
 
-class train_prey(Trainer):
+class train_pred(Trainer):
     def __init__(self, config, env, **env_specs):
-        super(train_prey, self).__init__(config)
+        super(train_pred, self).__init__(config)
         self.config = config
         self.env = env
         self.input_dims = env_specs["input_dims"]
@@ -88,7 +88,7 @@ class train_prey(Trainer):
         loss_hist = []
         _best = 0
         for epoch in range(self.config.epochs):
-            loss = [0, 0]
+            loss = [[0, 0]]
             # Run Episodes
             steps, rewards, epsilon = self.run_episodes()
             # Train Agents 
@@ -117,7 +117,7 @@ class train_prey(Trainer):
         # Save the best model after training
         if self.config.save_checkpoint:
             for _id in self.agent_ids:
-                if _id.startswith("prey_"):
+                if _id.startswith("predator_"):
                     self.agents[_id].save_model()
 
     def initialize_agents(self):
@@ -127,8 +127,8 @@ class train_prey(Trainer):
                 self.config.batch_size, 
                 self.input_dims)
         for _id in self.agent_ids:
-            if _id.startswith("prey"):
-                agent = self.config.prey_class(
+            if _id.startswith("predator"):
+                agent = self.config.pred_class(
                     _id,  
                     self.input_dims,
                     self.output_dims, 
@@ -136,7 +136,7 @@ class train_prey(Trainer):
                     memory = memory,
                     **self.config)
             else:
-                agent = self.config.pred_class(
+                agent = self.config.prey_class(
                     _id, 
                     self.input_dims,
                     self.output_dims,
@@ -187,7 +187,7 @@ class train_prey(Trainer):
         loss_hist = []
         for i in range(self.config.train_steps):
             for _id in self.agents:
-                if _id.startswith("prey"):
+                if _id.startswith("predator"):
                     loss = self.agents[_id].train_step()
             loss_hist.append(loss)
         return loss_hist
@@ -208,13 +208,13 @@ class train_prey(Trainer):
     
     def make_checkpoint(self, epoch):
         for _id in self.agent_ids:
-            if _id.startswith("prey_"):
+            if _id.startswith("predator_"):
                 c_name = f"{_id}-{epoch}-{self.steps_avg:.0f}"
                 self.agents[_id].save_state(c_name)
     
     def save_model(self):
         for _id in self.agent_ids:
-            if _id.startswith("prey_"):
+            if _id.startswith("predator_"):
                 self.agents[_id].save_model()
 
 if __name__=="__main__":
@@ -226,7 +226,7 @@ if __name__=="__main__":
     input_dims = env.observation_space.shape
     output_dims = len(env.action_space)
     action_space = env.action_space
-    trainer = train_prey(config, 
+    trainer = train_pred(config, 
             env, 
             input_dims=input_dims, 
             output_dims=output_dims,

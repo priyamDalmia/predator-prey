@@ -13,7 +13,7 @@ class RandomAgent(BaseAgent):
     def get_action(self, observation):
         return np.random.choice(self.action_space), 0
 
-    def train_on_batch(self):
+    def train_step(self):
         return dict(loss=None) 
     
     def store_transition(self, *args):

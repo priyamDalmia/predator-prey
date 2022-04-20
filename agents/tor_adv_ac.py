@@ -27,10 +27,10 @@ class NetworkActorCritic(nn.Module):
                 self.net.append(
                         nn.Conv2d(in_channels=cl_dims[c],
                             out_channels=cl_dims[c+1],
-                            kernel_size=1,
+                            kernel_size=(2,2),
                             stride=1))
             self.net.append(nn.Flatten())
-            idim = 300
+            idim = 96
         nlayers = network_dims.nlayers
         nl_dims = network_dims.nl_dims
         for l in range(nlayers):
@@ -40,14 +40,16 @@ class NetworkActorCritic(nn.Module):
         self.actor_layer = nn.Linear(nl_dims[-1], self.output_dims)
         self.critic_layer = nn.Linear(nl_dims[-1], 1)
         # Model Config
-        self.optimizer = optim.Adam(self.parameters(), lr=self.lr, betas=(0.9, 0.99))
+        self.optimizer = optim.Adam(self.parameters(), 
+                lr=self.lr, betas=(0.9, 0.99), eps=1e-3)
     
     def forward(self, inputs):
         for layer in self.net:
-            x = F.relu(layer(inputs))
+            x = layer(inputs)
             inputs = x
         logits = self.actor_layer(x)
         values = self.critic_layer(x)
+        #breakpoint()
         return F.softmax(logits, dim=1), values
 
 class ACAgent(BaseAgent):
@@ -62,13 +64,14 @@ class ACAgent(BaseAgent):
         self.lr = lr
         self.gamma = gamma 
         self.memory = memory
-
-        # Testing internal memory
+        self.total_loss = None
+        self.checkpoint = None
+        self.checkpoint_name = None
+        # Testing Internal Memory
         self.actor_loss = []
         self.delta_loss = []
         self.values = []
         self.log_probs = []
-
         # Initialize the AC network 
         network_dims = agent_network.network_dims
         self.network = NetworkActorCritic(input_dims, output_dims, action_space,
@@ -91,40 +94,27 @@ class ACAgent(BaseAgent):
         self.log_probs.append(log_probs)
         return action.item(), log_probs
 
-    def train_on_batch(self):
+    def train_step(self):
         states, actions, rewards, nexts, dones, log_probs =\
                 self.memory.sample_transition()     
         # Discount the rewards 
-        _rewards = self.calc_reward(rewards, dones)
+        _rewards = self.discount_reward(rewards, dones)
         _rewards = torch.as_tensor(_rewards, dtype=torch.float32, device=self.device).unsqueeze(-1)
-        _rewards = (_rewards - _rewards.mean()) / _rewards.std() 
+        #_rewards = (_rewards - _rewards.mean()) / _rewards.std() 
         # Convert to tensors
         states = torch.as_tensor(states, device=self.device)
         _, state_values = self.network(states)
         advantage = _rewards - state_values.detach()
-        
         # Calculating Actor loss
         self.network.optimizer.zero_grad()
         actor_loss = (-torch.stack(log_probs) * advantage)
         delta_loss = ((state_values - _rewards)**2)
-        loss = (actor_loss + delta_loss).sum()
+        loss = (actor_loss + delta_loss).mean()
         loss.backward()
         self.network.optimizer.step()
-        return [0, 0]   
+        return [loss.item(), 0]   
 
-    def train_on_step(self, state, action, reward, next_, next_action, log_probs):
-        pass
-
-    def clear_loss(self):
-        self.actor_loss = []
-        self.delta_loss = []
-        pass
-
-    def save_state(self):
-        pass
-    
-    def calc_reward(self, rewards, dones):
-
+    def discount_reward(self, rewards, dones):
         new_rewards = []
         _sum = 0
         for i in range(len(rewards)):
@@ -139,13 +129,22 @@ class ACAgent(BaseAgent):
             _next, done, probs):
         self.memory.store_transition(state, action, reward,
                 _next, done, probs=probs)
- 
-    def update_eps(self):
-        pass
+    
+    def clear_loss(self):
+        self.actor_loss = []
+        self.delta_loss = []
 
-    def save_model(self, filename):
-        pass
+    def save_state(self, checkpoint_name):
+        self.checkpoint_name = checkpoint_name
+        self.checkpoint = self.network.state_dict()
+
+    def save_model(self):
+        torch.save({
+            'model_istate_dict': self.checkpoint,   
+            'loss': self.total_loss,
+            }, f"trained-policies/{self.checkpoint_name}")
+        print(f"Model Savel {self.checkpoint}")
 
     def load_model(self, filename):
+        # must call model.eval or model.train
         pass
-

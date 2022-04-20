@@ -28,13 +28,9 @@ class BaseAgent(ABC):
         pass
 
     @abstractmethod
-    def train_on_batch(self):
+    def train_step(self):
         pass
     
-    @abstractmethod
-    def update_eps(self):
-        pass
-
     @abstractmethod
     def save_state(self):
         pass
@@ -48,4 +44,7 @@ class BaseAgent(ABC):
         pass
     
     def clear_loss(self):
+        pass
+
+    def update_eps(self):
         pass

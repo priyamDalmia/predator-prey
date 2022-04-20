@@ -181,7 +181,7 @@ class Game():
         transition['prey_pos'] = str(self.prey_pos)
         self.record[str(self.steps)] = transition
 
-    def record_episode(self, filename, info):
+    def record_episode(self, filename, info={}):
         game_data = {}
         game_data['size'] = self.size
         game_data['pad_width'] = self.pad_width 
