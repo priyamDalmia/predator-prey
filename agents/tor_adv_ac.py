@@ -74,8 +74,11 @@ class ACAgent(BaseAgent):
         self.log_probs = []
         # Initialize the AC network 
         network_dims = agent_network.network_dims
-        self.network = NetworkActorCritic(input_dims, output_dims, action_space,
-                lr, network_dims)
+        if self.load_model:
+            pass
+        else:
+            self.network = NetworkActorCritic(input_dims, output_dims, action_space,
+                    lr, network_dims)
         self.deivce = torch.device('cuda:0' if torch.cuda.is_available() else 'cpu')
         self.network = self.network.to(self.device)
 

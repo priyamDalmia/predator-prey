@@ -1,14 +1,13 @@
-﻿Predator-Prey Environment for Multi-Agent RL
+﻿# A Predator-Prey Environment for Multi-Agent RL.
 
-An Implementation of the __algorithm__(s) on the classic Predator-Prey Environment. 
+An Implementation of the __algorithm__(s) on the Predator-Prey Environment. 
 
-### Alogrithms.
+## Alogrithms.
 
 This repo also contains implementations of several variants of the popular multi-agent Actor-Critic Algortihms.
 1. Independent Advantage Actor-Critic (A2C) and the Asynchronus version.
 2. Independent Soft Actor-Critic with off-policy training.
 3. Independent Double-Duelling DQNs with prioritized replay buffer.
-
 4. Centralized Actor-Critc Network. 
 5.  
 
@@ -16,9 +15,9 @@ This repo also contains implementations of several variants of the popular multi
 Note: We use Independent to denote that those algorithms are inherently single-agent models in contrast to multi-agent models which 
 may require two or more agents (teammates) to function.  
 
-### How the game works?
+## How the game works?
 
-A Classic Predator-Prey Envrironment with *n* predator (adversaries) and preys. The game ends when all prey have been captured by the predators.
+A variant of the classic Predator-Prey Envrironment with *n* predators (adversaries) and preys. The game ends when all prey have been captured by the predators.
 
 Game Description - 
 
@@ -32,23 +31,38 @@ The game contains added varaints and modes such as:
 7. Parallel Mode (imitating the one step Agent Environment Cycle from [PettingZoo] ()).
 8. Respawn Mode for training purposes where predator and prey automatically respawn.
 
-### Getting Started
+## Getting Started
 
 Clone Repo
 
 Linux : Simply clone the repo, create a virtual env to install the dependecies and enjoy!
 
-```python
+```
 pip install requirements.txt
 ```
 
-#### Training 
+ ### 1. Training 
 
-#### Evaluating
+ Agent policies are trainered using trainer programs. Three modes for training are provided:
+ 1. *train_\** - Training single or multiple hetrogenoues policies (predator or prey).
+ 2. *train_prey_\** - Training single or multiple predator policies while keeping the prey policies static. 
+ 3. *train_prey_\** - Training single or multiple prey policies while keeping the predator policies static. 
 
-#### Creating new agents
+`python train_pred.py` : Trains and saves the best policies.
 
-#### Replays
+New trainers must be derived from the  basecalss *Trainer*. See the [trainers]() folder for a more detailed description for configuring training paramters.
+
+ ### 2. Evaluating
+
+ ### 3. Creating new agents
+
+[*random_agent.py*]() contains the simpleset boilerplate code for creating a new agent.  
+
+New agents must be derived from the baseclass *BaseAgent*  See the [agents]() folder for a more detailed description for creating agents.
+
+ ### 4. Replays
+
+ ### 5. Tests
 
 
 Sample Run: Populates states with characters and print.
@@ -81,4 +95,10 @@ env.reset()
 
 ```
 
+## Learning to Share
 
+## Asynchronus Training 
+
+## Phase Potraits
+
+## License
