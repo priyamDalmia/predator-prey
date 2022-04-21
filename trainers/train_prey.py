@@ -30,6 +30,7 @@ config = dodict(dict(
         winsize=5,
         nholes=0,
         nobstacles=0,
+        _map="random",
         # Training Control
         epochs=10000,
         episodes=1,
@@ -39,7 +40,7 @@ config = dodict(dict(
         save_replay=True,
         save_checkpoint=True,
         # Agent Control
-        agent_type="r",
+        agent_type="actor-critic",
         pred_class=RandomAgent,
         prey_class=ACAgent,
         agent_network=agent_network,
@@ -51,13 +52,16 @@ config = dodict(dict(
         batch_size=64,
         buffer_size=5000,
         max_cycle=500,
+        # Models,
+        load_prey=False,
+        load_pred=False,
         # Log Control
         log_freq = 200,
         wandb=True,
         wandb_mode="online",
         wandb_run_name="1v1:10:5:256:0.0005",
         project_name="predator-prey-baselines",
-        msg="Random Agents Test: 1v1",
+        msg="A2C vs Random Test: 1v1",
         notes="Testing Prey Policy",
         log_level=10,
         log_file="logs/prey.log",
@@ -134,7 +138,8 @@ class train_prey(Trainer):
                     self.input_dims,
                     self.output_dims, 
                     self.action_space,
-                    memory = memory,
+                    memory=memory,
+                    load_model=self.config.load_prey,
                     **self.config)
             else:
                 agent = self.config.pred_class(
@@ -142,7 +147,8 @@ class train_prey(Trainer):
                     self.input_dims,
                     self.output_dims,
                     self.action_space,
-                    memory = memory,
+                    memory=memory,
+                    load_model=self.config.load_pred,
                     **self.config)
                 self.log("Agent {_id}, Device {agent.device}")
             assert isinstance(agent, BaseAgent), "Error: Derive agent from BaseAgent!"
