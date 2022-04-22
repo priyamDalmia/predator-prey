@@ -24,7 +24,7 @@ agent_network = dodict(dict(
     network_dims=network_dims))
 config = dodict(dict(
         # Environment
-        size=10,
+        size=100,
         npred=1,
         nprey=1,
         winsize=5,
@@ -32,7 +32,7 @@ config = dodict(dict(
         nobstacles=0,
         _map="random",
         # Training Control
-        epochs=10000,
+        epochs=4000,
         episodes=1,
         train_steps=1,
         update_eps=1,
@@ -61,11 +61,11 @@ config = dodict(dict(
         wandb_mode="online",
         wandb_run_name="1v1:10:5:256:0.0005",
         project_name="predator-prey-baselines",
-        msg="A2C vs Random Test: 1v1",
+        msg="Random vs A2C Test: 1v1",
         notes="Testing Prey Policy",
         log_level=10,
         log_file="logs/prey.log",
-        print_console = True,
+        print_console = False,
         # Checkpoint Control 
         ))
 
@@ -86,7 +86,7 @@ class train_prey(Trainer):
         self.steps_avg = 0
         self.rewards_avg = 0
         self.loss_avg = 0
-
+    
     def train(self):
         steps_hist = []
         rewards_hist = []
@@ -225,6 +225,7 @@ class train_prey(Trainer):
         for _id in self.agent_ids:
             if _id.startswith("prey_"):
                 self.agents[_id].save_model()
+
 
 if __name__=="__main__":
     # Create the Environment object.

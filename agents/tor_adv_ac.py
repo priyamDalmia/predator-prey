@@ -90,7 +90,6 @@ class ACAgent(BaseAgent):
             action_dist = dist.Categorical(probs)
         except Exception as e:
             print(e)
-            breakpoint()
         action = action_dist.sample() 
         log_probs =  action_dist.log_prob(action)
         self.values.append(values)

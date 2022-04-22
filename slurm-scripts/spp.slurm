@@ -7,6 +7,7 @@
 #SBATCH --gres=gpu:1
 #SBATCH --account=punim1679
 #SBATCH --time 20:00:00
+#SBATCH --meem-per-cpu=12G
 
 #SBATCH -o  /home/dalmiapriyam/bpp/slurmoutput/slurm-%j.out
 
