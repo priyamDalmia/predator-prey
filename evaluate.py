@@ -5,13 +5,20 @@ import numpy as np
 import pandas as pd
 from game.game import Game
 from data.helpers import dodict
-from argparse import parser
+from data.trainer import Trainer
 from data.agent import BaseAgent
-from data.agent import RandomAgent
-
+from agents.random_agent import RandomAgent
+from agents.tor_adv_ac import ACAgent
 import pdb
 
-config = {
+# Must have list of Agents classe and their policy paths
+prey_class = [ACAgent]
+prey_policies = ['preadator_0-9999-55']
+pred_class = [RandomAgent]
+pred_policies = ['random']
+
+
+config = dodict(dict(
     # Environment
     size=10,
     npred=1,
@@ -28,24 +35,17 @@ config = {
     # Agent Control
     print_console=True,
     notes="",
-    }
-# Must have list of Agents classe and their policy paths
-prey_class = []
-prey_policies = []
-pred_class = []
-pred_policies = []
+    ))
 
-
-class Evaluate(Trainers):
+class Evaluate():
     def __init__(self, config, env, **env_specs):
         self.env = env
         self.config = config
         self.input_dims = env_specs["input_dims"]
         self.output_dims = env_specs["output_dims"]
         self.action_space = env_specs["action_space"]
-        self.logger = self.get_logger() 
         # Initialize Agents (Load Agents)
-        self.agents_ids = env.agent_ids
+        self.agent_ids = env.agent_ids
         self.agents = self.initialize_agents()
 
         # Bookeeping
@@ -97,7 +97,7 @@ class Evaluate(Trainers):
             print(f"Run: {r} | Steps : {steps} | Rewards : {rewards}")
     
     def initialize_agents(self):
-        
+        agents = {} 
         # load predator and prey policies 
         for n, _id in enumerate(self.agent_ids):
             if _id.startswith("predator"):
@@ -131,8 +131,7 @@ class Evaluate(Trainers):
                             load_model=agent_policy,
                             **self.config)
 
-            self.agents[_id] = agent
-            self.log(f"Agent Loaded {_id}: {agent_policy}")
+            agents[_id] = agent
         return agents
 
 
@@ -142,7 +141,7 @@ if __name__ == "__main__":
     except: 
         print(f"Failed to initialize the Game envrironment!")
     input_dims = env.observation_space.shape
-    output_dims = len(action_space)
+    output_dims = len(env.action_space)
     action_space = env.action_space
     evaluate = Evaluate(config, env, 
             input_dims = input_dims,

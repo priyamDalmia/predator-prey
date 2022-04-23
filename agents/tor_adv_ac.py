@@ -67,17 +67,24 @@ class ACAgent(BaseAgent):
         self.total_loss = None
         self.checkpoint = None
         self.checkpoint_name = None
-        # Initialize the AC network 
-        network_dims = agent_network.network_dims
-        self.network = NetworkActorCritic(input_dims, output_dims, action_space,
-                    lr, network_dims)
+        # Initialize the AC network
+        self.network = None
         if self.load_model:
             try:
-                checkpoint = torch.load(self.load_model)
-                self.network.load_state_dict(check_point['model_state_dict'])
+                breakpoint()
+                checkpoint = torch.load("trained-policies/"+self.load_model)
+                self.network_dims = checkpoint['network_dims']
+                self.network = NetworkActorCritic(input_dims, output_dims, action_space,
+                        lr, self.network_dims)
+                self.network.load_state_dict(checkpoint['model_state_dict'])
                 self.network.eval()
-            except Exception as e:
+            except:
                 print(f"Trained Polciy for {_id} could not be loaded!")
+        else:
+            self.network_dims = agent_network.network_dims
+            self.network = NetworkActorCritic(input_dims, output_dims, action_space,
+                        lr, self.network_dims)
+
         self.deivce = torch.device('cuda:0' if torch.cuda.is_available() else 'cpu')
         self.network = self.network.to(self.device)
 
@@ -142,6 +149,9 @@ class ACAgent(BaseAgent):
         torch.save({
             'model_state_dict': self.checkpoint,   
             'loss': self.total_loss,
+            'input_dims': self.input_dims,
+            'output_dims': self.output_dims,
+            'network_dims': self.network_dims,
             }, f"trained-policies/{self.checkpoint_name}")
         print(f"Model Saved {self._id}")
 

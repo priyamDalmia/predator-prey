@@ -30,33 +30,38 @@ config = dodict(dict(
         winsize=5,
         nholes=0,
         nobstacles=0,
+        _map="random",
         # Training Control
-        epochs=100,
+        epochs=10,
         episodes=1,
         train_steps=1,
         update_eps=1,
-        training=False,
-        save_replay=False,
-        save_checkpoint=False,
+        max_cycles = 500,
+        training=True,
+        save_replay=True,
+        save_checkpoint=True,
         # Agent Control
-        agent_type="Random",
-        pred_class=RandomAgent,
+        pred_class=ACAgent,
         prey_class=RandomAgent,
+        agent_type="actor-critic",
         agent_network=agent_network,
-        lr=0.0005, 
+        lr=0.0001, 
         gamma=0.95,
         epislon=0.95,
         epsilon_dec=0.99,
         epsilon_update=10,
         batch_size=64,
         buffer_size=5000,
+        # Models
+        load_prey=False, 
+        load_pred='predator_0-9399-26',
         # Log Control
         log_freq = 2,
         wandb=False,
         wandb_mode="online",
-        wandb_run_name="1v1:10:5:random",#"1v1:10:5:256:0.0005",
-        project_name="predator-prey-baselines",
-        msg="Random vs Random Test: 1v1",
+        wandb_run_name="1v1:10:5:256:0.0005",#"1v1:10:5:256:0.0005",
+        project_name="predator-prey-tests",
+        msg="A2C vs Random Test: 1v1",
         notes="Testing Predator Policy",
         log_level=10,
         log_file="logs/test.log",
@@ -86,7 +91,7 @@ class train_pred(Trainer):
         steps_hist = []
         rewards_hist = []
         loss_hist = []
-        _best = 0
+        _best = 300
         for epoch in range(self.config.epochs):
             loss = [[0, 0]]
             # Run Episodes
@@ -106,7 +111,7 @@ class train_pred(Trainer):
                 # Make Checkpoints, Save Replays and Update Logs. 
                 self.make_log(epoch, steps_hist, rewards_hist, loss_hist)
                 if self.config.save_checkpoint:
-                    if _best < self.steps_avg:
+                    if _best > self.steps_avg:
                         # Save Agent Network State Dict.
                         self.make_checkpoint(epoch) 
                         _best = self.steps_avg
@@ -134,6 +139,7 @@ class train_pred(Trainer):
                     self.output_dims, 
                     self.action_space,
                     memory = memory,
+                    load_model = self.config.load_pred,
                     **self.config)
             else:
                 agent = self.config.prey_class(
@@ -141,7 +147,8 @@ class train_pred(Trainer):
                     self.input_dims,
                     self.output_dims,
                     self.action_space,
-                    memory = memory,
+                    memory = None,
+                    load_model = self.config.load_prey,
                     **self.config)
                 self.log("Agent {_id}, Device {agent.device}")
             assert isinstance(agent, BaseAgent), "Error: Derive agent from BaseAgent!"
@@ -177,6 +184,8 @@ class train_pred(Trainer):
                 all_rewards.append(list(rewards.values()))
                 observation = dict(next_)
                 steps+=1
+                if steps > self.config.max_cycles:
+                    break
             epsilon = self.agents["prey_0"].epsilon
             step_hist.append(steps)
             reward_hist.append(
@@ -233,3 +242,4 @@ if __name__=="__main__":
             action_space = action_space)
     trainer.train()
     trainer.shut_logger()
+
