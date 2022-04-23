@@ -45,7 +45,7 @@ config = dodict(dict(
         prey_class=RandomAgent,
         agent_type="actor-critic",
         agent_network=agent_network,
-        lr=0.0001, 
+        lr=0.0005, 
         gamma=0.95,
         epislon=0.95,
         epsilon_dec=0.99,
@@ -57,7 +57,7 @@ config = dodict(dict(
         load_predator=False,
         # Log Control
         log_freq = 200,
-        wandb=False,
+        wandb=True,
         wandb_mode="online",
         wandb_run_name="1v1:10:5:256:0.0005",#"1v1:10:5:256:0.0005",
         project_name="predator-prey-tests",

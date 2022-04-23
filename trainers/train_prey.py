@@ -15,8 +15,6 @@ from agents.random_agent import RandomAgent
 from agents.tor_dqn import DQNAgent
 from agents.tor_adv_ac import ACAgent
 
-from memory_profiler import profile
-
 network_dims=dodict(dict(
     clayers=1,
     cl_dims=[3, 6],
@@ -34,7 +32,7 @@ config = dodict(dict(
         nobstacles=0,
         _map="random",
         # Training Control
-        epochs=100,
+        epochs=5000,
         episodes=1,
         train_steps=1,
         update_eps=1,
@@ -47,7 +45,7 @@ config = dodict(dict(
         prey_class=ACAgent,
         agent_type="actor-critic",
         agent_network=agent_network,
-        lr=0.0001, 
+        lr=0.0005, 
         gamma=0.95,
         epislon=0.95,
         epsilon_dec=0.99,
@@ -63,7 +61,7 @@ config = dodict(dict(
         wandb_mode="online",
         wandb_run_name="1v1:10:5:256:0.0005",#"1v1:10:5:256:0.0005",
         project_name="predator-prey-tests",
-        msg="A2C vs A2C Test: 1v1",
+        msg="Random vs A2C Test: 1v1",
         notes="Testing prey Policy",
         log_level=10,
         log_file="logs/prey.log",
@@ -89,7 +87,6 @@ class train_prey(Trainer):
         self.rewards_avg = 0
         self.loss_avg = 0
     
-    @profile
     def train(self):
         steps_hist = []
         rewards_hist = []
@@ -114,7 +111,7 @@ class train_prey(Trainer):
                 # Make Checkpoints, Save Replays and Update Logs. 
                 self.make_log(epoch, steps_hist, rewards_hist, loss_hist)
                 if self.config.save_checkpoint:
-                    if _best > self.steps_avg:
+                    if _best < self.steps_avg:
                         # Save Agent Network State Dict.
                         self.make_checkpoint(epoch) 
                         _best = self.steps_avg

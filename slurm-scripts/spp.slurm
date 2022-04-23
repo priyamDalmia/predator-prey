@@ -7,7 +7,7 @@
 #SBATCH --gres=gpu:1
 #SBATCH --account=punim1679
 #SBATCH --time 20:00:00
-#SBATCH --meem-per-cpu=12G
+#SBATCH --mem-per-cpu=12G
 
 #SBATCH -o  /home/dalmiapriyam/bpp/slurmoutput/slurm-%j.out
 
@@ -22,4 +22,4 @@
 #module load python/3.7.4
 module load pytorch/1.5.1-python-3.7.4
 
-python3 trainers/train_pred.py
+python3 trainers/train_prey.py
