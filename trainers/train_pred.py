@@ -36,13 +36,14 @@ config = dodict(dict(
         episodes=1,
         train_steps=1,
         update_eps=1,
+        max_cycles = 500,
         training=True,
         save_replay=True,
         save_checkpoint=True,
         # Agent Control
-        agent_type="actor-critic",
         pred_class=ACAgent,
         prey_class=RandomAgent,
+        agent_type="actor-critic",
         agent_network=agent_network,
         lr=0.0001, 
         gamma=0.95,
@@ -54,14 +55,12 @@ config = dodict(dict(
         # Models
         load_prey=False, 
         load_predator=False,
-        load_prey_file="",
-        load_pred_file="",
         # Log Control
         log_freq = 200,
-        wandb=True,
+        wandb=False,
         wandb_mode="online",
         wandb_run_name="1v1:10:5:256:0.0005",#"1v1:10:5:256:0.0005",
-        project_name="predator-prey-baselines",
+        project_name="predator-prey-tests",
         msg="A2C vs Random Test: 1v1",
         notes="Testing Predator Policy",
         log_level=10,
@@ -148,7 +147,7 @@ class train_pred(Trainer):
                     self.input_dims,
                     self.output_dims,
                     self.action_space,
-                    memory = memory,
+                    memory = None,
                     load_model = self.config.load_prey,
                     **self.config)
                 self.log("Agent {_id}, Device {agent.device}")
@@ -185,6 +184,8 @@ class train_pred(Trainer):
                 all_rewards.append(list(rewards.values()))
                 observation = dict(next_)
                 steps+=1
+                if steps > self.config.max_cycles:
+                    break
             epsilon = self.agents["prey_0"].epsilon
             step_hist.append(steps)
             reward_hist.append(
@@ -241,3 +242,4 @@ if __name__=="__main__":
             action_space = action_space)
     trainer.train()
     trainer.shut_logger()
+

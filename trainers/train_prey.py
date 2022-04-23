@@ -15,6 +15,8 @@ from agents.random_agent import RandomAgent
 from agents.tor_dqn import DQNAgent
 from agents.tor_adv_ac import ACAgent
 
+from memory_profiler import profile
+
 network_dims=dodict(dict(
     clayers=1,
     cl_dims=[3, 6],
@@ -24,7 +26,7 @@ agent_network = dodict(dict(
     network_dims=network_dims))
 config = dodict(dict(
         # Environment
-        size=100,
+        size=10,
         npred=1,
         nprey=1,
         winsize=5,
@@ -32,40 +34,40 @@ config = dodict(dict(
         nobstacles=0,
         _map="random",
         # Training Control
-        epochs=4000,
+        epochs=100,
         episodes=1,
         train_steps=1,
         update_eps=1,
+        max_cycles = 500,
         training=True,
         save_replay=True,
         save_checkpoint=True,
         # Agent Control
-        agent_type="actor-critic",
         pred_class=RandomAgent,
         prey_class=ACAgent,
+        agent_type="actor-critic",
         agent_network=agent_network,
-        lr=0.0005, 
+        lr=0.0001, 
         gamma=0.95,
         epislon=0.95,
         epsilon_dec=0.99,
         epsilon_update=10,
         batch_size=64,
         buffer_size=5000,
-        max_cycle=500,
-        # Models,
-        load_prey=False,
-        load_pred=False,
+        # Models
+        load_prey=False, 
+        load_predator='predator_0-5999-37',
         # Log Control
         log_freq = 200,
         wandb=True,
         wandb_mode="online",
-        wandb_run_name="1v1:10:5:256:0.0005",
-        project_name="predator-prey-baselines",
-        msg="Random vs A2C Test: 1v1",
-        notes="Testing Prey Policy",
+        wandb_run_name="1v1:10:5:256:0.0005",#"1v1:10:5:256:0.0005",
+        project_name="predator-prey-tests",
+        msg="A2C vs A2C Test: 1v1",
+        notes="Testing prey Policy",
         log_level=10,
         log_file="logs/prey.log",
-        print_console = False,
+        print_console = True,
         # Checkpoint Control 
         ))
 
@@ -87,13 +89,14 @@ class train_prey(Trainer):
         self.rewards_avg = 0
         self.loss_avg = 0
     
+    @profile
     def train(self):
         steps_hist = []
         rewards_hist = []
         loss_hist = []
-        _best = 200 # Random Big number
+        _best = 300
         for epoch in range(self.config.epochs):
-            loss = [0, 0]
+            loss = [[0, 0]]
             # Run Episodes
             steps, rewards, epsilon = self.run_episodes()
             # Train Agents 
@@ -138,8 +141,8 @@ class train_prey(Trainer):
                     self.input_dims,
                     self.output_dims, 
                     self.action_space,
-                    memory=memory,
-                    load_model=self.config.load_prey,
+                    memory = memory,
+                    load_model = self.config.load_pred,
                     **self.config)
             else:
                 agent = self.config.pred_class(
@@ -147,8 +150,8 @@ class train_prey(Trainer):
                     self.input_dims,
                     self.output_dims,
                     self.action_space,
-                    memory=memory,
-                    load_model=self.config.load_pred,
+                    memory = None,
+                    load_model = self.config.load_prey,
                     **self.config)
                 self.log("Agent {_id}, Device {agent.device}")
             assert isinstance(agent, BaseAgent), "Error: Derive agent from BaseAgent!"
@@ -184,7 +187,7 @@ class train_prey(Trainer):
                 all_rewards.append(list(rewards.values()))
                 observation = dict(next_)
                 steps+=1
-                if steps > self.config.max_cycle:
+                if steps > self.config.max_cycles:
                     break
             epsilon = self.agents["prey_0"].epsilon
             step_hist.append(steps)
@@ -226,7 +229,6 @@ class train_prey(Trainer):
             if _id.startswith("prey_"):
                 self.agents[_id].save_model()
 
-
 if __name__=="__main__":
     # Create the Environment object.
     try:
@@ -243,3 +245,4 @@ if __name__=="__main__":
             action_space = action_space)
     trainer.train()
     trainer.shut_logger()
+

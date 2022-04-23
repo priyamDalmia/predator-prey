@@ -123,15 +123,15 @@ class DQNAgent(BaseAgent):
     @torch.no_grad()
     def get_action(self, observation):
         if np.random.random() < self.epsilon:
-            return np.random.choice(self.action_space)
+            return np.random.choice(self.action_space), 0
         # convert observation to tensor of shape : [batch_size, (input)]
         inputs = torch.as_tensor(observation, dtype=torch.float32, 
                 device=self.device)
         values = self.network(inputs.unsqueeze(0))
         action = torch.argmax(values)
-        return action.item()
+        return action.item(), action.item()
 
-    def train_on_batch(self):
+    def train_step(self):
         if self.memory.counter < self.memory.batch_size:
             return None
         
@@ -168,7 +168,7 @@ class DQNAgent(BaseAgent):
         self.epsilon = self.epsilon * self.epsilon_dec
         return self.epsilon 
 
-    def store_transition(self, state, action, reward, next_, done):
+    def store_transition(self, state, action, reward, next_, done, *args, **kwargs):
         self.memory.store_transition(state, action, reward, next_, done)
         pass
 

@@ -7,7 +7,6 @@ import json
 from data.common import ACTIONS
 from game.game_state import GameState
 
-
 class Game():
     def __init__(self, config):
         self.size = config.size
@@ -41,6 +40,7 @@ class Game():
         self.pos_prey = {}
         self.done = {}
         # Create a new GameState Object
+        del self.game_state
         self.game_state = GameState(self.size, self.npredators, self.npreys, self.window_size, self.pad_width)
         
         # Episode records 
@@ -69,7 +69,7 @@ class Game():
         # returns the initial observation dict.
         self.record_transition(0, 0, 0)
         return self.get_observation()
-
+    
     def step(self, actions:dict) -> tuple:
         # takes an action dict and updates the underlying game state.
         # step over the action list and get new positions.

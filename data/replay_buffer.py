@@ -1,6 +1,8 @@
 import random
 import numpy as np
 import pdb
+import gc
+
 class ReplayBuffer():
     def __init__(self, buffer_size, batch_size, state_size):
         self.buffer_size = buffer_size
@@ -55,6 +57,7 @@ class ReplayBuffer():
         return states, actions, rewards, next_, dones, action_probs
 
     def clear_buffer(self):
+        gc.collect()
         self.counter = 0
         # memory 
         self.states = np.zeros((self.buffer_size, *self.state_size), dtype=np.float32)

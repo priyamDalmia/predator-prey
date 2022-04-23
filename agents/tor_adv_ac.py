@@ -67,18 +67,17 @@ class ACAgent(BaseAgent):
         self.total_loss = None
         self.checkpoint = None
         self.checkpoint_name = None
-        # Testing Internal Memory
-        self.actor_loss = []
-        self.delta_loss = []
-        self.values = []
-        self.log_probs = []
         # Initialize the AC network 
         network_dims = agent_network.network_dims
-        if self.load_model:
-            pass
-        else:
-            self.network = NetworkActorCritic(input_dims, output_dims, action_space,
+        self.network = NetworkActorCritic(input_dims, output_dims, action_space,
                     lr, network_dims)
+        if self.load_model:
+            try:
+                checkpoint = torch.load(self.load_model)
+                self.network.load_state_dict(check_point['model_state_dict'])
+                self.network.eval()
+            except Exception as e:
+                print(f"Trained Polciy for {_id} could not be loaded!")
         self.deivce = torch.device('cuda:0' if torch.cuda.is_available() else 'cpu')
         self.network = self.network.to(self.device)
 
@@ -92,10 +91,8 @@ class ACAgent(BaseAgent):
             print(e)
         action = action_dist.sample() 
         log_probs =  action_dist.log_prob(action)
-        self.values.append(values)
-        self.log_probs.append(log_probs)
         return action.item(), log_probs
-
+    
     def train_step(self):
         states, actions, rewards, nexts, dones, log_probs =\
                 self.memory.sample_transition()     
@@ -129,7 +126,8 @@ class ACAgent(BaseAgent):
     
     def store_transition(self, state, action, reward,
             _next, done, probs):
-        self.memory.store_transition(state, action, reward,
+        if self.memory:
+            self.memory.store_transition(state, action, reward,
                 _next, done, probs=probs)
     
     def clear_loss(self):
@@ -142,10 +140,10 @@ class ACAgent(BaseAgent):
 
     def save_model(self):
         torch.save({
-            'model_istate_dict': self.checkpoint,   
+            'model_state_dict': self.checkpoint,   
             'loss': self.total_loss,
             }, f"trained-policies/{self.checkpoint_name}")
-        print(f"Model Savel {self.checkpoint}")
+        print(f"Model Saved {self._id}")
 
     def load_model(self, filename):
         # must call model.eval or model.train
