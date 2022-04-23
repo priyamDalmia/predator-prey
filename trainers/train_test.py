@@ -25,7 +25,7 @@ agent_network = dodict(dict(
 config = dodict(dict(
         # Environment
         size=10,
-        npred=1,
+        npred=2,
         nprey=1,
         winsize=5,
         nholes=0,
@@ -43,7 +43,7 @@ config = dodict(dict(
         # Agent Control
         pred_class=ACAgent,
         prey_class=RandomAgent,
-        agent_type="actor-critic",
+        agent_type="test:multi",
         agent_network=agent_network,
         lr=0.0001, 
         gamma=0.95,
@@ -228,7 +228,7 @@ class train_pred(Trainer):
 
 if __name__=="__main__":
     # Create the Environment object.
-    try:
+    try
         env = Game(config)
     except:
         print(f"Failed to Initialize the Game Environment!")

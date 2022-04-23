@@ -65,7 +65,7 @@ class Evaluate():
             self.make_log(r, steps_hist, rewards_hist)
             # Save the Last episodes of each run!
             if self.config.save_replay:
-                replay_file = f"e-{self.config._name}"
+                replay_file = f"eval-{self.config._name}"
                 self.env.record_episode(replay_file)
             
     def run_episodes(self):
