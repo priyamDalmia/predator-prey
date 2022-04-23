@@ -34,6 +34,7 @@ config = dodict(dict(
     save_replay=False,
     # Agent Control
     print_console=True,
+    _name="",
     notes="",
     ))
 

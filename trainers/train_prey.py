@@ -54,7 +54,7 @@ config = dodict(dict(
         buffer_size=5000,
         # Models
         load_prey=False, 
-        load_predator='predator_0-5999-37',
+        load_predator=False,
         # Log Control
         log_freq = 200,
         wandb=True,
@@ -62,7 +62,7 @@ config = dodict(dict(
         wandb_run_name="1v1:10:5:256:0.0005",#"1v1:10:5:256:0.0005",
         project_name="predator-prey-tests",
         msg="Random vs A2C Test: 1v1",
-        notes="Testing prey Policy",
+        notes="single-prey-tests",
         log_level=10,
         log_file="logs/prey.log",
         print_console = True,
