@@ -68,7 +68,7 @@ class Game():
             self.done[_id] = False
         # returns the initial observation dict.
         self.record_transition(0, 0, 0)
-        return self.get_observation()
+        return dict(self.get_observation()), self.done
     
     def step(self, actions:dict) -> tuple:
         # takes an action dict and updates the underlying game state.
@@ -89,7 +89,7 @@ class Game():
                 position = self.predator_pos[_id]
                 if not position:
                     # Agent has died in this turn.
-                    # Remove all agnet properties.
+                    # Remove all agent properties.
                     continue
                 new_position = ACTIONS[action](position, self.size, self.pad_width)
                 if new_position == position:
@@ -116,8 +116,8 @@ class Game():
                 if position == (0, 0):
                     new_position = position
                     self.game_state.update_unit(self.agents[_id][0], new_position)
-                    self.done[_id] = True
                     rewards[_id] = -1
+                    self.done[_id] = True
                     # Prey has died. Remove all traces of the prey from the environment.
                     # or Respawn.
                     continue

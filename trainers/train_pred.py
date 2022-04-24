@@ -16,8 +16,8 @@ from agents.tor_dqn import DQNAgent
 from agents.tor_adv_ac import ACAgent
 
 network_dims=dodict(dict(
-    clayers=1,
-    cl_dims=[3, 6],
+    clayers=2,
+    cl_dims=[6, 12],
     nlayers=2,
     nl_dims=[256, 256]))
 agent_network = dodict(dict(
@@ -25,15 +25,15 @@ agent_network = dodict(dict(
 config = dodict(dict(
         # Environment
         size=10,
-        npred=1,
-        nprey=1,
+        npred=2,
+        nprey=2,
         winsize=5,
         nholes=0,
         nobstacles=0,
         _map="random",
         # Training Control
-        epochs=10000,
-        episodes=1,
+        epochs=10,
+        episodes=2,
         train_steps=1,
         update_eps=1,
         max_cycles = 500,
@@ -54,18 +54,18 @@ config = dodict(dict(
         load_prey=False, 
         load_predator=False,
         # Log Control
-        _name="pred-AC",
-        save_replay=True,
-        save_checkpoint=True,
-        log_freq = 200,
-        wandb=True,
+        _name="random-random",
+        save_replay=False,
+        save_checkpoint=False,
+        log_freq = 2,
+        wandb=False,
         wandb_mode="online",
-        wandb_run_name="1v1:10:5:256:0.0005",#"1v1:10:5:256:0.0005",
-        project_name="single-pred-tests",
-        msg="A2C vs Random Test: 1v1",
-        notes="Testing Predator Policy",
+        wandb_run_name="random:2v2",#"1v1:10:5:256:0.0005",
+        project_name="predator-prey-baselines",
+        msg="Random vs Random Test: 2v2",
+        notes="Testing Random Policy",
         log_level=10,
-        log_file="logs/predator.log",
+        log_file="logs/random.log",
         print_console = True,
         # Checkpoint Control 
         ))
@@ -161,36 +161,47 @@ class train_pred(Trainer):
         reward_hist = []
         epsilon = 0
         for ep in range(self.config.episodes):
-            observation = dict(self.env.reset())
+            observation, done_ = self.env.reset()
             done = False
             steps = 0
+            all_agents = list(self.agents.keys())
             all_rewards = []
+            all_dones = []
+            all_dones.append(list(done_.values()))
             while not done:
                 actions = {}
                 actions_prob = {}
                 state_t = None
                 # Get actions for all agents.
                 for _id in self.agents:
-                    actions[_id], actions_prob[_id] = \
-                            self.agents[_id].get_action(observation[_id])
+                    if not done_[_id]:
+                        actions[_id], actions_prob[_id] = \
+                                self.agents[_id].get_action(observation[_id])
+                    else:
+                        actions[_id] = int(4)
                 states_t = copy.deepcopy(observation)
                 rewards, next_, done, info = self.env.step(actions)
-                for _id in self.agents:
+                for _id in all_agents:
                     self.agents[_id].store_transition(states_t[_id],
                         actions[_id],
                         rewards[_id],
                         next_[_id],
-                        done,
+                        done_[_id],
                         actions_prob[_id])
+                    if done_[_id]:
+                        all_agents.remove(_id)
                 all_rewards.append(list(rewards.values()))
+                all_dones.append(list(done_.values()))
                 observation = dict(next_)
                 steps+=1
                 if steps > self.config.max_cycles:
                     break
-            epsilon = self.agents["prey_0"].epsilon
             step_hist.append(steps)
+            done_df = pd.DataFrame(all_dones)
+            reward_df = \
+                    pd.DataFrame(all_rewards)[-done_df].replace(np.nan, 0.0)
             reward_hist.append(
-                    pd.DataFrame(all_rewards).sum(axis=0).to_list())
+                    pd.DataFrame(reward_df).sum(axis=0).to_list())
         return step_hist, reward_hist, epsilon
     
     def run_training(self, ep_end):

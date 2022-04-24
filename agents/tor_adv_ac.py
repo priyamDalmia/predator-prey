@@ -33,7 +33,7 @@ class NetworkActorCritic(nn.Module):
             self.net.append(nn.Flatten())
             #### Must be modified if the network parameters change
             idim = cl_dims[-1] * \
-                    ((self.input_dims[-1]-2)**2)
+                    ((self.input_dims[-1]-int(clayers))**2)
         nlayers = network_dims.nlayers
         nl_dims = network_dims.nl_dims
         for l in range(nlayers):
@@ -102,6 +102,7 @@ class ACAgent(BaseAgent):
         return action.item(), log_probs
     
     def train_step(self):
+        breakpoint()
         states, actions, rewards, nexts, dones, log_probs =\
                 self.memory.sample_transition()     
         # Discount the rewards 

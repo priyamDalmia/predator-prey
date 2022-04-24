@@ -18,6 +18,16 @@ class NetworkCritic(nn.Module):
     def forward(self, inputs):
         pass
 
+    def train_step(self):
+        pass
+
+    def save_checkpoint(self):
+        pass
+
+    def save_model(self):
+        pass
+
+
 class NetworkActor(nn.Module):
     def __init__(self, ):
         super(NetworkActor, self).__init__()
@@ -49,5 +59,19 @@ class CACAgent():
             # Load Models for both Actor and Critic Here!
             pass
         else:
-            self.network
+            self.network_dims = agent_network.network_dims
+            self.actor_network = NetworkActor(input_dims, output_dims, action_space,
+                    lr, self.network_dims)
+            if "critic_network" not in self.agent_network:
+                raise "Critic Network is not provided!"
+            self.critic_network = self.agent_network["critic_network"]
 
+        self.device = torch.device()
+        self.network = self.network.to(self.device)
+    
+    def get_action(self, observation):
+        observation = torch.as_tensor()
+        pass
+
+    def train_step(self):
+        pass
