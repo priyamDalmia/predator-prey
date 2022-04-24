@@ -38,8 +38,6 @@ config = dodict(dict(
         update_eps=1,
         max_cycles = 500,
         training=True,
-        save_replay=True,
-        save_checkpoint=True,
         # Agent Control
         pred_class=ACAgent,
         prey_class=RandomAgent,
@@ -56,6 +54,9 @@ config = dodict(dict(
         load_prey=False, 
         load_predator=False,
         # Log Control
+        _name="pred-AC",
+        save_replay=True,
+        save_checkpoint=True,
         log_freq = 200,
         wandb=True,
         wandb_mode="online",
@@ -117,7 +118,7 @@ class train_pred(Trainer):
                         _best = self.steps_avg
                         if self.config.save_replay:
                             # Make a Replay File
-                            replay_file = f"{self.config.agent_type}-{epoch}-{int(self.steps_avg)}"
+                            replay_file = f"{self._name}-{epoch}-{int(self.steps_avg)}"
                             self.env.record_episode(replay_file)     
         # Save the best model after training
         if self.config.save_checkpoint:

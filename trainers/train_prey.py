@@ -16,8 +16,8 @@ from agents.tor_dqn import DQNAgent
 from agents.tor_adv_ac import ACAgent
 
 network_dims=dodict(dict(
-    clayers=1,
-    cl_dims=[3, 6],
+    clayers=2,
+    cl_dims=[6, 12],
     nlayers=2,
     nl_dims=[256, 256]))
 agent_network = dodict(dict(
@@ -25,21 +25,19 @@ agent_network = dodict(dict(
 config = dodict(dict(
         # Environment
         size=10,
-        npred=1,
+        npred=2,
         nprey=1,
         winsize=5,
         nholes=0,
         nobstacles=0,
         _map="random",
         # Training Control
-        epochs=5000,
+        epochs=50,
         episodes=1,
         train_steps=1,
         update_eps=1,
         max_cycles = 500,
         training=True,
-        save_replay=True,
-        save_checkpoint=True,
         # Agent Control
         pred_class=RandomAgent,
         prey_class=ACAgent,
@@ -56,8 +54,11 @@ config = dodict(dict(
         load_prey=False, 
         load_predator=False,
         # Log Control
-        log_freq = 200,
-        wandb=True,
+        _name="prey-AC",
+        save_replay=True,
+        save_checkpoint=True,
+        log_freq = 2,
+        wandb=False,
         wandb_mode="online",
         wandb_run_name="1v1:10:5:256:0.0005",#"1v1:10:5:256:0.0005",
         project_name="predator-prey-tests",
@@ -91,7 +92,7 @@ class train_prey(Trainer):
         steps_hist = []
         rewards_hist = []
         loss_hist = []
-        _best = 300
+        _best = 100
         for epoch in range(self.config.epochs):
             loss = [[0, 0]]
             # Run Episodes
@@ -117,7 +118,7 @@ class train_prey(Trainer):
                         _best = self.steps_avg
                         if self.config.save_replay:
                             # Make a Replay File
-                            replay_file = f"{self.config.agent_type}-{epoch}-{int(self.steps_avg)}"
+                            replay_file = f"{self.config._name}-{epoch}-{int(self.steps_avg)}"
                             self.env.record_episode(replay_file)     
         # Save the best model after training
         if self.config.save_checkpoint:

@@ -25,12 +25,15 @@ class NetworkActorCritic(nn.Module):
             cl_dims = self.network_dims.cl_dims
             for c in range(clayers):
                 self.net.append(
-                        nn.Conv2d(in_channels=cl_dims[c],
-                            out_channels=cl_dims[c+1],
+                        nn.Conv2d(in_channels=idim,
+                            out_channels=cl_dims[c],
                             kernel_size=(2,2),
                             stride=1))
+                idim = cl_dims[c]
             self.net.append(nn.Flatten())
-            idim = 96
+            #### Must be modified if the network parameters change
+            idim = cl_dims[-1] * \
+                    ((self.input_dims[-1]-2)**2)
         nlayers = network_dims.nlayers
         nl_dims = network_dims.nl_dims
         for l in range(nlayers):
@@ -49,7 +52,6 @@ class NetworkActorCritic(nn.Module):
             inputs = x
         logits = self.actor_layer(x)
         values = self.critic_layer(x)
-        #breakpoint()
         return F.softmax(logits, dim=1), values
 
 class ACAgent(BaseAgent):
@@ -64,14 +66,13 @@ class ACAgent(BaseAgent):
         self.lr = lr
         self.gamma = gamma 
         self.memory = memory
-        self.total_loss = None
+        self.total_loss = 0
         self.checkpoint = None
         self.checkpoint_name = None
         # Initialize the AC network
         self.network = None
         if self.load_model:
             try:
-                breakpoint()
                 checkpoint = torch.load("trained-policies/"+self.load_model)
                 self.network_dims = checkpoint['network_dims']
                 self.network = NetworkActorCritic(input_dims, output_dims, action_space,
@@ -146,13 +147,14 @@ class ACAgent(BaseAgent):
         self.checkpoint = self.network.state_dict()
 
     def save_model(self):
+        model_name = f"trained-policies/{self.checkpoint_name}"
         torch.save({
             'model_state_dict': self.checkpoint,   
             'loss': self.total_loss,
             'input_dims': self.input_dims,
             'output_dims': self.output_dims,
-            'network_dims': self.network_dims,
-            }, f"trained-policies/{self.checkpoint_name}")
+            'network_dims': dict(self.network_dims),
+            }, model_name)
         print(f"Model Saved {self._id}")
 
     def load_model(self, filename):

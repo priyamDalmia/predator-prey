@@ -13,7 +13,7 @@ import pdb
 
 # Must have list of Agents classe and their policy paths
 prey_class = [ACAgent]
-prey_policies = ['preadator_0-9999-55']
+prey_policies = ['predator_0-4199-36']
 pred_class = [RandomAgent]
 pred_policies = ['random']
 
