@@ -15,18 +15,16 @@ from agents.random_agent import RandomAgent
 from agents.tor_dqn import DQNAgent
 from agents.tor_adv_ac import ACAgent
 
-network_dims=dodict(dict(
+agent_network = dodict(dict(
     clayers=2,
     cl_dims=[6, 12],
     nlayers=2,
     nl_dims=[256, 256]))
-agent_network = dodict(dict(
-    network_dims=network_dims))
 config = dodict(dict(
         # Environment
         size=10,
-        npred=2,
-        nprey=2,
+        npred=1,
+        nprey=1,
         winsize=5,
         nholes=0,
         nobstacles=0,
@@ -54,18 +52,18 @@ config = dodict(dict(
         load_prey=False, 
         load_predator=False,
         # Log Control
-        _name="random-random",
-        save_replay=False,
-        save_checkpoint=False,
+        _name="ac-random",
+        save_replay=True,
+        save_checkpoint=True,
         log_freq = 2,
-        wandb=False,
+        wandb=True,
         wandb_mode="online",
-        wandb_run_name="random:2v2",#"1v1:10:5:256:0.0005",
-        project_name="predator-prey-baselines",
-        msg="Random vs Random Test: 2v2",
-        notes="Testing Random Policy",
+        wandb_run_name="1ac-v-1rand",
+        project_name="predator-tests",
+        msg="AC vs Random Test: 2v2",
+        notes="Testing simple Actor Critic Policy",
         log_level=10,
-        log_file="logs/random.log",
+        log_file="logs/predator.log",
         print_console = True,
         # Checkpoint Control 
         ))
@@ -225,12 +223,14 @@ class train_pred(Trainer):
                 loss=self.loss_avg)
         self.update_logs(epoch, info=info)
         if self.config.print_console:
-                    print(f"Epochs:{epoch:4} | Steps:{self.steps_avg:4.2f}| Rewards:{self.rewards_avg}")
+                    print(\
+                        f"Epochs:{epoch:4} | Steps:{self.steps_avg:4.2f}| Rewards:{self.rewards_avg}")
     
     def make_checkpoint(self, epoch):
         for _id in self.agent_ids:
             if _id.startswith("predator_"):
-                c_name = f"{_id}-{epoch}-{self.steps_avg:.0f}"
+                c_name = \
+                        f"{_id}-{self.config._name}-{epoch}-{self.steps_avg:.0f}"
                 self.agents[_id].save_state(c_name)
     
     def save_model(self):

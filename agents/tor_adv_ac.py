@@ -9,14 +9,13 @@ import pdb
 
 class NetworkActorCritic(nn.Module):
     def __init__(self, input_dims, output_dims, action_space,
-            lr, memory, network_dims,  **kwargs):
+            lr, network_dims,  **kwargs):
         super(NetworkActorCritic, self).__init__()
         self.input_dims = input_dims
         self.output_dims = output_dims
         self.action_space = action_space
         self.lr = lr
         self.network_dims = network_dims
-        self.memory = memory
         self.net = nn.ModuleList()
         # Network Layers
         idim = self.input_dims[0]
@@ -75,17 +74,17 @@ class ACAgent(BaseAgent):
         if self.load_model:
             try:
                 checkpoint = torch.load("trained-policies/"+self.load_model)
-                self.network_dims = checkpoint['network_dims']
+                self.agent_network = checkpoint['agent_network']
                 self.network = NetworkActorCritic(input_dims, output_dims, action_space,
-                        lr, self.network_dims)
+                        lr, self.agent_network)
                 self.network.load_state_dict(checkpoint['model_state_dict'])
                 self.network.eval()
             except:
                 print(f"Trained Polciy for {_id} could not be loaded!")
         else:
-            self.network_dims = agent_network.network_dims
+            self.agent_network = agent_network
             self.network = NetworkActorCritic(input_dims, output_dims, action_space,
-                        lr, self.network_dims)
+                        lr, self.agent_network)
 
         self.deivce = torch.device('cuda:0' if torch.cuda.is_available() else 'cpu')
         self.network = self.network.to(self.device)
@@ -151,7 +150,7 @@ class ACAgent(BaseAgent):
             'loss': self.total_loss,
             'input_dims': self.input_dims,
             'output_dims': self.output_dims,
-            'network_dims': dict(self.network_dims),
+            'agent_network': dict(self.agent_network),
             }, model_name)
         print(f"Model Saved {self._id}")
 

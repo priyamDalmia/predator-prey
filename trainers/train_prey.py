@@ -15,25 +15,24 @@ from agents.random_agent import RandomAgent
 from agents.tor_dqn import DQNAgent
 from agents.tor_adv_ac import ACAgent
 
-network_dims=dodict(dict(
+agent_network = dodict(dict(
     clayers=2,
     cl_dims=[6, 12],
     nlayers=2,
     nl_dims=[256, 256]))
-agent_network = dodict(dict(
-    network_dims=network_dims))
+
 config = dodict(dict(
         # Environment
         size=10,
-        npred=2,
+        npred=1,
         nprey=1,
         winsize=5,
         nholes=0,
         nobstacles=0,
         _map="random",
         # Training Control
-        epochs=50,
-        episodes=1,
+        epochs=100,
+        episodes=1,       # Episodes must be set to 1 for training.
         train_steps=1,
         update_eps=1,
         max_cycles = 500,
@@ -54,16 +53,16 @@ config = dodict(dict(
         load_prey=False, 
         load_predator=False,
         # Log Control
-        _name="prey-AC",
+        _name="random-ac",
         save_replay=True,
         save_checkpoint=True,
-        log_freq = 2,
+        log_freq = 20,
         wandb=False,
         wandb_mode="online",
-        wandb_run_name="1v1:10:5:256:0.0005",#"1v1:10:5:256:0.0005",
-        project_name="predator-prey-tests",
-        msg="Random vs A2C Test: 1v1",
-        notes="single-prey-tests",
+        wandb_run_name="1rand-v-1ac",
+        project_name="prey-tests",
+        msg="Random vs AC Test: 1v1",
+        notes="Testing simple Actor Critic Policy",
         log_level=10,
         log_file="logs/prey.log",
         print_console = True,
@@ -87,12 +86,12 @@ class train_prey(Trainer):
         self.steps_avg = 0
         self.rewards_avg = 0
         self.loss_avg = 0
-    
+
     def train(self):
         steps_hist = []
         rewards_hist = []
         loss_hist = []
-        _best = 100
+        _best = 300
         for epoch in range(self.config.epochs):
             loss = [[0, 0]]
             # Run Episodes
@@ -112,13 +111,13 @@ class train_prey(Trainer):
                 # Make Checkpoints, Save Replays and Update Logs. 
                 self.make_log(epoch, steps_hist, rewards_hist, loss_hist)
                 if self.config.save_checkpoint:
-                    if _best < self.steps_avg:
+                    if _best > self.steps_avg:
                         # Save Agent Network State Dict.
                         self.make_checkpoint(epoch) 
                         _best = self.steps_avg
                         if self.config.save_replay:
                             # Make a Replay File
-                            replay_file = f"{self.config._name}-{epoch}-{int(self.steps_avg)}"
+                            replay_file = f"{self._name}-{epoch}-{int(self.steps_avg)}"
                             self.env.record_episode(replay_file)     
         # Save the best model after training
         if self.config.save_checkpoint:
@@ -128,13 +127,13 @@ class train_prey(Trainer):
 
     def initialize_agents(self):
         agents = {}
-        memory = ReplayBuffer(
-                self.config.buffer_size,
-                self.config.batch_size, 
-                self.input_dims)
         for _id in self.agent_ids:
             if _id.startswith("prey"):
-                agent = self.config.prey_class(
+                memory = ReplayBuffer(
+                    self.config.buffer_size,
+                    self.config.batch_size, 
+                    self.input_dims)
+                agent = self.config.pred_class(
                     _id,  
                     self.input_dims,
                     self.output_dims, 
@@ -143,7 +142,7 @@ class train_prey(Trainer):
                     load_model = self.config.load_pred,
                     **self.config)
             else:
-                agent = self.config.pred_class(
+                agent = self.config.prey_class(
                     _id, 
                     self.input_dims,
                     self.output_dims,
@@ -161,36 +160,47 @@ class train_prey(Trainer):
         reward_hist = []
         epsilon = 0
         for ep in range(self.config.episodes):
-            observation = dict(self.env.reset())
+            observation, done_ = self.env.reset()
             done = False
             steps = 0
+            all_agents = list(self.agents.keys())
             all_rewards = []
+            all_dones = []
+            all_dones.append(list(done_.values()))
             while not done:
                 actions = {}
                 actions_prob = {}
                 state_t = None
                 # Get actions for all agents.
                 for _id in self.agents:
-                    actions[_id], actions_prob[_id] = \
-                            self.agents[_id].get_action(observation[_id])
+                    if not done_[_id]:
+                        actions[_id], actions_prob[_id] = \
+                                self.agents[_id].get_action(observation[_id])
+                    else:
+                        actions[_id] = int(4)
                 states_t = copy.deepcopy(observation)
                 rewards, next_, done, info = self.env.step(actions)
-                for _id in self.agents:
+                for _id in all_agents:
                     self.agents[_id].store_transition(states_t[_id],
                         actions[_id],
                         rewards[_id],
                         next_[_id],
-                        done,
+                        done_[_id],
                         actions_prob[_id])
+                    if done_[_id]:
+                        all_agents.remove(_id)
                 all_rewards.append(list(rewards.values()))
+                all_dones.append(list(done_.values()))
                 observation = dict(next_)
                 steps+=1
                 if steps > self.config.max_cycles:
                     break
-            epsilon = self.agents["prey_0"].epsilon
             step_hist.append(steps)
+            done_df = pd.DataFrame(all_dones)
+            reward_df = \
+                    pd.DataFrame(all_rewards)[-done_df].replace(np.nan, 0.0)
             reward_hist.append(
-                    pd.DataFrame(all_rewards).sum(axis=0).to_list())
+                    pd.DataFrame(reward_df).sum(axis=0).to_list())
         return step_hist, reward_hist, epsilon
     
     def run_training(self, ep_end):
@@ -214,12 +224,14 @@ class train_prey(Trainer):
                 loss=self.loss_avg)
         self.update_logs(epoch, info=info)
         if self.config.print_console:
-                    print(f"Epochs:{epoch:4} | Steps:{self.steps_avg:4.2f}| Rewards:{self.rewards_avg}")
+                    print(\
+                        f"Epochs:{epoch:4} | Steps:{self.steps_avg:4.2f}| Rewards:{self.rewards_avg}")
     
     def make_checkpoint(self, epoch):
         for _id in self.agent_ids:
             if _id.startswith("prey_"):
-                c_name = f"{_id}-{epoch}-{self.steps_avg:.0f}"
+                c_name = \
+                        f"{_id}-{self.config._name}-{epoch}-{self.steps_avg:.0f}"
                 self.agents[_id].save_state(c_name)
     
     def save_model(self):
