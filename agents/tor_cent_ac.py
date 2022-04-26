@@ -204,7 +204,6 @@ class CACAgent(BaseAgent):
 
         states = torch.as_tensor(states, device=self.device)
         # Get Values from the Critic Here
-        breakpoint()
         # Calculate Advantage using the Centralized Critic.
         advantage = _rewards - state_values
         # Calculate and Backpropogate the Actor Loss.
@@ -213,7 +212,7 @@ class CACAgent(BaseAgent):
         loss = (actor_loss).mean()
         loss.backward()
         self.optimizer.step()
-        return [loss.item(), 0]
+        return loss.item()
 
     def discount_rewards(self, rewards, dones):
         new_rewards = []

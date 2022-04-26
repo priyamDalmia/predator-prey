@@ -38,8 +38,8 @@ config = dodict(dict(
         nobstacles=0,
         _map="random",
         # Training Control
-        epochs=10000,
-        episodes=1,       # Episodes must be set to 1 for training.
+        epochs=5,
+        episodes=2,       # Episodes must be set to 1 for training.
         train_steps=1,
         update_eps=1,
         max_cycles = 500,
@@ -47,7 +47,7 @@ config = dodict(dict(
         # Agent Control
         pred_class=CACAgent,
         prey_class=RandomAgent,
-        agent_type="centralized-actor-critic",
+        agent_type="cent-AC",
         lr=0.0005, 
         gamma=0.95,
         epislon=0.95,
@@ -100,16 +100,16 @@ class train_pred(Trainer):
         loss_hist = []
         _best = 300
         for epoch in range(self.config.epochs):
-            loss = [[0, 0]]
+            loss = [[0, 0, 0]]
             # Run Episodes
             steps, rewards, epsilon = self.run_episodes()
             # Train Agents 
             if self.config.training:
                 loss = self.run_training(ep_end=True)
             # Any Agent Specific Update goes here.
-            if (epoch%self.config.update_eps):
-                for _id in self.agents:
-                    self.agent[_id].update_epsilon()
+            #if (epoch%self.config.update_eps):
+            #    for _id in self.agents:
+            #        self.agent[_id].update_epsilon()
             # Logging results
             steps_hist.append(steps)
             rewards_hist.extend(rewards)
@@ -124,7 +124,7 @@ class train_pred(Trainer):
                         _best = self.steps_avg
                         if self.config.save_replay:
                             # Make a Replay File
-                            replay_file = f"{self._name}-{epoch}-{int(self.steps_avg)}"
+                            replay_file = f"{self.config.agent_type}-{epoch}-{int(self.steps_avg)}"
                             self.env.record_episode(replay_file)     
         # Save the best model after training
         if self.config.save_checkpoint:
@@ -225,22 +225,33 @@ class train_pred(Trainer):
         return step_hist, reward_hist, epsilon
     
     def run_training(self, ep_end):
+        """run_training.
+        Runs a training loop. Trains the Critic on the combined rewards, and returns the 
+        state_values. These state_values are used to compute the advantage using which the 
+        agent actor policies are then trained.
+        Args:
+            ep_end:
+        """
         loss_hist = []
-        breakpoint()
-        # Train Critic And Recieve state_valeus and critic_loss
-        state_values, loss = self.critic.train_step()
         for i in range(self.config.train_steps):
+            # Train Critic And Recieve state_valeus and critic_loss
+            state_values, critic_loss = self.critic.train_step()
+            loss_hist.append(critic_loss)
             for _id in self.agents:
                 if _id.startswith("predator"):
                     loss = self.agents[_id].train_step(state_values)
-            loss_hist.append(loss)
+                    loss_hist.append(loss)
         return loss_hist
 
     def make_log(self, epoch, steps_hist, rewards_hist, loss_hist):
         self.steps_avg = np.mean(steps_hist[-99:])
         self.rewards_avg = pd.DataFrame(rewards_hist, columns = self.agent_ids)\
                         .mean(0).round(2).to_dict()
-        self.loss_avg = pd.DataFrame(loss_hist, columns=["total_loss", "delta_loss"])\
+        columns = ["critic_loss", "pred1_loss", "pred2_loss"]
+        if self.config.npred > 2:
+            breakpoint()
+            # Fix the Column names before Procedding.
+        self.loss_avg = pd.DataFrame(loss_hist, columns=columns)\
                         .mean(0).round(2).to_dict()
         info = dict(
                 steps=self.steps_avg,
@@ -253,7 +264,7 @@ class train_pred(Trainer):
     def make_checkpoint(self, epoch):
         for _id in self.agent_ids:
             if _id.startswith("predator_"):
-                c_name = f"{_id}-{epoch}-{self.steps_avg:.0f}"
+                c_name = f"{self.config._name}-{_id}-{epoch}-{self.steps_avg:.0f}"
                 self.agents[_id].save_state(c_name)
     
     def save_model(self):

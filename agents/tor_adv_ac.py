@@ -55,10 +55,6 @@ class NetworkActorCritic(nn.Module):
         values = self.critic_layer(x)
         return F.softmax(logits, dim=1), values
 
-    def store_transtion(state, rewards):
-        breakpoint()
-        self.memory.store_transition()
-
 class ACAgent(BaseAgent):
     def __init__(self, _id, input_dims, output_dims, 
             action_space, memory=None, lr=0.01, gamma=0.95,
@@ -116,12 +112,12 @@ class ACAgent(BaseAgent):
         advantage = _rewards - state_values.detach()
         # Calculating Actor loss
         self.network.optimizer.zero_grad()
-        actor_loss = (-torch.stack(log_probs) * advantage)
-        delta_loss = ((state_values - _rewards)**2)
-        loss = (actor_loss + delta_loss).mean()
+        actor_loss = (-torch.stack(log_probs) * advantage).mean()
+        delta_loss = ((state_values - _rewards)**2).mean()
+        loss = (actor_loss + delta_loss)
         loss.backward()
         self.network.optimizer.step()
-        return [loss.item(), 0]   
+        return [actor.item(), delta_loss.item()]   
 
     def discount_reward(self, rewards, dones):
         new_rewards = []
