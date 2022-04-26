@@ -49,18 +49,18 @@ config = dodict(dict(
         batch_size=64,
         buffer_size=5000,
         # Models
-        load_prey=False, 
-        load_predator=False,
+        load_prey=False, # 'prey_0-random-ac-99-135', 
+        load_pred=False, #'predator_0-ac-random-19-83',
         # Log Control
         _name="ac-random",
         save_replay=True,
         save_checkpoint=True,
-        log_freq = 2,
+        log_freq = 200,
         wandb=True,
         wandb_mode="online",
         wandb_run_name="1ac-v-1rand",
         project_name="predator-tests",
-        msg="AC vs Random Test: 2v2",
+        msg="AC vs Random Test: 1v1",
         notes="Testing simple Actor Critic Policy",
         log_level=10,
         log_file="logs/predator.log",
@@ -116,7 +116,7 @@ class train_pred(Trainer):
                         _best = self.steps_avg
                         if self.config.save_replay:
                             # Make a Replay File
-                            replay_file = f"{self._name}-{epoch}-{int(self.steps_avg)}"
+                            replay_file = f"{self.config._name}-{epoch}-{int(self.steps_avg)}"
                             self.env.record_episode(replay_file)     
         # Save the best model after training
         if self.config.save_checkpoint:

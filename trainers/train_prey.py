@@ -31,7 +31,7 @@ config = dodict(dict(
         nobstacles=0,
         _map="random",
         # Training Control
-        epochs=100,
+        epochs=5000,
         episodes=1,       # Episodes must be set to 1 for training.
         train_steps=1,
         update_eps=1,
@@ -50,14 +50,14 @@ config = dodict(dict(
         batch_size=64,
         buffer_size=5000,
         # Models
-        load_prey=False, 
-        load_predator=False,
+        load_prey=False, #'prey_0-random-ac-39-116', 
+        load_pred=False,
         # Log Control
         _name="random-ac",
         save_replay=True,
         save_checkpoint=True,
-        log_freq = 20,
-        wandb=False,
+        log_freq = 200,
+        wandb=True,
         wandb_mode="online",
         wandb_run_name="1rand-v-1ac",
         project_name="prey-tests",
@@ -91,7 +91,7 @@ class train_prey(Trainer):
         steps_hist = []
         rewards_hist = []
         loss_hist = []
-        _best = 300
+        _best = 100
         for epoch in range(self.config.epochs):
             loss = [[0, 0]]
             # Run Episodes
@@ -111,13 +111,13 @@ class train_prey(Trainer):
                 # Make Checkpoints, Save Replays and Update Logs. 
                 self.make_log(epoch, steps_hist, rewards_hist, loss_hist)
                 if self.config.save_checkpoint:
-                    if _best > self.steps_avg:
+                    if _best < self.steps_avg:
                         # Save Agent Network State Dict.
                         self.make_checkpoint(epoch) 
                         _best = self.steps_avg
                         if self.config.save_replay:
                             # Make a Replay File
-                            replay_file = f"{self._name}-{epoch}-{int(self.steps_avg)}"
+                            replay_file = f"{self.config._name}-{epoch}-{int(self.steps_avg)}"
                             self.env.record_episode(replay_file)     
         # Save the best model after training
         if self.config.save_checkpoint:
@@ -133,22 +133,22 @@ class train_prey(Trainer):
                     self.config.buffer_size,
                     self.config.batch_size, 
                     self.input_dims)
-                agent = self.config.pred_class(
+                agent = self.config.prey_class(
                     _id,  
                     self.input_dims,
                     self.output_dims, 
                     self.action_space,
                     memory = memory,
-                    load_model = self.config.load_pred,
+                    load_model = self.config.load_prey,
                     **self.config)
             else:
-                agent = self.config.prey_class(
+                agent = self.config.pred_class(
                     _id, 
                     self.input_dims,
                     self.output_dims,
                     self.action_space,
                     memory = None,
-                    load_model = self.config.load_prey,
+                    load_model = self.config.load_pred,
                     **self.config)
                 self.log("Agent {_id}, Device {agent.device}")
             assert isinstance(agent, BaseAgent), "Error: Derive agent from BaseAgent!"
@@ -230,9 +230,9 @@ class train_prey(Trainer):
     def make_checkpoint(self, epoch):
         for _id in self.agent_ids:
             if _id.startswith("prey_"):
-                c_name = \
+                cname = \
                         f"{_id}-{self.config._name}-{epoch}-{self.steps_avg:.0f}"
-                self.agents[_id].save_state(c_name)
+                self.agents[_id].save_state(cname)
     
     def save_model(self):
         for _id in self.agent_ids:

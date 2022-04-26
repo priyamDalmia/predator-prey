@@ -4,6 +4,7 @@ import torch.nn.functional as F
 import torch.optim as optim
 import torch.distributions as dist 
 import numpy as np
+from data.helpers import dodict
 from data.agent import BaseAgent
 import pdb
 
@@ -73,8 +74,8 @@ class ACAgent(BaseAgent):
         self.network = None
         if self.load_model:
             try:
-                checkpoint = torch.load("trained-policies/"+self.load_model)
-                self.agent_network = checkpoint['agent_network']
+                checkpoint = torch.load("trained-policies/single/"+self.load_model)
+                self.agent_network = dodict(checkpoint['agent_network'])
                 self.network = NetworkActorCritic(input_dims, output_dims, action_space,
                         lr, self.agent_network)
                 self.network.load_state_dict(checkpoint['model_state_dict'])
@@ -116,7 +117,7 @@ class ACAgent(BaseAgent):
         loss = (actor_loss + delta_loss)
         loss.backward()
         self.network.optimizer.step()
-        return [actor.item(), delta_loss.item()]   
+        return [actor_loss.item(), delta_loss.item()]   
 
     def discount_reward(self, rewards, dones):
         new_rewards = []
@@ -152,7 +153,7 @@ class ACAgent(BaseAgent):
             'output_dims': self.output_dims,
             'agent_network': dict(self.agent_network),
             }, model_name)
-        print(f"Model Saved {self._id}")
+        print(f"Model Saved {self._id} | {model_name}")
 
     def load_model(self, filename):
         # must call model.eval or model.train
