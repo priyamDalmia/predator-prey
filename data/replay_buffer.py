@@ -57,7 +57,6 @@ class ReplayBuffer():
         return states, actions, rewards, next_, dones, action_probs
 
     def clear_buffer(self):
-        gc.collect()
         self.counter = 0
         # memory 
         self.states = np.zeros((self.buffer_size, *self.state_size), dtype=np.float32)
@@ -69,3 +68,33 @@ class ReplayBuffer():
         #self.next_actions = np.zeros((self.
         #self.dones = []
         self.infos = []
+
+class Critic_Buffer():
+    def __init__(self, buffer_size, batch_size, state_size):
+        self.buffer_size = buffer_size
+        self.batch_size = batch_size
+        self.state_size = state_size
+        self.counter = 0
+        # memory 
+        self.states = np.zeros((self.buffer_size, *self.state_size), dtype=np.float32)
+        self.rewards = np.zeros((self.buffer_size), dtype=np.float32)
+    
+    def clear_buffer(self):
+        self.counter = 0
+        # memory 
+        self.states = np.zeros((self.buffer_size, *self.state_size), dtype=np.float32)
+        self.rewards = np.zeros((self.buffer_size), dtype=np.float32)
+    
+    def sample_transition(self):
+        states = self.states[:self.counter]
+        rewards = self.rewards[:self.counter]
+        self.clear_buffer()
+        return states, rewards
+
+    def store_transition(self, state, reward):
+        index = self.counter % self.buffer_size
+        self.states[index] = state
+        self.rewards[index] = reward
+        self.counter += 1
+
+

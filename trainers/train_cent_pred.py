@@ -5,23 +5,29 @@ import pdb
 import copy
 import numpy as np
 import pandas as pd
+import torch
 from game.game import Game
 from data.helpers import dodict
 from data.trainer import Trainer
-from data.replay_buffer import ReplayBuffer
+from data.replay_buffer import ReplayBuffer, Critic_Buffer
 # Importing Agents
 from data.agent import BaseAgent
 from agents.random_agent import RandomAgent
-from agents.tor_dqn import DQNAgent
 from agents.tor_adv_ac import ACAgent
+from agents.tor_cent_ac import CACAgent, NetworkCritic
 
-network_dims=dodict(dict(
+actor_network = dodict(dict(
     clayers=2,
     cl_dims=[6, 12],
     nlayers=2,
     nl_dims=[256, 256]))
-agent_network = dodict(dict(
-    network_dims=network_dims))
+
+critic_network = dodict(dict(
+    clayers=2,
+    cl_dims=[6, 12],
+    nlayers=2,
+    nl_dims=[256, 256]))
+
 config = dodict(dict(
         # Environment
         size=10,
@@ -39,17 +45,16 @@ config = dodict(dict(
         max_cycles = 500,
         training=True,
         # Agent Control
-        pred_class=ACAgent,
+        pred_class=CACAgent,
         prey_class=RandomAgent,
-        agent_type="actor-critic",
-        agent_network=agent_network,
+        agent_type="centralized-actor-critic",
         lr=0.0005, 
         gamma=0.95,
         epislon=0.95,
         epsilon_dec=0.99,
         epsilon_update=10,
         batch_size=64,
-        buffer_size=5000,
+        buffer_size=1500,
         # Models
         load_prey=False, 
         load_predator=False,
@@ -80,8 +85,9 @@ class train_pred(Trainer):
         self.action_space = env_specs["action_space"]
         self.logger = self.get_logger()
         # Initialize the agent
+        self.device = torch.device('cuda:0' if torch.cuda.is_available() else 'cpu')
         self.agent_ids = env.agent_ids
-        self.agents = self.initialize_agents()
+        self.agents, self.critic = self.initialize_agents()
         # Fix: Checkpoint states for saving policies  
         self.checkpnt_state = None
         self.steps_avg = 0
@@ -128,6 +134,16 @@ class train_pred(Trainer):
 
     def initialize_agents(self):
         agents = {}
+        # Initialize a Critic Network here!
+        # Fix Critic Dims
+        critic_input_dims = ((self.config.npred*self.input_dims[0]), \
+                self.input_dims[1], self.input_dims[2])
+        critic_memory = Critic_Buffer(self.config.buffer_size, self.config.batch_size,
+                critic_input_dims)
+        critic = NetworkCritic(critic_input_dims, output_dims, memory=critic_memory, 
+                network_dims=critic_network, **self.config)
+        critic = critic.to(self.device)
+        # Move Critic to DEVICE here!
         for _id in self.agent_ids:
             if _id.startswith("predator"):
                 memory = ReplayBuffer(
@@ -141,6 +157,8 @@ class train_pred(Trainer):
                     self.action_space,
                     memory = memory,
                     load_model = self.config.load_pred,
+                    actor_network = actor_network,
+                    critic = critic,
                     **self.config)
             else:
                 agent = self.config.prey_class(
@@ -154,7 +172,7 @@ class train_pred(Trainer):
                 self.log("Agent {_id}, Device {agent.device}")
             assert isinstance(agent, BaseAgent), "Error: Derive agent from BaseAgent!"
             agents[_id] = agent
-        return agents
+        return agents, critic
 
     def run_episodes(self):
         step_hist = []
@@ -190,6 +208,8 @@ class train_pred(Trainer):
                         actions_prob[_id])
                     if done_[_id]:
                         all_agents.remove(_id)
+                # Store Critics Observation Here.
+                self.critic.store_transition(states_t, rewards)
                 all_rewards.append(list(rewards.values()))
                 all_dones.append(list(done_.values()))
                 observation = dict(next_)
@@ -206,10 +226,13 @@ class train_pred(Trainer):
     
     def run_training(self, ep_end):
         loss_hist = []
+        breakpoint()
+        # Train Critic And Recieve state_valeus and critic_loss
+        state_values, loss = self.critic.train_step()
         for i in range(self.config.train_steps):
             for _id in self.agents:
                 if _id.startswith("predator"):
-                    loss = self.agents[_id].train_step()
+                    loss = self.agents[_id].train_step(state_values)
             loss_hist.append(loss)
         return loss_hist
 

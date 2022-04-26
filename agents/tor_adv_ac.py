@@ -9,15 +9,16 @@ import pdb
 
 class NetworkActorCritic(nn.Module):
     def __init__(self, input_dims, output_dims, action_space,
-            lr, network_dims, **kwargs):
+            lr, memory, network_dims,  **kwargs):
         super(NetworkActorCritic, self).__init__()
         self.input_dims = input_dims
         self.output_dims = output_dims
         self.action_space = action_space
         self.lr = lr
         self.network_dims = network_dims
+        self.memory = memory
         self.net = nn.ModuleList()
-        # Network Layers 
+        # Network Layers
         idim = self.input_dims[0]
         if len(self.input_dims) != 1:
             # Convolutional Layers
@@ -53,6 +54,10 @@ class NetworkActorCritic(nn.Module):
         logits = self.actor_layer(x)
         values = self.critic_layer(x)
         return F.softmax(logits, dim=1), values
+
+    def store_transtion(state, rewards):
+        breakpoint()
+        self.memory.store_transition()
 
 class ACAgent(BaseAgent):
     def __init__(self, _id, input_dims, output_dims, 
@@ -93,16 +98,12 @@ class ACAgent(BaseAgent):
         observation = torch.as_tensor(observation, dtype=torch.float32,
                 device=self.device)
         probs, values = self.network(observation.unsqueeze(0))
-        try:
-            action_dist = dist.Categorical(probs)
-        except Exception as e:
-            print(e)
+        action_dist = dist.Categorical(probs)
         action = action_dist.sample() 
         log_probs =  action_dist.log_prob(action)
         return action.item(), log_probs
     
     def train_step(self):
-        breakpoint()
         states, actions, rewards, nexts, dones, log_probs =\
                 self.memory.sample_transition()     
         # Discount the rewards 
@@ -148,7 +149,7 @@ class ACAgent(BaseAgent):
         self.checkpoint = self.network.state_dict()
 
     def save_model(self):
-        model_name = f"trained-policies/{self.checkpoint_name}"
+        model_name = f"trained-policies/single/{self.checkpoint_name}"
         torch.save({
             'model_state_dict': self.checkpoint,   
             'loss': self.total_loss,
