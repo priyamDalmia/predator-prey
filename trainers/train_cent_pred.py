@@ -38,8 +38,8 @@ config = dodict(dict(
         nobstacles=0,
         _map="random",
         # Training Control
-        epochs=5,
-        episodes=2,       # Episodes must be set to 1 for training.
+        epochs=1000,
+        episodes=1,       # Episodes must be set to 1 for training.
         train_steps=1,
         update_eps=1,
         max_cycles = 500,
@@ -47,7 +47,7 @@ config = dodict(dict(
         # Agent Control
         pred_class=CACAgent,
         prey_class=RandomAgent,
-        agent_type="cent-AC",
+        agent_type="cAC-rand",
         lr=0.0005, 
         gamma=0.95,
         epislon=0.95,
@@ -59,15 +59,15 @@ config = dodict(dict(
         load_prey=False, 
         load_predator=False,
         # Log Control
-        _name="random-random",
-        save_replay=False,
-        save_checkpoint=False,
-        log_freq = 2,
-        wandb=False,
+        _name="cac-2random",
+        save_replay=True,
+        save_checkpoint=True,
+        log_freq = 200,
+        wandb=True,
         wandb_mode="online",
-        wandb_run_name="random:2v2",#"1v1:10:5:256:0.0005",
-        project_name="predator-prey-baselines",
-        msg="Random vs Random Test: 2v2",
+        wandb_run_name="1ac-v-1ac",#"1v1:10:5:256:0.0005",
+        project_name="eval-tests",
+        msg="Centralized training  Test: 2v2",
         notes="Testing Random Policy",
         log_level=10,
         log_file="logs/random.log",
@@ -124,7 +124,7 @@ class train_pred(Trainer):
                         _best = self.steps_avg
                         if self.config.save_replay:
                             # Make a Replay File
-                            replay_file = f"{self.config.agent_type}-{epoch}-{int(self.steps_avg)}"
+                            replay_file = f"{self.config._name}-{epoch}-{int(self.steps_avg)}"
                             self.env.record_episode(replay_file)     
         # Save the best model after training
         if self.config.save_checkpoint:
@@ -241,7 +241,7 @@ class train_pred(Trainer):
                 if _id.startswith("predator"):
                     loss = self.agents[_id].train_step(state_values)
                     loss_hist.append(loss)
-        return loss_hist
+        return [loss_hist]
 
     def make_log(self, epoch, steps_hist, rewards_hist, loss_hist):
         self.steps_avg = np.mean(steps_hist[-99:])
@@ -251,8 +251,10 @@ class train_pred(Trainer):
         if self.config.npred > 2:
             breakpoint()
             # Fix the Column names before Procedding.
-        self.loss_avg = pd.DataFrame(loss_hist, columns=columns)\
-                        .mean(0).round(2).to_dict()
+        try:
+            self.loss_avg = pd.DataFrame(loss_hist, columns=columns).mean(0).round(2).to_dict()
+        except:
+            breakpoint()
         info = dict(
                 steps=self.steps_avg,
                 rewards=self.rewards_avg,
@@ -264,7 +266,7 @@ class train_pred(Trainer):
     def make_checkpoint(self, epoch):
         for _id in self.agent_ids:
             if _id.startswith("predator_"):
-                c_name = f"{self.config._name}-{_id}-{epoch}-{self.steps_avg:.0f}"
+                c_name = f"{_id}-{self.config._name}-{epoch}-{self.steps_avg:.0f}"
                 self.agents[_id].save_state(c_name)
     
     def save_model(self):
