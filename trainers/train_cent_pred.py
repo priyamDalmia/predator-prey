@@ -38,7 +38,11 @@ config = dodict(dict(
         nobstacles=0,
         _map="random",
         # Training Control
+<<<<<<< HEAD
         epochs=10000,
+=======
+        epochs=1000,
+>>>>>>> 727bf568499b02320f4a28ae71fd678069789267
         episodes=1,       # Episodes must be set to 1 for training.
         train_steps=1,
         update_eps=1,
@@ -47,7 +51,7 @@ config = dodict(dict(
         # Agent Control
         pred_class=CACAgent,
         prey_class=RandomAgent,
-        agent_type="cent-AC",
+        agent_type="cAC-rand",
         lr=0.0005, 
         gamma=0.95,
         epislon=0.95,
@@ -59,16 +63,27 @@ config = dodict(dict(
         load_prey=False, 
         load_predator=False,
         # Log Control
+<<<<<<< HEAD
         _name="CAC-rand",
+=======
+        _name="cac-2random",
+>>>>>>> 727bf568499b02320f4a28ae71fd678069789267
         save_replay=True,
         save_checkpoint=True,
         log_freq = 200,
         wandb=True,
         wandb_mode="online",
+<<<<<<< HEAD
         entity="rl-multi-predprey",
         project_name="predator-prey-baselines",
         msg="CAC vs Random Test: 2v2",
         notes="Testing Centralized Training",
+=======
+        wandb_run_name="1ac-v-1ac",#"1v1:10:5:256:0.0005",
+        project_name="eval-tests",
+        msg="Centralized training  Test: 2v2",
+        notes="Testing Random Policy",
+>>>>>>> 727bf568499b02320f4a28ae71fd678069789267
         log_level=10,
         log_file="logs/random.log",
         print_console = True,
@@ -250,8 +265,10 @@ class train_pred(Trainer):
         if self.config.npred > 2:
             breakpoint()
             # Fix the Column names before Procedding.
-        self.loss_avg = pd.DataFrame(loss_hist, columns=columns)\
-                        .mean(0).round(2).to_dict()
+        try:
+            self.loss_avg = pd.DataFrame(loss_hist, columns=columns).mean(0).round(2).to_dict()
+        except:
+            breakpoint()
         info = dict(
                 steps=self.steps_avg,
                 rewards=self.rewards_avg,
@@ -263,7 +280,7 @@ class train_pred(Trainer):
     def make_checkpoint(self, epoch):
         for _id in self.agent_ids:
             if _id.startswith("predator_"):
-                c_name = f"{self.config._name}-{_id}-{epoch}-{self.steps_avg:.0f}"
+                c_name = f"{_id}-{self.config._name}-{epoch}-{self.steps_avg:.0f}"
                 self.agents[_id].save_state(c_name)
     
     def save_model(self):

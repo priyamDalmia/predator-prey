@@ -58,7 +58,8 @@ class NetworkActorCritic(nn.Module):
 class ACAgent(BaseAgent):
     def __init__(self, _id, input_dims, output_dims, 
             action_space, memory=None, lr=0.01, gamma=0.95,
-            load_model=False, agent_network={}, **kwargs):
+            load_model=False, agent_network={}, _eval=False,
+            **kwargs):
         super(ACAgent, self).__init__(_id)
         self.input_dims = input_dims
         self.output_dims = output_dims
@@ -79,9 +80,13 @@ class ACAgent(BaseAgent):
                 self.network = NetworkActorCritic(input_dims, output_dims, action_space,
                         lr, self.agent_network)
                 self.network.load_state_dict(checkpoint['model_state_dict'])
-                self.network.eval()
+                if _eval:
+                    self.network.eval()
+                else:
+                    self.network.trian()
+                print(f"Load Successfull: {self.load_model}")
             except:
-                print(f"Trained Polciy for {_id} could not be loaded!")
+                print(f"Load Failed: {self.load_model}")
         else:
             self.agent_network = agent_network
             self.network = NetworkActorCritic(input_dims, output_dims, action_space,
@@ -102,6 +107,8 @@ class ACAgent(BaseAgent):
     def train_step(self):
         states, actions, rewards, nexts, dones, log_probs =\
                 self.memory.sample_transition()     
+        if len(states) == 0:
+            return [0, 0]
         # Discount the rewards 
         _rewards = self.discount_reward(rewards, dones)
         _rewards = torch.as_tensor(_rewards, dtype=torch.float32, device=self.device).unsqueeze(-1)
@@ -112,12 +119,18 @@ class ACAgent(BaseAgent):
         advantage = _rewards - state_values.detach()
         # Calculating Actor loss
         self.network.optimizer.zero_grad()
+<<<<<<< HEAD
         try:
             actor_loss = (-torch.stack(log_probs) * advantage).mean()
             delta_loss = ((state_values - _rewards)**2).mean()
         except:
             breakpoint()
         loss = (actor_loss + delta_loss)
+=======
+        actor_loss = (-torch.stack(log_probs) * advantage).mean()
+        delta_loss = ((state_values - _rewards)**2).mean()
+        loss = (actor_loss + delta_loss).mean()
+>>>>>>> 727bf568499b02320f4a28ae71fd678069789267
         loss.backward()
         self.network.optimizer.step()
         return [actor_loss.item(), delta_loss.item()]   

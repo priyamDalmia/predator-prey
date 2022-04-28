@@ -18,4 +18,4 @@
 
 module load pytorch/1.5.1-python-3.7.4
 
-python3 trainers/train_prey.py
+python3 trainers/train_pred.py

@@ -20,6 +20,7 @@ agent_network = dodict(dict(
     cl_dims=[6, 12],
     nlayers=2,
     nl_dims=[256, 256]))
+
 config = dodict(dict(
         # Environment
         size=10,
@@ -31,14 +32,17 @@ config = dodict(dict(
         _map="random",
         # Training Control
         epochs=100,
+        epochs=201,
         episodes=1,       # Episodes must be set to 1 for training.
         train_steps=1,
         update_eps=1,
         max_cycles = 500,
-        training=True,
+        training=False,
+        pred_eval=True,
+        prey_eval=True,
         # Agent Control
         pred_class=ACAgent,
-        prey_class=RandomAgent,
+        prey_class=ACAgent,
         agent_type="actor-critic",
         agent_network=agent_network,
         lr=0.0005, 
@@ -49,10 +53,10 @@ config = dodict(dict(
         batch_size=64,
         buffer_size=5000,
         # Models
-        load_prey=False, # 'prey_0-random-ac-99-135', 
-        load_pred=False, #'predator_0-ac-random-19-83',
+        load_prey='predator_0-1ac-1random-4799-29', # 'prey_0-random-ac-99-135', 
+        load_pred='prey_0-1random-1ac-4799-390', #'predator_0-ac-random-19-83',
         # Log Control
-        _name="ac-random",
+        _name="eval-1ac-1rand",
         save_replay=True,
         save_checkpoint=True,
         log_freq = 20,
@@ -60,9 +64,13 @@ config = dodict(dict(
         wandb_mode="online",
         entity="rl-multi-predprey",
         wandb_run_name="1ac-v-1rand",
+        log_freq = 50,
+        wandb=False,
+        wandb_mode="online",
+        wandb_run_name="1ac-v-1rand:256:0.0005",
         project_name="predator-tests",
-        msg="AC vs Random Test: 1v1",
-        notes="Testing simple Actor Critic Policy",
+        msg="AC vs AC: 1v1",
+        notes="Evaluating policy",
         log_level=10,
         log_file="logs/predator.log",
         print_console = True,
@@ -140,6 +148,7 @@ class train_pred(Trainer):
                     self.action_space,
                     memory = memory,
                     load_model = self.config.load_pred,
+                    _eval = self.config.pred_eval,
                     **self.config)
             else:
                 agent = self.config.prey_class(
@@ -149,6 +158,7 @@ class train_pred(Trainer):
                     self.action_space,
                     memory = None,
                     load_model = self.config.load_prey,
+                    _eval = self.config.prey_eval,
                     **self.config)
                 self.log("Agent {_id}, Device {agent.device}")
             assert isinstance(agent, BaseAgent), "Error: Derive agent from BaseAgent!"

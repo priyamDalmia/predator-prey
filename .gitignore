@@ -134,6 +134,10 @@ logs/
 slurmoutput/
 slurm-scripts/
 
+# Repalys
+./replays
+replays/
+
 # Samples 
 ./samples
 samples/
