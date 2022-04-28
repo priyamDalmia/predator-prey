@@ -112,8 +112,11 @@ class ACAgent(BaseAgent):
         advantage = _rewards - state_values.detach()
         # Calculating Actor loss
         self.network.optimizer.zero_grad()
-        actor_loss = (-torch.stack(log_probs) * advantage).mean()
-        delta_loss = ((state_values - _rewards)**2).mean()
+        try:
+            actor_loss = (-torch.stack(log_probs) * advantage).mean()
+            delta_loss = ((state_values - _rewards)**2).mean()
+        except:
+            breakpoint()
         loss = (actor_loss + delta_loss)
         loss.backward()
         self.network.optimizer.step()

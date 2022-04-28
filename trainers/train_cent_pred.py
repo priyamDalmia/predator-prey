@@ -38,8 +38,8 @@ config = dodict(dict(
         nobstacles=0,
         _map="random",
         # Training Control
-        epochs=5,
-        episodes=2,       # Episodes must be set to 1 for training.
+        epochs=10000,
+        episodes=1,       # Episodes must be set to 1 for training.
         train_steps=1,
         update_eps=1,
         max_cycles = 500,
@@ -59,16 +59,16 @@ config = dodict(dict(
         load_prey=False, 
         load_predator=False,
         # Log Control
-        _name="random-random",
-        save_replay=False,
-        save_checkpoint=False,
-        log_freq = 2,
-        wandb=False,
+        _name="CAC-rand",
+        save_replay=True,
+        save_checkpoint=True,
+        log_freq = 200,
+        wandb=True,
         wandb_mode="online",
-        wandb_run_name="random:2v2",#"1v1:10:5:256:0.0005",
+        entity="rl-multi-predprey",
         project_name="predator-prey-baselines",
-        msg="Random vs Random Test: 2v2",
-        notes="Testing Random Policy",
+        msg="CAC vs Random Test: 2v2",
+        notes="Testing Centralized Training",
         log_level=10,
         log_file="logs/random.log",
         print_console = True,
@@ -83,7 +83,6 @@ class train_pred(Trainer):
         self.input_dims = env_specs["input_dims"]
         self.output_dims = env_specs["output_dims"]
         self.action_space = env_specs["action_space"]
-        self.logger = self.get_logger()
         # Initialize the agent
         self.device = torch.device('cuda:0' if torch.cuda.is_available() else 'cpu')
         self.agent_ids = env.agent_ids
@@ -124,7 +123,7 @@ class train_pred(Trainer):
                         _best = self.steps_avg
                         if self.config.save_replay:
                             # Make a Replay File
-                            replay_file = f"{self.config.agent_type}-{epoch}-{int(self.steps_avg)}"
+                            replay_file = f"{self.config._name}-{epoch}-{int(self.steps_avg)}"
                             self.env.record_episode(replay_file)     
         # Save the best model after training
         if self.config.save_checkpoint:
@@ -241,7 +240,7 @@ class train_pred(Trainer):
                 if _id.startswith("predator"):
                     loss = self.agents[_id].train_step(state_values)
                     loss_hist.append(loss)
-        return loss_hist
+        return [loss_hist]
 
     def make_log(self, epoch, steps_hist, rewards_hist, loss_hist):
         self.steps_avg = np.mean(steps_hist[-99:])

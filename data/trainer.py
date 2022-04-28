@@ -17,7 +17,8 @@ class Trainer(ABC):
             wandb.init(project=self.config.project_name,
                     notes=self.config.notes,
                     mode=self.config.wandb_mode,
-                    config=self.config)
+                    config=self.config
+                    entity=self.config.entity)
             wandb.run.name = self.config.wandb_run_name
         logger = logging.getLogger(__name__)
         formatter = logging.Formatter('%(message)s')
@@ -27,6 +28,7 @@ class Trainer(ABC):
         logger.addHandler(file_handler)
         logger.info(f"{__name__}:{self.config.msg}")
         logger.info(datetime.now().strftime("%d/%m %H:%M"))
+        print(f"{self.config.msg}")
         return logger
 
     def shut_logger(self):

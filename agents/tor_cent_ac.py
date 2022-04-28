@@ -79,8 +79,9 @@ class NetworkCritic(nn.Module):
     def discount_rewards(self, rewards):
         new_rewards = []
         _sum = 0
+        rewards = np.flip(rewards)
         for i in range(len(rewards)):
-            r = rewards[-1+i]
+            r = rewards[i]
             _sum *= self.gamma 
             _sum += r
             new_rewards.append(_sum)
@@ -242,7 +243,7 @@ class CACAgent(BaseAgent):
             'loss': self.total_loss,
             'input_dims': self.input_dims,
             'output_dims': self.output_dims,
-            'network_dims': dict(self.network_dims),
+            'network_dims': dict(self.actor_network),
             }, model_name)
     
     def load_model(self):

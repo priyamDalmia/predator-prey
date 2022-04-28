@@ -7,6 +7,8 @@ import json
 from data.common import ACTIONS
 from game.game_state import GameState
 
+import pdb
+
 class Game():
     def __init__(self, config):
         self.size = config.size
@@ -19,7 +21,7 @@ class Game():
         # Game managment variables
         self.units = (self.npredators + self.npreys + 1)
         self.action_space = [i for i in range(4)]
-        self.observation_space = np.zeros((self.units, self.window_size, self.window_size), dtype=np.int32)
+        self.observation_space = np.zeros((3, self.window_size, self.window_size), dtype=np.int32)
         self.state_space = np.zeros((self.units, self.size, self.size), dtype=np.int32)
         self.last_action = None
 
@@ -106,7 +108,7 @@ class Game():
                         # Remove the positon all together!!
                         self.prey_pos[a] = (0, 0)
                         self.done[a] = True
-                        #del self.pos_prey[new_position]
+                        del self.pos_prey[new_position]
                 del self.pos_predator[position]
                 self.predator_pos[_id] = new_position
                 self.pos_predator[new_position] = _id

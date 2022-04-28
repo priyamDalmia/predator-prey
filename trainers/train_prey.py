@@ -59,6 +59,7 @@ config = dodict(dict(
         log_freq = 200,
         wandb=True,
         wandb_mode="online",
+        entity="rl-multi-predprey"
         wandb_run_name="1rand-v-1ac:256:0.005",
         project_name="prey-tests",
         msg="Random vs AC Test: 1v1",

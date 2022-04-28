@@ -41,10 +41,22 @@ class GameState():
         return agent, (pos_x, pos_y)
     
     def observe(self, _id, channel_id, pos_x, pos_y):
+        """observe.
+        Makes a slice of the current observation state with respect to the observation window size.
+        A observation is composed of 3 channesl: [obstacles, predators, prey]
+        Args:
+            _id:
+            channel_id:
+            pos_x:
+            pos_y:
+        """
         observation = self.state[:, 
                 pos_x-self.pad_width:pos_x+self.pad_width+1, 
                 pos_y-self.pad_width:pos_y+self.pad_width+1]
-        return observation
+        channel_0 = observation[0] 
+        channel_1 = np.sum(observation[1:self.npreds+1], axis=0)
+        channel_2 = np.sum(observation[self.npreds+1:], axis=0)
+        return np.stack((channel_0, channel_1, channel_2))
 
     def update_unit(self, idx, position):
         self.state[idx, :, :] = self.channel.copy()
