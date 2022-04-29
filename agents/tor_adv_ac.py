@@ -58,7 +58,7 @@ class NetworkActorCritic(nn.Module):
 class ACAgent(BaseAgent):
     def __init__(self, _id, input_dims, output_dims, 
             action_space, memory=None, lr=0.01, gamma=0.95,
-            load_model=False, agent_network={}, _eval=False,
+            load_model=False, agent_network={}, eval_model=False,
             **kwargs):
         super(ACAgent, self).__init__(_id)
         self.input_dims = input_dims
@@ -80,7 +80,7 @@ class ACAgent(BaseAgent):
                 self.network = NetworkActorCritic(input_dims, output_dims, action_space,
                         lr, self.agent_network)
                 self.network.load_state_dict(checkpoint['model_state_dict'])
-                if _eval:
+                if eval_model:
                     self.network.eval()
                 else:
                     self.network.trian()
@@ -110,42 +110,33 @@ class ACAgent(BaseAgent):
         if len(states) == 0:
             return [0, 0]
         # Discount the rewards 
-        _rewards = self.discount_reward(rewards, dones)
+        _rewards = self.discount_rewards(rewards)
         _rewards = torch.as_tensor(_rewards, dtype=torch.float32, device=self.device).unsqueeze(-1)
-        #_rewards = (_rewards - _rewards.mean()) / _rewards.std() 
         # Convert to tensors
         states = torch.as_tensor(states, device=self.device)
         _, state_values = self.network(states)
         advantage = _rewards - state_values.detach()
-        # Calculating Actor loss
+        # Calculating Loss and Backpropogating the error.
         self.network.optimizer.zero_grad()
-<<<<<<< HEAD
-        try:
-            actor_loss = (-torch.stack(log_probs) * advantage).mean()
-            delta_loss = ((state_values - _rewards)**2).mean()
-        except:
-            breakpoint()
-        loss = (actor_loss + delta_loss)
-=======
-        actor_loss = (-torch.stack(log_probs) * advantage).mean()
-        delta_loss = ((state_values - _rewards)**2).mean()
+        actor_loss = (-torch.stack(log_probs) * advantage)
+        delta_loss = ((state_values - _rewards)**2)
         loss = (actor_loss + delta_loss).mean()
->>>>>>> 727bf568499b02320f4a28ae71fd678069789267
         loss.backward()
         self.network.optimizer.step()
-        return [actor_loss.item(), delta_loss.item()]   
+        return loss.item()
 
-    def discount_reward(self, rewards, dones):
+    def discount_rewards(self, rewards):
         new_rewards = []
         _sum = 0
+        rewards = np.flip(rewards)
         for i in range(len(rewards)):
-            r = rewards[-1+i]
-            _sum *= self.gamma
+            r = rewards[i]
+            _sum *= self.gamma 
             _sum += r
             new_rewards.append(_sum)
         new_rewards = [i for i in reversed(new_rewards)]
         return new_rewards
-    
+  
     def store_transition(self, state, action, reward,
             _next, done, probs):
         if self.memory:

@@ -32,7 +32,7 @@ class BaseAgent(ABC):
         pass
     
     @abstractmethod
-    def save_state(self):
+    def save_state(self, *args):
         pass
 
     @abstractmethod

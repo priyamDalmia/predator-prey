@@ -24,8 +24,8 @@ agent_network = dodict(dict(
 config = dodict(dict(
         # Environment
         size=10,
-        npred=1,
-        nprey=1,
+        npred=4,
+        nprey=2,
         winsize=5,
         nholes=0,
         nobstacles=0,
@@ -37,9 +37,11 @@ config = dodict(dict(
         update_eps=1,
         max_cycles = 500,
         training=True,
+        eval_prey=False,
+        eval_pred=False,
         # Agent Control
-        pred_class=RandomAgent,
-        prey_class=ACAgent,
+        class_pred=RandomAgent,
+        class_prey=ACAgent,
         agent_type="actor-critic",
         agent_network=agent_network,
         lr=0.0005, 
@@ -53,17 +55,15 @@ config = dodict(dict(
         load_prey=False, #'prey_0-random-ac-39-116', 
         load_pred=False,
         # Log Control
-        _name="1random-1ac",
+        _name="t-4rand-2ac",
         save_replay=True,
         save_checkpoint=True,
-        log_freq = 200,
+        log_freq=200,
         wandb=True,
         wandb_mode="online",
-        entity="rl-multi-predprey"
-        wandb_run_name="1rand-v-1ac:256:0.005",
+        entity="rl-multi-predprey",
         project_name="prey-tests",
-        msg="Random vs AC Test: 1v1",
-        notes="Testing simple Actor Critic Policy",
+        notes="4Rand vs 2AC Indp Prey Test",
         log_level=10,
         log_file="logs/prey.log",
         print_console = True,
@@ -78,7 +78,6 @@ class train_prey(Trainer):
         self.input_dims = env_specs["input_dims"]
         self.output_dims = env_specs["output_dims"]
         self.action_space = env_specs["action_space"]
-        self.logger = self.get_logger()
         # Initialize the agent
         self.agent_ids = env.agent_ids
         self.agents = self.initialize_agents()
@@ -92,7 +91,7 @@ class train_prey(Trainer):
         steps_hist = []
         rewards_hist = []
         loss_hist = []
-        _best = 100
+        _best = 0
         for epoch in range(self.config.epochs):
             loss = [[0, 0]]
             # Run Episodes
@@ -101,9 +100,9 @@ class train_prey(Trainer):
             if self.config.training:
                 loss = self.run_training(ep_end=True)
             # Any Agent Specific Update goes here.
-            if (epoch%self.config.update_eps):
-                for _id in self.agents:
-                    self.agent[_id].update_epsilon()
+            #if (epoch%self.config.update_eps):
+            #    for _id in self.agents:
+            #        self.agent[_id].update_epsilon()
             # Logging results
             steps_hist.append(steps)
             rewards_hist.extend(rewards)
@@ -134,22 +133,24 @@ class train_prey(Trainer):
                     self.config.buffer_size,
                     self.config.batch_size, 
                     self.input_dims)
-                agent = self.config.prey_class(
+                agent = self.config.class_prey(
                     _id,  
                     self.input_dims,
                     self.output_dims, 
                     self.action_space,
                     memory = memory,
                     load_model = self.config.load_prey,
+                    eval_model = self.config.eval_prey, 
                     **self.config)
             else:
-                agent = self.config.pred_class(
+                agent = self.config.class_pred(
                     _id, 
                     self.input_dims,
                     self.output_dims,
                     self.action_space,
                     memory = None,
                     load_model = self.config.load_pred,
+                    eval_model = self.config.eval_pred,
                     **self.config)
                 self.log("Agent {_id}, Device {agent.device}")
             assert isinstance(agent, BaseAgent), "Error: Derive agent from BaseAgent!"
@@ -179,16 +180,18 @@ class train_prey(Trainer):
                                 self.agents[_id].get_action(observation[_id])
                     else:
                         actions[_id] = int(4)
+                        actions_prob[_id] = 0
                 states_t = copy.deepcopy(observation)
                 rewards, next_, done, info = self.env.step(actions)
                 for _id in all_agents:
-                    self.agents[_id].store_transition(states_t[_id],
+                    if not done_[_id]:
+                        self.agents[_id].store_transition(states_t[_id],
                         actions[_id],
                         rewards[_id],
                         next_[_id],
                         done_[_id],
                         actions_prob[_id])
-                    if done_[_id]:
+                    else:
                         all_agents.remove(_id)
                 all_rewards.append(list(rewards.values()))
                 all_dones.append(list(done_.values()))
@@ -210,14 +213,14 @@ class train_prey(Trainer):
             for _id in self.agents:
                 if _id.startswith("prey"):
                     loss = self.agents[_id].train_step()
-            loss_hist.append(loss)
-        return loss_hist
+                    loss_hist.append(loss)
+        return [loss_hist]
 
     def make_log(self, epoch, steps_hist, rewards_hist, loss_hist):
         self.steps_avg = np.mean(steps_hist[-99:])
-        self.rewards_avg = pd.DataFrame(rewards_hist, columns = self.agent_ids)\
+        self.rewards_avg = pd.DataFrame(rewards_hist[-99:], columns = self.agent_ids)\
                         .mean(0).round(2).to_dict()
-        self.loss_avg = pd.DataFrame(loss_hist, columns=["total_loss", "delta_loss"])\
+        self.loss_avg = pd.DataFrame(loss_hist[-99:])\
                         .mean(0).round(2).to_dict()
         info = dict(
                 steps=self.steps_avg,

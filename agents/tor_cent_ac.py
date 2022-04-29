@@ -180,17 +180,17 @@ class CACAgent(BaseAgent):
             # Load Models for both Actor and Critic Here!
             pass
         else:
-            self.actor_network = NetworkActor(input_dims, output_dims, action_space,
+            self.actor = NetworkActor(input_dims, output_dims, action_space,
                     lr, self.actor_network)
         self.device = torch.device('cuda:0' if torch.cuda.is_available() else 'cpu')
-        self.actor_network = self.actor_network.to(self.device)
-        self.optimizer = optim.Adam(self.actor_network.parameters(),
+        self.actor = self.actor.to(self.device)
+        self.optimizer = optim.Adam(self.actor.parameters(),
                 lr=self.lr, betas=(0.9, 0.99), eps=1e-3)
 
     def get_action(self, observation):
         observation = torch.as_tensor(observation, dtype=torch.float32,
                 device=self.device)
-        probs = self.actor_network(observation.unsqueeze(0))
+        probs = self.actor(observation.unsqueeze(0))
         action_dist = dist.Categorical(probs)
         action = action_dist.sample()
         log_probs = action_dist.log_prob(action)
@@ -200,7 +200,7 @@ class CACAgent(BaseAgent):
         states, actions, rewards, nexts, dones, log_probs = \
                 self.memory.sample_transition()
         # Discount the rewards 
-        _rewards = self.discount_rewards(rewards, dones)
+        _rewards = self.discount_rewards(rewards)
         _rewards = torch.as_tensor(_rewards, dtype=torch.float32, device=self.device).unsqueeze(-1)
 
         states = torch.as_tensor(states, device=self.device)
@@ -215,11 +215,12 @@ class CACAgent(BaseAgent):
         self.optimizer.step()
         return loss.item()
 
-    def discount_rewards(self, rewards, dones):
+    def discount_rewards(self, rewards):
         new_rewards = []
         _sum = 0
+        rewards = np.flip(rewards)
         for i in range(len(rewards)):
-            r = rewards[-1+i]
+            r = rewards[i]
             _sum *= self.gamma 
             _sum += r
             new_rewards.append(_sum)
@@ -234,7 +235,7 @@ class CACAgent(BaseAgent):
 
     def save_state(self, checkpoint_name):
         self.checkpoint_name = checkpoint_name
-        self.checkpoint = self.actor_network.state_dict()
+        self.checkpoint = self.actor.state_dict()
 
     def save_model(self):
         model_name = f"trained-policies/multi/{self.checkpoint_name}"
@@ -245,6 +246,7 @@ class CACAgent(BaseAgent):
             'output_dims': self.output_dims,
             'network_dims': dict(self.actor_network),
             }, model_name)
+        print(f"Model Saved: {model_name}")
     
     def load_model(self):
         pass

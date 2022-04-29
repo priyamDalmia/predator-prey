@@ -17,18 +17,18 @@ class Trainer(ABC):
             wandb.init(project=self.config.project_name,
                     notes=self.config.notes,
                     mode=self.config.wandb_mode,
-                    config=self.config
+                    config=self.config,
                     entity=self.config.entity)
-            wandb.run.name = self.config.wandb_run_name
+            wandb.run.name = self.config._name
         logger = logging.getLogger(__name__)
         formatter = logging.Formatter('%(message)s')
         logger.setLevel(self.config.log_level)
         file_handler = logging.FileHandler(self.config.log_file)
         file_handler.setFormatter(formatter)
         logger.addHandler(file_handler)
-        logger.info(f"{__name__}:{self.config.msg}")
+        logger.info(f"{__name__}:{self.config.notes}")
         logger.info(datetime.now().strftime("%d/%m %H:%M"))
-        print(f"{self.config.msg}")
+        print(f"{self.config.notes}")
         return logger
 
     def shut_logger(self):

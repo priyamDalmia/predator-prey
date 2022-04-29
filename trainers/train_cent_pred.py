@@ -32,26 +32,22 @@ config = dodict(dict(
         # Environment
         size=10,
         npred=2,
-        nprey=2,
+        nprey=5,
         winsize=5,
         nholes=0,
         nobstacles=0,
         _map="random",
         # Training Control
-<<<<<<< HEAD
         epochs=10000,
-=======
-        epochs=1000,
->>>>>>> 727bf568499b02320f4a28ae71fd678069789267
         episodes=1,       # Episodes must be set to 1 for training.
         train_steps=1,
         update_eps=1,
         max_cycles = 500,
         training=True,
         # Agent Control
-        pred_class=CACAgent,
-        prey_class=RandomAgent,
-        agent_type="cAC-rand",
+        class_pred=CACAgent,
+        class_prey=RandomAgent,
+        agent_type="cent-ac",
         lr=0.0005, 
         gamma=0.95,
         epislon=0.95,
@@ -63,29 +59,17 @@ config = dodict(dict(
         load_prey=False, 
         load_predator=False,
         # Log Control
-<<<<<<< HEAD
-        _name="CAC-rand",
-=======
-        _name="cac-2random",
->>>>>>> 727bf568499b02320f4a28ae71fd678069789267
+        _name="t-2cac-5rand",
         save_replay=True,
         save_checkpoint=True,
         log_freq = 200,
         wandb=True,
         wandb_mode="online",
-<<<<<<< HEAD
         entity="rl-multi-predprey",
-        project_name="predator-prey-baselines",
-        msg="CAC vs Random Test: 2v2",
-        notes="Testing Centralized Training",
-=======
-        wandb_run_name="1ac-v-1ac",#"1v1:10:5:256:0.0005",
-        project_name="eval-tests",
-        msg="Centralized training  Test: 2v2",
-        notes="Testing Random Policy",
->>>>>>> 727bf568499b02320f4a28ae71fd678069789267
+        project_name="predator-tests",
+        notes="2CAC vs 5Rand Cent Pred Test",
         log_level=10,
-        log_file="logs/random.log",
+        log_file="logs/centpred.log",
         print_console = True,
         # Checkpoint Control 
         ))
@@ -164,7 +148,7 @@ class train_pred(Trainer):
                     self.config.buffer_size,
                     self.config.batch_size, 
                     self.input_dims)
-                agent = self.config.pred_class(
+                agent = self.config.class_pred(
                     _id,  
                     self.input_dims,
                     self.output_dims, 
@@ -175,7 +159,7 @@ class train_pred(Trainer):
                     critic = critic,
                     **self.config)
             else:
-                agent = self.config.prey_class(
+                agent = self.config.class_prey(
                     _id, 
                     self.input_dims,
                     self.output_dims,
@@ -214,13 +198,14 @@ class train_pred(Trainer):
                 states_t = copy.deepcopy(observation)
                 rewards, next_, done, info = self.env.step(actions)
                 for _id in all_agents:
-                    self.agents[_id].store_transition(states_t[_id],
-                        actions[_id],
-                        rewards[_id],
-                        next_[_id],
-                        done_[_id],
-                        actions_prob[_id])
-                    if done_[_id]:
+                    if not done_[_id]:
+                        self.agents[_id].store_transition(states_t[_id],
+                            actions[_id],
+                            rewards[_id],
+                            next_[_id],
+                            done_[_id],
+                            actions_prob[_id])
+                    else:
                         all_agents.remove(_id)
                 # Store Critics Observation Here.
                 self.critic.store_transition(states_t, rewards)
@@ -261,7 +246,7 @@ class train_pred(Trainer):
         self.steps_avg = np.mean(steps_hist[-99:])
         self.rewards_avg = pd.DataFrame(rewards_hist, columns = self.agent_ids)\
                         .mean(0).round(2).to_dict()
-        columns = ["critic_loss", "pred1_loss", "pred2_loss"]
+        columns = ["critic_loss"] + [f"pred_{i}_loss" for i in range(self.config.npred)]
         if self.config.npred > 2:
             breakpoint()
             # Fix the Column names before Procedding.
