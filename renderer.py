@@ -31,11 +31,11 @@ class Renderer():
             if _step == '0':
                 self.render(pred_pos, prey_pos)
                 key = input("Press Enter to START")
-                self.clear_lines((self.size+4))
+                self.clear_lines((self.size+12))
             else:
                 self.render(pred_pos, prey_pos)
                 key = input("press Enter to continue")
-                self.clear_lines((self.size+4))
+                self.clear_lines((self.size+12))
             if key == "e":
                 sys.exit()
 
@@ -54,7 +54,7 @@ class Renderer():
          gmap = [list(map(lambda x: "." if x == 0 else x, l)) for l in gmap]
          print(np.matrix(gmap))
 
-    def clear_lines(self, lines=1):
+    def clear_lines(self, lines=15):
         LINE_UP = '\033[1A'
         LINE_CLEAR = '\x1b[2k'
         for i in range(lines):

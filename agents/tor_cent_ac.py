@@ -14,7 +14,6 @@ An implementation of the CounterFactual Multi-Agent Algorithm.
 class NetworkCritic(nn.Module):
     """NetworkCritic.
     """
-
     def __init__(self, observation_dims, output_dims, action_space, 
             pred_ids, memory=None, network_dims={}, lr=0.001, 
             gamma=0.95, **kwargs):
@@ -83,7 +82,7 @@ class NetworkCritic(nn.Module):
         i+=1
         x = self.net[i](x)
         try:
-            x = torch.cat((x, inputs[1], inputs[2]), dim=-1)
+            x = torch.cat((x, inputs[1].type(torch.float32), inputs[2].type(torch.float32)), dim=-1)
         except Exception as e:
             print(e)
             breakpoint()
