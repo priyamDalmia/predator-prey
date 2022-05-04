@@ -7,12 +7,22 @@ import numpy as np
 from data.agent import BaseAgent
 import pdb
 
+"""
+An implementation of the CounterFactual Multi-Agent Algorithm.
+"""
+
 class NetworkCritic(nn.Module):
-    def __init__(self, input_dims, output_dims, memory=None,
-            network_dims={}, lr=0.001, gamma=0.95, **kwargs):
+    """NetworkCritic.
+    """
+
+    def __init__(self, observation_dims, output_dims, action_space, 
+            pred_ids, memory=None, network_dims={}, lr=0.001, 
+            gamma=0.95, **kwargs):
         super(NetworkCritic, self).__init__()
-        self.input_dims = input_dims
+        self.observation_dims = observation_dims
         self.output_dims = output_dims
+        self.action_space = action_space
+        self.pred_ids = pred_ids
         self.lr = lr
         self.gamma = gamma
         self.memory = memory
@@ -22,13 +32,16 @@ class NetworkCritic(nn.Module):
         self.total_loss = 0
         self.network_dims = network_dims
         self.net = nn.ModuleList()
+        # Memory for Actions
+            
+        self.action_mem = [[] for _ in range(len(self.pred_ids))]
         # Network Layers
-        idim = self.input_dims[0]
-        if len(self.input_dims) != 1:
+        idim = self.observation_dims[0]
+        if len(self.observation_dims) != 1:
             # Convolutional Layers
-            clayers = self.network_dims.clayers
+            self.clayers = self.network_dims.clayers
             cl_dims = self.network_dims.cl_dims
-            for c in range(clayers):
+            for c in range(self.clayers):
                 self.net.append(
                         nn.Conv2d(in_channels=idim,
                             out_channels=cl_dims[c],
@@ -36,46 +49,84 @@ class NetworkCritic(nn.Module):
                             stride=1))
                 idim = cl_dims[c]
             self.net.append(nn.Flatten())
+            # Add or extend on to a new layer here. 
+            # + Action Vector (for each agent)
+            # + Id Vector
             ### Must be modified if the newtwork paramters change
             idim = cl_dims[-1] * \
-                    ((self.input_dims[-1]-int(clayers))**2)
-        nlayers = network_dims.nlayers
+                    ((self.observation_dims[-1]-int(self.clayers))**2)
+        self.nlayers = network_dims.nlayers
         nl_dims = network_dims.nl_dims
-        for l in range(nlayers):
+        # Expanding idim for join actions and agent ids
+        idim = idim + (self.output_dims) +(len(self.pred_ids))
+        for l in range(self.nlayers):
             self.net.append(
                     nn.Linear(idim , nl_dims[l]))
             idim = nl_dims[l]
-        self.critic_layer = nn.Linear(nl_dims[-1], 1)
+        self.critic_layer = nn.Linear(nl_dims[-1], self.output_dims)
         self.net.append(self.critic_layer)
         self.optimizer = optim.Adam(self.parameters(),
                 lr=self.lr, betas=(0.9, 0.99), eps=1e-3)
         self.device = torch.device('cuda:0' if torch.cuda.is_available() else 'cpu')
             
     def forward(self, inputs):
-        for layer in self.net:
-            x = layer(inputs)
-            inputs = x
+        """forward.
+        Outputs the Q valeus for the given observation, joint actions and agent _id.
+        Args:
+            inputs: [obesrvation_U, action_U, agent_id]
+        """
+        observations = inputs[0]
+        for i in range(self.clayers):
+            layer = self.net[i]
+            x = layer(observations)
+            observations = x
+        i+=1
+        x = self.net[i](x)
+        try:
+            x = torch.cat((x, inputs[1], inputs[2]), dim=-1)
+        except Exception as e:
+            print(e)
+            breakpoint()
+        for j in range(self.nlayers):
+            layer = self.net[j+i+1]
+            x = layer(x)
+        # Final Layer
+        x = self.net[-1](x)
         return x
 
     def train_step(self):
+        """train_step.
+        Returns a dictionary of Q values corresponding to each agent. This is an 
+        effectie way to address the credit assignment problem.
+        """
+        loss = 0
         # Combined States and Rewards for all agents.
         states, rewards = self.memory.sample_transition()
+        batch_len = len(states)
         # Calculate Dsicounted Rewards
         _rewards = self.discount_rewards(rewards)
-        _rewards = torch.as_tensor(_rewards, device=self.device)
-        states = torch.as_tensor(states, device=self.device)
-        state_values = self.forward(states)
-        # Calculating the net advanatge for each state.
-        advantage = _rewards - state_values.detach()
-        # Caluclating Critic loss
-        delta_loss = ((state_values - _rewards)**2)
-        loss = (delta_loss).mean()
-        loss.backward()
-        self.optimizer.step()
-        loss_value = loss.item()
-        self.total_loss += loss_value
-        return state_values.detach() , loss_value
-    
+        _rewards = torch.as_tensor(_rewards, device=self.device).unsqueeze(-1)
+        Q_values = {}
+        for idx, _id in enumerate(self.pred_ids):    
+            states = torch.as_tensor(states, device=self.device)
+            actions = torch.as_tensor(self.action_mem[idx], device=self.device).unsqueeze(-1)
+            actions_vec = F.one_hot(actions, num_classes=len(self.action_space)).view(-1, 4)
+            agent_id = F.one_hot(torch.ones((batch_len,1), dtype=torch.int64)*idx, num_classes=len(self.pred_ids))\
+                .view(batch_len, -1).to(self.device)
+            q_values = self.forward((states, actions_vec, agent_id))
+            Q_values[_id] = q_values.detach()
+
+            # Not using a target network here!
+            q_taken = torch.gather(q_values, dim=1, index=actions)
+            critic_loss = torch.mean((_rewards - q_taken)**2)
+            self.optimizer.zero_grad()
+            critic_loss.backward()
+            # Gradient Clipping
+            # torch.nn.utils.clip_grad_norm_(self.parameters(), 5)
+            self.optimizer.step()
+        self.clear_memory()
+        return loss, Q_values
+
     def discount_rewards(self, rewards):
         new_rewards = []
         _sum = 0
@@ -87,16 +138,21 @@ class NetworkCritic(nn.Module):
             new_rewards.append(_sum)
         new_rewards = [i for i in reversed(new_rewards)]
         return new_rewards
-    
-    def store_transition(self, observation, rewards):
+     
+    def store_transition(self, observation, actions, rewards):
         combined_obs = np.array([], dtype=np.int32)
-        combined_obs = combined_obs.reshape(0, self.input_dims[1], self.input_dims[2])
+        combined_obs = combined_obs.reshape(0, self.observation_dims[1], self.observation_dims[2])
         combined_rewards = 0
         for _id in observation.keys():
             if _id.startswith("predator"):
                 combined_obs = np.vstack([combined_obs, observation[_id]])
                 combined_rewards += rewards[_id]
+        for indx, _id in enumerate(self.pred_ids):
+            self.action_mem[indx].append(actions[_id])
         self.memory.store_transition(combined_obs, combined_rewards)
+
+    def clear_memory(self):
+        self.action_mem = [[] for _ in range(len(self.pred_ids))]
 
     def save_checkpoint(self, checkpoint_name):
         self.checkpoint_name = checkpoint_name
@@ -155,12 +211,12 @@ class NetworkActor(nn.Module):
         logits = self.actor_layer(x)
         return F.softmax(logits, dim=1)
 
-class CACAgent(BaseAgent):
+class COMAAgent(BaseAgent):
     def __init__(self, _id, input_dims, output_dims, 
             action_space, memory=None, lr=0.01, gamma=0.95,
             load_model=False, actor_network=None, critic=None,
             **kwargs):
-        super(CACAgent, self).__init__(_id)
+        super(COMAAgent, self).__init__(_id)
         self.input_dims = input_dims
         self.output_dims = output_dims
         self.action_space = action_space
@@ -194,22 +250,31 @@ class CACAgent(BaseAgent):
         action_dist = dist.Categorical(probs)
         action = action_dist.sample()
         log_probs = action_dist.log_prob(action)
-        return action.item(), log_probs
+        return action.item(), probs
 
-    def train_step(self, state_values):
-        states, actions, rewards, nexts, dones, log_probs = \
+    def train_step(self, q_values):
+        """train_step.
+
+        Args:
+                Q_values: The Q values recived from the critic for the current trajectory.
+            The Q-values correspond to this specific actor.
+        """
+        _, actions, _, _, _, log_probs = \
                 self.memory.sample_transition()
-        # Discount the rewards 
-        _rewards = self.discount_rewards(rewards)
-        _rewards = torch.as_tensor(_rewards, dtype=torch.float32, device=self.device).unsqueeze(-1)
-
-        states = torch.as_tensor(states, device=self.device)
+        # Make a Forward pass to the critic. 
+        # The forward pass depends on the joint actions and joint observations for all agents 
+        # combined with the _ids.
+        # So the received Q values can be a reflection of that!
+        actions = torch.as_tensor(actions, dtype=torch.int64, device=self.device).unsqueeze(-1)
+        log_probs = torch.stack(log_probs).view(-1,4)
+        baseline  = torch.sum(log_probs * q_values, dim=1).detach().reshape(-1,1)
+        q_taken = torch.gather(q_values, dim=1, index=actions)
         # Get Values from the Critic Here
         # Calculate Advantage using the Centralized Critic.
-        advantage = _rewards - state_values
+        advantage = q_taken - baseline
         # Calculate and Backpropogate the Actor Loss.
+        actor_loss = torch.gather(log_probs, dim=1, index=actions) * advantage
         self.optimizer.zero_grad()
-        actor_loss = (-torch.stack(log_probs) * advantage)
         loss = (actor_loss).mean()
         loss.backward()
         self.optimizer.step()

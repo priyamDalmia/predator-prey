@@ -100,6 +100,7 @@ class Evaluate():
     def initialize_agents(self):
         agents = {} 
         # load predator and prey policies 
+        breakpoint()
         for n, _id in enumerate(self.agent_ids):
             if _id.startswith("predator"):
                 if len(pred_class) == 1:
@@ -109,6 +110,7 @@ class Evaluate():
                     assert len(pred_class) == self.config.npred, "Error loading agents!, fix policy names"
                     agent_class = pred_class[n]
                     agent_policy = pred_policies[n]
+                breakpoint()
                 agent = agent_class(_id, 
                             self.input_dims, 
                             self.output_dims,

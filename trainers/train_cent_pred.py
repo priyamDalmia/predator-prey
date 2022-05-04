@@ -14,7 +14,7 @@ from data.replay_buffer import ReplayBuffer, Critic_Buffer
 from data.agent import BaseAgent
 from agents.random_agent import RandomAgent
 from agents.tor_adv_ac import ACAgent
-from agents.tor_cent_ac import CACAgent, NetworkCritic
+from agents.tor_cent_ac import COMAAgent, NetworkCritic
 
 actor_network = dodict(dict(
     clayers=2,
@@ -32,22 +32,22 @@ config = dodict(dict(
         # Environment
         size=10,
         npred=2,
-        nprey=5,
+        nprey=6,
         winsize=5,
         nholes=0,
         nobstacles=0,
         _map="random",
-        # Training Control
-        epochs=10000,
+        # Training control,
+        epochs=100,
         episodes=1,       # Episodes must be set to 1 for training.
         train_steps=1,
         update_eps=1,
         max_cycles = 500,
         training=True,
         # Agent Control
-        class_pred=CACAgent,
+        class_pred=COMAAgent,
         class_prey=RandomAgent,
-        agent_type="cent-ac",
+        agent_type="coma-ac",
         lr=0.0005, 
         gamma=0.95,
         epislon=0.95,
@@ -60,14 +60,14 @@ config = dodict(dict(
         load_predator=False,
         # Log Control
         _name="t-2cac-5rand",
-        save_replay=True,
-        save_checkpoint=True,
-        log_freq = 200,
-        wandb=True,
+        save_replay=False,
+        save_checkpoint=False,
+        log_freq = 10,
+        wandb=False,
         wandb_mode="online",
         entity="rl-multi-predprey",
         project_name="predator-tests",
-        notes="2CAC vs 5Rand Cent Pred Test",
+        notes="2COMA vs 5Rand Cent Pred Test",
         log_level=10,
         log_file="logs/centpred.log",
         print_console = True,
@@ -82,15 +82,18 @@ class train_pred(Trainer):
         self.input_dims = env_specs["input_dims"]
         self.output_dims = env_specs["output_dims"]
         self.action_space = env_specs["action_space"]
+        self.agent_ids = env.agent_ids
+        self.pred_ids = self.agent_ids[:self.config.npred]
+        self.prey_ids = self.agent_ids[self.config.npred:]
         # Initialize the agent
         self.device = torch.device('cuda:0' if torch.cuda.is_available() else 'cpu')
-        self.agent_ids = env.agent_ids
         self.agents, self.critic = self.initialize_agents()
         # Fix: Checkpoint states for saving policies  
         self.checkpnt_state = None
         self.steps_avg = 0
         self.rewards_avg = 0
         self.loss_avg = 0
+        # Predator_ids
 
     def train(self):
         steps_hist = []
@@ -134,14 +137,24 @@ class train_pred(Trainer):
         agents = {}
         # Initialize a Critic Network here!
         # Fix Critic Dims
-        critic_input_dims = ((self.config.npred*self.input_dims[0]), \
+        critic_observation_dims = ((self.config.npred*self.input_dims[0]), \
                 self.input_dims[1], self.input_dims[2])
-        critic_memory = Critic_Buffer(self.config.buffer_size, self.config.batch_size,
-                critic_input_dims)
-        critic = NetworkCritic(critic_input_dims, output_dims, memory=critic_memory, 
-                network_dims=critic_network, **self.config)
+        
+        critic_memory = Critic_Buffer(
+                self.config.buffer_size, 
+                self.config.batch_size,
+                critic_observation_dims)
+        
+        critic = NetworkCritic(
+                critic_observation_dims, 
+                output_dims,
+                self.action_space,
+                self.pred_ids,
+                memory=critic_memory, 
+                network_dims=critic_network, 
+                **self.config)
         critic = critic.to(self.device)
-        # Move Critic to DEVICE here!
+        
         for _id in self.agent_ids:
             if _id.startswith("predator"):
                 memory = ReplayBuffer(
@@ -198,6 +211,7 @@ class train_pred(Trainer):
                 states_t = copy.deepcopy(observation)
                 rewards, next_, done, info = self.env.step(actions)
                 for _id in all_agents:
+                    # Save the Combined Rewards for all the agents instead.
                     if not done_[_id]:
                         self.agents[_id].store_transition(states_t[_id],
                             actions[_id],
@@ -208,7 +222,7 @@ class train_pred(Trainer):
                     else:
                         all_agents.remove(_id)
                 # Store Critics Observation Here.
-                self.critic.store_transition(states_t, rewards)
+                self.critic.store_transition(states_t, actions, rewards)
                 all_rewards.append(list(rewards.values()))
                 all_dones.append(list(done_.values()))
                 observation = dict(next_)
@@ -226,7 +240,8 @@ class train_pred(Trainer):
     def run_training(self, ep_end):
         """run_training.
         Runs a training loop. Trains the Critic on the combined rewards, and returns the 
-        state_values. These state_values are used to compute the advantage using which the 
+        Q_values dictionary which contains the agent specific q_values. 
+        These Q_values are used to compute the advantage using which the 
         agent actor policies are then trained.
         Args:
             ep_end:
@@ -234,11 +249,11 @@ class train_pred(Trainer):
         loss_hist = []
         for i in range(self.config.train_steps):
             # Train Critic And Recieve state_valeus and critic_loss
-            state_values, critic_loss = self.critic.train_step()
+            critic_loss, Q_values = self.critic.train_step()
             loss_hist.append(critic_loss)
             for _id in self.agents:
                 if _id.startswith("predator"):
-                    loss = self.agents[_id].train_step(state_values)
+                    loss = self.agents[_id].train_step(Q_values[_id])
                     loss_hist.append(loss)
         return [loss_hist]
 
