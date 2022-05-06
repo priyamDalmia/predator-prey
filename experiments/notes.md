@@ -33,7 +33,7 @@ All the experiments are carried on a 18X18 grid with an observation window of si
     
 
 4. Two Predators and Five Prey.
-** Advantage to Prey. (First Moves)
+** Advantage to Prey. (First Moves + Skip Turns)
 ** Independent Learning. 
 ** Combined Team Rewards.
 ** Algorithms Implemented:
