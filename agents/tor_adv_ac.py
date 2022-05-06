@@ -75,6 +75,7 @@ class ACAgent(BaseAgent):
         self.network = None
         if self.load_model:
             try:
+                breakpoint()
                 checkpoint = torch.load("trained-policies/single/"+self.load_model)
                 self.agent_network = dodict(checkpoint['agent_network'])
                 self.network = NetworkActorCritic(input_dims, output_dims, action_space,
@@ -83,7 +84,7 @@ class ACAgent(BaseAgent):
                 if eval_model:
                     self.network.eval()
                 else:
-                    self.network.trian()
+                    self.network.train()
                 print(f"Load Successfull: {self.load_model}")
             except:
                 print(f"Load Failed: {self.load_model}")

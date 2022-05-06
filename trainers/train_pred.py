@@ -40,6 +40,7 @@ config = dodict(dict(
         training=True,
         eval_pred=False,
         eval_prey=False,
+        train_tpye="predator",
         # Agent Control
         class_pred=ACAgent,
         class_prey=RandomAgent,
@@ -53,6 +54,7 @@ config = dodict(dict(
         batch_size=64,
         buffer_size=5000,
         # Models
+        checkpoint_dir = "",
         load_prey=False, #'predator_0-1ac-1random-4799-29', # 'prey_0-random-ac-99-135', 
         load_pred=False, #'prey_0-1random-1ac-4799-390', #'predator_0-ac-random-19-83',
         # Log Control
@@ -71,39 +73,34 @@ config = dodict(dict(
         # Checkpoint Control 
         ))
 
-class train_pred(Trainer):
+class train_agents(Trainer):
     def __init__(self, config, env, **env_specs):
-        super(train_pred, self).__init__(config)
-        self.config = config
-        self.env = env
+        super(train_agents, self).__init__(env, config)
+        # If YAML file exists, then use that.
+        # if yaml: self.config = yaml.config.
         self.input_dims = env_specs["input_dims"]
         self.output_dims = env_specs["output_dims"]
         self.action_space = env_specs["action_space"]
         # Initialize the agent
-        self.agent_ids = env.agent_ids
         self.agents = self.initialize_agents()
-        # Fix: Checkpoint states for saving policies  
-        self.checkpnt_state = None
         self.steps_avg = 0
         self.rewards_avg = 0
         self.loss_avg = 0
+        # Fix: Checkpoint states for saving policies  
+        self.checkpnt_state = None
 
     def train(self):
         steps_hist = []
         rewards_hist = []
         loss_hist = []
-        _best = 300
+        best_ = 300
         for epoch in range(self.config.epochs):
-            loss = [[0, 0]]
             # Run Episodes
             steps, rewards, epsilon = self.run_episodes()
             # Train Agents 
+            loss = [[0, 0]]
             if self.config.training:
                 loss = self.run_training(ep_end=True)
-            # Any Agent Specific Update goes here.
-            if (epoch%self.config.update_eps):
-                for _id in self.agents:
-                    self.agent[_id].update_epsilon()
             # Logging results
             steps_hist.append(steps)
             rewards_hist.extend(rewards)
@@ -112,10 +109,10 @@ class train_pred(Trainer):
                 # Make Checkpoints, Save Replays and Update Logs. 
                 self.make_log(epoch, steps_hist, rewards_hist, loss_hist)
                 if self.config.save_checkpoint:
-                    if _best > self.steps_avg:
+                    if best_ > self.steps_avg:
                         # Save Agent Network State Dict.
                         self.make_checkpoint(epoch) 
-                        _best = self.steps_avg
+                        best_ = self.steps_avg
                         if self.config.save_replay:
                             # Make a Replay File
                             replay_file = f"{self.config._name}-{epoch}-{int(self.steps_avg)}"
@@ -123,37 +120,45 @@ class train_pred(Trainer):
         # Save the best model after training
         if self.config.save_checkpoint:
             for _id in self.agent_ids:
-                if _id.startswith("predator_"):
-                    self.agents[_id].save_model()
+                if _id.startswith(self.config.train_type):
+                    self.agents[_id].save_model(self.config.checkpoint_dir)
 
     def initialize_agents(self):
         agents = {}
-        for _id in self.agent_ids:
-            if _id.startswith("predator"):
+        for _id in self.pred_ids:
+            memory = None
+            if self.config.train_type.startswith("predator"):
                 memory = ReplayBuffer(
                     self.config.buffer_size,
                     self.config.batch_size, 
                     self.input_dims)
-                agent = self.config.class_pred(
-                    _id,  
-                    self.input_dims,
-                    self.output_dims, 
-                    self.action_space,
-                    memory = memory,
-                    load_model = self.config.load_pred,
-                    eval_model = self.config.eval_pred,
-                    **self.config)
-            else:
-                agent = self.config.class_prey(
-                    _id, 
-                    self.input_dims,
-                    self.output_dims,
-                    self.action_space,
-                    memory = None,
-                    load_model = self.config.load_prey,
-                    eval_model = self.config.eval_prey,
-                    **self.config)
-                self.log("Agent {_id}, Device {agent.device}")
+            agent = self.config.class_pred(
+                _id,  
+                self.input_dims,
+                self.output_dims, 
+                self.action_space,
+                memory = memory,
+                load_model = self.config.load_pred,
+                eval_model = self.config.eval_pred,
+                **self.config)
+            assert isinstance(agent, BaseAgent), "Error: Derive agent from BaseAgent!"
+            agents[_id] = agent
+        for _id in self.prey_ids:
+            memory = None 
+            if self.config.train_type.startswith("prey"):
+                memory = ReplayBuffer(
+                    self.config.buffer_size,
+                    self.config.batch_size, 
+                    self.input_dims)
+            agent = self.config.class_prey(
+                _id, 
+                self.input_dims,
+                self.output_dims,
+                self.action_space,
+                memory = None,
+                load_model = self.config.load_prey,
+                eval_model = self.config.eval_prey,
+                **self.config)
             assert isinstance(agent, BaseAgent), "Error: Derive agent from BaseAgent!"
             agents[_id] = agent
         return agents
@@ -215,33 +220,6 @@ class train_pred(Trainer):
                     loss = self.agents[_id].train_step()
                     loss_hist.append(loss)
         return [loss_hist]
-
-    def make_log(self, epoch, steps_hist, rewards_hist, loss_hist):
-        self.steps_avg = np.mean(steps_hist[-99:])
-        self.rewards_avg = pd.DataFrame(rewards_hist[-99:], columns = self.agent_ids)\
-                        .mean(0).round(2).to_dict()
-        self.loss_avg = pd.DataFrame(loss_hist[-99:])\
-                        .mean(0).round(2).to_dict()
-        info = dict(
-                steps=self.steps_avg,
-                rewards=self.rewards_avg,
-                loss=self.loss_avg)
-        self.update_logs(epoch, info=info)
-        if self.config.print_console:
-                    print(\
-                        f"Epochs:{epoch:4} | Steps:{self.steps_avg:4.2f}| Rewards:{self.rewards_avg}")
-    
-    def make_checkpoint(self, epoch):
-        for _id in self.agent_ids:
-            if _id.startswith("predator_"):
-                c_name = \
-                        f"{_id}-{self.config._name}-{epoch}-{self.steps_avg:.0f}"
-                self.agents[_id].save_state(c_name)
-    
-    def save_model(self):
-        for _id in self.agent_ids:
-            if _id.startswith("predator_"):
-                self.agents[_id].save_model()
 
 if __name__=="__main__":
     # Create the Environment object.

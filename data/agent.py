@@ -5,13 +5,13 @@ class BaseAgent(ABC):
         self._id = _id
         self.input_dims = None
         self.output_dims = None
-        self.aciton_space = None
+        self.action_space = None
         self.lr = None
         self.gamma = None
         self.memory = None
         self.epsilon = None
         self.device = None
-
+    
     @abstractmethod
     def get_action(self, observation):
         """
@@ -43,6 +43,18 @@ class BaseAgent(ABC):
     def load_model(self, filename):
         pass
     
+    def discount_rewards():
+        new_rewards = []
+        _sum = 0
+        rewards = np.flip(rewards)
+        for i in range(len(rewards)):
+            r = rewards[i]
+            _sum *= self.gamma
+            _sum += r
+            new_rewards.append(_sum)
+        new_rewards = [i for i in reversed(new_rewards)]
+        return new_rewards
+
     def clear_loss(self):
         pass
 
