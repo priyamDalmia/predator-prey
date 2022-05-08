@@ -43,9 +43,6 @@ class NetworkActorCritic(nn.Module):
             idim = nl_dims[l]
         self.actor_layer = nn.Linear(nl_dims[-1], self.output_dims)
         self.critic_layer = nn.Linear(nl_dims[-1], 1)
-        # Model Config
-        self.optimizer = optim.Adam(self.parameters(), 
-                lr=self.lr, betas=(0.9, 0.99), eps=1e-3)
     
     def forward(self, inputs):
         for layer in self.net:
@@ -55,12 +52,12 @@ class NetworkActorCritic(nn.Module):
         values = self.critic_layer(x)
         return F.softmax(logits, dim=1), values
 
-class ACAgent(BaseAgent):
+class AACAgent(BaseAgent):
     def __init__(self, _id, input_dims, output_dims, 
             action_space, memory=None, lr=0.01, gamma=0.95,
-            load_model=False, agent_network={}, eval_model=False,
+            load_model=False, eval_model=False, agent_network={},
             **kwargs):
-        super(ACAgent, self).__init__(_id)
+        super(AACAgent, self).__init__(_id)
         self.input_dims = input_dims
         self.output_dims = output_dims
         self.action_space = action_space
@@ -68,15 +65,10 @@ class ACAgent(BaseAgent):
         self.lr = lr
         self.gamma = gamma 
         self.memory = memory
-        self.total_loss = 0
-        self.checkpoint = None
-        self.checkpoint_name = None
         # Initialize the AC network
-        self.network = None
         if self.load_model:
             try:
-                breakpoint()
-                checkpoint = torch.load("trained-policies/single/"+self.load_model)
+                checkpoint = torch.load(self.load_model)
                 self.agent_network = dodict(checkpoint['agent_network'])
                 self.network = NetworkActorCritic(input_dims, output_dims, action_space,
                         lr, self.agent_network)
@@ -85,14 +77,16 @@ class ACAgent(BaseAgent):
                     self.network.eval()
                 else:
                     self.network.train()
-                print(f"Load Successfull: {self.load_model}")
+                print(f"Model Loaded:{_id} -> {self.load_model}")
             except:
-                print(f"Load Failed: {self.load_model}")
+                print(f"Load Failed:{_id} -> {self.load_model}")
         else:
             self.agent_network = agent_network
             self.network = NetworkActorCritic(input_dims, output_dims, action_space,
                         lr, self.agent_network)
-
+        
+        self.optimizer = optim.Adam(self.network.parameters(),
+                lr = self.lr, betas=(0.9, 0.99), eps=1e-3)
         self.deivce = torch.device('cuda:0' if torch.cuda.is_available() else 'cpu')
         self.network = self.network.to(self.device)
 
@@ -109,7 +103,7 @@ class ACAgent(BaseAgent):
         states, actions, rewards, nexts, dones, log_probs =\
                 self.memory.sample_transition()     
         if len(states) == 0:
-            return [0, 0]
+            return 0
         # Discount the rewards 
         _rewards = self.discount_rewards(rewards)
         _rewards = torch.as_tensor(_rewards, dtype=torch.float32, device=self.device).unsqueeze(-1)
@@ -118,26 +112,14 @@ class ACAgent(BaseAgent):
         _, state_values = self.network(states)
         advantage = _rewards - state_values.detach()
         # Calculating Loss and Backpropogating the error.
-        self.network.optimizer.zero_grad()
+        self.optimizer.zero_grad()
         actor_loss = (-torch.stack(log_probs) * advantage)
         delta_loss = ((state_values - _rewards)**2)
         loss = (actor_loss + delta_loss).mean()
         loss.backward()
-        self.network.optimizer.step()
+        self.optimizer.step()
         return loss.item()
 
-    def discount_rewards(self, rewards):
-        new_rewards = []
-        _sum = 0
-        rewards = np.flip(rewards)
-        for i in range(len(rewards)):
-            r = rewards[i]
-            _sum *= self.gamma 
-            _sum += r
-            new_rewards.append(_sum)
-        new_rewards = [i for i in reversed(new_rewards)]
-        return new_rewards
-  
     def store_transition(self, state, action, reward,
             _next, done, probs):
         if self.memory:
@@ -153,15 +135,14 @@ class ACAgent(BaseAgent):
         self.checkpoint = self.network.state_dict()
 
     def save_model(self):
-        model_name = f"trained-policies/single/{self.checkpoint_name}"
         torch.save({
             'model_state_dict': self.checkpoint,   
             'loss': self.total_loss,
             'input_dims': self.input_dims,
             'output_dims': self.output_dims,
             'agent_network': dict(self.agent_network),
-            }, model_name)
-        print(f"Model Saved {self._id} | {model_name}")
+            }, self.checkpoint_name)
+        print(f"Model Saved: {self._id} -> {self.checkpoint_name}")
 
     def load_model(self, filename):
         # must call model.eval or model.train

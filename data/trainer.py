@@ -1,6 +1,7 @@
 import os
 import sys
 import numpy as np
+import pandas as pd
 import logging
 import wandb
 from datetime import datetime
@@ -9,12 +10,21 @@ from abc import ABC, abstractmethod
 
 class Trainer(ABC):
     def __init__(self, env, config):
+        self.config = config
         self.env = env
+        self.logger = self.get_logger()
+        
         self.agent_ids = env.agent_ids
         self.pred_ids = self.agent_ids[:self.config.npred]
-        self.prey_ids = self.agent_ids[self.config.nprey:]
-        self.config = config
-        self.logger = self.get_logger()
+        self.prey_ids = self.agent_ids[self.config.npred:]
+        self.train_ids = self.pred_ids \
+                if self.config.train_type=="predator" else self.prey_ids
+        self.checkpoint_state = None
+
+        self.best_ = 1000 if self.config.train_type=="predator" else 1
+        self.steps_avg = 0 
+        self.rewards_avg = 0
+        self.loss_avg = 0
     
     @abstractmethod
     def train(self):
@@ -67,7 +77,7 @@ class Trainer(ABC):
         self.steps_avg = np.mean(steps_hist[-99:])
         self.rewards_avg = pd.DataFrame(rewards_hist[-99:], columns=self.agent_ids)\
                 .mean(0).round(0).to_dict()
-        self.loss_avg = pd.DataFrame(loss_hist[-99:])\
+        self.loss_avg = pd.DataFrame(loss_hist[-99:], columns=self.train_ids)\
                 .mean(0).round(0).to_dict()
         info = dict(
                 steps = self.steps_avg,

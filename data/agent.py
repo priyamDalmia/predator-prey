@@ -1,4 +1,7 @@
 from abc import ABC, abstractmethod
+import numpy as np
+import pandas as pd
+import torch 
 
 class BaseAgent(ABC):
     def __init__(self, _id):
@@ -11,7 +14,11 @@ class BaseAgent(ABC):
         self.memory = None
         self.epsilon = None
         self.device = None
-    
+        self.checkpoint = None
+        self.checkpoint_name = None
+        self.network = None
+        self.total_loss = 0
+
     @abstractmethod
     def get_action(self, observation):
         """
@@ -31,19 +38,24 @@ class BaseAgent(ABC):
     def train_step(self):
         pass
     
-    @abstractmethod
-    def save_state(self, *args):
-        pass
+    def save_state(self, checkpoint_name):
+        self.checkpoint_name = checkpoint_name
+        self.checkpoint = self.network.state_dict()
 
-    @abstractmethod
-    def save_model(self, filename):
-        pass
+    def save_model(self, *args):
+        torch.save({
+             'model_state_dict': self.checkpoint,
+             'loss': self.total_loss,
+             'input_dims': self.input_dims,
+             'output_dims': self.output_dims,
+             'agent_network': dict(self.agent_network),
+             }, self.checkpoint_name)
+        print(f"Model Saved {self._id} | {model_name}")
 
-    @abstractmethod
     def load_model(self, filename):
         pass
     
-    def discount_rewards():
+    def discount_rewards(self, rewards):
         new_rewards = []
         _sum = 0
         rewards = np.flip(rewards)

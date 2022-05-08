@@ -13,7 +13,7 @@ import pdb
 
 # Must have list of Agents classe and their policy paths
 prey_class = [ACAgent]
-prey_policies = ['predator_0-4199-36']
+prey_policies = ['prey_0-t-1rand-1ac-19-185']
 pred_class = [RandomAgent]
 pred_policies = ['random']
 
@@ -29,7 +29,7 @@ config = dodict(dict(
     _map="random",
     # Evaluation Control
     runs=5,
-    episodes=10,
+    episodes=50,
     max_cycles=500,
     save_replay=False,
     # Agent Control
@@ -48,59 +48,67 @@ class Evaluate():
         # Initialize Agents (Load Agents)
         self.agent_ids = env.agent_ids
         self.agents = self.initialize_agents()
-
         # Bookeeping
         self.steps_avg = 0
         self.rewards_avg = 0
         self.loss_avg = 0
     
     def evaluate(self):
-        steps_hist = []
-        rewards_hist = []
-        
         for r in range(self.config.runs):
             steps, rewards = self.run_episodes()
-            steps_hist.append(steps)
-            rewards_hist.append(rewards)
-                            
-            self.make_log(r, steps_hist, rewards_hist)
+            # Make Log                 
+            self.make_log(r, steps, rewards)
             # Save the Last episodes of each run!
             if self.config.save_replay:
                 replay_file = f"eval-{self.config._name}"
                 self.env.record_episode(replay_file)
-            
+                        
     def run_episodes(self):
         steps_hist = []
         reward_hist = []
         for ep in range(self.config.episodes):
-            observation = dict(self.env.reset())
+            observation, done_ = self.env.reset()
             done = False
             steps = 0
-            state_t = None
-            # Get actions for all agents.
-            for _id in self.agents:
-                actions[_id], _ = \
-                        self.agents[_id].get_action(observation[_id])
-                rewards, next_, done, info = self.env.step(action)
-            all_rewards.append(list(reward.values()))
-            observation = dict(next_)
-            steps += 1
-            if steps > self.config.max_cycles:
-                print("Episode terminate after max cycles reached")
-                break
+            all_agents = list(self.agents.keys())
+            all_rewards = []
+            all_dones = []
+            all_dones.append(list(done_.values()))
+            while not done:
+                actions = {}
+                for _id in self.agents:
+                    if not done_[_id]:
+                        actions[_id], _ =\
+                                self.agents[_id].get_action(observation[_id])
+                    else:
+                        actions[_id] = int(4)
+                rewards, next_, done, info = self.env.step(actions)
+                all_rewards.append(list(rewards.values()))
+                all_dones.append(list(done_.values()))
+                observation = dict(next_)
+                steps += 1
+                if steps > self.config.max_cycles:
+                    break
             steps_hist.append(steps)
+            done_df  = pd.DataFrame(all_dones)
+            reward_df = \
+                    pd.DataFrame(all_rewards)[-done_df].replace(np.nan, 0.0)
             reward_hist.append(
-                    pd.DataFrame(all_rewards).sum(axis=0).to_list())
+                    pd.DataFrame(reward_df).sum(axis=0).to_list())
         return steps_hist, reward_hist
 
     def make_log(self, r, steps, rewards):
+        # Print to console
         if self.config.print_console:
-            print(f"Run: {r} | Steps : {steps} | Rewards : {rewards}")
-    
+            steps_avg = np.mean(steps[-self.config.episodes:])
+            breakpoint()
+            rewards_avg = pd.DataFrame(rewards[-self.config.episodes:], columns=self.agent_ids)\
+                    .mean(0).round(1).to_dict()
+            print(f"Run:{r:4} | Steps:{steps_avg} | Rewards:{rewards_avg}")
+
     def initialize_agents(self):
         agents = {} 
         # load predator and prey policies 
-        breakpoint()
         for n, _id in enumerate(self.agent_ids):
             if _id.startswith("predator"):
                 if len(pred_class) == 1:
@@ -110,7 +118,6 @@ class Evaluate():
                     assert len(pred_class) == self.config.npred, "Error loading agents!, fix policy names"
                     agent_class = pred_class[n]
                     agent_policy = pred_policies[n]
-                breakpoint()
                 agent = agent_class(_id, 
                             self.input_dims, 
                             self.output_dims,
@@ -133,7 +140,6 @@ class Evaluate():
                             memory=None,
                             load_model=agent_policy,
                             **self.config)
-
             agents[_id] = agent
         return agents
 
@@ -150,5 +156,4 @@ if __name__ == "__main__":
             input_dims = input_dims,
             output_dims = output_dims,
             action_space = action_space)
-    breakpoint()
-    pass
+    evaluate.evaluate()

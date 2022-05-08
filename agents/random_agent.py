@@ -14,18 +14,18 @@ class RandomAgent(BaseAgent):
         return np.random.choice(self.action_space), 0
 
     def train_step(self):
-        return dict(loss=None) 
+        return 0
     
     def store_transition(self, *args):
         pass
 
-    def update_eps(self):
+    def update_eps(self, *args):
         pass
 
-    def save_state(self):
+    def save_state(self, *args):
         pass
 
-    def save_model(self, filename):
+    def save_model(self, *args):
         pass
 
     def load_model(self, filename):

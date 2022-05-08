@@ -87,7 +87,8 @@ class Critic_Buffer():
         # memory 
         self.states = np.zeros((self.buffer_size, *self.state_size), dtype=np.float32)
         self.rewards = np.zeros((self.buffer_size), dtype=np.float32)
-        self.actions = 
+        self.actions = None
+
     def sample_transition(self):
         states = self.states[:self.counter]
         rewards = self.rewards[:self.counter]

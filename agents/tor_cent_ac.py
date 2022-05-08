@@ -208,8 +208,8 @@ class NetworkActor(nn.Module):
 
 class COMAAgent(BaseAgent):
     def __init__(self, _id, input_dims, output_dims, 
-            network_dims={} lr=0.01, gamma=0.95, load_model=False,
-            **kwargs):
+            lr=0.01, gamma=0.95, agent_network={},
+            load_model=False, eval_model=False, **kwargs):
         super(COMAAgent, self).__init__(_id)
         self.input_dims = input_dims
         self.output_dims = output_dims
@@ -219,18 +219,24 @@ class COMAAgent(BaseAgent):
         # Memory
         self.action_memory = actions
         self.prob_memory = log_probs
-        # Bookeeping
-        self.checkpoint = None
-        self.checkpoint_name = None
         # Initialize the CAC Network 
-        self.actor_network = actor_network
-        if not isinstance(critic, NetworkCritic):
-            print(f"WARNING: Critic not of class NetworkCritic")
-        self.critic = critic
         if self.load_model:
-            # Load Models for both Actor and Critic Here!
-            pass
+            try:
+                
+                model = torch.load(self.load_model)
+                self.agent_network = dodict(model['agent_network'])
+                self.network = NetworkActorCritic(input_dims, output_dims, action_space,
+                    self.agent_network)
+                self.network.load_state_dict(model['model_state_dict'])
+                if eval_model:
+                    self.network.eval()
+                else:
+                    self.network.train()
+                print(f"Model Loaded:{_id} -> {self.load_model}")
+            except:
+                print(f"Load Failed:{_id} -> {self.load_model}")
         else:
+            self.actor_network = actor_network
             self.actor = NetworkActor(input_dims, output_dims, action_space,
                     lr, self.actor_network)
         self.device = torch.device('cuda:0' if torch.cuda.is_available() else 'cpu')
@@ -254,6 +260,7 @@ class COMAAgent(BaseAgent):
                 Q_values: The Q values recived from the critic for the current trajectory.
             The Q-values correspond to this specific actor.
         """
+        breakpoint()
         actions, probs = self.sample_transitions()
         actions = torch.as_tensor(actions, dtype=torch.int64, device=self.device).unsqueeze(-1)
         log_probs = torch.stack(log_probs).view(-1,4)
@@ -272,6 +279,7 @@ class COMAAgent(BaseAgent):
 
     def store_transition(self, state, action, reward, 
             next_, done, probs, **kwargs):
+        breakpoint()
         self.action_memory.append(action)
         self.prob_memory.append(probs)
 
@@ -286,15 +294,14 @@ class COMAAgent(BaseAgent):
         self.checkpoint = self.actor.state_dict()
 
     def save_model(self):
-        model_name = f"trained-policies/multi/{self.checkpoint_name}"
         torch.save({
             'model_state_dict': self.checkpoint,
             'loss': self.total_loss,
             'input_dims': self.input_dims,
             'output_dims': self.output_dims,
             'network_dims': dict(self.actor_network),
-            }, model_name)
-        print(f"Model Saved: {model_name}")
+            }, self.checkpoint_name)
+        print(f"Model Saved: {self._id} -> {self.checkpoint_name}")
     
     def load_model(self):
         pass
