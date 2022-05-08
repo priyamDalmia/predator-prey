@@ -1,17 +1,77 @@
 import os
 import sys
 sys.path.append(os.getcwd())
-
 import numpy as np
 import pandas as pd
+from evaluate import Evaluate
+from data.helpers import dodict
+from game.game import Game
+from trainers.train_agent import train_agent
+from agents.random_agent import RandomAgent
+from agents.tor_adv_ac import AACAgent
+
 import pdb
 
-from evaluate import Evaluate
-from trainers.train_agent import train_agent
+actor_network = dodict(dict(
+    clayers=2,
+    cl_dims=[6, 12],
+    nlayers=2,
+    nl_dims=[256, 256]))
+
+config = dodict(dict(
+        mode="train",
+        # Environment
+        size=10,
+        npred=1,
+        nprey=1,
+        winsize=7,
+        nholes=0,
+        nobstacles=0,
+        map_="random",
+        # Training control,
+        epochs=2000,
+        episodes=1,
+        train_steps=1,
+        update_eps=1,
+        max_cycles=1000,
+        training=True,
+        train_type="predator",
+        eval_pred=False,
+        eval_prey=False,
+        # Agent Control
+        class_pred=AACAgent,
+        class_prey=RandomAgent,
+        agent_type="adv-ac",
+        agent_network=actor_network,
+        lr=0.0005, 
+        gamma=0.95,
+        epislon=0.95,
+        epsilon_dec=0.99,
+        epsilon_update=10,
+        batch_size=64,
+        buffer_size=1500,
+        # Models
+        replay_dir="experiments/1/results/",
+        checkpoint_dir="experiments/1/policies/",
+        load_prey=False, 
+        load_predator=False,
+        # Log Control
+        _name="10-1ac-3rand",
+        save_replay=True,
+        save_model=True,
+        log_freq=100,
+        wandb=True,
+        wandb_mode="online",
+        entity="rl-multi-predprey",
+        project_name="experiment 1",
+        notes="1AAC vs 1RAND Pred Test",
+        log_level=10,
+        log_file="logs/exp_1.log",
+        print_console=True,
+        ))
 
 if __name__=="__main__":
-    breakpoint()
-    config = None
+    config = config
     # Parse and Load Config File here.
 
     # Create and initialize Environments

@@ -8,11 +8,11 @@ from data.helpers import dodict
 from data.trainer import Trainer
 from data.agent import BaseAgent
 from agents.random_agent import RandomAgent
-from agents.tor_adv_ac import ACAgent
+from agents.tor_adv_ac import AACAgent
 import pdb
 
 # Must have list of Agents classe and their policy paths
-prey_class = [ACAgent]
+prey_class = [AACAgent]
 prey_policies = ['prey_0-t-1rand-1ac-19-185']
 pred_class = [RandomAgent]
 pred_policies = ['random']
@@ -26,7 +26,7 @@ config = dodict(dict(
     winsize=5,
     nholes=0,
     nobstacles=0,
-    _map="random",
+    map_="random",
     # Evaluation Control
     runs=5,
     episodes=50,
@@ -53,7 +53,7 @@ class Evaluate():
         self.rewards_avg = 0
         self.loss_avg = 0
     
-    def evaluate(self):
+    def evaluate(self, mode="evaluation"):
         for r in range(self.config.runs):
             steps, rewards = self.run_episodes()
             # Make Log                 
@@ -96,6 +96,13 @@ class Evaluate():
             reward_hist.append(
                     pd.DataFrame(reward_df).sum(axis=0).to_list())
         return steps_hist, reward_hist
+    
+    def run_inf_qvals(self):
+        # Create A loop
+        # Load a Map 
+        # Set Prey Action to 4:do_nothing
+        # 
+        pass
 
     def make_log(self, r, steps, rewards):
         # Print to console

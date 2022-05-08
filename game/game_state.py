@@ -7,9 +7,14 @@ from data.entites import Predator, Prey
 from data.common import ACTIONS
 
 
-
 class GameState():
-    def __init__(self, size, npreds, npreys, window_size, pad_width):
+    def __init__(self, 
+            size, 
+            npreds, 
+            npreys, 
+            window_size, 
+            pad_width,
+            map_):
         self.size = size
         self.window_size = window_size
         self.pad_width = pad_width
@@ -21,7 +26,10 @@ class GameState():
 
         # stacking channels along the axis 0 to get the game state.
         self.channel = np.pad(np.zeros((size, size), dtype=np.int32), pad_width=pad_width, constant_values=1)
+        # If _map is random use map of zeros 
         self.state = np.expand_dims(self.channel, axis=0).copy()
+        
+        
         self.channel = np.pad(np.zeros((size, size), dtype=np.int32), pad_width=pad_width, constant_values=0)
 
     def add_unit(self, _id) -> object:

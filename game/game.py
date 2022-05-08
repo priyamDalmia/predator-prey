@@ -16,6 +16,7 @@ class Game():
         self.npreys = config.nprey
         self.window_size = config.winsize
         self.pad_width = int(self.window_size/2)
+        self.map_ = config.map_
         self.game_state = None
 
         # Game managment variables
@@ -24,9 +25,7 @@ class Game():
         self.observation_space = np.zeros((3, self.window_size, self.window_size), dtype=np.int32)
         self.state_space = np.zeros((self.units, self.size, self.size), dtype=np.int32)
         self.last_action = None
-
         self.record = {}
-        
         # Reset the environment object (basically recreates a new GameState object.)
         self.reset()   
 
@@ -43,7 +42,12 @@ class Game():
         self.done = {}
         # Create a new GameState Object
         del self.game_state
-        self.game_state = GameState(self.size, self.npredators, self.npreys, self.window_size, self.pad_width)
+        self.game_state = GameState(self.size, 
+                self.npredators, 
+                self.npreys, 
+                self.window_size, 
+                self.pad_width,
+                self.map_)
         
         # Episode records 
         self.steps = 0 
@@ -157,6 +161,12 @@ class Game():
             observation[_id] = self.game_state.observe(_id, idx, *position)
             idx += 1
         return dict(observation)
+    
+    def load_episode():
+        # 
+
+        # Call env.reset or equivalent at the end.
+        pass
 
     def render(self, mode="human"):
         adjust = lambda x, y: (x[0]-y, x[1]-y)
@@ -190,5 +200,5 @@ class Game():
         game_data['units'] = self.units
         game_data['ep_record'] = self.record
         #game_data['info'] = info 
-        with open(f"replays/{filename}", 'w') as f:
+        with open(f"{filename}", 'w') as f:
             json.dump(game_data, f)

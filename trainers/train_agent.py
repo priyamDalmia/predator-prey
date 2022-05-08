@@ -26,24 +26,24 @@ agent_network = dodict(dict(
 config = dodict(dict(
         # Environment
         size=10,
-        npred=3,
-        nprey=6,
-        winsize=5,
+        npred=1,
+        nprey=1,
+        winsize=7,
         nholes=0,
         nobstacles=0,
-        _map="random",
+        map_="random",
         # Training Control
-        epochs=10,
-        episodes=2,       # Episodes must be set to 1 for training.
+        epochs=50,
+        episodes=1,       # Episodes must be set to 1 for training.
         train_steps=1,    # Train steps must be set to 1 for training.
         update_eps=1,
         max_cycles=500,
         training=True,
         eval_pred=False,
         eval_prey=False,
-        train_type="prey",
+        train_type="predator",
         # Agent Control
-        class_pred=AACAgent,
+        class_pred=RandomAgent,
         class_prey=RandomAgent,
         agent_type="actor-critic",
         agent_network=agent_network,
@@ -53,24 +53,24 @@ config = dodict(dict(
         epsilon_dec=0.99,
         epsilon_update=10,
         batch_size=64,
-        buffer_size=5000,
+        buffer_size=1500,
         # Models
-        replay_dir = "",
-        checkpoint_dir = "",
+        replay_dir = "replays/",
+        checkpoint_dir = "trained-policies/single/",
         load_prey=False, # Give complete Path to the saved policy.#'predator_0-1ac-1random-4799-29', # 'prey_0-random-ac-99-135', 
         load_pred=False, #'prey_0-1random-1ac-4799-390', #'predator_0-ac-random-19-83',
         # Log Control
-        _name="t-6ac-3rand",
+        _name="t-1rand-1ac",
         save_replay=True,
         save_model=True,
-        log_freq = 2,
-        wandb=False,
+        log_freq=200,
+        wandb=True,
         wandb_mode="online",
         entity="rl-multi-predprey",
         project_name="predator-tests",
-        notes="3AC vs 6RAND Indp Pred Test",
+        notes="1RAND vs 1AC Indp Pred Test",
         log_level=10,
-        log_file="logs/predator.log",
+        log_file="logs/prey.log",
         print_console = True,
         ))
 

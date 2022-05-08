@@ -41,6 +41,9 @@ class Trainer(ABC):
     @abstractmethod
     def run_training(self):
         pass
+    
+    def action_to_string(self):
+        pass
 
     def get_logger(self):
         if self.config.wandb:
