@@ -30,22 +30,22 @@ critic_network = dodict(dict(
 
 config = dodict(dict(
         # Environment
-        size=15,
+        size=10,
         npred=2,
-        nprey=2,
+        nprey=3,
         winsize=7,
         nholes=0,
         nobstacles=0,
         _map="random",
         # Training control,
-        epochs=1000,
+        epochs=2000,
         episodes=1,       # Episodes must be set to 1 for training.
         train_steps=1,
         update_eps=1,
-        max_cycles=500,
+        max_cycles=1000,
         training=True,
         train_type="predator",
-        update_critic=10,
+        update_critic=20,
         # Agent Control
         class_pred=COMAAgent,
         class_prey=RandomAgent,
@@ -65,7 +65,7 @@ config = dodict(dict(
         load_prey=False, 
         load_predator=False,
         # Log Control
-        _name="15-t-2coma-5rand",
+        _name="20-t-2coma-5rand",
         save_replay=True,
         save_model=False,
         log_freq=20,

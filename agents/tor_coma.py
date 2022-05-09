@@ -254,7 +254,7 @@ class COMAAgent(BaseAgent):
         advantage = q_taken - baseline
         # Calculate and Backpropogate the Actor Loss.
         log_probs = torch.log(probs)
-        actor_loss = torch.gather(log_probs, dim=1, index=actions) * advantage
+        actor_loss = torch.gather(log_probs, dim=1, index=actions) * advantage * -1
         self.optimizer.zero_grad()
         loss = (actor_loss).mean()
         loss.backward()

@@ -26,7 +26,7 @@ agent_network = dodict(dict(
 config = dodict(dict(
         # Environment
         size=10,
-        npred=1,
+        pred=1,
         nprey=1,
         winsize=7,
         nholes=0,
