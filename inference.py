@@ -2,7 +2,9 @@ import os
 import sys
 import numpy as np
 import pdb
-
+from data.helpers import dodict
+from data.common import ACTIONS
+from agents.tor_adv_ac import AACAgent
 '''
 NOTE: This is not a simulation of the game state evolution. Real dynamics of the 
 game are not implemented here. The purpose of this is to only generate psudo-observations 
@@ -16,46 +18,61 @@ otherwise, the observations recived will not be a reflection of the real game.
 '''
 
 ADJUST = lambda x, y: (x[0]+y, x[1]+y)
+RANGE = lambda x, y: ((0, x[0]+y+1), (0, x[1]+y+1))
 
 config = dict(
         # Environment size, 
         size=7,
-        winsize=5,
-        npred=2,
-        nprey=2,
-        pred_pos=[(0,1), (1,1)],
-        prey_pos=[(3,4), (2,2)],
+        winsize=7,
+        npred=1,   # Be Cereful when setting these values.
+        nprey=1,
+        pred_pos=[(3,3)],
+        prey_pos=[(1,1)],
+        target_pos=[(1,1)], # Should be one of the prey positons.
+        agent_class = AACAgent,
+        agent_policy = "experiments/1/policies/predator_0-10-1ac-1rand-2399-17",
+        critc_class = "",
+        critic_policy = "",
+        steps=5,
         )
 
 class Inference():
     def __init__(self, config):
-        self.config = config    
+        self.config = dodict(config) 
+        self.units = self.config["npred"] + self.config["nprey"]
+        self.input_dims = (3, self.config["winsize"], self.config["winsize"])
+        self.output_dims = 4
+        self.action_space = [i for i in range(4)]
+        self.size = self.config["size"]
+        self.win_size = self.config["winsize"]
+        self.pad_width = int(self.win_size/2)
+        
         self.initialize_agents()
         self.build_game_state()
 
     def run_inference(self):
-        while True:
-            breakpoint()
-            for idx, _id in enumerate(self.infer_agents.keys()):
-                # get observation for _id
-                position = self.all_pos[_id]
-                observation = self.get_observation(idx+1, position)
-                # Make Inference. Get Q values.
-                # values = self.agents[_id].forward()
-                
-                # update the posititon of the agents
-                new_position = self.update_position(_id, position) 
-                self.all_pos[_id] = new_position
-                self.update_state(idx+1, new_position)
-        pass
-
+        for x in range(len(self.X)):
+            for y in range(len(self.Y)):
+                for idx, _id in enumerate(self.infer_agents.keys()):
+                    # get observation for _id
+                    # !!position = self.all_pos[_id]
+                    position = (x, y)
+                    self.all_pos[_id] = position
+                    self.update_state(idx+1, position)
+                    
+                    observation = self.get_observation(idx+1, position)
+                    # Make Inference. Get Q values.
+                    probs, values = self.infer_agents[_id].get_raw_output(observation)   
+                    # store the obtainded valeus 
+                    self.store_values(_id, position, probs, values) 
+                    if _id.startswith("critic"): 
+                        continue
+                    # update the posititon of the agents
+    
     def build_game_state(self):
         # The Base Game State.
-        self.size = self.config["size"]
-        self.win_size = self.config["winsize"]
-        self.pad_width = int(self.win_size/2)
         base_state = np.pad((np.zeros((self.size, self.size), dtype=np.int32)),\
-                pad_width=self.pad_width, constant_values=1)
+        pad_width=self.pad_width, constant_values=1)
         self.state = np.expand_dims(base_state, axis=0).copy()
         self.channel = np.pad((np.zeros((self.size, self.size), dtype=np.int32)),\
                 pad_width=self.pad_width, constant_values=0)
@@ -67,9 +84,10 @@ class Inference():
             new_channel = self.channel.copy()
             new_channel[position[0], position[1]] = 1
             self.state = np.vstack((self.state, np.expand_dims(new_channel, axis=0)))
-
+        
     def update_state(self, idx, new_position):
         # Adjust postion for padding.
+        new_position = ADJUST(new_position, self.pad_width)
         self.state[idx, :, :] = self.channel.copy()
         self.state[idx, new_position[0], new_position[1]] = 1
 
@@ -84,6 +102,65 @@ class Inference():
         channel_2 = np.sum(observation[self.npreds+1:], axis=0)
         return np.stack((channel_0, channel_1, channel_2))
         
+    def store_values(self, _id, position, probs, values):
+        data = probs.tolist()[0] + values.tolist()[0]
+        self.infer_values[_id][:, position[0], position[1]] = data
+
+    def initialize_agents(self):
+        # Go Over All predators 
+        # Create a list of Agents ids, Agent position, and Inference Policies.
+        # Create Empty array to store inference values. 
+        # For Each Agent (4 prob + 1 value functions)
+        # The prey around which to infer.
+        self.target_pos = self.config.target_pos[0]
+        x_lim, y_lim = RANGE(self.target_pos, self.pad_width)
+        # Creating a numpy meshgrid for all points.
+        x_range = np.arange(x_lim[0], x_lim[1])
+        y_range = np.arange(y_lim[0], y_lim[1])
+        self.Y, self.X = np.meshgrid(x_range, y_range)
+        self.infer_array = np.zeros((5, len(x_range), len(y_range)))
+
+        self.npreds = self.config['npred']
+        self.npreys = self.config['nprey']
+        all_agents = []
+        all_pos = {}
+        infer_agents = {}
+        infer_values = {}
+        for i in range(self.config["npred"]):
+            _id = f"predator_{i}"
+            all_agents.append(_id)
+            position = self.config["pred_pos"][i]
+            all_pos[_id] = position 
+            # Write code to add Policy(actors) and Critics seperately.
+            agent = self.config["agent_class"](
+                    _id, 
+                    self.input_dims,
+                    self.output_dims,
+                    self.action_space,
+                    memory=None, 
+                    load_model = self.config.agent_policy,
+                    eval_model = True,
+                    )
+            infer_agents[_id] = agent
+            infer_values[_id] = self.infer_array.copy()
+        for i in range(self.config["nprey"]):
+            _id = f"prey_{i}"
+            all_agents.append(_id)
+            position = self.config["prey_pos"][i]
+            all_pos[_id] = position 
+        self.all_agents = all_agents
+        self.all_pos = all_pos
+        self.infer_agents = infer_agents
+        self.infer_values = infer_values
+
+    def vec_field_graph(self):
+        for _id in self.infer_agents:
+            data_i = self.infer_values[_id]
+            martix_U = self.infer_values[_id]
+            breakpoint()
+
+        pass
+        
     def render(self):
         gmap = np.zeros((self.size, self.size), dtype=np.int32).tolist()
         for _id, position in self.all_pos.items():
@@ -95,28 +172,16 @@ class Inference():
         gmap = [list(map(lambda x: "." if x == 0 else x, l)) for l in gmap]
         print(np.matrix(gmap))
 
-    def initialize_agents(self):
-        # Go Over All predators 
-        # Create a list of Agents ids, Agent position, and Inference Policies.
-        self.npreds = self.config['npred']
-        self.npreys = self.config['nprey']
-        all_agents = []
-        all_pos = {}
-        for i in range(self.config["npred"]):
-            _id = f"predator_{i}"
-            all_agents.append(_id)
-            position = self.config["pred_pos"][i]
-            all_pos[_id] = position 
-            # Load a policy or Network here.
-            # Add object to infer policy
-            pass
-        for i in range(self.config["nprey"]):
-            _id = f"prey_{i}"
-            all_agents.append(_id)
-            position = self.config["prey_pos"][i]
-            all_pos[_id] = position 
-        self.all_agents = all_agents
-        self.all_pos = all_pos
+    def next_position(self, _id, position):
+        next_action = None
+        new_position = ACTIONS[action](position, self.size, self.pad_width)
+        return new_position
+
+
 if __name__ == "__main__":
     breakpoint()
     infer = Inference(config)
+    infer.run_inference()
+
+    # Make Vector Feild Graph
+    infer.vec_field_graph()

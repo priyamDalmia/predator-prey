@@ -21,7 +21,7 @@ actor_network = dodict(dict(
 config = dodict(dict(
         mode="train",
         # Environment
-        size=10,
+        size=15,
         npred=1,
         nprey=1,
         winsize=7,
@@ -29,7 +29,7 @@ config = dodict(dict(
         nobstacles=0,
         map_="random",
         # Training control,
-        epochs=2000,
+        epochs=2500,
         episodes=1,
         train_steps=1,
         update_eps=1,
@@ -54,12 +54,12 @@ config = dodict(dict(
         replay_dir="experiments/1/results/",
         checkpoint_dir="experiments/1/policies/",
         load_prey=False, 
-        load_predator=False,
+        load_pred="experiments/1/policies/predator_0-10-1ac-1rand-2399-17",
         # Log Control
-        _name="10-1ac-1rand",
+        _name="15-1ac(t17)-1rand",
         save_replay=True,
         save_model=True,
-        log_freq=100,
+        log_freq=200,
         wandb=True,
         wandb_mode="online",
         entity="rl-multi-predprey",

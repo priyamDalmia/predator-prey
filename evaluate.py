@@ -12,24 +12,24 @@ from agents.tor_adv_ac import AACAgent
 import pdb
 
 # Must have list of Agents classe and their policy paths
-prey_class = [AACAgent]
+prey_class = [RandomAgent]
 prey_policies = ['prey_0-t-1rand-1ac-19-185']
-pred_class = [RandomAgent]
-pred_policies = ['random']
+pred_class = [AACAgent]
+pred_policies = ['experiments/1/policies/predator_0-10-1ac-1rand-2399-17']
 
 
 config = dodict(dict(
     # Environment
     size=10,
     npred=1,
-    nprey=1,
-    winsize=5,
+    nprey=2,
+    winsize=7,
     nholes=0,
     nobstacles=0,
     map_="random",
     # Evaluation Control
     runs=5,
-    episodes=50,
+    episodes=500,
     max_cycles=500,
     save_replay=False,
     # Agent Control
@@ -97,17 +97,11 @@ class Evaluate():
                     pd.DataFrame(reward_df).sum(axis=0).to_list())
         return steps_hist, reward_hist
     
-    def run_inf_qvals(self):
-        breakpoint()
-        # Create a Fake Game State Object. 
-
-        pass
 
     def make_log(self, r, steps, rewards):
         # Print to console
         if self.config.print_console:
             steps_avg = np.mean(steps[-self.config.episodes:])
-            breakpoint()
             rewards_avg = pd.DataFrame(rewards[-self.config.episodes:], columns=self.agent_ids)\
                     .mean(0).round(1).to_dict()
             print(f"Run:{r:4} | Steps:{steps_avg} | Rewards:{rewards_avg}")
@@ -130,7 +124,7 @@ class Evaluate():
                             self.action_space,
                             memory=None,
                             load_model=agent_policy,
-                            **self.config)
+                            eval_model=True)
             else:
                 if len(prey_class) == 1:
                     agent_class = prey_class[0]
@@ -145,10 +139,9 @@ class Evaluate():
                             self.action_space,
                             memory=None,
                             load_model=agent_policy,
-                            **self.config)
+                            eval_model=True)
             agents[_id] = agent
         return agents
-
 
 if __name__ == "__main__":
     try:
@@ -162,6 +155,4 @@ if __name__ == "__main__":
             input_dims = input_dims,
             output_dims = output_dims,
             action_space = action_space)
-    breakpoint()
-
     evaluate.evaluate()

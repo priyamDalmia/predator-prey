@@ -29,7 +29,6 @@ class Game():
         # Reset the environment object (basically recreates a new GameState object.)
         self.reset()   
 
-    
     def reset(self) -> dict:
         self.agents = {}
         self.agent_ids = []
@@ -162,12 +161,6 @@ class Game():
             idx += 1
         return dict(observation)
     
-    def load_episode():
-        # 
-
-        # Call env.reset or equivalent at the end.
-        pass
-
     def render(self, mode="human"):
         adjust = lambda x, y: (x[0]-y, x[1]-y)
         gmap = np.zeros((self.size, self.size), dtype=np.int32).tolist()

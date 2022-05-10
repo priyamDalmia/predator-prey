@@ -13,7 +13,6 @@ class Trainer(ABC):
         self.config = config
         self.env = env
         self.logger = self.get_logger()
-        
         self.agent_ids = env.agent_ids
         self.pred_ids = self.agent_ids[:self.config.npred]
         self.prey_ids = self.agent_ids[self.config.npred:]
@@ -79,7 +78,7 @@ class Trainer(ABC):
     def make_log(self, epoch, steps_hist, rewards_hist, loss_hist, **kwargs):
         self.steps_avg = np.mean(steps_hist[-99:])
         self.rewards_avg = pd.DataFrame(rewards_hist[-99:], columns=self.agent_ids)\
-                .mean(0).round(0).to_dict()
+                .mean(0).round(2).to_dict()
         self.loss_avg = pd.DataFrame(loss_hist[-99:], columns=self.train_ids)\
                 .mean(0).round(0).to_dict()
         info = dict(

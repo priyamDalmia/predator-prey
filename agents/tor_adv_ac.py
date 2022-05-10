@@ -8,6 +8,10 @@ from data.helpers import dodict
 from data.agent import BaseAgent
 import pdb
 
+
+class Critic(nn.Module):
+    pass
+
 class NetworkActorCritic(nn.Module):
     def __init__(self, input_dims, output_dims, action_space,
             lr, network_dims,  **kwargs):
@@ -78,7 +82,8 @@ class AACAgent(BaseAgent):
                 else:
                     self.network.train()
                 print(f"Model Loaded:{_id} -> {self.load_model}")
-            except:
+            except Exception as e:
+                print(e)
                 print(f"Load Failed:{_id} -> {self.load_model}")
         else:
             self.agent_network = agent_network
@@ -98,6 +103,13 @@ class AACAgent(BaseAgent):
         action = action_dist.sample() 
         log_probs =  action_dist.log_prob(action)
         return action.item(), log_probs
+    
+    def get_raw_output(self, observation):
+        with torch.no_grad():
+            observation = torch.as_tensor(observation, dtype=torch.float32,
+                    device=self.device)
+            probs, values = self.network(observation.unsqueeze(0))
+        return probs, values
     
     def train_step(self):
         states, actions, rewards, nexts, dones, log_probs =\

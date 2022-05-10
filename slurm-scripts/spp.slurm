@@ -18,5 +18,6 @@
 
 module load pytorch/1.5.1-python-3.7.4
 
-#python3 experiments/1/main.py
-python3 trainers/train_cent_pred.py
+#python3 trainers/train_agent.py
+python3 experiments/1/main.py
+#python3 trainers/train_cent_pred.py
