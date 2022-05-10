@@ -56,7 +56,7 @@ config = dodict(dict(
         load_prey=False, 
         load_predator=False,
         # Log Control
-        _name="10-1ac-3rand",
+        _name="10-1ac-1rand",
         save_replay=True,
         save_model=True,
         log_freq=100,

@@ -98,10 +98,9 @@ class Evaluate():
         return steps_hist, reward_hist
     
     def run_inf_qvals(self):
-        # Create A loop
-        # Load a Map 
-        # Set Prey Action to 4:do_nothing
-        # 
+        breakpoint()
+        # Create a Fake Game State Object. 
+
         pass
 
     def make_log(self, r, steps, rewards):
@@ -163,4 +162,6 @@ if __name__ == "__main__":
             input_dims = input_dims,
             output_dims = output_dims,
             action_space = action_space)
+    breakpoint()
+
     evaluate.evaluate()
