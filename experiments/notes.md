@@ -1,8 +1,7 @@
 ### Towards Interpretable Multi-Agent Reinforcement Learning through Visualizing Learning Dynamics.
 
-An analysis of the evolving State-Values functions of a Multi-Agent System under in a partially-observable, stochastic and non-stationary environment.
+An analysis of the evolving State-Values functions using vector fields, of a Multi-Agent System under in a partially-observable, stochastic and non-stationary environment.
 In this study, we propose the use of visualizing the state-values of a multi-agent systems under differnet contrainsts to help a more thorough understanding of the agent polices and under-the-hood decision making.
-
 
 
 #### Notes on the Experiments, the configuration and results.
