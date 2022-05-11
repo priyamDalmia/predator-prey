@@ -24,7 +24,7 @@ config = dodict(dict(
         size=15,
         npred=1,
         nprey=1,
-        winsize=7,
+        winsize=9,
         nholes=0,
         nobstacles=0,
         map_="random",
@@ -56,7 +56,7 @@ config = dodict(dict(
         load_prey=False, 
         load_pred="experiments/1/policies/predator_0-10-1ac-1rand-2399-17",
         # Log Control
-        _name="15-1ac(t17)-1rand",
+        _name="15-1ac-1rand",
         save_replay=True,
         save_model=True,
         log_freq=200,

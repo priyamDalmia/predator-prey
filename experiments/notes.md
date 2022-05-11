@@ -7,7 +7,7 @@ In this study, we propose the use of visualizing the state-values of a multi-age
 
 #### Notes on the Experiments, the configuration and results.
 
-All the experiments are carried on a 18X18 grid with an observation window of size 7.
+All the experiments are carried on a 30X30 grid with an observation window of size 9.
 
 1. Single Predator and Single Prey.
 ** Fair Game.
