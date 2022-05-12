@@ -1,0 +1,43 @@
+experiments:
+    run_1:
+        size: 15
+        npred: 2
+        nprey: 1
+        epochs: 2500
+        _name: "15-2ac-1rand"
+        notes: "Training 2 vs 1"
+
+    run_2:
+        size: 15
+        npred: 2
+        nprey: 3
+        epochs: 3000
+        _name: "15-2ac-3rand"
+        notes: "Training 2 vs 2"
+    
+    run_3:
+        size: 15
+        npred: 2
+        nprey: 5
+        epochs: 3000
+        _name: "15-2ac-5rand"
+        notes: "Training 2 vs 5"
+        max_cycles: 1500
+   
+    run_5:
+        size: 25
+        npred: 2
+        nprey: 2
+        epochs: 2500
+        _name: "25-2ac-2rand"
+        notes: "Training 2 vs 1"
+    
+    run_5:
+        size: 25
+        npred: 2
+        nprey: 10
+        epochs: 2500
+        _name: "25-2ac-2rand"
+        notes: "Training 2 vs 5"
+        max_cycles: 1500
+

@@ -2,9 +2,48 @@ experiments:
     run_1:
         size: 15
         npred: 1
-        nprey: 1
+        nprey: 5
         epochs: 2500
-        _name: "15-1ac-1rand"
-        notes: "Training 1 vs 1"
+        _name: "15-t(82)-1ac-5rand"
+        notes: "Training 1 vs 5"
 
+    run_2:
+        size: 15
+        npred: 1
+        nprey: 6
+        epochs: 5000
+        _name: "15-t(82)-1ac-6rand"
+        notes: "Training 1 vs 6"
+    
+    run_3:
+        size: 25
+        npred: 1
+        nprey: 3
+        epochs: 2500
+        _name: "25-t(82)-1ac-5rand"
+        notes: "Training 1 vs 3"
+   
+#    run_4:
+        #size: 15
+        #npred: 1
+        #nprey: 4
+        #epochs: 2500
+        #_name: "15-1ac-4rand"
+        #notes: "Training 1 vs 4"
+   
+    #run_5:
+        #size: 25
+        #npred: 1
+        #nprey: 1
+        #epochs: 2500
+        #_name: "25-1ac-5rand"
+        #notes: "Training 1 vs 1"
+    
+    #run_5:
+        #size: 25
+        #npred: 1
+        #nprey: 5
+        #epochs: 2500
+        #_name: "25-1ac-5rand"
+        #notes: "Training 1 vs 5"
 

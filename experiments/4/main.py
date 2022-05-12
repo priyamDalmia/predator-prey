@@ -1,6 +1,7 @@
 import os
 import sys
 sys.path.append(os.getcwd())
+import yaml
 import numpy as np
 import pandas as pd
 from evaluate import Evaluate
@@ -9,8 +10,14 @@ from game.game import Game
 from trainers.train_cent_pred import train_coma
 from agents.random_agent import RandomAgent
 from agents.tor_coma import COMAAgent, CentCritic
-
+import argparse
 import pdb
+
+parser = argparse.ArgumentParser(description="experiments",
+        formatter_class = argparse.ArgumentDefaultsHelpFormatter)
+parser.add_argument('--id', type=int, help="The configuration to run")
+ARGS = parser.parse_args()
+
 
 actor_network = dodict(dict(
     clayers=2,
@@ -81,7 +88,12 @@ config = dodict(dict(
 if __name__=="__main__":
     config = config
     # Parse and Load Config File here.
-
+    job_id = ARGS.id
+    with open('experiments/1/config.yaml') as f:
+        data = yaml.load(f, Loader=yaml.FullLoader)
+        config.update(data["experiments"][f"run_{job_id}"])
+    print(config)
+    #
     # Create and initialize Environments
     # Try passing Game Specific Config File - config.game
     try:

@@ -1,6 +1,7 @@
 import os
 import sys
 sys.path.append(os.getcwd())
+import yaml
 import numpy as np
 import pandas as pd
 from evaluate import Evaluate
@@ -9,8 +10,13 @@ from game.game import Game
 from trainers.train_agent import train_agent
 from agents.random_agent import RandomAgent
 from agents.tor_adv_ac import AACAgent
-
+import argparse
 import pdb
+
+parser = argparse.ArgumentParser(description="experiments",
+        formatter_class = argparse.ArgumentDefaultsHelpFormatter)
+parser.add_argument('--id', type=int, help="The configuration to run")
+ARGS = parser.parse_args()
 
 actor_network = dodict(dict(
     clayers=2,
@@ -21,9 +27,9 @@ actor_network = dodict(dict(
 config = dodict(dict(
         mode="train",
         # Environment
-        size=15,
-        npred=2,
-        nprey=5,
+        size=10,
+        npred=1,
+        nprey=1,
         winsize=9,
         nholes=0,
         nobstacles=0,
@@ -51,12 +57,12 @@ config = dodict(dict(
         batch_size=64,
         buffer_size=1500,
         # Models
-        replay_dir="experiments/2/results/",
-        checkpoint_dir="experiments/2/policies/",
+        replay_dir="experiments/1/results/",
+        checkpoint_dir="experiments/1/policies/",
         load_prey=False, 
         load_pred=False,# "experiments/1/policies/predator_0-10-1ac-1rand-2399-17",
         # Log Control
-        _name="15-2ac-5rand",
+        _name="f-2ac-1rand",
         save_replay=True,
         save_model=True,
         log_freq=200,
@@ -64,16 +70,20 @@ config = dodict(dict(
         wandb_mode="online",
         entity="rl-multi-predprey",
         project_name="experiment 2",
-        notes="2AAC vs 5RAND Pred Test - Team Rewards",
+        notes="2AAC vs 1RAND Pred Test",
         log_level=10,
-        log_file="logs/exp_2.log",
+        log_file="logs/exp_1.log",
         print_console=True,
         ))
 
 if __name__=="__main__":
     config = config
     # Parse and Load Config File here.
-
+    job_id = ARGS.id
+    with open('experiments/1/config.yaml') as f:
+        data = yaml.load(f, Loader=yaml.FullLoader)
+        config.update(data["experiments"][f"run_{job_id}"])
+    print(config)
     # Create and initialize Environments
     # Try passing Game Specific Config File - config.game
     try:
@@ -84,7 +94,6 @@ if __name__=="__main__":
     input_dims = env.observation_space.shape
     output_dims = len(env.action_space)
     action_space = env.action_space
-
     # If Training; run trainers
     if config.mode == "train":
         trainer = train_agent(config,
