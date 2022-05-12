@@ -1,6 +1,7 @@
 import os
 import sys
 sys.path.append(os.getcwd())
+import yaml
 import numpy as np
 import pandas as pd
 from evaluate import Evaluate
@@ -9,8 +10,13 @@ from game.game import Game
 from trainers.train_agent import train_agent
 from agents.random_agent import RandomAgent
 from agents.tor_adv_ac import AACAgent
-
+import argparse
 import pdb
+
+parser = argparse.ArgumentParser(description="experiments",
+        formatter_class = argparse.ArgumentDefaultsHelpFormatter)
+parser.add_argument('--id', type=int, help="The configuration to run")
+ARGS = parser.parse_args()
 
 actor_network = dodict(dict(
     clayers=2,
@@ -73,9 +79,10 @@ config = dodict(dict(
 if __name__=="__main__":
     config = config
     # Parse and Load Config File here.
-    breakpoint()
-    with open('balerion/param.yaml') as f:
-        param_list = yaml.load(f, Loader=yaml.FullLoader)
+    job_id = ARGS.id
+    with open('experiments/1/config.yaml') as f:
+        data = yaml.load(f, Loader=yaml.FullLoader)
+        config.update(data["experiments"][f"run_{job_id}"])
     # Create and initialize Environments
     # Try passing Game Specific Config File - config.game
     try:
@@ -86,7 +93,6 @@ if __name__=="__main__":
     input_dims = env.observation_space.shape
     output_dims = len(env.action_space)
     action_space = env.action_space
-
     # If Training; run trainers
     if config.mode == "train":
         trainer = train_agent(config,
