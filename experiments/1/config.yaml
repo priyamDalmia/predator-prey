@@ -1,0 +1,10 @@
+experiments:
+    run_1:
+        size: 15
+        npred: 1
+        nprey: 1
+        epochs: 2500
+        _name: "15-1ac-1rand"
+        notes: "Training 1 vs 1"
+
+

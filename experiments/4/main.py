@@ -6,9 +6,9 @@ import pandas as pd
 from evaluate import Evaluate
 from data.helpers import dodict
 from game.game import Game
-from trainers.train_agent import train_agent
+from trainers.train_cent_pred import train_coma
 from agents.random_agent import RandomAgent
-from agents.tor_adv_ac import AACAgent
+from agents.tor_coma import COMAAgent, CentCritic
 
 import pdb
 
@@ -18,11 +18,17 @@ actor_network = dodict(dict(
     nlayers=2,
     nl_dims=[256, 256]))
 
+critic_network = dodict(dict(
+    clayers=2,
+    cl_dims=[6, 12],
+    nlayers=2,
+    nl_dims=[256, 256]))
+
 config = dodict(dict(
         mode="train",
         # Environment
-        size=25,
-        npred=1,
+        size=15,
+        npred=2,
         nprey=4,
         winsize=9,
         nholes=0,
@@ -36,13 +42,15 @@ config = dodict(dict(
         max_cycles=1000,
         training=True,
         train_type="predator",
+        update_critic=20,
         eval_pred=False,
         eval_prey=False,
         # Agent Control
-        class_pred=AACAgent,
+        class_pred=COMAAgent,
         class_prey=RandomAgent,
-        agent_type="adv-ac",
+        agent_type="coma-ac",
         agent_network=actor_network,
+        critic_network=critic_network,
         lr=0.0005, 
         gamma=0.95,
         epislon=0.95,
@@ -51,31 +59,29 @@ config = dodict(dict(
         batch_size=64,
         buffer_size=1500,
         # Models
-        replay_dir="experiments/1/results/",
-        checkpoint_dir="experiments/1/policies/",
+        replay_dir="experiments/4/results/",
+        checkpoint_dir="experiments/4/policies/",
         load_prey=False, 
         load_pred=False,# "experiments/1/policies/predator_0-10-1ac-1rand-2399-17",
         # Log Control
-        _name="15-1ac-4rand",
+        _name="15-2coma-4erand",
         save_replay=True,
         save_model=True,
         log_freq=200,
-        wandb=False,
+        wandb=True,
         wandb_mode="online",
         entity="rl-multi-predprey",
-        project_name="experiment 1",
-        notes="1AAC vs 4RAND Pred Test",
+        project_name="experiment 4",
+        notes="2COMA vs 2Rand Pred Test",
         log_level=10,
-        log_file="logs/exp_1.log",
+        log_file="logs/exp_4.log",
         print_console=True,
         ))
 
 if __name__=="__main__":
     config = config
     # Parse and Load Config File here.
-    breakpoint()
-    with open('balerion/param.yaml') as f:
-        param_list = yaml.load(f, Loader=yaml.FullLoader)
+
     # Create and initialize Environments
     # Try passing Game Specific Config File - config.game
     try:
@@ -89,7 +95,7 @@ if __name__=="__main__":
 
     # If Training; run trainers
     if config.mode == "train":
-        trainer = train_agent(config,
+        trainer = train_coma(config,
                 env,
                 input_dims=input_dims,
                 output_dims=output_dims,

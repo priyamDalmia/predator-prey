@@ -144,7 +144,7 @@ class train_coma(Trainer):
         critic = CentCritic(
                 "critic_0",
                 critic_observation_dims, 
-                output_dims,
+                self.output_dims,
                 self.action_space,
                 self.pred_ids,
                 lr=self.config.lr, 

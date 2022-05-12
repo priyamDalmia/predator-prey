@@ -21,9 +21,9 @@ actor_network = dodict(dict(
 config = dodict(dict(
         mode="train",
         # Environment
-        size=25,
-        npred=1,
-        nprey=4,
+        size=15,
+        npred=2,
+        nprey=5,
         winsize=9,
         nholes=0,
         nobstacles=0,
@@ -51,31 +51,29 @@ config = dodict(dict(
         batch_size=64,
         buffer_size=1500,
         # Models
-        replay_dir="experiments/1/results/",
-        checkpoint_dir="experiments/1/policies/",
+        replay_dir="experiments/2/results/",
+        checkpoint_dir="experiments/2/policies/",
         load_prey=False, 
         load_pred=False,# "experiments/1/policies/predator_0-10-1ac-1rand-2399-17",
         # Log Control
-        _name="15-1ac-4rand",
+        _name="15-2ac-5rand",
         save_replay=True,
         save_model=True,
         log_freq=200,
-        wandb=False,
+        wandb=True,
         wandb_mode="online",
         entity="rl-multi-predprey",
-        project_name="experiment 1",
-        notes="1AAC vs 4RAND Pred Test",
+        project_name="experiment 2",
+        notes="2AAC vs 5RAND Pred Test - Team Rewards",
         log_level=10,
-        log_file="logs/exp_1.log",
+        log_file="logs/exp_2.log",
         print_console=True,
         ))
 
 if __name__=="__main__":
     config = config
     # Parse and Load Config File here.
-    breakpoint()
-    with open('balerion/param.yaml') as f:
-        param_list = yaml.load(f, Loader=yaml.FullLoader)
+
     # Create and initialize Environments
     # Try passing Game Specific Config File - config.game
     try:

@@ -220,9 +220,9 @@ class COMAAgent(BaseAgent):
             except:
                 print(f"Load Failed:{_id} -> {self.load_model}")
         else:
-            self.actor_network = agent_network
+            self.agent_network = agent_network
             self.actor = NetworkActor(input_dims, output_dims, 
-                    self.actor_network)
+                    self.agent_network)
         self.device = torch.device('cuda:0' if torch.cuda.is_available() else 'cpu')
         self.actor = self.actor.to(self.device)
         self.optimizer = optim.Adam(self.actor.parameters(),
