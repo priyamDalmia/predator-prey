@@ -89,7 +89,7 @@ if __name__=="__main__":
     config = config
     # Parse and Load Config File here.
     job_id = ARGS.id
-    with open('experiments/1/config.yaml') as f:
+    with open('experiments/4/config.yaml') as f:
         data = yaml.load(f, Loader=yaml.FullLoader)
         config.update(data["experiments"][f"run_{job_id}"])
     print(config)

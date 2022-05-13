@@ -63,6 +63,7 @@ class Inference():
                     self.update_state(idx+1, position)
                     
                     observation = self.get_observation(idx+1, position)
+                    breakpoint()
                     # Make Inference. Get Q values.
                     probs, values = self.infer_agents[_id].get_raw_output(observation)   
                     # store the obtainded valeus 
