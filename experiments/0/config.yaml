@@ -1,0 +1,47 @@
+experiments:
+    game_config:
+        project_name: "pred tests"
+        reward_mode: "individual"
+        advantage_mode: False
+        nsteps: 30
+
+    run_1:
+        size: 15
+        npred: 2
+        nprey: 5
+        epochs: 2000
+        _name: "15-2ac-5rand"
+        notes: "Training 1 vs 5"
+
+    run_2:
+        size: 15
+        npred: 2
+        nprey: 6
+        epochs: 2000
+        _name: "15-2ac-6rand"
+        notes: "Training 1 vs 6"
+    
+    run_3:
+        size: 15
+        npred: 2
+        nprey: 8
+        epochs: 2500
+        _name: "15-2ac-8rand"
+        notes: "Training 1 vs 3"
+
+    run_4:
+        size: 25
+        npred: 3
+        nprey: 8
+        epochs: 2500
+        _name: "25-3ac-8rand"
+        notes: "Training 1 vs 8"
+    
+    run_5:
+        size: 40
+        npred: 5
+        nprey: 10
+        epochs: 2500
+        _name: "40-5ac-10rand"
+        notes: "Training 1 vs 3"
+ 

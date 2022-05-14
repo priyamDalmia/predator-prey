@@ -1,4 +1,8 @@
 experiments:
+    game_config:
+        reward_mode: "individual",
+            advantage_mode: True,
+        #
     run_1:
         size: 15
         npred: 1

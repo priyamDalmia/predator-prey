@@ -25,15 +25,15 @@ agent_network = dodict(dict(
 
 config = dodict(dict(
         # Environment
-        size=10,
-        npred=2,
-        nprey=5,
+        size=15,
+        npred=1,
+        nprey=4,
         winsize=9,
         nholes=0,
         nobstacles=0,
         map_="random",
         reward_mode="individual",
-        advantage_mode=True,
+        advantage_mode=False,
         # Training Control
         epochs=2500,
         episodes=1,       # Episodes must be set to 1 for training.
@@ -63,15 +63,15 @@ config = dodict(dict(
         load_prey=False, # Give complete Path to the saved policy.#'predator_0-1ac-1random-4799-29', # 'prey_0-random-ac-99-135', 
         load_pred=False, #'prey_0-1random-1ac-4799-390', #'predator_0-ac-random-19-83',
         # Log Control
-        _name="15-3rand-1ac",
+        _name="15-1nac-4rand",
         save_replay=False,
         save_model=False,
         log_freq=200,
-        wandb=False,
+        wandb=True,
         wandb_mode="online",
         entity="rl-multi-predprey",
-        project_name="prey-tests",
-        notes="2RAND vs 1AC Indp Pred Test",
+        project_name="pred-tests",
+        notes="1nAC vs 1 RAND Indp Pred Test",
         log_level=10,
         log_file="logs/prey.log",
         print_console = True,
