@@ -4,6 +4,7 @@ import numpy as np
 import random
 import time
 import json
+from statistics import mean
 from data.common import ACTIONS
 from game.game_state import GameState
 
@@ -18,7 +19,8 @@ class Game():
         self.pad_width = int(self.window_size/2)
         self.map_ = config.map_
         self.game_state = None
-
+        self.reward_mode = config.reward_mode
+        self.advantage_mode = config.advantage_mode
         # Game managment variables
         self.units = (self.npredators + self.npreys + 1)
         self.action_space = [i for i in range(4)]
@@ -32,6 +34,8 @@ class Game():
     def reset(self) -> dict:
         self.agents = {}
         self.agent_ids = []
+        self.pred_ids = []
+        self.prey_ids = []
         self.last_rewards = {}
         self.predator_pos = {}
         self.prey_pos = {}
@@ -39,6 +43,7 @@ class Game():
         self.pos_predator = {}
         self.pos_prey = {}
         self.done = {}
+        # Check and confirm the _map and game reward settings.
         # Create a new GameState Object
         del self.game_state
         self.game_state = GameState(self.size, 
@@ -57,6 +62,7 @@ class Game():
             agent_obj , position = self.game_state.add_unit(_id)
             self.agents[_id] = (len(self.agent_ids)+1, agent_obj, position)
             self.agent_ids.append(_id)
+            self.pred_ids.append(_id)
             self.last_rewards[_id] = 0
             self.predator_pos[_id] = position
             self.pos_predator[position] = _id
@@ -66,7 +72,8 @@ class Game():
             _id = f"prey_{i}"
             agent_obj, position = self.game_state.add_unit(_id)
             self.agents[_id] = (len(self.agent_ids)+1, agent_obj, position)
-            self.agent_ids.append(_id)       
+            self.agent_ids.append(_id)
+            self.prey_ids.append(_id)
             self.last_rewards[_id] = 0
             self.prey_pos[_id] = position
             self.pos_prey[position] = _id
@@ -86,7 +93,12 @@ class Game():
             
         rewards = dict(self.last_rewards)
         action_ids = list(actions.keys())
-        random.shuffle(action_ids)
+        breakpoint()
+        if self.advantage_mode:
+            action_ids = random.sample(self.prey_ids, self.npreys) \
+                    + random.sample(self.pred_ids, self.npredators)
+        else:
+            random.shuffle(action_ids)
         for _id in action_ids:
             action = actions[_id]
             # Predator Action execution
@@ -107,7 +119,7 @@ class Game():
                     elif self.pos_prey.get(new_position):
                         a = self.pos_prey.get(new_position)
                         rewards[a] -= 1
-                        rewards[_id] += 1
+                        rewards = self.dist_rewards(_id, rewards)
                         # Remove the positon all together!!
                         self.prey_pos[a] = (0, 0)
                         self.done[a] = True
@@ -135,7 +147,7 @@ class Game():
                         new_position = position
                     elif self.pos_predator.get(new_position):
                         a = self.pos_predator.get(new_position)
-                        rewards[a] += 1
+                        rewards = self.dist_rewards(a, rewards)
                         rewards[_id] -= 1
                         new_position = (0, 0)
                         self.done[_id] = True
@@ -146,6 +158,7 @@ class Game():
             self.game_state.update_unit(self.agents[_id][0], new_position)
         info = {}
         self.steps+=1
+        # Gets Distributed rewards based on the game mode.
         self.record_transition(actions, rewards, self.done)
         done = True if sum(self.done.values())==self.npreys else False
         return rewards, self.get_observation(), done, info
@@ -160,7 +173,45 @@ class Game():
             observation[_id] = self.game_state.observe(_id, idx, *position)
             idx += 1
         return dict(observation)
-    
+
+    def dist_rewards(self, _id, rewards):
+        if self.reward_mode=="individual":
+            for k in self.pred_ids:
+                if k == _id:
+                    rewards[_id] += 1
+            return rewards
+
+        if self.reward_mode=="average":
+            avg_reward = (1 / len(self.pred_ids))
+            # Calulate the average reward over all predators and return new dict.
+            for k in self.pred_ids:
+                rewards[k] += avg_reward 
+            return rewards
+        
+        if self.reward_mode=="neighbours":
+            print(rewards)
+            breakpoint()
+            neighbours = self.get_neighbours(_id)
+            avg_rewards = (1/len(neighbours))
+            for k in neighbours:
+                rewards[k] += avg_rewards
+            return rewards
+        
+    def get_neighbours(self, _id):
+        neighbours = []
+        position = self.predator_pos[_id]
+        range_x = (position[0]-self.pad_width, position[0]+self.pad_width)
+        range_y = (position[1]-self.pad_width, position[1]+self.pad_width)
+        for k, v in self.predator_pos.items():
+            if (range_x[0]<=v[0]<=range_x[1]) and \
+                    (range_y[0]<=v[1]<=range_y[1]):
+                neighbours.append(k)
+        # Get Neigbours of Current Id
+        return neighbours
+
+    def get_weighted_neighbours(self, _id):
+        pass
+
     def render(self, mode="human"):
         adjust = lambda x, y: (x[0]-y, x[1]-y)
         gmap = np.zeros((self.size, self.size), dtype=np.int32).tolist()

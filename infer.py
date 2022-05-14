@@ -25,16 +25,16 @@ config = dict(
         # Environment size, 
         size=15,
         winsize=9,
-        npred=1,   # Be Cereful when setting these values.
-        nprey=1,
-        pred_pos=[(3,3)],
-        prey_pos=[(1,1)],
+        npred=2,   # Be Cereful when setting these values.
+        nprey=2,
+        pred_pos=[(3,3), (2,4)],
+        prey_pos=[(1,1), (3,3)],
         target_pos=[(1,1)], # Should be one of the prey positons.
         agent_class = AACAgent,
         agent_policy = "experiments/2/policies/predator_0-15-2ac-2rand-2399-48",
         critc_class = "",
         critic_policy = "",
-        plot_file="plots/plot_2_2",
+        plot_file="plots/plot_test",
         steps=5,
         )
 
@@ -61,9 +61,8 @@ class Inference():
                     position = (x, y)
                     self.all_pos[_id] = position
                     self.update_state(idx+1, position)
-                    
+                    breakpoint() 
                     observation = self.get_observation(idx+1, position)
-                    breakpoint()
                     # Make Inference. Get Q values.
                     probs, values = self.infer_agents[_id].get_raw_output(observation)   
                     # store the obtainded valeus 

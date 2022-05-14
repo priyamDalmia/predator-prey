@@ -27,6 +27,7 @@ config = dodict(dict(
     nholes=0,
     nobstacles=0,
     map_="random",
+    # Reward
     # Evaluation Control
     runs=5,
     episodes=500,

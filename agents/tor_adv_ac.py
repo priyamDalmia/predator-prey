@@ -113,7 +113,7 @@ class AACAgent(BaseAgent):
     
     def train_step(self):
         states, actions, rewards, nexts, dones, log_probs =\
-                self.memory.sample_transition()     
+                self.memory.sample_transition()
         if len(states) == 0:
             return 0
         # Discount the rewards 
