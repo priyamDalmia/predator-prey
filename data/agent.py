@@ -55,7 +55,7 @@ class BaseAgent(ABC):
     def load_model(self, filename):
         pass
     
-    def discount_rewards(self, rewards):
+    def discount_rewards(self, rewards, dones):
         new_rewards = []
         _sum = 0
         rewards = np.flip(rewards)

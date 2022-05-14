@@ -25,19 +25,15 @@ class Trainer(ABC):
         self.rewards_avg = 0
         self.loss_avg = 0
     
-    @abstractmethod
     def train(self):
         pass
 
-    @abstractmethod
     def initialize_agents(self):
         pass
     
-    @abstractmethod
     def run_episodes(self):
         pass
     
-    @abstractmethod
     def run_training(self):
         pass
     

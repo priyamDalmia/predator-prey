@@ -93,7 +93,6 @@ class Game():
             
         rewards = dict(self.last_rewards)
         action_ids = list(actions.keys())
-        breakpoint()
         if self.advantage_mode:
             action_ids = random.sample(self.prey_ids, self.npreys) \
                     + random.sample(self.pred_ids, self.npredators)
@@ -189,8 +188,6 @@ class Game():
             return rewards
         
         if self.reward_mode=="neighbours":
-            print(rewards)
-            breakpoint()
             neighbours = self.get_neighbours(_id)
             avg_rewards = (1/len(neighbours))
             for k in neighbours:
