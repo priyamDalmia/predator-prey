@@ -46,7 +46,7 @@ config = dodict(dict(
         eval_prey=False,
         train_type="predator",
         # Agent Control
-        class_pred=AACAgent,
+        class_pred=RandomAgent,
         class_prey=RandomAgent,
         agent_type="actor-critic",
         agent_network=agent_network,
@@ -212,6 +212,8 @@ class train_agent(Trainer):
                 all_dones.append(list(done_.values()))
                 observation = dict(next_)
                 steps+=1
+                if steps > self.config.max_cycles:
+                    break
                 if (steps+1)%self.config.nsteps == 0:
                     # Run training here!
                     losses = self.run_training(ep_end=False)

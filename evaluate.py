@@ -1,18 +1,20 @@
 import os
 import sys
 import copy
+import logging 
 import numpy as np
 import pandas as pd
+from datetime import datetime
 from game.game import Game
 from data.helpers import dodict
 from data.trainer import Trainer
 from data.agent import BaseAgent
 from agents.random_agent import RandomAgent
-from agents.tor_adv_ac import AACAgent
+from agents.tor_naac import AACAgent
 import pdb
 
-# Must have list of Agents classe and their policy paths
-prey_class = [RandomAgent]
+# Must have list of Agents classes and their policy paths
+prey_class = [AACAgent]
 prey_policies = ['prey_0-t-1rand-1ac-19-185']
 pred_class = [AACAgent]
 pred_policies = ['experiments/1/policies/predator_0-10-1ac-1rand-2399-17']
@@ -23,10 +25,12 @@ config = dodict(dict(
     size=10,
     npred=1,
     nprey=2,
-    winsize=7,
+    winsize=9,
     nholes=0,
     nobstacles=0,
     map_="random",
+    prey_policies = prey_policies,
+    pred_policies = pred_policies,
     # Reward
     # Evaluation Control
     runs=5,
@@ -46,6 +50,7 @@ class Evaluate():
         self.input_dims = env_specs["input_dims"]
         self.output_dims = env_specs["output_dims"]
         self.action_space = env_specs["action_space"]
+        self.logger = self.get_logger()
         # Initialize Agents (Load Agents)
         self.agent_ids = env.agent_ids
         self.agents = self.initialize_agents()
@@ -55,15 +60,18 @@ class Evaluate():
         self.loss_avg = 0
     
     def evaluate(self, mode="evaluation"):
+        self.logger.info(f"Predator: {self.config.pred_policies}")
+        self.logger.info(f"Prey: {self.config.prey_policies}")
         for r in range(self.config.runs):
             steps, rewards = self.run_episodes()
             # Make Log                 
             self.make_log(r, steps, rewards)
             # Save the Last episodes of each run!
             if self.config.save_replay:
-                replay_file = f"eval-{self.config._name}"
+                replay_file = f"experiments/eval-results/eval-{self.config._name}-{r}"
                 self.env.record_episode(replay_file)
-                        
+        self.shut_logger()
+
     def run_episodes(self):
         steps_hist = []
         reward_hist = []
@@ -98,14 +106,27 @@ class Evaluate():
                     pd.DataFrame(reward_df).sum(axis=0).to_list())
         return steps_hist, reward_hist
     
+    def get_logger(self):
+        logger = logging.getLogger(__name__)
+        formatter = logging.Formatter('%(message)s')
+        logger.setLevel(10)
+        file_handler = logging.FileHandler(self.config.eval_file)
+        file_handler.setFormatter(formatter)
+        logger.addHandler(file_handler)
+        logger.info(datetime.now().strftime("%d/%m %H:%M"))
+        return logger
 
+    def shut_logger(self):
+        logging.shutdown()
+    
     def make_log(self, r, steps, rewards):
+        steps_avg = np.mean(steps[-self.config.episodes:])
+        rewards_avg = pd.DataFrame(rewards[-self.config.episodes:], columns=self.agent_ids)\
+                    .mean(0).round(1).to_dict()
         # Print to console
         if self.config.print_console:
-            steps_avg = np.mean(steps[-self.config.episodes:])
-            rewards_avg = pd.DataFrame(rewards[-self.config.episodes:], columns=self.agent_ids)\
-                    .mean(0).round(1).to_dict()
             print(f"Run:{r:4} | Steps:{steps_avg} | Rewards:{rewards_avg}")
+        self.logger.info(f"Run:{r:4} | Steps:{steps_avg} | Rewards:{rewards_avg}")
 
     def initialize_agents(self):
         agents = {} 
@@ -114,11 +135,13 @@ class Evaluate():
             if _id.startswith("predator"):
                 if len(pred_class) == 1:
                     agent_class = pred_class[0]
-                    agent_policy = pred_policies[0]
+                    agent_policy = self.config.pred_policies[0]
+                    if agent_policy == 'None':
+                        agent_class = RandomAgent
                 else:
-                    assert len(pred_class) == self.config.npred, "Error loading agents!, fix policy names"
+                    assert len(self.config.pred_class) == self.config.npred, "Error loading agents!, fix policy names"
                     agent_class = pred_class[n]
-                    agent_policy = pred_policies[n]
+                    agent_policy = self.config.pred_policies[n]
                 agent = agent_class(_id, 
                             self.input_dims, 
                             self.output_dims,
@@ -129,11 +152,13 @@ class Evaluate():
             else:
                 if len(prey_class) == 1:
                     agent_class = prey_class[0]
-                    agent_policy = prey_policies[0]
+                    agent_policy = self.config.prey_policies[0]
+                    if agent_policy == 'None':
+                        agent_class = RandomAgent
                 else:
-                    assert len(pred_class) == self.config.nprey, "Error loading agents!, fix policy names."
+                    assert len(self.config.pred_class) == self.config.nprey, "Error loading agents!, fix policy names."
                     agent_class = prey_class[n]
-                    agent_policy = prey_policies[n]
+                    agent_policy = self.config.prey_policies[n]
                 agent = agent_class(_id, 
                             self.input_dims, 
                             self.output_dims,

@@ -62,6 +62,6 @@ class Renderer():
 
 if __name__=="__main__":
     args = parser.parse_args()
-    filename = f"./replays/{args.filename}"
+    filename = f"./{args.filename}"
     renderer = Renderer(filename, args.t)
     renderer.replay()

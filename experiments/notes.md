@@ -8,12 +8,12 @@ In this study, we propose the use of visualizing the state-values of a multi-age
 
 All the experiments are carried on a 30X30 grid with an observation window of size 9.
 
-1. Single Predator and Single Prey.
-** Fair Game.
+1. Three Predators and N Prey.
+** Fair Game vs Advantage to Prey.
 ** Independent Learning.
+** Reward Structure - Individuals.
 ** Algorithms Implemented:
-   1. Duel Double DQN.
-   2. Advantage Actor Critic.
+   2. A2C.
 
 2. Two Predator and Five Prey. 
 ** Fair Game.

@@ -25,7 +25,7 @@ actor_network = dodict(dict(
     nl_dims=[256, 256]))
 
 config = dodict(dict(
-        mode="train",
+        mode="eval",
         # Environment
         size=10,
         npred=1,
@@ -74,7 +74,7 @@ config = dodict(dict(
         project_name="experiment 1",
         notes="1AAC vs 4RAND Pred Test",
         log_level=10,
-        log_file="logs/exp_1.log",
+        log_file="logs/exp_0.log",
         print_console=True,
         ))
 
@@ -88,16 +88,16 @@ if __name__=="__main__":
         config.update(job_data["experiments"][f"run_{job_id}"])
     # Create and initialize Environments
     # Try passing Game Specific Config File - config.game
-    try:
-        env = Game(config)
-    except:
-        print(f"Failed to initialzie Game Env.")
-        sys.exit()
-    input_dims = env.observation_space.shape
-    output_dims = len(env.action_space)
-    action_space = env.action_space
     # If Training; run trainers
     if config.mode == "train":
+        try:
+            env = Game(config)
+        except:
+            print(f"Failed to initialzie Game Env.")
+            sys.exit()
+        input_dims = env.observation_space.shape
+        output_dims = len(env.action_space)
+        action_space = env.action_space
         trainer = train_agent(config,
                 env,
                 input_dims=input_dims,
@@ -107,10 +107,19 @@ if __name__=="__main__":
         trainer.shut_logger()
     # Else Evalaute; run evaulate
     else:
-        evaluate = Evaluate(config,
-                env,
-                input_dims=input_dims,
-                output_dims=output_dims,
-                action_space=action_space)
-        evaluate.evaluate()
-        pass
+        for i in range(config.eval_runs):
+            config.update(job_data["experiments"][f"pred_{i}"])
+            try:
+                env = Game(config)
+            except:
+                print(f"Failed to initialzie Game Env.")
+                sys.exit()
+            input_dims = env.observation_space.shape
+            output_dims = len(env.action_space)
+            action_space = env.action_space
+            evaluate = Evaluate(config,
+                    env,
+                    input_dims=input_dims,
+                    output_dims=output_dims,
+                    action_space=action_space)
+            evaluate.evaluate()

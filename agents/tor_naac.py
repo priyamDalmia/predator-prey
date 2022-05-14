@@ -153,7 +153,7 @@ class AACAgent(BaseAgent):
         print(f"Model Saved: {self._id} -> {self.checkpoint_name}")
 
     def discount_rewards(self, rewards, dones, states):
-        if rewards[-1]==1:
+        if rewards[-1]==1 or rewards[-1]==-1:
             _sum = rewards[-1]
         else:
             last_state = torch.as_tensor(states[-1], dtype=torch.float32,

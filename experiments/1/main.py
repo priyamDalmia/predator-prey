@@ -7,9 +7,9 @@ import pandas as pd
 from evaluate import Evaluate
 from data.helpers import dodict
 from game.game import Game
-from trainers.train_agent import train_agent
+from trainers.train_nac import train_agent
 from agents.random_agent import RandomAgent
-from agents.tor_adv_ac import AACAgent
+from agents.tor_naac import AACAgent
 import argparse
 import pdb
 
@@ -83,8 +83,9 @@ if __name__=="__main__":
     # Parse and Load Config File here.
     job_id = ARGS.id
     with open('experiments/1/config.yaml') as f:
-        data = yaml.load(f, Loader=yaml.FullLoader)
-        config.update(data["experiments"][f"run_{job_id}"])
+        job_data = yaml.load(f, Loader=yaml.FullLoader)
+        config.update(job_data["experiments"]["game_config"])
+        config.update(job_data["experiments"][f"run_{job_id}"])
     # Create and initialize Environments
     # Try passing Game Specific Config File - config.game
     try:
