@@ -5,7 +5,7 @@ experiments:
         advantage_mode: True
         nsteps: 30
         max_cycles: 1000
-        wandb: True
+        wandb: False
         epochs: 1000
 
     run_1:
