@@ -90,7 +90,7 @@ def get_logger(filename):
     logger.info(datetime.now().strftime("%d/%m %H:%M"))
     return logger
 
-def shut_logger():
+def shut_logger(logger):
     logger.handlers.clear()
     logging.shutdown()
 
@@ -141,4 +141,4 @@ if __name__=="__main__":
                     action_space=action_space,
                     logger = logger)
             a = evaluate.evaluate()
-            shut_logger()
+            shut_logger(logger)

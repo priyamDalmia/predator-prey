@@ -47,16 +47,16 @@ experiments:
     ## RUN 6 is reserverd for Evaluation ALONE:
     run_6:
         mode: "eval"
-        prey_policies: ['experiments/common/prey_0-15ia-8rand-3ac-2-999-525']
-        eval_file: 'experiments/0/results/eval_0.log'
+        prey_policies: ['experiments/common/prey_0-15ia-12rand-5ac-2-999-215']
+        eval_file: 'experiments/0/results/eval_7.log'
         runs: 5
-        episodes: 300
+        episodes: 3
         print_console: False
-        max_cycles: 1200
+        max_cycles: 1000
         size: 15
         npred: 1
         nprey: 1
-        eval_runs: 9
+        eval_runs: 7
         save_replay: True
 
     pred_0: 
@@ -65,7 +65,7 @@ experiments:
 
     pred_1:
         pred_policies: ['None']
-        nperd: 8
+        npred: 8
 
     pred_2:
         pred_policies: ['None']
@@ -73,21 +73,21 @@ experiments:
         nprey: 3 
 
     pred_3:
-        pred_policies: ['experiments/0/']
+        pred_policies: ['experiments/0/policies/predator_0-15ia-1ac-3rand-1-599-70']
         npred: 3
         nprey: 8
     
     pred_4:
-        pred_policies: ['experiments/0/policies/predator_0-15ia-1ac-3rand-1-599-70']
+        pred_policies: ['experiments/0/policies/predator_0-15ia-2ac-8rand-1-999-63']
         npred: 3
         nprey: 8
 
     pred_5:
-        pred_policies: ['experiments/0/policies/predator_1-15ia-3ac-8rand-1-999-44']
+        pred_policies: ['experiments/0/policies/predator_1-15ia-2ac-8rand-1-999-63']
         npred: 3
         nprey: 8
 
     pred_6:
-        pred_policies: ['experiments/0/policies/predator_0-15ia-2ac-8rand-1-999-63']
+        pred_policies: ['experiments/0/policies/predator_1-15ia-3ac-8rand-1-999-44']
         npred: 3
         nprey: 8

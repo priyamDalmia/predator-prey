@@ -1,41 +1,83 @@
 experiments:
     game_config:
         mode: "train"
-        project_name: "prey-tests-3"
+        project_name: "prey-tests-4"
         reward_mode: "individual"
         advantage_mode: False
         nsteps: 30
-        max_cycles: 1200
+        max_cycles: 1000
         wandb: True
         epochs: 1000
 
     run_1:
         size: 15
-        npred: 8
-        nprey: 3
-        _name: "15if-8rand-3ac-2"
+        npred: 3
+        nprey: 8
+        _name: "15if-3t(44)-8t(525)"
         notes: "Training Prey 8 vs 3"
-
+        load_pred: "experiments/0/policies/predator_1-15ia-3ac-8rand-1-999-44"
+        load_prey: "experiments/common/prey_2-15ia-8rand-3ac-2-999-525"
+    
     run_2:
         size: 15
-        npred: 8
-        nprey: 3
-        _name: "15ia-8rand-3ac-2"
-        notes: "Training prey 8 vs 3"
-        advantage_mode: True
-    
+        npred: 3
+        nprey: 8
+        _name: "15if-3t(63)-8t(525)"
+        notes: "Training Prey 8 vs 3"
+        load_pred: "experiments/0/policies/predator_1-15ia-2ac-8rand-1-999-63"
+        load_prey: "experiments/common/prey_2-15ia-8rand-3ac-2-999-525"
+
     run_3:
         size: 15
-        npred: 12
-        nprey: 5
-        _name: "15if-12rand-3ac-2"
-        notes: "Training Prey 12 vs 5"
-
+        npred: 3
+        nprey: 8
+        _name: "15if-3t(44)-8t(936)"
+        notes: "Training prey 8 vs 3"
+        load_pred: "experiments/0/policies/predator_1-15ia-3ac-8rand-1-999-44"
+        load_prey: "experiments/common/prey_2-15ia-8rand-3ac-2-999-936"
+    
     run_4:
         size: 15
-        npred: 12
-        nprey: 5
-        _name: "15ia-12rand-5ac-2"
+        npred: 3
+        nprey: 8
+        _name: "15ia-3t(63)-8t(936)"
+        notes: "Training prey 8 vs 3"
+        load_pred: "experiments/0/policies/predator_1-15ia-2ac-8rand-1-999-63"
+        load_prey: "experiments/common/prey_2-15ia-8rand-3ac-2-999-936"
+
+    run_5:
+        size: 15
+        npred: 3
+        nprey: 8
+        _name: "15if-3t(44)-3t(215)"
+        load_pred: "experiments/0/policies/predator_1-15ia-3ac-8rand-1-999-44"
+        load_prey: "experiments/common/prey_4-15ia-12rand-5ac-2-999-215"
         notes: "Training Prey 12 vs 5"
-        advantage_mode: True
     
+    run_6:
+        size: 15
+        npred: 3
+        nprey: 8
+        _name: "15if-3t(63)-8t(215)"
+        load_pred: "experiments/0/policies/predator_1-15ia-2ac-8rand-1-999-63"
+        load_prey: "experiments/common/prey_4-15ia-12rand-5ac-2-999-215"
+        notes: "Training Prey 12 vs 5"
+
+    run_7:
+        size: 15
+        npred: 3
+        nprey: 8
+        _name: "15if-3t(44)-8t(125)"
+        notes: "training prey 12 vs 5"
+        load_pred: "experiments/0/policies/predator_1-15ia-3ac-8rand-1-999-44"
+        load_prey: "experiments/common/prey_4-15if-12rand-5ac-999-125"
+    
+    run_8:
+        size: 15
+        npred: 3
+        nprey: 8
+        _name: "15if-3t(63)-8t(125)"
+        notes: "training prey 12 vs 5"
+        load_pred: "experiments/0/policies/predator_1-15ia-2ac-8rand-1-999-63"
+        load_prey: "experiments/common/prey_4-15if-12rand-5ac-999-125"
+
