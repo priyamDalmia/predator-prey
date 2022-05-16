@@ -10,7 +10,7 @@ experiments:
         wandb: True
         save_replay: True
         save_model: True
-        load_pred: "experiments/common/prey_0-15if-3rand-8pac-1-199-926"
+        load_prey: "experiments/common/prey_0-15if-3rand-8pac-1-199-926"
         
     run_1:
         size: 15
