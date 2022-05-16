@@ -1,7 +1,6 @@
 import os
 import sys
 import copy
-import logging 
 import numpy as np
 import pandas as pd
 from datetime import datetime
@@ -50,7 +49,7 @@ class Evaluate():
         self.input_dims = env_specs["input_dims"]
         self.output_dims = env_specs["output_dims"]
         self.action_space = env_specs["action_space"]
-        self.logger = self.get_logger()
+        self.logger = env_specs["logger"]
         # Initialize Agents (Load Agents)
         self.agent_ids = env.agent_ids
         self.agents = self.initialize_agents()
@@ -70,7 +69,7 @@ class Evaluate():
             if self.config.save_replay:
                 replay_file = f"experiments/eval-results/eval-{self.config._name}-{r}"
                 self.env.record_episode(replay_file)
-        self.shut_logger()
+        return 0
 
     def run_episodes(self):
         steps_hist = []

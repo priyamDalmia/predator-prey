@@ -12,6 +12,8 @@ from agents.random_agent import RandomAgent
 from agents.tor_naac import AACAgent
 import argparse
 import pdb
+import logging 
+from datetime import datetime
 
 parser = argparse.ArgumentParser(description="experiments",
         formatter_class = argparse.ArgumentDefaultsHelpFormatter)
@@ -78,6 +80,20 @@ config = dodict(dict(
         print_console=True,
         ))
 
+def get_logger(filename):
+    logger = logging.getLogger(__name__)
+    formatter = logging.Formatter('%(message)s')
+    logger.setLevel(10)
+    file_handler = logging.FileHandler(filename)
+    file_handler.setFormatter(formatter)
+    logger.addHandler(file_handler)
+    logger.info(datetime.now().strftime("%d/%m %H:%M"))
+    return logger
+
+def shut_logger():
+    logger.handlers.clear()
+    logging.shutdown()
+
 if __name__=="__main__":
     config = config
     # Parse and Load Config File here.
@@ -114,6 +130,7 @@ if __name__=="__main__":
             except:
                 print(f"Failed to initialzie Game Env.")
                 sys.exit()
+            logger = get_logger(config.eval_file)
             input_dims = env.observation_space.shape
             output_dims = len(env.action_space)
             action_space = env.action_space
@@ -121,5 +138,7 @@ if __name__=="__main__":
                     env,
                     input_dims=input_dims,
                     output_dims=output_dims,
-                    action_space=action_space)
-            evaluate.evaluate()
+                    action_space=action_space,
+                    logger = logger)
+            a = evaluate.evaluate()
+            shut_logger()

@@ -25,29 +25,29 @@ agent_network = dodict(dict(
 
 config = dodict(dict(
         # Environment
-        size=15,
-        npred=1,
-        nprey=4,
-        winsize=9,
+        size=10,
+        npred=3,
+        nprey=3,
+        winsize=7,
         nholes=0,
         nobstacles=0,
         map_="random",
         reward_mode="individual",
         advantage_mode=False,
         # Training Control
-        epochs=2500,
+        epochs=25,
         episodes=1,       # Episodes must be set to 1 for training.
         train_steps=1,    # Train steps must be set to 1 for training.
         update_eps=1,
         max_cycles=600,
-        nsteps=50,
+        nsteps=30,
         training=True,
         eval_pred=False,
         eval_prey=False,
-        train_type="predator",
+        train_type="prey",
         # Agent Control
         class_pred=RandomAgent,
-        class_prey=RandomAgent,
+        class_prey=AACAgent,
         agent_type="actor-critic",
         agent_network=agent_network,
         lr=0.0005, 
@@ -66,8 +66,8 @@ config = dodict(dict(
         _name="15-1nac-4rand",
         save_replay=False,
         save_model=False,
-        log_freq=200,
-        wandb=True,
+        log_freq=2,
+        wandb=False,
         wandb_mode="online",
         entity="rl-multi-predprey",
         project_name="pred-tests",
@@ -200,12 +200,18 @@ class train_agent(Trainer):
                 states_t = copy.deepcopy(observation)
                 rewards, next_, done, info = self.env.step(actions)
                 for _id in train_agents:
-                    self.agents[_id].store_transition(states_t[_id],
+                    try:
+
+                        self.agents[_id].store_transition(states_t[_id],
                             actions[_id],
                             rewards[_id],
                             next_[_id],
                             done_[_id],
                             actions_prob[_id])
+                    except Exception as e:
+                        print(e)
+                        breakpoint()
+                        
                     if done_[_id]:
                         train_agents.remove(_id)
                 all_rewards.append(list(rewards.values()))

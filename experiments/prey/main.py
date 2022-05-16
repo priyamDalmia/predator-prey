@@ -47,7 +47,7 @@ config = dodict(dict(
         eval_pred=False,
         eval_prey=False,
         # Agent Control
-        class_pred=AACAgent,
+        class_pred=RandomAgent,
         class_prey=AACAgent,
         agent_type="adv-ac",
         agent_network=actor_network,
@@ -67,7 +67,7 @@ config = dodict(dict(
         _name="f-1ac-1rand",
         save_replay=True,
         save_model=True,
-        log_freq=200,
+        log_freq=100,
         wandb=False,
         wandb_mode="online",
         entity="rl-multi-predprey",

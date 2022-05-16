@@ -117,7 +117,7 @@ class AACAgent(BaseAgent):
         if len(states) == 0:
             return 0
         # Discount the rewards 
-        _rewards = self.discount_rewards(rewards)
+        _rewards = self.discount_rewards(rewards, dones)
         _rewards = torch.as_tensor(_rewards, dtype=torch.float32, device=self.device).unsqueeze(-1)
         # Convert to tensors
         states = torch.as_tensor(states, device=self.device)

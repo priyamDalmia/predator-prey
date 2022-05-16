@@ -7,85 +7,87 @@ experiments:
         nsteps: 30
         max_cycles: 1000
         wandb: True
-        load_prey: 'experiments/common/prey_0-15if-5rand-1ac-899-615'
+        epochs: 1000
     
     run_1:
         size: 15
         npred: 1
         nprey: 1
-        epochs: 1000
-        _name: "15if-1ac-1(615)"
-        notes: "Training 1 vs 1"
-        load_pred: 'experiments/0/policies/predator_0-15if-1ac-1rand-1599-28'
-        save_model: False
+        _name: "15ia-1ac-1rand-1"
+        notes: "Training 2 vs 1"
 
     run_2:
         size: 15
-        npred: 3
-        nprey: 5
-        epochs: 2000
-        _name: "15if-3ac-5rand"
-        notes: "Training 3 vs 5"
+        npred: 1
+        nprey: 3
+        _name: "15ia-1ac-3rand-1"
+        notes: "Training 2 vs 3"
     
     run_3:
         size: 15
-        npred: 2
+        npred: 1
         nprey: 5
-        epochs: 2500
-        _name: "15if-3ac-7rand"
-        notes: "Training 3 s 7"
+        _name: "15ia-1ac-5rand-1"
+        notes: "Training 2 s 5"
 
     run_4:
         size: 15
-        npred: 3
-        nprey: 10
-        epochs: 2500
-        _name: "15if-3ac-10rand"
-        notes: "Training 3 vs 10"
+        npred: 1
+        nprey: 8
+        _name: "15ia-1ac-8rand-1"
+        notes: "Training 2 vs 8"
     
     run_5:
-        size: 25
-        npred: 3
+        size: 15
+        npred: 1
         nprey: 10
-        epochs: 2500
-        _name: "25if-3ac-12rand"
-        notes: "Training 3 vs 12"
+        _name: "15ia-1ac-10rand-1"
+        notes: "Training 2 vs 10"
     
     ## RUN 6 is reserverd for Evaluation ALONE:
     run_6:
         mode: "eval"
-        prey_policies: ['experiments/common/prey_0-15if-2(t28)-1ac-899-162']
-        eval_file: 'experiments/0/results/eval_test.log'
+        prey_policies: ['experiments/common/prey_0-15ia-8rand-3ac-2-999-525']
+        eval_file: 'experiments/0/results/eval_0.log'
         runs: 5
-        episodes: 50
-        print_console: True
-        max_cycles: 1000
+        episodes: 300
+        print_console: False
+        max_cycles: 1200
         size: 15
         npred: 1
         nprey: 1
-        eval_runs: 6
-        save_repaly: False
+        eval_runs: 9
+        save_replay: True
 
     pred_0: 
-        pred_policies: ['experiments/0/policies/predator_0-15if-1ac-1rand-1599-28']
+        pred_policies: ['None']
+        npred: 1
 
     pred_1:
-        pred_policies: ['experiments/0/policies/predator_0-15if-1ac-2rand-1999-33']
-        nprey: 1
+        pred_policies: ['None']
+        nperd: 8
 
     pred_2:
-        pred_policies: ['experiments/0/policies/predator_0-15if-1ac-8rand-1799-75']
-        nprey: 1
+        pred_policies: ['None']
+        npred: 8
+        nprey: 3 
 
     pred_3:
-        pred_policies: ['experiments/0/policies/predator_2-15if-3ac-5rand-1799-30']
-        nprey: 1
-
+        pred_policies: ['experiments/0/']
+        npred: 3
+        nprey: 8
+    
     pred_4:
-        pred_policies: ['experiments/0/policies/predator_1-15if-2ac-5rand-2399-40']
-        nprey: 1
+        pred_policies: ['experiments/0/policies/predator_0-15ia-1ac-3rand-1-599-70']
+        npred: 3
+        nprey: 8
 
     pred_5:
-        pred_policies: ['experiments/0/policies/predator_0-15if-3ac-7rand-1399-40']
-        nprey: 1
+        pred_policies: ['experiments/0/policies/predator_1-15ia-3ac-8rand-1-999-44']
+        npred: 3
+        nprey: 8
 
+    pred_6:
+        pred_policies: ['experiments/0/policies/predator_0-15ia-2ac-8rand-1-999-63']
+        npred: 3
+        nprey: 8

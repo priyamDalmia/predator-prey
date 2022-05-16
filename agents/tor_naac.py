@@ -131,6 +131,8 @@ class AACAgent(BaseAgent):
     def store_transition(self, state, action, reward,
             _next, done, probs):
         if self.memory:
+            if state.size == 0:
+                return
             self.memory.store_transition(state, action, reward,
                 _next, done, probs=probs)
     

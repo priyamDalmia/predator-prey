@@ -25,9 +25,9 @@ agent_network = dodict(dict(
 
 config = dodict(dict(
         # Environment
-        size=10,
-        npred=2,
-        nprey=5,
+        size=15,
+        npred=8,
+        nprey=1,
         winsize=9,
         nholes=0,
         nobstacles=0,
@@ -35,18 +35,18 @@ config = dodict(dict(
         reward_mode="neighbours",
         advantage_mode=True,
         # Training Control
-        epochs=2500,
+        epochs=1000,
         episodes=1,       # Episodes must be set to 1 for training.
         train_steps=1,    # Train steps must be set to 1 for training.
         update_eps=1,
-        max_cycles=600,
+        max_cycles=1000,
         training=True,
         eval_pred=False,
         eval_prey=False,
-        train_type="predator",
+        train_type="prey",
         # Agent Control
-        class_pred=AACAgent,
-        class_prey=RandomAgent,
+        class_pred=RandomAgent,
+        class_prey=AACAgent,
         agent_type="actor-critic",
         agent_network=agent_network,
         lr=0.0005, 
@@ -62,11 +62,11 @@ config = dodict(dict(
         load_prey=False, # Give complete Path to the saved policy.#'predator_0-1ac-1random-4799-29', # 'prey_0-random-ac-99-135', 
         load_pred=False, #'prey_0-1random-1ac-4799-390', #'predator_0-ac-random-19-83',
         # Log Control
-        _name="15-3rand-1ac",
+        _name="15-8rand-1oac",
         save_replay=False,
         save_model=True,
         log_freq=200,
-        wandb=False,
+        wandb=True,
         wandb_mode="online",
         entity="rl-multi-predprey",
         project_name="prey-tests",
