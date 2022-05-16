@@ -35,7 +35,7 @@ config = dodict(dict(
         reward_mode="individual",
         advantage_mode=False,
         # Training Control
-        epochs=25,
+        epochs=5,
         episodes=1,       # Episodes must be set to 1 for training.
         train_steps=1,    # Train steps must be set to 1 for training.
         update_eps=1,
@@ -44,10 +44,10 @@ config = dodict(dict(
         training=True,
         eval_pred=False,
         eval_prey=False,
-        train_type="prey",
+        train_type="predator",
         # Agent Control
-        class_pred=RandomAgent,
-        class_prey=AACAgent,
+        class_pred=AACAgent,
+        class_prey=RandomAgent,
         agent_type="actor-critic",
         agent_network=agent_network,
         lr=0.0005, 
@@ -59,13 +59,13 @@ config = dodict(dict(
         buffer_size=1500,
         # Models
         replay_dir="replays/",
-        checkpoint_dir="experiments/common/",
+        checkpoint_dir="trained-policies/",
         load_prey=False, # Give complete Path to the saved policy.#'predator_0-1ac-1random-4799-29', # 'prey_0-random-ac-99-135', 
         load_pred=False, #'prey_0-1random-1ac-4799-390', #'predator_0-ac-random-19-83',
         # Log Control
         _name="15-1nac-4rand",
         save_replay=False,
-        save_model=False,
+        save_model=True,
         log_freq=2,
         wandb=False,
         wandb_mode="online",
@@ -102,12 +102,11 @@ class train_agent(Trainer):
                 self.make_log(epoch, steps_hist, rewards_hist, loss_hist)
                 if self.config.save_model:
                     self.make_checkpoint(epoch)
-        
         # Save the best model after training
         if self.config.save_model:
-            for _id in self.train_ids:
-                    self.agents[_id].save_model()
-
+            _id = self.train_ids[-1]
+            self.agents[_id].save_model()
+            pass
     def make_checkpoint(self, epoch):
         if self.config.train_type == "predator":
             if self.best_ < self.steps_avg:
@@ -117,10 +116,9 @@ class train_agent(Trainer):
                 return
         self.best_ = self.steps_avg
         # Code To Make Checkpoints
-        for _id in self.train_ids:
-            c_name = \
-                    f"{_id}-{self.config._name}-{epoch}-{self.steps_avg:.0f}"
-            self.agents[_id].save_state(self.config.checkpoint_dir+c_name)
+        _id = self.train_ids[0]
+        c_name = f"{_id}-{self.config._name}-{epoch}-{self.steps_avg:.0f}"
+        self.agents[_id].save_state(self.config.checkpoint_dir+c_name)
         # Save Game Replay for the last game.
         if self.config.save_replay:
             # Make a replay file.
@@ -130,46 +128,51 @@ class train_agent(Trainer):
                 
     def initialize_agents(self):
         agents = {}
+        agent = self.config.class_pred(
+                "predator",  
+                self.input_dims,
+                self.output_dims, 
+                self.action_space,
+                memory = None,
+                lr = self.config.lr,
+                gamma = self.config.gamma, 
+                load_model = self.config.load_pred,
+                eval_model = self.config.eval_pred,
+                agent_network = self.config.agent_network)
+        assert isinstance(agent, BaseAgent), "Error: Derive agent from BaseAgent!"
+        
         for _id in self.pred_ids:
+            agents[_id] = agent
             memory = None
             if self.config.train_type.startswith("predator"):
                 memory = ReplayBuffer(
                     self.config.buffer_size,
                     self.config.batch_size, 
                     self.input_dims)
-            agent = self.config.class_pred(
-                _id,  
-                self.input_dims,
-                self.output_dims, 
-                self.action_space,
-                memory = memory,
-                lr = self.config.lr,
-                gamma = self.config.gamma, 
-                load_model = self.config.load_pred,
-                eval_model = self.config.eval_pred,
-                agent_network = self.config.agent_network)
-            assert isinstance(agent, BaseAgent), "Error: Derive agent from BaseAgent!"
-            agents[_id] = agent
-        for _id in self.prey_ids:
-            memory = None 
-            if self.config.train_type.startswith("prey"):
-                memory = ReplayBuffer(
-                    self.config.buffer_size,
-                    self.config.batch_size, 
-                    self.input_dims)
-            agent = self.config.class_prey(
-                _id, 
+                agents[_id].memory_n[_id] = memory
+        
+        agent = self.config.class_prey(
+                "prey", 
                 self.input_dims,
                 self.output_dims,
                 self.action_space,
-                memory = memory,
+                memory = None,
                 lr = self.config.lr,
                 gamma = self.config.gamma,
                 load_model = self.config.load_prey,
                 eval_model = self.config.eval_prey,
                 agent_network = self.config.agent_network)
-            assert isinstance(agent, BaseAgent), "Error: Derive agent from BaseAgent!"
+        assert isinstance(agent, BaseAgent), "Error: Derive agent from BaseAgent!"
+        
+        for _id in self.prey_ids:
             agents[_id] = agent
+            memory= None
+            if self.config.train_type.startswith("prey"):
+                memory = ReplayBuffer(
+                        self.config.buffer_size,
+                        self.config.batch_size, 
+                        self.input_dims)
+                agents[_id].memory_n[_id] = memory
         return agents
     
     def run_n_training(self):
@@ -202,7 +205,7 @@ class train_agent(Trainer):
                 for _id in train_agents:
                     try:
 
-                        self.agents[_id].store_transition(states_t[_id],
+                        self.agents[_id].store_transition(_id, states_t[_id],
                             actions[_id],
                             rewards[_id],
                             next_[_id],
@@ -238,7 +241,7 @@ class train_agent(Trainer):
         loss_hist = []
         for i in range(self.config.train_steps):
             for _id in self.train_ids:
-                loss = self.agents[_id].train_step()
+                loss = self.agents[_id].train_step(_id)
                 loss_hist.append(loss)
         return loss_hist
 

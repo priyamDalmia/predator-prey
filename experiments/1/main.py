@@ -62,7 +62,7 @@ config = dodict(dict(
         replay_dir="experiments/1/results/",
         checkpoint_dir="experiments/1/policies/",
         load_prey=False, 
-        load_pred="experiments/1/policies/predator_0-15-1ac-4rand-2199-79",
+        load_pred=False,
         # Log Control
         _name="f-1ac-1rand",
         save_replay=True,

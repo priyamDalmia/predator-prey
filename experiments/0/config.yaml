@@ -1,48 +1,50 @@
 experiments:
     game_config:
         mode: "train"
-        project_name: "experiment-0"
+        project_name: "test"
         reward_mode: "individual"
         advantage_mode: False
         nsteps: 30
         max_cycles: 1000
         wandb: True
         epochs: 1000
+        save_model: True
+        save_replay: True
     
     run_1:
         size: 15
-        npred: 1
-        nprey: 1
-        _name: "15ia-1ac-1rand-1"
-        notes: "Training 2 vs 1"
+        npred: 2
+        nprey: 5
+        _name: "15if-2pac-5rand-1"
+        notes: "Training 2 vs 5"
 
     run_2:
         size: 15
-        npred: 1
-        nprey: 3
-        _name: "15ia-1ac-3rand-1"
-        notes: "Training 2 vs 3"
+        npred: 2
+        nprey: 8
+        _name: "15if-2pac-8rand-1"
+        notes: "Training 2 vs 8"
     
     run_3:
         size: 15
-        npred: 1
+        npred: 3
         nprey: 5
-        _name: "15ia-1ac-5rand-1"
-        notes: "Training 2 s 5"
+        _name: "15if-3pac-5rand-1"
+        notes: "Training 3 s 5"
 
     run_4:
         size: 15
-        npred: 1
+        npred: 3
         nprey: 8
-        _name: "15ia-1ac-8rand-1"
-        notes: "Training 2 vs 8"
+        _name: "15if-3pac-8rand-1"
+        notes: "Training 3 vs 8"
     
     run_5:
         size: 15
-        npred: 1
-        nprey: 10
-        _name: "15ia-1ac-10rand-1"
-        notes: "Training 2 vs 10"
+        npred: 3
+        nprey: 12
+        _name: "15if-3pac-12rand-1"
+        notes: "Training 3 vs 12"
     
     ## RUN 6 is reserverd for Evaluation ALONE:
     run_6:

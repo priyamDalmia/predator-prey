@@ -1,41 +1,73 @@
 experiments:
+    game_config:
+        project_name: "experiment-2"
+        reward_mode: "individual"
+        advantage_mode: True
+        nsteps: 30
+        max_cycles: 1000
+        wandb: True
+        epochs: 1000
+
     run_1:
         size: 15
         npred: 2
-        nprey: 1
-        epochs: 2500
-        _name: "15-2ac-1rand"
-        notes: "Training 2 vs 1"
+        nprey: 5
+        _name: "15ia-2pac-5rand"
+        notes: "Training 2 vs 5"
 
     run_2:
         size: 15
         npred: 2
-        nprey: 2
-        epochs: 2500
-        _name: "15-2ac-2rand"
-        notes: "Training 2 vs 2"
+        nprey: 8
+        _name: "15ia-2pac-8rand"
+        notes: "Training 2 vs 8"
     
     run_3:
         size: 15
-        npred: 2
+        npred: 3
         nprey: 5
-        epochs: 2500
-        _name: "15-2ac-5rand"
-        notes: "Training 2 vs 5"
-   
-    run_5:
-        size: 25
-        npred: 2
-        nprey: 1
-        epochs: 2500
-        _name: "25-2ac-1rand"
-        notes: "Training 2 vs 1"
+        _name: "15ia-3pac-5rand"
+        notes: "Training 3 s 5"
+
+    run_4:
+        size: 15
+        npred: 3
+        nprey: 8
+        _name: "15ia-3pac-8rand"
+        notes: "Training 3 vs 8"
     
     run_5:
-        size: 25
-        npred: 2
-        nprey: 5
-        epochs: 2500
-        _name: "25-2ac-5rand"
-        notes: "Training 2 vs 5"
+        size: 20
+        npred: 3
+        nprey: 12
+        _name: "20ia-3pac-12rand"
+        notes: "Training 3 vs 12"
+    
+    ## RUN 6 is reserverd for Evaluation ALONE:
+    run_6:
+        mode: "eval"
+        prey_policies: ['']
+        eval_file: 'experiments/0/results/eval_7.log'
+        runs: 5
+        episodes: 3
+        print_console: False
+        max_cycles: 1000
+        size: 15
+        npred: 1
+        nprey: 1
+        eval_runs: 7
+        save_replay: True
+
+    pred_0: 
+        pred_policies: ['None']
+        npred: 1
+
+    pred_1:
+        pred_policies: ['None']
+        npred: 8
+
+    pred_2:
+        pred_policies: ['None']
+        npred: 8
+        nprey: 3 
 

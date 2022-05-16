@@ -65,6 +65,7 @@ class AACAgent(BaseAgent):
         self.lr = lr
         self.gamma = gamma 
         self.memory = memory
+        self.memory_n = {}
         # Initialize the AC network
         if self.load_model:
             try:
@@ -90,6 +91,7 @@ class AACAgent(BaseAgent):
                 lr = self.lr, betas=(0.9, 0.99), eps=1e-3)
         self.deivce = torch.device('cuda:0' if torch.cuda.is_available() else 'cpu')
         self.network = self.network.to(self.device)
+        torch.autograd.set_detect_anomaly(True)
 
     def get_action(self, observation):
         observation = torch.as_tensor(observation, dtype=torch.float32,
@@ -98,7 +100,7 @@ class AACAgent(BaseAgent):
         action_dist = dist.Categorical(probs)
         action = action_dist.sample() 
         log_probs =  action_dist.log_prob(action)
-        return action.item(), log_probs
+        return action.item(), 0
     
     def get_raw_output(self, observation):
         with torch.no_grad():
@@ -107,33 +109,37 @@ class AACAgent(BaseAgent):
             probs, values = self.network(observation.unsqueeze(0))
         return probs, values
     
-    def train_step(self):
-        states, actions, rewards, nexts, dones, log_probs =\
-                self.memory.sample_transition()
+    def train_step(self, _id):
+        states, actions, rewards, _ , dones, _ =\
+                self.memory_n[_id].sample_transition()
         if len(states) == 0:
             return 0
+
         # Discount the rewards
         _rewards = self.discount_rewards(rewards, dones, states)
         _rewards = torch.as_tensor(_rewards, dtype=torch.float32, device=self.device).unsqueeze(-1)
+        actions = torch.as_tensor(actions)
         # Convert to tensors
         states = torch.as_tensor(states, device=self.device)
-        _, state_values = self.network(states)
+        probs, state_values = self.network(states)
+        prob_dist = dist.Categorical(probs)
+        log_probs = prob_dist.log_prob(actions)
         advantage = _rewards - state_values.detach()
         # Calculating Loss and Backpropogating the error.
         self.optimizer.zero_grad()
-        actor_loss = (-torch.stack(log_probs) * advantage)
+        actor_loss = (-(log_probs) * advantage)
         delta_loss = ((state_values - _rewards)**2)
         loss = (actor_loss + delta_loss).mean()
         loss.backward()
         self.optimizer.step()
         return loss.item()
 
-    def store_transition(self, state, action, reward,
+    def store_transition(self, _id, state, action, reward,
             _next, done, probs):
-        if self.memory:
+        if self.memory_n[_id]:
             if state.size == 0:
                 return
-            self.memory.store_transition(state, action, reward,
+            self.memory_n[_id].store_transition(state, action, reward,
                 _next, done, probs=probs)
     
     def clear_loss(self):
