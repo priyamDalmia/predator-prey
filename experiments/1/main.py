@@ -12,6 +12,8 @@ from agents.random_agent import RandomAgent
 from agents.tor_naac import AACAgent
 import argparse
 import pdb
+import logging 
+from datetime import datetime
 
 parser = argparse.ArgumentParser(description="experiments",
         formatter_class = argparse.ArgumentDefaultsHelpFormatter)
@@ -25,7 +27,7 @@ actor_network = dodict(dict(
     nl_dims=[256, 256]))
 
 config = dodict(dict(
-        mode="train",
+        mode="eval",
         # Environment
         size=10,
         npred=1,
@@ -48,10 +50,10 @@ config = dodict(dict(
         eval_prey=False,
         # Agent Control
         class_pred=AACAgent,
-        class_prey=RandomAgent,
+        class_prey=AACAgent,
         agent_type="adv-ac",
         agent_network=actor_network,
-        lr=0.0005, 
+        lr=0.0001, 
         gamma=0.95,
         epislon=0.95,
         epsilon_dec=0.99,
@@ -68,7 +70,7 @@ config = dodict(dict(
         save_replay=True,
         save_model=True,
         log_freq=200,
-        wandb=False,
+        wandb=True,
         wandb_mode="online",
         entity="rl-multi-predprey",
         project_name="experiment 1",
@@ -77,6 +79,20 @@ config = dodict(dict(
         log_file="logs/exp_1.log",
         print_console=True,
         ))
+
+def get_logger(filename):
+    logger = logging.getLogger(__name__)
+    formatter = logging.Formatter('%(message)s')
+    logger.setLevel(10)
+    file_handler = logging.FileHandler(filename)
+    file_handler.setFormatter(formatter)
+    logger.addHandler(file_handler)
+    logger.info(datetime.now().strftime("%d/%m %H:%M"))
+    return logger
+
+def shut_logger(logger):
+    logger.handlers.clear()
+    logging.shutdown()
 
 if __name__=="__main__":
     config = config
@@ -88,16 +104,16 @@ if __name__=="__main__":
         config.update(job_data["experiments"][f"run_{job_id}"])
     # Create and initialize Environments
     # Try passing Game Specific Config File - config.game
-    try:
-        env = Game(config)
-    except:
-        print(f"Failed to initialzie Game Env.")
-        sys.exit()
-    input_dims = env.observation_space.shape
-    output_dims = len(env.action_space)
-    action_space = env.action_space
     # If Training; run trainers
     if config.mode == "train":
+        try:
+            env = Game(config)
+        except:
+            print(f"Failed to initialzie Game Env.")
+            sys.exit()
+        input_dims = env.observation_space.shape
+        output_dims = len(env.action_space)
+        action_space = env.action_space
         trainer = train_agent(config,
                 env,
                 input_dims=input_dims,
@@ -107,10 +123,22 @@ if __name__=="__main__":
         trainer.shut_logger()
     # Else Evalaute; run evaulate
     else:
-        evaluate = Evaluate(config,
-                env,
-                input_dims=input_dims,
-                output_dims=output_dims,
-                action_space=action_space)
-        evaluate.evaluate()
-        pass
+        for i in range(config.eval_runs):
+            config.update(job_data["experiments"][f"pred_{i}"])
+            try:
+                env = Game(config)
+            except:
+                print(f"Failed to initialzie Game Env.")
+                sys.exit()
+            logger = get_logger(config.eval_file)
+            input_dims = env.observation_space.shape
+            output_dims = len(env.action_space)
+            action_space = env.action_space
+            evaluate = Evaluate(config,
+                    env,
+                    input_dims=input_dims,
+                    output_dims=output_dims,
+                    action_space=action_space,
+                    logger = logger)
+            a = evaluate.evaluate()
+            shut_logger(logger)

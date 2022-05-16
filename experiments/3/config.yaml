@@ -4,44 +4,45 @@ experiments:
         project_name: "experiment-3"
         reward_mode: "average"
         advantage_mode: True
+        epochs: 1000
         nsteps: 30
         max_cycles: 1000
         wandb: True
-        epochs: 1000
+        load_pred: "experiments/common/prey_0-15if-3rand-8pac-1-199-926"
     
     run_1:
         size: 15
         npred: 2
         nprey: 5
-        _name: "15sa-2pac-5rand"
+        _name: "15sa-2pac-5(t926)"
         notes: "Training 2 vs 5"
 
     run_2:
         size: 15
         npred: 2
         nprey: 8
-        _name: "15sa-2pac-8rand"
+        _name: "15sa-2pac-8(t926)"
         notes: "Training 2 vs 8"
     
     run_3:
         size: 15
         npred: 3
         nprey: 5
-        _name: "15sa-3pac-5rand"
+        _name: "15sa-3pac-5(t926)"
         notes: "Training 3 s 5"
 
     run_4:
         size: 15
         npred: 3
         nprey: 8
-        _name: "15sa-3pac-8rand"
+        _name: "15sa-3pac-8(t926)"
         notes: "Training 3 vs 8"
     
     run_5:
         size: 20
         npred: 3
         nprey: 12
-        _name: "20sa-3pac-12rand"
+        _name: "20sa-3pac-12(t926)"
         notes: "Training 3 vs 12"
     
     ## RUN 6 is reserverd for Evaluation ALONE:

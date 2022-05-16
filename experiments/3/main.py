@@ -50,7 +50,7 @@ config = dodict(dict(
         eval_prey=False,
         # Agent Control
         class_pred=AACAgent,
-        class_prey=RandomAgent,
+        class_prey=AACAgent,
         agent_type="adv-ac",
         agent_network=actor_network,
         lr=0.0005, 

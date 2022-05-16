@@ -1,5 +1,6 @@
 experiments:
     game_config:
+        mode: "train"
         project_name: "experiment-2"
         reward_mode: "individual"
         advantage_mode: True

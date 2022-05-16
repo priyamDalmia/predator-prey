@@ -5,7 +5,7 @@ import pdb
 import matplotlib.pyplot as plt
 from data.helpers import dodict
 from data.common import ACTIONS
-from agents.tor_adv_ac import AACAgent
+from agents.tor_naac import AACAgent
 '''
 NOTE: This is not a simulation of the game state evolution. Real dynamics of the 
 game are not implemented here. The purpose of this is to only generate psudo-observations 
@@ -25,7 +25,7 @@ config = dict(
         # Environment size, 
         size=15,
         winsize=9,
-        npred=2,   # Be Cereful when setting these values.
+        npred=2,   # Be Careful when setting these values.
         nprey=2,
         pred_pos=[(3,3), (2,4)],
         prey_pos=[(1,1), (3,3)],
@@ -61,7 +61,6 @@ class Inference():
                     position = (x, y)
                     self.all_pos[_id] = position
                     self.update_state(idx+1, position)
-                    breakpoint() 
                     observation = self.get_observation(idx+1, position)
                     # Make Inference. Get Q values.
                     probs, values = self.infer_agents[_id].get_raw_output(observation)   
@@ -105,7 +104,7 @@ class Inference():
         return np.stack((channel_0, channel_1, channel_2))
         
     def store_values(self, _id, position, probs, values):
-        if position == self.target_pos:
+        if position in self.config.prey_pos:
             return
         data = probs.tolist()[0] + values.tolist()[0]
         self.infer_values[_id][:, position[0], position[1]] = data
@@ -158,12 +157,13 @@ class Inference():
         self.infer_values = infer_values
 
     def vec_field_graph(self):
+        breakpoint()
         for _id in self.infer_agents:
             data_i = self.infer_values[_id]
             mat_X = data_i[0,:,:] - data_i[1,:,:]
             mat_Y = data_i[2,:,:] - data_i[3,:,:]
             plt.quiver(self.X, self.Y, mat_X, mat_Y)
-            plt.savefig(self.config.plot_file)
+            plt.savefig(f"{self.config.plot_file}_{_id}")
         pass
         
     def render(self):
