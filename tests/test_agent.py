@@ -1,7 +1,6 @@
 import os   
 import sys
 sys.path.append(os.getcwd())
-
 import yaml
 import copy
 import pandas as pd
@@ -12,9 +11,8 @@ from data.trainer import Trainer
 from data.replay_buffer import ReplayBuffer
 from data.agent import BaseAgent
 from agents.random_agent import RandomAgent
-from agents.tor_dqn import DQNAgent
 from agents.tor_naac import AACAgent
-
+from agents.tor_rnn import AACAgent
 import pdb
 
 agent_network = dodict(dict(
@@ -35,12 +33,12 @@ config = dodict(dict(
         reward_mode="individual",
         advantage_mode=True,
         # Training Control
-        epochs=5,
+        epochs=1,
         episodes=1,       # Episodes must be set to 1 for training.
         train_steps=1,    # Train steps must be set to 1 for training.
         update_eps=1,
         max_cycles=600,
-        nsteps=30,
+        nsteps=5,
         training=True,
         eval_pred=False,
         eval_prey=False,
@@ -74,12 +72,11 @@ config = dodict(dict(
         notes="1nAC vs 1 RAND Indp Pred Test",
         log_level=10,
         log_file="logs/prey.log",
-        print_console = True,
-        ))
+        print_console = True,))
 
-class train_agent(Trainer):
+class test_agent(Trainer):
     def __init__(self, config, env, **env_specs):
-        super(train_agent, self).__init__(env, config)
+        super(test_agent, self).__init__(env, config)
         self.input_dims = env_specs["input_dims"]
         self.output_dims = env_specs["output_dims"]
         self.action_space = env_specs["action_space"]
@@ -180,6 +177,8 @@ class train_agent(Trainer):
         reward_hist = []
         # Add loss 
         loss_hist = [0 for i in range(len(self.train_ids))]
+        print("Running Episode")
+        breakpoint()
         for ep in range(self.config.episodes):
             observation, done_ = self.env.reset()
             done = False
@@ -193,6 +192,8 @@ class train_agent(Trainer):
                 actions_prob = {}
                 state_t = None
                 # Get actions for all agents.
+                print("Getting Actions")
+                breakpoint()
                 for _id in self.agents:
                     if not done_[_id]:
                         actions[_id], actions_prob[_id] = \
@@ -200,6 +201,8 @@ class train_agent(Trainer):
                     else:
                         actions[_id] = int(4)
                         actions_prob[_id] = 0
+                print("Stepping")
+                breakpoint()
                 states_t = copy.deepcopy(observation)
                 rewards, next_, done, info = self.env.step(actions)
                 for _id in train_agents:
@@ -225,6 +228,8 @@ class train_agent(Trainer):
                     break
                 if (steps+1)%self.config.nsteps == 0:
                     # Run training here!
+                    print("Ruuning Training")
+                    breakpoint()
                     losses = self.run_training(ep_end=False)
                     loss_hist = [a+b for a, b in zip(loss_hist, losses)]
             step_hist.append(steps)
@@ -257,7 +262,7 @@ if __name__=="__main__":
     input_dims = env.observation_space.shape
     output_dims = len(env.action_space)
     action_space = env.action_space
-    trainer = train_agent(config, 
+    trainer = test_agent(config, 
             env, 
             input_dims=input_dims, 
             output_dims=output_dims,

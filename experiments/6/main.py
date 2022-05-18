@@ -27,9 +27,9 @@ actor_network = dodict(dict(
     nl_dims=[256, 256]))
 
 config = dodict(dict(
-        mode="train",
+        mode="eval",
         # Environment
-        size=15,
+        size=10,
         npred=1,
         nprey=1,
         winsize=9,
@@ -37,7 +37,7 @@ config = dodict(dict(
         nobstacles=0,
         map_="random",
         reward_mode="individual",
-        advantage_mode=True,
+        advantage_mode=False,
         # Training control,
         epochs=2500,
         episodes=1,
@@ -50,10 +50,10 @@ config = dodict(dict(
         eval_prey=False,
         # Agent Control
         class_pred=AACAgent,
-        class_prey=RandomAgent,
+        class_prey=AACAgent,
         agent_type="adv-ac",
         agent_network=actor_network,
-        lr=0.0005, 
+        lr=0.0001, 
         gamma=0.95,
         epislon=0.95,
         epsilon_dec=0.99,
@@ -61,8 +61,8 @@ config = dodict(dict(
         batch_size=64,
         buffer_size=1500,
         # Models
-        replay_dir="experiments/4/results/",
-        checkpoint_dir="experiments/4/policies/",
+        replay_dir="experiments/1/results/",
+        checkpoint_dir="experiments/1/policies/",
         load_prey=False, 
         load_pred=False,
         # Log Control
@@ -73,10 +73,10 @@ config = dodict(dict(
         wandb=True,
         wandb_mode="online",
         entity="rl-multi-predprey",
-        project_name="experiment 4",
+        project_name="experiment 1",
         notes="1AAC vs 4RAND Pred Test",
         log_level=10,
-        log_file="logs/exp_4.log",
+        log_file="logs/exp_1.log",
         print_console=True,
         ))
 
@@ -98,7 +98,7 @@ if __name__=="__main__":
     config = config
     # Parse and Load Config File here.
     job_id = ARGS.id
-    with open('experiments/4/config.yaml') as f:
+    with open('experiments/1/config.yaml') as f:
         job_data = yaml.load(f, Loader=yaml.FullLoader)
         config.update(job_data["experiments"]["game_config"])
         config.update(job_data["experiments"][f"run_{job_id}"])

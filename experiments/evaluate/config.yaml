@@ -1,0 +1,45 @@
+experiments:
+    game_config:
+        mode: "train"
+        size: 15
+        save_replay: False
+        reward_mode: "individual"
+        advantage_mode: False
+        max_cycles: 1000
+        episodes: 100
+        runs: 5
+        eval_file: 'experiments/evaluate/0_e.log'
+        eval_runs: 6
+        notes: "Testing Random vs Random Agents!"
+
+    pred_0: 
+        pred_policies: ['None']
+        npred: 1
+        nprey: 1
+
+    pred_1:
+        pred_policies: ['None']
+        npred: 3
+        nprey: 5
+
+    pred_2:
+        pred_policies: ['None']
+        npred: 3
+        nprey: 8
+
+    
+    pred_3:
+        pred_policies: ['None']
+        npred: 10
+        nprey: 4
+    
+    pred_4:
+        pred_policies: ['None']
+        npred: 2
+        nprey: 5
+
+    pred_5:
+        pred_policies: ['None']
+        npred: 2
+        nprey: 8
+

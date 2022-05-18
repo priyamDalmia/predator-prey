@@ -166,10 +166,10 @@ class Game():
         observation = {}
         idx = 1
         for _id, position in self.predator_pos.items():
-            observation[_id] = self.game_state.observe(_id, idx, *position)
+            observation[_id] = self.game_state.observe(_id, idx, self.advantage_mode, *position)
             idx += 1
         for _id, position in self.prey_pos.items():
-            observation[_id] = self.game_state.observe(_id, idx, *position)
+            observation[_id] = self.game_state.observe(_id, idx, False, *position)
             idx += 1
         return dict(observation)
 

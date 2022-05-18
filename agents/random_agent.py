@@ -9,6 +9,8 @@ class RandomAgent(BaseAgent):
         self.input_dims = input_dims
         self.outupt_dims = output_dims
         self.action_space = action_space
+        self.memory = None
+        self.memory_n = None
 
     def get_action(self, observation):
         return np.random.choice(self.action_space), 0
