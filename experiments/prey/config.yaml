@@ -1,40 +1,40 @@
 experiments:
     game_config:
         mode: "train"
-        project_name: "experiment-prey"
+        project_name: "experiment-prey-1"
         reward_mode: "individual"
         advantage_mode: False
         nsteps: 30
-        max_cycles: 700
+        max_cycles: 900
         wandb: True
-        epochs: 500
-        load_pred: "experiments/2/policies/predator_0-15ia-2pac-5(t926)-599-64"
+        epochs: 300
+        save_model: True
 
     run_1:
         size: 15
-        npred: 3
-        nprey: 3
-        _name: "15if-3t(64)-3pac"
-        notes: "Training Prey 3 vs 3"
+        npred: 1
+        nprey: 1
+        _name: "15if-1rand-1pac-1"
+        notes: "Training Prey 1 vs 1"
     
     run_2:
         size: 15
         npred: 3
         nprey: 5
-        _name: "15if-3t(64)-5pac"
+        _name: "15if-3rand-5pac-1"
         notes: "Training Prey 3 vs 5"
 
     run_3:
         size: 15
         npred: 3
         nprey: 8
-        _name: "15if-3t(64)-8pac"
+        _name: "15if-3rand-8pac-1"
         notes: "Training prey 3 vs 8"
     
     run_4:
         size: 15
-        npred: 5
+        npred: 4
         nprey: 10
-        _name: "15if-5t(64)-10pac"
+        _name: "15if-3rand-10pac-1"
         notes: "Training prey 5 vs 10"
 

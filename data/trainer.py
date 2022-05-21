@@ -76,7 +76,7 @@ class Trainer(ABC):
         self.rewards_avg = pd.DataFrame(rewards_hist[-99:], columns=self.agent_ids)\
                 .mean(0).round(2).to_dict()
         self.loss_avg = pd.DataFrame(loss_hist[-99:], columns=self.train_ids)\
-                .mean(0).round(0).to_dict()
+                .mean(0).round(3).to_dict()
         info = dict(
                 steps = self.steps_avg,
                 rewards = self.rewards_avg,
@@ -86,7 +86,16 @@ class Trainer(ABC):
             print(\
                     f"Epochs:{epoch:4} | Steps:{self.steps_avg:4.2f} | Rewards:{self.rewards_avg}")
         pass
-        
+
+    def log_write(self, msg):
+        if self.config.wandb:
+            wandb.log({"logs": msg})
+        self.logger.info(msg)
+    
+    def log_model(self, model, **kwargs):
+        if self.config.wandb:
+            wandb.watch(model, log="all")
+
     def make_checkpoint(self):
         for _id in self.agent_ids:
             if _id.startswith(self.config.train_type):

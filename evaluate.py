@@ -18,7 +18,6 @@ prey_policies = ['prey_0-t-1rand-1ac-19-185']
 pred_class = [AACAgent]
 pred_policies = ['experiments/1/policies/predator_0-10-1ac-1rand-2399-17']
 
-
 config = dodict(dict(
     # Environment
     size=10,
@@ -59,6 +58,7 @@ class Evaluate():
         self.loss_avg = 0
     
     def evaluate(self, mode="evaluation"):
+        self.logger.info(f"npred: {self.config.npred}, nprey: {self.config.nprey}| {len(self.agent_ids)}") 
         self.logger.info(f"Predator: {self.config.pred_policies}")
         self.logger.info(f"Prey: {self.config.prey_policies}")
         for r in range(self.config.runs):
@@ -67,7 +67,7 @@ class Evaluate():
             self.make_log(r, steps, rewards)
             # Save the Last episodes of each run!
             if self.config.save_replay:
-                replay_file = f"experiments/eval-results/eval-{self.config._name}-{r}"
+                replay_file = f"experiments/evaluate/eval-{self.config._name}-{r}"
                 self.env.record_episode(replay_file)
         return 0
 
@@ -125,47 +125,39 @@ class Evaluate():
         # Print to console
         if self.config.print_console:
             print(f"Run:{r:4} | Steps:{steps_avg} | Rewards:{rewards_avg}")
-        self.logger.info(f"Run:{r:4} | Steps:{steps_avg} | Rewards:{rewards_avg}")
+        self.logger.info(f"Run:{r:4} | Steps:{steps_avg}")
 
     def initialize_agents(self):
-        agents = {} 
-        # load predator and prey policies 
+        agents = {}
+        # load predator and prey policies
+        agent_policy = self.config.pred_policies[0]
+        agent_class = pred_class[0]
+        if agent_policy == 'None':
+            agent_class = RandomAgent
+        agent = agent_class("predator", 
+            self.input_dims, 
+            self.output_dims,
+            self.action_space,
+            load_model=agent_policy,                
+            memory=None,
+            eval_model=True)
         for n, _id in enumerate(self.agent_ids):
             if _id.startswith("predator"):
-                if len(pred_class) == 1:
-                    agent_class = pred_class[0]
-                    agent_policy = self.config.pred_policies[0]
-                    if agent_policy == 'None':
-                        agent_class = RandomAgent
-                else:
-                    assert len(self.config.pred_class) == self.config.npred, "Error loading agents!, fix policy names"
-                    agent_class = pred_class[n]
-                    agent_policy = self.config.pred_policies[n]
-                agent = agent_class(_id, 
-                            self.input_dims, 
-                            self.output_dims,
-                            self.action_space,
-                            memory=None,
-                            load_model=agent_policy,
-                            eval_model=True)
-            else:
-                if len(prey_class) == 1:
-                    agent_class = prey_class[0]
-                    agent_policy = self.config.prey_policies[0]
-                    if agent_policy == 'None':
-                        agent_class = RandomAgent
-                else:
-                    assert len(self.config.pred_class) == self.config.nprey, "Error loading agents!, fix policy names."
-                    agent_class = prey_class[n]
-                    agent_policy = self.config.prey_policies[n]
-                agent = agent_class(_id, 
-                            self.input_dims, 
-                            self.output_dims,
-                            self.action_space,
-                            memory=None,
-                            load_model=agent_policy,
-                            eval_model=True)
-            agents[_id] = agent
+                agents[_id] = agent
+        agent_class = prey_class[0]
+        agent_policy = self.config.prey_policies[0]
+        if agent_policy == 'None':
+            agent_class = RandomAgent
+        agent = agent_class("prey", 
+            self.input_dims, 
+            self.output_dims,
+            self.action_space,
+            memory=None,
+            load_model=agent_policy,
+            eval_model=True)
+        for n, _id in enumerate(self.agent_ids):
+            if _id.startswith("prey"):
+                agents[_id] = agent
         return agents
 
 if __name__ == "__main__":

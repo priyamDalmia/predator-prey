@@ -114,7 +114,6 @@ class AACAgent(BaseAgent):
                 self.memory_n[_id].sample_transition()
         if len(states) == 0:
             return 0
-
         # Discount the rewards
         _rewards = self.discount_rewards(rewards, dones, states)
         _rewards = torch.as_tensor(_rewards, dtype=torch.float32, device=self.device).unsqueeze(-1)
@@ -131,6 +130,7 @@ class AACAgent(BaseAgent):
         delta_loss = ((state_values - _rewards)**2)
         loss = (actor_loss + delta_loss).mean()
         loss.backward()
+        nn.utils.clip_grad_value_(self.network.parameters(), clip_value=0.5)
         self.optimizer.step()
         return loss.item()
 

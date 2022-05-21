@@ -1,0 +1,45 @@
+experiments:
+    game_config:
+        mode: "train"
+        size: 15
+        save_replay: False
+        reward_mode: "individual"
+        advantage_mode: False
+        max_cycles: 500
+        episodes: 50 # Use 50 when testing trained vs Random
+        runs: 5
+        eval_file: 'experiments/evaluate/309_f.log'
+        eval_runs: 6
+        notes: "Testing t(35) vs t(309) Agent Fair"
+        prey_policies: ['experiments/common/prey_0-15if-1t(37)-1pac-2524-309']
+        pred_policies: ['experiments/1/policies/predator_0-15if-3pac-5rand-674-35']          
+    run_0: 
+    #pred_policies: ['']
+        npred: 1
+        nprey: 1
+  
+    run_1:
+        #   pred_policies: ['None']
+        npred: 3
+        nprey: 5
+
+    run_2:
+        #pred_policies: ['None']
+        npred: 3
+        nprey: 8
+
+    run_3:
+        #pred_policies: ['None']
+        npred: 4
+        nprey: 10
+    
+    run_4:
+        #pred_policies: ['None']
+        npred: 2
+        nprey: 5
+
+    run_5:
+        #pred_policies: ['None']
+        npred: 2
+        nprey: 8
+

@@ -9,7 +9,7 @@ from data.helpers import dodict
 from game.game import Game
 from trainers.train_nac import train_agent
 from agents.random_agent import RandomAgent
-from agents.tor_naac import AACAgent
+from agents.tor_par_AC import AACAgent
 import argparse
 import pdb
 import logging 
@@ -69,14 +69,14 @@ config = dodict(dict(
         _name="f-1ac-1rand",
         save_replay=True,
         save_model=True,
-        log_freq=25,
+        log_freq=5,
         wandb=True,
         wandb_mode="online",
         entity="rl-multi-predprey",
         project_name="experiment 3",
         notes="1AAC vs 4RAND Pred Test",
         log_level=10,
-        log_file="logs/exp_3.log",
+        log_file="experiments/3/runs.log",
         print_console=True,
         ))
 

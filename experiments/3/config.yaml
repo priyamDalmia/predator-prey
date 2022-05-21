@@ -3,72 +3,50 @@ experiments:
         mode: "train"
         project_name: "experiment-3"
         reward_mode: "average"
-        advantage_mode: True
         epochs: 700
+        advantage_mode: False
         nsteps: 30
         max_cycles: 1000
         wandb: True
-        load_prey: "experiments/common/prey_0-15ia-3rand-3pac-199-420"
-    
+        save_replay: False
+        save_model: False
+        prey_level: 2
+        model: "param share"
+        load_prey: "experiments/prey/policies/t2"
+
     run_1:
         size: 15
         npred: 2
         nprey: 5
-        _name: "15sa-2pac-5(t420)"
+        _name: "15sf-2pac-5t2"
         notes: "Training 2 vs 5"
 
     run_2:
         size: 15
         npred: 2
         nprey: 8
-        _name: "15sa-2pac-8(t420)"
+        _name: "15sf-2pac-8t2"
         notes: "Training 2 vs 8"
     
     run_3:
         size: 15
         npred: 3
         nprey: 5
-        _name: "15sa-3pac-5(t420)"
+        _name: "15sf-3pac-5t2"
         notes: "Training 3 s 5"
 
     run_4:
         size: 15
         npred: 3
         nprey: 8
-        _name: "15sa-3pac-8(t420)"
+        _name: "15sf-3pac-8t2"
         notes: "Training 3 vs 8"
     
     run_5:
-        size: 20
-        npred: 3
-        nprey: 12
-        _name: "20sa-3pac-12(t420)"
-        notes: "Training 3 vs 12"
-    
-    ## RUN 6 is reserverd for Evaluation ALONE:
-    run_6:
-        mode: "eval"
-        prey_policies: ['experiments/common/prey_0-15ia-12rand-5ac-2-999-215']
-        eval_file: 'experiments/0/results/eval_7.log'
-        runs: 5
-        episodes: 3
-        print_console: False
-        max_cycles: 1000
         size: 15
-        npred: 1
-        nprey: 1
-        eval_runs: 7
-        save_replay: True
+        npred: 4
+        nprey: 10
+        _name: "15sf-4pac-10t2"
+        notes: "Training 4 vs 10"
+    
 
-    pred_0: 
-        pred_policies: ['None']
-        npred: 1
-
-    pred_1:
-        pred_policies: ['None']
-        npred: 8
-
-    pred_2:
-        pred_policies: ['None']
-        npred: 8
-        nprey: 3 
