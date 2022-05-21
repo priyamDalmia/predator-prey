@@ -1,0 +1,35 @@
+inference:
+    scenario_1:
+        size: 15
+        npred: 2
+        nprey: 1
+        pred_pos: [ !!python/tuple [3,3], !!python/tuple [5,3]]
+        prey_pos: [ !!python/tuple [4,4]]
+        target_pos: [ !!python/tuple [4,4]]
+        agent_policy: "experiments/2/policies/predator_1-15-2ac-4rand-2399-62"
+        plot_file: "experiments/sc_1_"
+    
+    scenario_2:
+        size: 15
+        pred_pos: []
+        prey_pos: []
+        target_pos: []
+        agent_policy: ""
+        plot_file: ""
+   
+    scenario_3:
+        size: 15
+        pred_pos: []
+        prey_pos: []
+        target_pos: []
+        agent_policy: ""
+        plot_file: ""
+   
+    scenario_4:
+        size: 15
+        pred_pos: []
+        prey_pos: []
+        target_pos: []
+        agent_policy: ""
+        plot_file: ""
+

@@ -6,6 +6,13 @@ import matplotlib.pyplot as plt
 from data.helpers import dodict
 from data.common import ACTIONS
 from agents.tor_naac import AACAgent
+import argparse
+import yaml
+
+parser = argparse.ArgumentParser(description="experiments",
+        formatter_class = argparse.ArgumentDefaultsHelpFormatter)
+parser.add_argument('--id', type=int, help="The configuration to run")
+ARGS = parser.parse_args()
 '''
 NOTE: This is not a simulation of the game state evolution. Real dynamics of the 
 game are not implemented here. The purpose of this is to only generate psudo-observations 
@@ -53,6 +60,7 @@ class Inference():
         self.build_game_state()
 
     def run_inference(self):
+        self.render()
         for x in range(len(self.X)):
             for y in range(len(self.Y)):
                 for idx, _id in enumerate(self.infer_agents.keys()):
@@ -105,8 +113,12 @@ class Inference():
         
     def store_values(self, _id, position, probs, values):
         if position in self.config.prey_pos:
-            return
-        data = probs.tolist()[0] + values.tolist()[0]
+            color = [1]
+        elif position in self.config.pred_pos:
+            color = [2]
+        else:
+            color = [0]
+        data = probs.tolist()[0] + values.tolist()[0] + color
         self.infer_values[_id][:, position[0], position[1]] = data
 
     def initialize_agents(self):
@@ -121,7 +133,7 @@ class Inference():
         x_range = np.arange(x_lim[0], x_lim[1])
         y_range = np.arange(y_lim[0], y_lim[1])
         self.Y, self.X = np.meshgrid(x_range, y_range)
-        self.infer_array = np.zeros((5, len(x_range), len(y_range)))
+        self.infer_array = np.zeros((6, len(x_range), len(y_range)), dtype=np.object_)
 
         self.npreds = self.config['npred']
         self.npreys = self.config['nprey']
@@ -157,13 +169,16 @@ class Inference():
         self.infer_values = infer_values
 
     def vec_field_graph(self):
-        breakpoint()
         for _id in self.infer_agents:
             data_i = self.infer_values[_id]
             mat_X = data_i[0,:,:] - data_i[1,:,:]
             mat_Y = data_i[2,:,:] - data_i[3,:,:]
-            plt.quiver(self.X, self.Y, mat_X, mat_Y)
+            mat_X = np.array(mat_X, dtype=np.float32)
+            mat_Y = np.array(mat_Y, dtype=np.float32)
+            color = np.array(data_i[-1,:,:], dtype=np.float32)
+            plt.quiver(self.X, self.Y, mat_X, mat_Y, color)
             plt.savefig(f"{self.config.plot_file}_{_id}")
+            print(f"Plot Saved: {_id} -> {self.config.plot_file}_{_id}")
         pass
         
     def render(self):
@@ -183,6 +198,11 @@ class Inference():
         return new_position
 
 if __name__ == "__main__":
+    config = config
+    infer_id = ARGS.id
+    with open('experiments/infer.yaml') as f:
+        scenario_data = yaml.load(f, Loader=yaml.FullLoader)
+        config.update(scenario_data["inference"][f"scenario_{infer_id}"])
     infer = Inference(config)
     infer.run_inference()
 
