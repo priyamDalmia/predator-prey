@@ -167,7 +167,6 @@ class AACAgent(BaseAgent):
         for i in range(len(states)):
             if (i%self.chain)==0:
                 hidden_i = hidden_i.detach()
-            
             last_state = torch.as_tensor(states[i], dtype=torch.float32, device=self.device)
             probs, value, next_hidden_state = \
                     self.network.forward_train(last_state.unsqueeze(0), hidden_state=hidden_i)

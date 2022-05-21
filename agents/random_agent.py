@@ -13,7 +13,7 @@ class RandomAgent(BaseAgent):
         self.memory_n = None
 
     def get_action(self, observation, **kwargs):
-        return np.random.choice(self.action_space)
+        return np.random.choice(self.action_space), 0
 
     def train_step(self):
         return 0

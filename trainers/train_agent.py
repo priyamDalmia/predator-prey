@@ -143,7 +143,7 @@ class train_agent(Trainer):
                 # Get actions for all agents.
                 for _id in self.agents:
                     if not done_[_id]:
-                        actions[_id] = self.agents[_id].get_action(observation[_id])
+                        actions[_id], _ = self.agents[_id].get_action(observation[_id])
                     else:
                         actions[_id] = int(4)
                 states_t = copy.deepcopy(observation)

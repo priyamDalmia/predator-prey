@@ -9,7 +9,7 @@ from data.helpers import dodict
 from game.game import Game
 from trainers.train_nac import train_agent
 from agents.random_agent import RandomAgent
-from agents.tor_naac import AACAgent
+from agents.tor_par_AC import AACAgent
 import argparse
 import pdb
 import logging 
@@ -76,7 +76,7 @@ config = dodict(dict(
         project_name="experiment 1",
         notes="1AAC vs 4RAND Pred Test",
         log_level=10,
-        log_file="logs/exp_1.log",
+        log_file="experiments/2/runs.log",
         print_console=True,
         ))
 

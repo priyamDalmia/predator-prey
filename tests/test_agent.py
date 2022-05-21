@@ -11,20 +11,21 @@ from data.trainer import Trainer
 from data.replay_buffer import ReplayBufferRNN
 from data.agent import BaseAgent
 from agents.random_agent import RandomAgent
-from agents.tor_bptt_rnn import AACAgent
+from agents.tor_par_nRnn_AC import rAACAgent
+from agents.tor_n_AC import AACAgent
 import pdb
 
 agent_network = dodict(dict(
     clayers=2,
-    cl_dims=[6, 12],
+    cl_dims=[12, 12],
     nlayers=2,
-    nl_dims=[256, 256],
+    nl_dims=[256, 512],
     rnn_layers=2))
 
 config = dodict(dict(
         # Environment
         size=15,
-        npred=2,
+        npred=3,
         nprey=8,
         winsize=9,
         nholes=0,
@@ -39,13 +40,14 @@ config = dodict(dict(
         update_eps=1,
         max_cycles=600,
         nsteps=30,
+        chain=3,
         training=True,
         eval_pred=False,
         eval_prey=False,
         train_type="predator",
         # Agent Control
-        class_pred=AACAgent,
-        class_prey=RandomAgent,
+        class_pred=rAACAgent,
+        class_prey=AACAgent,
         agent_type="actor-critic",
         agent_network=agent_network,
         lr=0.0001, 
@@ -61,7 +63,7 @@ config = dodict(dict(
         load_prey=False, # Give complete Path to the saved policy.#'predator_0-1ac-1random-4799-29', # 'prey_0-random-ac-99-135', 
         load_pred=False, #'prey_0-1random-1ac-4799-390', #'predator_0-ac-random-19-83',
         # Log Control
-        _name="15-2rnn-5rand-nochian",
+        _name="15-2rnn-5rand-chain1",
         save_replay=False,
         save_model=True,
         log_freq=2,
@@ -69,7 +71,7 @@ config = dodict(dict(
         wandb_mode="online",
         entity="rl-multi-predprey",
         project_name="rnn-tests",
-        notes="1nAC vs 1 RAND Indp Pred Test",
+        notes="chain 1; 0.0001",
         log_level=10,
         log_file="logs/pred.log",
         print_console = True,))
@@ -137,7 +139,8 @@ class test_agent(Trainer):
                 load_model = self.config.load_pred,
                 eval_model = self.config.eval_pred,
                 agent_network = self.config.agent_network,
-                num_agents = len(self.pred_ids))
+                num_agents = len(self.pred_ids),
+                chain = self.config.chain)
         assert isinstance(agent, BaseAgent), "Error: Derive agent from BaseAgent!"
         self.log_model(agent.network) 
         for _id in self.pred_ids:

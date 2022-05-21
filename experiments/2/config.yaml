@@ -3,48 +3,48 @@ experiments:
         mode: "train"
         project_name: "experiment-2"
         reward_mode: "individual"
-        advantage_mode: True
+        advantage_mode: False
         nsteps: 30
         max_cycles: 1000
-        epochs: 700
+        epochs: 500
         wandb: True
         save_replay: True
         save_model: False
-        prey_level: 1
-        load_prey: "experiments/common/prey_0-15if-3rand-8pac-199-697"
-        load_pred: "experiments/1/policies/predator_0-15if-3pac-5rand-674-35"
-    
+        prey_level: 0
+        model_type: "param share"
+        load_prey: False
+
     run_1:
         size: 15
         npred: 2
         nprey: 5
-        _name: "15ia-2t(35)-(t697)-1"
+        _name: "15f-2pac-5(rand)"
         notes: "Training 2 vs 5"
 
     run_2:
         size: 15
         npred: 2
         nprey: 8
-        _name: "15ia-2t(35)-8(t697)-1"
+        _name: "15f-2pac-8(rand)"
         notes: "Training 2 vs 8"
     
     run_3:
         size: 15
         npred: 3
         nprey: 5
-        _name: "15ia-3t(35)-5(t697)-1"
+        _name: "15f-3pac-5(rand)"
         notes: "Training 3 s 5"
 
     run_4:
         size: 15
         npred: 3
         nprey: 8
-        _name: "15ia-3t(35)-8(t697)-1"
+        _name: "15f-3pac-8(rand)"
         notes: "Training 3 vs 8"
     
     run_5:
         size: 15
         npred: 4
         nprey: 10
-        _name: "20ia-3t(35)-10(t697)-1"
+        _name: "20f-4pac-10(rand)"
         notes: "Training 3 vs 10"

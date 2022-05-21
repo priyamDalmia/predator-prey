@@ -22,7 +22,7 @@ actor_network = dodict(dict(
     clayers=2,
     cl_dims=[12, 12],
     nlayers=2,
-    nl_dims=[512, 512]))
+    nl_dims=[512, 256]))
 
 config = dodict(dict(
         mode="train",

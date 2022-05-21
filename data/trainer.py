@@ -76,7 +76,7 @@ class Trainer(ABC):
         self.rewards_avg = pd.DataFrame(rewards_hist[-99:], columns=self.agent_ids)\
                 .mean(0).round(2).to_dict()
         self.loss_avg = pd.DataFrame(loss_hist[-99:], columns=self.train_ids)\
-                .mean(0).round(0).to_dict()
+                .mean(0).round(3).to_dict()
         info = dict(
                 steps = self.steps_avg,
                 rewards = self.rewards_avg,

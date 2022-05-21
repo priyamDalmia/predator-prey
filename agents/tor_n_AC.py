@@ -98,7 +98,7 @@ class AACAgent(BaseAgent):
                 betas=(0.9, 0.99),
                 eps=1e-3)
         self.network = self.network.to(self.device)
-    def get_action(self, observation):
+    def get_action(self, observation, **kwargs):
         observation = torch.as_tensor(
                 observation,
                 dtype=torch.float32,
@@ -106,7 +106,7 @@ class AACAgent(BaseAgent):
         probs, _ = self.network(observation.unsqueeze(0))
         action_dist = dist.Categorical(probs)
         action = action_dist.sample()
-        return action.item()
+        return action.item(), 0
 
     def train_step(self):
         states, actions, rewards, dones = \
@@ -117,17 +117,18 @@ class AACAgent(BaseAgent):
         actions = torch.as_tensor(actions, device=self.device)
         _rewards = self.discount_rewards(rewards, dones, states)
         _rewards = torch.as_tensor(_rewards, dtype=torch.float32, device=self.device)
-
+        # ADVANTAGE
         probs, state_values = self.network(states)
         prob_dist = dist.Categorical(probs)
         log_probs = prob_dist.log_prob(actions)
         advantage = _rewards - state_values.detach()
-
+        # BACKPROPOGATING
         self.optimizer.zero_grad()
         actor_loss = (-(log_probs) * advantage)
         delta_loss = ((state_values - _rewards) ** 2)
         loss = (actor_loss + delta_loss).mean()
         loss.backward()
+        nn.utils.clip_grad_value_(self.network.parameters(), clip_value=1.0)
         self.optimizer.step()
         return loss.item()
 

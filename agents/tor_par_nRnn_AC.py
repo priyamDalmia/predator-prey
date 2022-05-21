@@ -94,12 +94,22 @@ class NetworkActorCritic(nn.Module):
             self.hidden_state[f"predator_{i}"] = torch.zeros((self.rnn_layers, 1, self.nl_dims[0]))
             self.last_hidden[f"predator_{i}"] = None
 
-class AACAgent(BaseAgent):
-    def __init__(self, _id, input_dims, output_dims, 
-            action_space, memory=None, lr=0.01, gamma=0.95,
-            load_model=False, eval_model=False, agent_network={},
-            num_agents = None, **kwargs):
-        super(AACAgent, self).__init__(_id)
+class rAACAgent(BaseAgent):
+    def __init__(self, 
+            _id, 
+            input_dims, 
+            output_dims, 
+            action_space, 
+            memory=None, 
+            lr=0.01, 
+            gamma=0.95,
+            load_model=False, 
+            eval_model=False, 
+            agent_network={},
+            num_agents = None,
+            chain=1,
+            **kwargs):
+        super(rAACAgent, self).__init__(_id)
         self.input_dims = input_dims
         self.output_dims = output_dims
         self.action_space = action_space
@@ -109,6 +119,7 @@ class AACAgent(BaseAgent):
         self.memory = memory
         self.memory_n = {}
         self.num_agents = num_agents
+        self.chain = chain
         # Initialize the AC network
         if self.load_model:
             try:
@@ -134,7 +145,6 @@ class AACAgent(BaseAgent):
                 lr = self.lr, betas=(0.9, 0.99), eps=1e-3)
         self.deivce = torch.device('cuda:0' if torch.cuda.is_available() else 'cpu')
         self.network = self.network.to(self.device)
-        torch.autograd.set_detect_anomaly(True)
     
     def get_action(self, observation, _id = None):
         observation = torch.as_tensor(observation, dtype=torch.float32,
@@ -164,9 +174,11 @@ class AACAgent(BaseAgent):
         state_values = []
         hidden_i = torch.as_tensor(hidden_states[0], dtype=torch.float32, device=self.device)
         for i in range(len(states)):
+            if (i%self.chain)==0:
+                hidden_i = hidden_i.detach()
             last_state = torch.as_tensor(states[i], dtype=torch.float32, device=self.device)
             probs, value, next_hidden_state = \
-                    self.network.forward_train(last_state.unsqueeze(0), hidden_state=hidden_i.detach())
+                    self.network.forward_train(last_state.unsqueeze(0), hidden_state=hidden_i)
             probs_list.append(probs)
             state_values.append(value.detach())
             hidden_i = next_hidden_state
@@ -182,6 +194,7 @@ class AACAgent(BaseAgent):
         delta_loss = ((state_values - _rewards)**2)
         loss = (actor_loss + delta_loss).mean()
         loss.backward()
+        nn.utils.clip_grad_value_(self.network.parameters(), clip_value=1.0)
         self.optimizer.step()
         return loss.item()
 
