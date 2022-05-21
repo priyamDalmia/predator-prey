@@ -7,9 +7,9 @@ import pandas as pd
 from evaluate import Evaluate
 from data.helpers import dodict
 from game.game import Game
-from trainers.train_nac import train_agent
+from trainers.train_agent import train_agent
 from agents.random_agent import RandomAgent
-from agents.tor_naac import AACAgent
+from agents.tor_n_AC import AACAgent
 import argparse
 import pdb
 import logging 
@@ -50,7 +50,7 @@ config = dodict(dict(
         eval_prey=False,
         # Agent Control
         class_pred=AACAgent,
-        class_prey=RandomAgent,
+        class_prey=AACAgent,
         agent_type="adv-ac",
         agent_network=actor_network,
         lr=0.0001, 
@@ -70,7 +70,7 @@ config = dodict(dict(
         save_replay=True,
         save_model=True,
         log_freq=5,
-        wandb=True,
+        wandb=False,
         wandb_mode="online",
         entity="rl-multi-predprey",
         project_name="experiment 1",

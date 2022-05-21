@@ -101,4 +101,44 @@ class Critic_Buffer():
         self.rewards[index] = reward
         self.counter += 1
 
+class ReplayBufferRNN():
+    def __init__(self, buffer_size, batch_size, state_size):
+        self.buffer_size = buffer_size
+        self.batch_size = batch_size
+        self.state_size = state_size
+        self.counter = 0
+        self.states = np.zeros((self.buffer_size, *self.state_size), dtype=np.float32)
+        self.actions = np.zeros((self.buffer_size), dtype=np.int32)
+        self.rewards = np.zeros((self.buffer_size), dtype=np.float32)
+        self.dones = np.zeros((self.buffer_size), dtype=np.float32) 
+        self.hidden_state = []
+        self.infos = []
 
+    def store_transition(self, state, action, reward, done, **kwargs):
+        index = self.counter % self.buffer_size
+        self.states[index] = state
+        self.actions[index] = action
+        self.rewards[index] = reward
+        self.dones[index] = 1 - int(done)
+        if "hidden_state" in kwargs:
+            self.hidden_state.append(kwargs["hidden_state"])
+        self.counter += 1
+
+    def sample_transition(self):
+        actions= self.actions[:self.counter]
+        states = self.states[:self.counter]
+        rewards = self.rewards[:self.counter]
+        dones = self.dones[:self.counter]
+        hidden_states = self.hidden_state
+        self.clear_buffer()
+        return states, actions, rewards, dones, hidden_states
+
+    def clear_buffer(self):
+        self.counter = 0
+        # memory 
+        self.states = np.zeros((self.buffer_size, *self.state_size), dtype=np.float32)
+        self.actions = np.zeros((self.buffer_size), dtype=np.int32)
+        self.rewards = np.zeros((self.buffer_size), dtype=np.float32)
+        self.dones = np.zeros((self.buffer_size), dtype=np.float32) 
+        self.hidden_state = []
+        self.infos = []

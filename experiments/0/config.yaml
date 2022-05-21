@@ -1,47 +1,49 @@
 experiments:
     game_config:
         mode: "train"
-        project_name: "tests"
+        project_name: "experiment-1"
         reward_mode: "individual"
         advantage_mode: False
+        epochs: 1
         nsteps: 30
-        max_cycles: 500
-        wandb: True
-        epochs: 1000
-        save_model: True
-        save_replay: True
-    
+        max_cycles: 1000
+        wandb: False
+        save_replay: False
+        save_model: False
+        gamma: 0.95
+
+        
     run_1:
         size: 15
         npred: 2
         nprey: 5
-        _name: "15if-2pac-5rand-1"
+        _name: "15if-2pac-5rand"
         notes: "Training 2 vs 5"
 
     run_2:
         size: 15
         npred: 2
         nprey: 8
-        _name: "15if-2pac-8rand-1"
+        _name: "15if-2pac-8rand"
         notes: "Training 2 vs 8"
     
     run_3:
         size: 15
         npred: 3
         nprey: 5
-        _name: "15if-3pac-5rand-1"
+        _name: "15if-3pac-5rand"
         notes: "Training 3 s 5"
 
     run_4:
         size: 15
         npred: 3
         nprey: 8
-        _name: "15if-3pac-8rand-1"
+        _name: "15if-3pac-8rand"
         notes: "Training 3 vs 8"
     
     run_5:
         size: 15
-        npred: 3
-        nprey: 12
-        _name: "15if-3pac-12rand-1"
-        notes: "Training 3 vs 12"
+        npred: 4
+        nprey: 10
+        _name: "15if-4pac-10rand"
+        notes: "Training 4 vs 10"

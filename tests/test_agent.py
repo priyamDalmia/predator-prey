@@ -8,37 +8,37 @@ import numpy as np
 from game.game import Game
 from data.helpers import dodict
 from data.trainer import Trainer
-from data.replay_buffer import ReplayBuffer
+from data.replay_buffer import ReplayBufferRNN
 from data.agent import BaseAgent
 from agents.random_agent import RandomAgent
-from agents.tor_naac import AACAgent
-from agents.tor_rnn import AACAgent
+from agents.tor_bptt_rnn import AACAgent
 import pdb
 
 agent_network = dodict(dict(
     clayers=2,
     cl_dims=[6, 12],
     nlayers=2,
-    nl_dims=[256, 256]))
+    nl_dims=[256, 256],
+    rnn_layers=2))
 
 config = dodict(dict(
         # Environment
-        size=10,
-        npred=3,
-        nprey=3,
-        winsize=7,
+        size=15,
+        npred=2,
+        nprey=8,
+        winsize=9,
         nholes=0,
         nobstacles=0,
         map_="random",
         reward_mode="individual",
-        advantage_mode=True,
+        advantage_mode=False,
         # Training Control
-        epochs=1,
+        epochs=1200,
         episodes=1,       # Episodes must be set to 1 for training.
         train_steps=1,    # Train steps must be set to 1 for training.
         update_eps=1,
         max_cycles=600,
-        nsteps=5,
+        nsteps=30,
         training=True,
         eval_pred=False,
         eval_prey=False,
@@ -48,7 +48,7 @@ config = dodict(dict(
         class_prey=RandomAgent,
         agent_type="actor-critic",
         agent_network=agent_network,
-        lr=0.0005, 
+        lr=0.0001, 
         gamma=0.95,
         epislon=0.95,
         epsilon_dec=0.99,
@@ -61,17 +61,17 @@ config = dodict(dict(
         load_prey=False, # Give complete Path to the saved policy.#'predator_0-1ac-1random-4799-29', # 'prey_0-random-ac-99-135', 
         load_pred=False, #'prey_0-1random-1ac-4799-390', #'predator_0-ac-random-19-83',
         # Log Control
-        _name="15-1nac-4rand",
+        _name="15-2rnn-5rand-nochian",
         save_replay=False,
         save_model=True,
         log_freq=2,
-        wandb=False,
+        wandb=True,
         wandb_mode="online",
         entity="rl-multi-predprey",
-        project_name="pred-tests",
+        project_name="rnn-tests",
         notes="1nAC vs 1 RAND Indp Pred Test",
         log_level=10,
-        log_file="logs/prey.log",
+        log_file="logs/pred.log",
         print_console = True,))
 
 class test_agent(Trainer):
@@ -104,6 +104,7 @@ class test_agent(Trainer):
             _id = self.train_ids[-1]
             self.agents[_id].save_model()
             pass
+    
     def make_checkpoint(self, epoch):
         if self.config.train_type == "predator":
             if self.best_ < self.steps_avg:
@@ -135,14 +136,15 @@ class test_agent(Trainer):
                 gamma = self.config.gamma, 
                 load_model = self.config.load_pred,
                 eval_model = self.config.eval_pred,
-                agent_network = self.config.agent_network)
+                agent_network = self.config.agent_network,
+                num_agents = len(self.pred_ids))
         assert isinstance(agent, BaseAgent), "Error: Derive agent from BaseAgent!"
-        
+        self.log_model(agent.network) 
         for _id in self.pred_ids:
             agents[_id] = agent
             memory = None
             if self.config.train_type.startswith("predator"):
-                memory = ReplayBuffer(
+                memory = ReplayBufferRNN(
                     self.config.buffer_size,
                     self.config.batch_size, 
                     self.input_dims)
@@ -156,9 +158,8 @@ class test_agent(Trainer):
                 memory = None,
                 lr = self.config.lr,
                 gamma = self.config.gamma,
-                load_model = self.config.load_prey,
-                eval_model = self.config.eval_prey,
-                agent_network = self.config.agent_network)
+                agent_network = self.config.agent_network,
+                num_agents = len(self.pred_ids))
         assert isinstance(agent, BaseAgent), "Error: Derive agent from BaseAgent!"
         
         for _id in self.prey_ids:
@@ -177,8 +178,6 @@ class test_agent(Trainer):
         reward_hist = []
         # Add loss 
         loss_hist = [0 for i in range(len(self.train_ids))]
-        print("Running Episode")
-        breakpoint()
         for ep in range(self.config.episodes):
             observation, done_ = self.env.reset()
             done = False
@@ -189,34 +188,29 @@ class test_agent(Trainer):
             all_dones.append(list(done_.values()))
             while not done:
                 actions = {}
-                actions_prob = {}
+                hidden_states = {}
                 state_t = None
                 # Get actions for all agents.
-                print("Getting Actions")
-                breakpoint()
                 for _id in self.agents:
                     if not done_[_id]:
-                        actions[_id], actions_prob[_id] = \
-                                self.agents[_id].get_action(observation[_id])
+                        actions[_id], hidden_states[_id] = \
+                                self.agents[_id].get_action(observation[_id], _id = _id)
                     else:
                         actions[_id] = int(4)
-                        actions_prob[_id] = 0
-                print("Stepping")
-                breakpoint()
+                        hidden_states[_id] = 0
                 states_t = copy.deepcopy(observation)
                 rewards, next_, done, info = self.env.step(actions)
                 for _id in train_agents:
                     try:
-
-                        self.agents[_id].store_transition(_id, states_t[_id],
+                        self.agents[_id].store_transition(
+                            _id, 
+                            states_t[_id],
                             actions[_id],
                             rewards[_id],
-                            next_[_id],
                             done_[_id],
-                            actions_prob[_id])
+                            hidden_state = hidden_states[_id])
                     except Exception as e:
                         print(e)
-                        breakpoint()
                         
                     if done_[_id]:
                         train_agents.remove(_id)
@@ -228,8 +222,6 @@ class test_agent(Trainer):
                     break
                 if (steps+1)%self.config.nsteps == 0:
                     # Run training here!
-                    print("Ruuning Training")
-                    breakpoint()
                     losses = self.run_training(ep_end=False)
                     loss_hist = [a+b for a, b in zip(loss_hist, losses)]
             step_hist.append(steps)
@@ -248,6 +240,8 @@ class test_agent(Trainer):
             for _id in self.train_ids:
                 loss = self.agents[_id].train_step(_id)
                 loss_hist.append(loss)
+            if ep_end:
+                self.agents["predator_0"].clear_hidden_states()
         return loss_hist
 
 if __name__=="__main__":

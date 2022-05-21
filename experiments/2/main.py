@@ -22,9 +22,9 @@ ARGS = parser.parse_args()
 
 actor_network = dodict(dict(
     clayers=2,
-    cl_dims=[6, 12],
+    cl_dims=[12, 12],
     nlayers=2,
-    nl_dims=[256, 256]))
+    nl_dims=[512, 256]))
 
 config = dodict(dict(
         mode="train",
@@ -50,7 +50,7 @@ config = dodict(dict(
         eval_prey=False,
         # Agent Control
         class_pred=AACAgent,
-        class_prey=RandomAgent,
+        class_prey=AACAgent,
         agent_type="adv-ac",
         agent_network=actor_network,
         lr=0.0005, 

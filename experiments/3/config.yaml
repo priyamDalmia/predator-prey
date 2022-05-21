@@ -5,46 +5,48 @@ experiments:
         reward_mode: "average"
         advantage_mode: False
         epochs: 700
-        nsteps: 20
+        nsteps: 30
         max_cycles: 1000
         wandb: True
-        save_replay: True
+        save_replay: False
         save_model: False
-        gamma: 0.99 
+        gamma: 0.95 
+        prey_level: 1
+        load_prey: "experiments/common/prey_0-15if-3rand-8pac-199-697"
     
     run_1:
         size: 15
         npred: 2
         nprey: 5
-        _name: "15sf-2pac-5rand"
+        _name: "15sf-2pac-5t(697)"
         notes: "Training 2 vs 5"
 
     run_2:
         size: 15
         npred: 2
         nprey: 8
-        _name: "15sf-2pac-8rand"
+        _name: "15sf-2pac-8t(967)"
         notes: "Training 2 vs 8"
     
     run_3:
         size: 15
         npred: 3
         nprey: 5
-        _name: "15sf-3pac-5rand"
+        _name: "15sf-3pac-5t(967)"
         notes: "Training 3 s 5"
 
     run_4:
         size: 15
         npred: 3
         nprey: 8
-        _name: "15sf-3pac-8rand"
+        _name: "15sf-3pac-8t(967)"
         notes: "Training 3 vs 8"
     
     run_5:
         size: 15
         npred: 4
         nprey: 10
-        _name: "15sf-4pac-10rand"
+        _name: "15sf-4pac-10t(967)"
         notes: "Training 4 vs 10"
     
 

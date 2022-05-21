@@ -12,69 +12,8 @@ from data.trainer import Trainer
 from data.replay_buffer import ReplayBuffer
 from data.agent import BaseAgent
 from agents.random_agent import RandomAgent
-from agents.tor_dqn import DQNAgent
-from agents.tor_adv_ac import AACAgent
 
 import pdb
-
-agent_network = dodict(dict(
-    clayers=2,
-    cl_dims=[6, 12],
-    nlayers=2,
-    nl_dims=[256, 256]))
-
-config = dodict(dict(
-        # Environment
-        size=15,
-        npred=8,
-        nprey=1,
-        winsize=9,
-        nholes=0,
-        nobstacles=0,
-        map_="random",
-        reward_mode="neighbours",
-        advantage_mode=True,
-        # Training Control
-        epochs=1000,
-        episodes=1,       # Episodes must be set to 1 for training.
-        train_steps=1,    # Train steps must be set to 1 for training.
-        update_eps=1,
-        max_cycles=1000,
-        training=True,
-        eval_pred=False,
-        eval_prey=False,
-        train_type="prey",
-        # Agent Control
-        class_pred=RandomAgent,
-        class_prey=AACAgent,
-        agent_type="actor-critic",
-        agent_network=agent_network,
-        lr=0.0005, 
-        gamma=0.95,
-        epislon=0.95,
-        epsilon_dec=0.99,
-        epsilon_update=10,
-        batch_size=64,
-        buffer_size=1500,
-        # Models
-        replay_dir="replays/",
-        checkpoint_dir="experiments/common/",
-        load_prey=False, # Give complete Path to the saved policy.#'predator_0-1ac-1random-4799-29', # 'prey_0-random-ac-99-135', 
-        load_pred=False, #'prey_0-1random-1ac-4799-390', #'predator_0-ac-random-19-83',
-        # Log Control
-        _name="15-8rand-1oac",
-        save_replay=False,
-        save_model=True,
-        log_freq=200,
-        wandb=True,
-        wandb_mode="online",
-        entity="rl-multi-predprey",
-        project_name="prey-tests",
-        notes="2RAND vs 1AC Indp Pred Test",
-        log_level=10,
-        log_file="logs/prey.log",
-        print_console = True,
-        ))
 
 class train_agent(Trainer):
     def __init__(self, config, env, **env_specs):
@@ -141,18 +80,23 @@ class train_agent(Trainer):
                     self.config.buffer_size,
                     self.config.batch_size, 
                     self.input_dims)
-            agent = self.config.class_pred(
-                _id,  
-                self.input_dims,
-                self.output_dims, 
-                self.action_space,
-                memory = memory,
-                lr = self.config.lr,
-                gamma = self.config.gamma, 
-                load_model = self.config.load_pred,
-                eval_model = self.config.eval_pred,
-                agent_network = self.config.agent_network)
-            assert isinstance(agent, BaseAgent), "Error: Derive agent from BaseAgent!"
+            try:
+                agent = self.config.class_pred(
+                    _id,  
+                    self.input_dims,
+                    self.output_dims, 
+                    self.action_space,
+                    memory = memory,
+                    lr = self.config.lr,
+                    gamma = self.config.gamma, 
+                    load_model = self.config.load_pred,
+                    eval_model = self.config.eval_pred,
+                    agent_network = self.config.agent_network)
+                assert isinstance(agent, BaseAgent), "Error: Derive agent from BaseAgent!"
+                self.log_write(f"Agent Created: {_id} | Policy Loaded:{self.config.load_pred}")
+                self.log_model(agent.network)
+            except:
+                self.log_write(f"Agent init Failed: {_id} | Policy Loaded:{self.config.load_pred}")
             agents[_id] = agent
         for _id in self.prey_ids:
             memory = None 
@@ -161,18 +105,23 @@ class train_agent(Trainer):
                     self.config.buffer_size,
                     self.config.batch_size, 
                     self.input_dims)
-            agent = self.config.class_prey(
-                _id, 
-                self.input_dims,
-                self.output_dims,
-                self.action_space,
-                memory = memory,
-                lr = self.config.lr,
-                gamma = self.config.gamma,
-                load_model = self.config.load_prey,
-                eval_model = self.config.eval_prey,
-                agent_network = self.config.agent_network)
-            assert isinstance(agent, BaseAgent), "Error: Derive agent from BaseAgent!"
+            try:
+                agent = self.config.class_prey(
+                    _id, 
+                    self.input_dims,
+                    self.output_dims,
+                    self.action_space,
+                    memory = memory,
+                    lr = self.config.lr,
+                    gamma = self.config.gamma,
+                    load_model = self.config.load_prey,
+                    eval_model = self.config.eval_prey,
+                    agent_network = self.config.agent_network)
+                assert isinstance(agent, BaseAgent), "Error: Derive agent from BaseAgent!"
+                self.log_write(f"Agent Created: {_id} | Policy Loaded:{self.config.load_prey}")
+                self.log_model(agent.network)
+            except Exception as e:
+                self.log_write(f"Agent init Failed: {_id} | Policy Loaded:{self.config.load_prey}")
             agents[_id] = agent
         return agents
 
@@ -194,20 +143,16 @@ class train_agent(Trainer):
                 # Get actions for all agents.
                 for _id in self.agents:
                     if not done_[_id]:
-                        actions[_id], actions_prob[_id] = \
-                                self.agents[_id].get_action(observation[_id])
+                        actions[_id] = self.agents[_id].get_action(observation[_id])
                     else:
                         actions[_id] = int(4)
-                        actions_prob[_id] = 0
                 states_t = copy.deepcopy(observation)
                 rewards, next_, done, info = self.env.step(actions)
                 for _id in train_agents:
                     self.agents[_id].store_transition(states_t[_id],
                             actions[_id],
                             rewards[_id],
-                            next_[_id],
-                            done_[_id],
-                            actions_prob[_id])
+                            done_[_id])
                     if done_[_id]:
                         train_agents.remove(_id)
                 all_rewards.append(list(rewards.values()))

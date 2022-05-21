@@ -76,7 +76,7 @@ if __name__=="__main__":
     # Try passing Game Specific Config File - config.game
     # If Training; run trainers
     for i in range(config.eval_runs):
-        config.update(job_data["experiments"][f"pred_{i}"])
+        config.update(job_data["experiments"][f"run_{i}"])
         try:
             env = Game(config)
         except:                

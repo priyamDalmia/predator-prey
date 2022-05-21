@@ -3,73 +3,48 @@ experiments:
         mode: "train"
         project_name: "experiment-2"
         reward_mode: "individual"
-        advantage_mode: False
+        advantage_mode: True
         nsteps: 30
         max_cycles: 1000
+        epochs: 700
         wandb: True
-        epochs: 1000
-        load_prey: "experiments/common/prey_0-15if-3rand-8pac-1-199-926"
-
+        save_replay: True
+        save_model: False
+        prey_level: 1
+        load_prey: "experiments/common/prey_0-15if-3rand-8pac-199-697"
+        load_pred: "experiments/1/policies/predator_0-15if-3pac-5rand-674-35"
+    
     run_1:
         size: 15
         npred: 2
         nprey: 5
-        _name: "15ia-2pac-5(t926)"
+        _name: "15ia-2t(35)-(t697)-1"
         notes: "Training 2 vs 5"
 
     run_2:
         size: 15
         npred: 2
         nprey: 8
-        _name: "15ia-2pac-8(t926)"
+        _name: "15ia-2t(35)-8(t697)-1"
         notes: "Training 2 vs 8"
     
     run_3:
         size: 15
         npred: 3
         nprey: 5
-        _name: "15ia-3pac-5(t926)"
+        _name: "15ia-3t(35)-5(t697)-1"
         notes: "Training 3 s 5"
 
     run_4:
         size: 15
         npred: 3
         nprey: 8
-        _name: "15ia-3pac-8(t926)"
+        _name: "15ia-3t(35)-8(t697)-1"
         notes: "Training 3 vs 8"
     
     run_5:
-        size: 20
-        npred: 3
-        nprey: 12
-        _name: "20ia-3pac-12(t926)"
-        notes: "Training 3 vs 12"
-    
-    ## RUN 6 is reserverd for Evaluation ALONE:
-    run_6:
-        mode: "eval"
-        prey_policies: ['']
-        eval_file: 'experiments/0/results/eval_7.log'
-        runs: 5
-        episodes: 3
-        print_console: False
-        max_cycles: 1000
         size: 15
-        npred: 1
-        nprey: 1
-        eval_runs: 7
-        save_replay: True
-
-    pred_0: 
-        pred_policies: ['None']
-        npred: 1
-
-    pred_1:
-        pred_policies: ['None']
-        npred: 8
-
-    pred_2:
-        pred_policies: ['None']
-        npred: 8
-        nprey: 3 
-
+        npred: 4
+        nprey: 10
+        _name: "20ia-3t(35)-10(t697)-1"
+        notes: "Training 3 vs 10"

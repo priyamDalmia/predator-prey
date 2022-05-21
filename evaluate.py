@@ -58,7 +58,7 @@ class Evaluate():
         self.loss_avg = 0
     
     def evaluate(self, mode="evaluation"):
-        self.logger.info(f"npred: {self.config.nprey}, nprey: {self.config.nprey}| {len(self.agent_ids)}") 
+        self.logger.info(f"npred: {self.config.npred}, nprey: {self.config.nprey}| {len(self.agent_ids)}") 
         self.logger.info(f"Predator: {self.config.pred_policies}")
         self.logger.info(f"Prey: {self.config.prey_policies}")
         for r in range(self.config.runs):

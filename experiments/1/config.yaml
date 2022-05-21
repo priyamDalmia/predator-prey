@@ -5,14 +5,15 @@ experiments:
         reward_mode: "individual"
         advantage_mode: False
         epochs: 700
-        nsteps: 20
+        nsteps: 30
         max_cycles: 1000
         wandb: True
         save_replay: True
-        save_model: False
-        gamma: 0.99
+        save_model: True
+        gamma: 0.95
+
         
-    run_1:
+    zRn_1:
         size: 15
         npred: 2
         nprey: 5

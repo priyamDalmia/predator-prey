@@ -86,7 +86,16 @@ class Trainer(ABC):
             print(\
                     f"Epochs:{epoch:4} | Steps:{self.steps_avg:4.2f} | Rewards:{self.rewards_avg}")
         pass
-        
+
+    def log_write(self, msg):
+        if self.config.wandb:
+            wandb.log({"logs": msg})
+        self.logger.info(msg)
+    
+    def log_model(self, model, **kwargs):
+        if self.config.wandb:
+            wandb.watch(model, log="all")
+
     def make_checkpoint(self):
         for _id in self.agent_ids:
             if _id.startswith(self.config.train_type):
