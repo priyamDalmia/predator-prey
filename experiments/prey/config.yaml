@@ -14,7 +14,7 @@ experiments:
         size: 15
         npred: 1
         nprey: 1
-        _name: "15if-1rand-1pac-1"
+        _name: "15if-rand"
         notes: "Training Prey 1 vs 1"
     
     run_2:

@@ -14,7 +14,6 @@ import argparse
 import pdb
 import logging 
 from datetime import datetime
-
 parser = argparse.ArgumentParser(description="experiments",
         formatter_class = argparse.ArgumentDefaultsHelpFormatter)
 parser.add_argument('--id', type=int, help="The configuration to run")
@@ -24,7 +23,7 @@ actor_network = dodict(dict(
     clayers=2,
     cl_dims=[12, 12],
     nlayers=2,
-    nl_dims=[512, 256]))
+    nl_dims=[256, 512]))
 
 config = dodict(dict(
         mode="train",
@@ -38,6 +37,8 @@ config = dodict(dict(
         map_="random",
         reward_mode="individual",
         advantage_mode=True,
+        time_mode=False,
+        steps_limit=300,
         # Training control,
         epochs=2500,
         episodes=1,

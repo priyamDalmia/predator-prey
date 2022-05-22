@@ -9,7 +9,7 @@ from data.helpers import dodict
 from data.trainer import Trainer
 from data.agent import BaseAgent
 from agents.random_agent import RandomAgent
-from agents.tor_naac import AACAgent
+from agents.tor_par_AC import AACAgent
 import pdb
 
 # Must have list of Agents classes and their policy paths

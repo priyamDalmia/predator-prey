@@ -3,10 +3,10 @@ experiments:
         mode: "train"
         project_name: "experiment-3"
         reward_mode: "average"
-        epochs: 700
+        epochs: 1000
         advantage_mode: False
         nsteps: 30
-        max_cycles: 1000
+        max_cycles: 500
         wandb: True
         save_replay: False
         save_model: False

@@ -22,9 +22,9 @@ ARGS = parser.parse_args()
 
 actor_network = dodict(dict(
     clayers=2,
-    cl_dims=[6, 12],
+    cl_dims=[12, 12],
     nlayers=2,
-    nl_dims=[256, 256]))
+    nl_dims=[256, 5122]))
 
 config = dodict(dict(
         mode="eval",
@@ -38,6 +38,8 @@ config = dodict(dict(
         map_="random",
         reward_mode="individual",
         advantage_mode=False,
+        time_mode=False,
+        steps_limit=300,
         # Training control,
         epochs=2500,
         episodes=1,

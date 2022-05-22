@@ -1,17 +1,19 @@
+## Training HOT start Agents. 
+##  
 experiments:
     game_config:
         mode: "train"
         project_name: "experiment-1"
         reward_mode: "individual"
         advantage_mode: False
-        epochs: 700
+        epochs: 400
         nsteps: 30
-        max_cycles: 1000
+        max_cycles: 500
         wandb: True
-        save_replay: True
+        save_replay: False
         save_model: True
-        gamma: 0.95
-
+        model_type: "param share"
+         
         
     zRn_1:
         size: 15

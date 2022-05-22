@@ -21,6 +21,8 @@ class Game():
         self.game_state = None
         self.reward_mode = config.reward_mode
         self.advantage_mode = config.advantage_mode
+        self.time_mode = config.time_mode
+        self.steps_limit = config.steps_limit
         # Game managment variables
         self.units = (self.npredators + self.npreys + 1)
         self.action_space = [i for i in range(4)]
@@ -160,7 +162,17 @@ class Game():
         # Gets Distributed rewards based on the game mode.
         self.record_transition(actions, rewards, self.done)
         done = True if sum(self.done.values())==self.npreys else False
+        if self.time_mode:
+            if self.steps > self.steps_limit:
+                rewards = self.end_game(rewards)
+                done=True
         return rewards, self.get_observation(), done, info
+    
+    def end_game(self, rewards):
+        if self.time_mode:
+           for _id in self.pred_ids:
+                rewards[_id] = rewards[_id] - 0.5
+        return rewards
 
     def get_observation(self) -> dict:
         observation = {}
@@ -193,6 +205,15 @@ class Game():
             for k in neighbours:
                 rewards[k] += avg_rewards
             return rewards
+        
+        ## WARINING: Not functional!
+        if self.rewards_mode=="distance":
+            neighbours, weights  = self.get_weighted_neighbours(_id)
+            for k in neighbours:
+                rewards[k] += rewards
+            return rewards
+
+        return rewards
         
     def get_neighbours(self, _id):
         neighbours = []

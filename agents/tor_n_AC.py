@@ -57,8 +57,8 @@ class AACAgent(BaseAgent):
             input_dims,
             output_dims,
             action_space,
-            memory=False,
-            lr=0.005,
+            memory=None,
+            lr=0.0005,
             gamma=0.95,
             load_model=False,
             eval_model=False,
@@ -98,6 +98,7 @@ class AACAgent(BaseAgent):
                 betas=(0.9, 0.99),
                 eps=1e-3)
         self.network = self.network.to(self.device)
+
     def get_action(self, observation, **kwargs):
         observation = torch.as_tensor(
                 observation,

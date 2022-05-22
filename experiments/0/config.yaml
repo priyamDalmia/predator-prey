@@ -4,7 +4,7 @@ experiments:
         project_name: "experiment-1"
         reward_mode: "individual"
         advantage_mode: False
-        epochs: 1
+        epochs: 500 
         nsteps: 30
         max_cycles: 1000
         wandb: False
