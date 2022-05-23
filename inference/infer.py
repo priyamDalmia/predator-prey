@@ -1,11 +1,12 @@
 import os
 import sys
+sys.path.append(os.getcwd())
 import numpy as np
 import pdb
 import matplotlib.pyplot as plt
 from data.helpers import dodict
 from data.common import ACTIONS
-from agents.tor_naac import AACAgent
+from agents.tor_par_AC import AACAgent
 import argparse
 import yaml
 
@@ -24,23 +25,23 @@ Giving starting positions and a list of actions takens, an observation for a
 Make sure that the list of actions is a valid or "premissible" list of actions
 otherwise, the observations recived will not be a reflection of the real game.
 '''
-
+## If GAME size chagnes (from 10) - ADJUST @ must be modified. 
 ADJUST = lambda x, y: (x[0]+y, x[1]+y)
-RANGE = lambda x, y: ((0, x[0]+y+1), (0, x[1]+y+1))
+ADJUST_2 = lambda x, y, z: (y-(z[0]-x[0]), y-(z[1]-x[1]))
+RANGE = lambda x, y, z: ((max(0, x[0]-y), min(x[0]+y+1, z)), (max(0, x[1]-y), min(x[1]+y+1, z)))
+COLOR = []
 
 config = dict(
         # Environment size, 
-        size=15,
+        size=10,
         winsize=9,
         npred=2,   # Be Careful when setting these values.
         nprey=2,
-        pred_pos=[(3,3), (2,4)],
-        prey_pos=[(1,1), (3,3)],
-        target_pos=[(1,1)], # Should be one of the prey positons.
+        pred_pos=[(3,3), (5,5)],
+        prey_pos=[(1,1), (3,4)],
+        target_pos=[(5,5)], # Should be one of the prey positons.
         agent_class = AACAgent,
-        agent_policy = "experiments/2/policies/predator_0-15-2ac-2rand-2399-48",
-        critc_class = "",
-        critic_policy = "",
+        agent_policy = "experiments/common/pred1",
         plot_file="plots/plot_test",
         steps=5,
         )
@@ -56,28 +57,45 @@ class Inference():
         self.win_size = self.config["winsize"]
         self.pad_width = int(self.win_size/2)
         
-        self.initialize_agents()
-        self.build_game_state()
 
     def run_inference(self):
+        self.target_pos = self.config.target_pos[0]
+        target_id, idx = self.initialize_agents(self.target_pos)
+        self.build_game_state()
         self.render()
-        for x in range(len(self.X)):
-            for y in range(len(self.Y)):
-                for idx, _id in enumerate(self.infer_agents.keys()):
-                    # get observation for _id
-                    # !!position = self.all_pos[_id]
-                    position = (x, y)
-                    self.all_pos[_id] = position
-                    self.update_state(idx+1, position)
-                    observation = self.get_observation(idx+1, position)
-                    # Make Inference. Get Q values.
-                    probs, values = self.infer_agents[_id].get_raw_output(observation)   
-                    # store the obtainded valeus 
-                    self.store_values(_id, position, probs, values) 
-                    if _id.startswith("critic"): 
-                        continue
-                    # update the posititon of the agents
+        agent_state = self.create_base_observation(idx, target_id, self.target_pos)
+        # GET VALUES AND ACTION PROBS
+        for i, x in enumerate(self.X[0,:]):
+            for j, y in enumerate(self.Y[:,0]):
+                # get observation for _id
+                # !!position = self.all_pos[_id]
+                position = (x, y)
+                #self.update_state(idx+1, position)
+                observation = self.get_base_state(agent_state.copy(), idx+1, position)
+                # Make Inference. Get Q values.
+                probs, values = self.infer_agents[target_id].get_raw_output(observation)   
+                # store the obtainded valeus 
+                self.store_values(target_id, position, (j ,i), probs.tolist(), values) 
+        # GERNERATE THE PLOTS
+        self.vec_field_graph()
     
+    def create_base_observation(self, target_idx, target_id, target_pos):
+        observation = self.get_observation(target_idx+1, target_pos)
+        channel_0 =  np.pad(observation[0], pad_width=self.pad_width, mode="edge")
+        channel_1 = np.pad(observation[1], pad_width=self.pad_width, mode="constant")
+        channel_2 = np.pad(observation[2], pad_width=self.pad_width, mode="constant")
+        channel_1[(2*self.pad_width) ,(2*self.pad_width)] = 0
+        return np.stack((channel_0, channel_1, channel_2))
+    
+    def get_base_state(self, agent_state, idx, position):
+        z = self.target_pos        
+        (pos_x, pos_y) = ADJUST_2(position, (2*self.pad_width), z)
+        observation = agent_state[:,
+                pos_x-self.pad_width:pos_x+self.pad_width+1,
+                pos_y-self.pad_width:pos_y+self.pad_width+1]
+        observation[1, self.pad_width, self.pad_width] = 1
+        return observation
+
     def build_game_state(self):
         # The Base Game State.
         base_state = np.pad((np.zeros((self.size, self.size), dtype=np.int32)),\
@@ -111,28 +129,37 @@ class Inference():
         channel_2 = np.sum(observation[self.npreds+1:], axis=0)
         return np.stack((channel_0, channel_1, channel_2))
         
-    def store_values(self, _id, position, probs, values):
+    def store_values(self, _id, position, arr_idx, probs, values):
+        probs = probs[0]
         if position in self.config.prey_pos:
             color = [1]
+            probs = [0.0, 0.0, 0.0, 0.0]
         elif position in self.config.pred_pos:
             color = [2]
+            probs = [0.0, 0.0, 0.0, 0.0]
         else:
             color = [0]
-        data = probs.tolist()[0] + values.tolist()[0] + color
-        self.infer_values[_id][:, position[0], position[1]] = data
+        data = probs + [values.item()] + color
+        try:
+            self.infer_values[_id][:, arr_idx[0], arr_idx[1]] = data
+        except Exception as e:
+            print(f"Array index out of bounds! Fix array dimensions for: {_id}")
 
-    def initialize_agents(self):
+    def initialize_agents(self, target_pos):
         # Go Over All predators 
         # Create a list of Agents ids, Agent position, and Inference Policies.
         # Create Empty array to store inference values. 
         # For Each Agent (4 prob + 1 value functions)
         # The prey around which to infer.
-        self.target_pos = self.config.target_pos[0]
-        x_lim, y_lim = RANGE(self.target_pos, self.pad_width)
+        self.target_pos = target_pos
+        target_id = None
+        x_lim, y_lim = RANGE(self.target_pos, self.pad_width, self.config.size)
         # Creating a numpy meshgrid for all points.
         x_range = np.arange(x_lim[0], x_lim[1])
         y_range = np.arange(y_lim[0], y_lim[1])
-        self.Y, self.X = np.meshgrid(x_range, y_range)
+        self.X, self.Y = np.meshgrid(x_range, y_range)
+        self.plot_X, self.plot_Y = np.meshgrid(\
+                range(len(x_range)), range(len(y_range)))
         self.infer_array = np.zeros((6, len(x_range), len(y_range)), dtype=np.object_)
 
         self.npreds = self.config['npred']
@@ -156,31 +183,51 @@ class Inference():
                     load_model = self.config.agent_policy,
                     eval_model = True,
                     )
-            infer_agents[_id] = agent
-            infer_values[_id] = self.infer_array.copy()
+            if position == target_pos:
+                infer_agents[_id] = agent
+                infer_values[_id] = self.infer_array.copy()
+                target_id = _id
+                idx = int(target_id[-1])
         for i in range(self.config["nprey"]):
             _id = f"prey_{i}"
             all_agents.append(_id)
             position = self.config["prey_pos"][i]
-            all_pos[_id] = position 
+            all_pos[_id] = position
         self.all_agents = all_agents
         self.all_pos = all_pos
         self.infer_agents = infer_agents
         self.infer_values = infer_values
+        if not target_id:
+            raise("Target ID could not be initialized! Fix the target and restart.")
+        return target_id, idx
 
     def vec_field_graph(self):
         for _id in self.infer_agents:
             data_i = self.infer_values[_id]
-            mat_X = data_i[0,:,:] - data_i[1,:,:]
+            mat_X = data_i[1,:,:] - data_i[0,:,:]
             mat_Y = data_i[2,:,:] - data_i[3,:,:]
             mat_X = np.array(mat_X, dtype=np.float32)
             mat_Y = np.array(mat_Y, dtype=np.float32)
             color = np.array(data_i[-1,:,:], dtype=np.float32)
-            plt.quiver(self.X, self.Y, mat_X, mat_Y, color)
+            breakpoint()
+            plt.quiver(self.X, -self.Y, -mat_X, -mat_Y, color, pivot='mid', units='width')
+            ax = plt.gca()
+            ax.set_xticks([x-0.5 for x in self.X[1,:]],minor=True)
+            ax.set_yticks([-x-0.5 for x in self.Y[:,1]],minor=True)
+            plt.grid(which="minor", ls="--",lw=1, alpha=0.5)
+            for pos in self.config.pred_pos:
+                breakpoint()
+            for prey in self.config.prey_pos:
+                breakpoint()
+            plt.show()
             plt.savefig(f"{self.config.plot_file}_{_id}")
             print(f"Plot Saved: {_id} -> {self.config.plot_file}_{_id}")
         pass
-        
+
+    def game_state_graph(self):
+        breakpoint()
+        pass
+    
     def render(self):
         gmap = np.zeros((self.size, self.size), dtype=np.int32).tolist()
         for _id, position in self.all_pos.items():
@@ -200,11 +247,10 @@ class Inference():
 if __name__ == "__main__":
     config = config
     infer_id = ARGS.id
-    with open('experiments/infer.yaml') as f:
-        scenario_data = yaml.load(f, Loader=yaml.FullLoader)
-        config.update(scenario_data["inference"][f"scenario_{infer_id}"])
+    if infer_id:
+        with open('inference/config.yaml') as f:
+            config_data = yaml.load(f, Loader=yaml.FullLoader)
+            config.update(config_data["infer"]["global"])
+            config.update(config_data["infer"][f"sce_{infer_id}"])
     infer = Inference(config)
     infer.run_inference()
-
-    # Make Vector Feild Graph
-    infer.vec_field_graph()
