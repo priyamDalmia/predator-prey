@@ -68,14 +68,15 @@ class Trainer(ABC):
         if self.config.wandb:
             wandb.log(dict(epochs=epoch, 
                 **kwargs))
-        self.logger.info(f"{epoch} | {kwargs}")
+        if epoch%400 == 0:
+            self.logger.info(f"{epoch} | {kwargs}")
         pass
         
     def make_log(self, epoch, steps_hist, rewards_hist, loss_hist, **kwargs):
-        self.steps_avg = np.mean(steps_hist[-99:])
-        self.rewards_avg = pd.DataFrame(rewards_hist[-99:], columns=self.agent_ids)\
+        self.steps_avg = np.mean(steps_hist[-49:])
+        self.rewards_avg = pd.DataFrame(rewards_hist[-49:], columns=self.agent_ids)\
                 .mean(0).round(2).to_dict()
-        self.loss_avg = pd.DataFrame(loss_hist[-99:], columns=self.train_ids)\
+        self.loss_avg = pd.DataFrame(loss_hist[-49:], columns=self.train_ids)\
                 .mean(0).round(3).to_dict()
         info = dict(
                 steps = self.steps_avg,

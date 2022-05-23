@@ -9,7 +9,7 @@ from data.helpers import dodict
 from game.game import Game
 from trainers.train_nac import train_agent
 from agents.random_agent import RandomAgent
-from agents.tor_naac import AACAgent
+from agents.tor_nRnn_ac.py import AACAgent
 import argparse
 import pdb
 import logging 
@@ -22,14 +22,15 @@ ARGS = parser.parse_args()
 
 actor_network = dodict(dict(
     clayers=2,
-    cl_dims=[6, 12],
+    cl_dims=[12, 12],
     nlayers=2,
-    nl_dims=[256, 256]))
+    nl_dims=[512, 256]),
+    rnn_layers=2)
 
 config = dodict(dict(
-        mode="eval",
+        mode="train",
         # Environment
-        size=10,
+        size=15,
         npred=1,
         nprey=1,
         winsize=9,
@@ -37,10 +38,9 @@ config = dodict(dict(
         nobstacles=0,
         map_="random",
         reward_mode="individual",
-        advantage_mode=False,
+        advantage_mode=True,
         time_mode=False,
-        steps_limit=300,
-        # Training control,
+        steps_limit=300,# Training control,
         epochs=2500,
         episodes=1,
         train_steps=1,
@@ -55,7 +55,7 @@ config = dodict(dict(
         class_prey=AACAgent,
         agent_type="adv-ac",
         agent_network=actor_network,
-        lr=0.0001, 
+        lr=0.0005, 
         gamma=0.95,
         epislon=0.95,
         epsilon_dec=0.99,
@@ -63,8 +63,8 @@ config = dodict(dict(
         batch_size=64,
         buffer_size=1500,
         # Models
-        replay_dir="experiments/1/results/",
-        checkpoint_dir="experiments/1/policies/",
+        replay_dir="experiments/5/results/",
+        checkpoint_dir="experiments/5/policies/",
         load_prey=False, 
         load_pred=False,
         # Log Control
@@ -78,7 +78,7 @@ config = dodict(dict(
         project_name="experiment 1",
         notes="1AAC vs 4RAND Pred Test",
         log_level=10,
-        log_file="logs/exp_1.log",
+        log_file="logs/exp_6.log",
         print_console=True,
         ))
 
@@ -100,7 +100,7 @@ if __name__=="__main__":
     config = config
     # Parse and Load Config File here.
     job_id = ARGS.id
-    with open('experiments/1/config.yaml') as f:
+    with open('experiments/5/config.yaml') as f:
         job_data = yaml.load(f, Loader=yaml.FullLoader)
         config.update(job_data["experiments"]["game_config"])
         config.update(job_data["experiments"][f"run_{job_id}"])

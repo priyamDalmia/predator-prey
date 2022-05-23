@@ -146,7 +146,7 @@ class train_agent(Trainer):
             self.log_model(agent.network)
         except: 
             self.log_write(f"Agent init Failed:predator_parashare | Policy Loaded:{self.config.load_pred}")
-        
+            sys.exit() 
         for _id in self.pred_ids:
             agents[_id] = agent
             memory = None
@@ -173,7 +173,7 @@ class train_agent(Trainer):
             self.log_model(agent.network)
         except: 
             self.log_write(f"Agent init Failed:prey_parashare | Policy Loaded:{self.config.load_prey}")
-        
+            sys.exit() 
         for _id in self.prey_ids:
             agents[_id] = agent
             memory= None

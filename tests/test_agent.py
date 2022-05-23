@@ -23,19 +23,20 @@ agent_network = dodict(dict(
 
 config = dodict(dict(
         # Environment
-        size=15,
+        size=10,
         npred=3,
         nprey=8,
         winsize=9,
         nholes=0,
         nobstacles=0,
         map_="random",
-        reward_mode="individual",
+        reward_mode="distance",
         advantage_mode=False,
+        distance_factor=0.5,
         time_mode=True,
         steps_limit=300,
         # Training Control
-        epochs=1200,
+        epochs=1,
         episodes=1,       # Episodes must be set to 1 for training.
         train_steps=1,    # Train steps must be set to 1 for training.
         update_eps=1,

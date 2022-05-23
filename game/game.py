@@ -4,6 +4,8 @@ import numpy as np
 import random
 import time
 import json
+import math
+from scipy.spatial import distance
 from statistics import mean
 from data.common import ACTIONS
 from game.game_state import GameState
@@ -20,6 +22,7 @@ class Game():
         self.map_ = config.map_
         self.game_state = None
         self.reward_mode = config.reward_mode
+        self.distance_factor = config.distance_factor
         self.advantage_mode = config.advantage_mode
         self.time_mode = config.time_mode
         self.steps_limit = config.steps_limit
@@ -206,11 +209,20 @@ class Game():
                 rewards[k] += avg_rewards
             return rewards
         
-        ## WARINING: Not functional!
-        if self.rewards_mode=="distance":
-            neighbours, weights  = self.get_weighted_neighbours(_id)
-            for k in neighbours:
-                rewards[k] += rewards
+        if self.reward_mode=="distance":
+            weighted_n  = self.get_weighted_neighbours(_id)
+            if len(weighted_n) == 0:
+                rewards[_id] += 1.0
+                return rewards
+            else:
+                rewards[_id] += self.distance_factor
+            weights = list(weighted_n.values())
+            sum_ = sum(weights)
+            sum_list = [sum_ for _ in range(len(weighted_n))]
+            wgt = list(map(lambda x: x[0] / x[1], zip(sum_list, weights)))
+            sum_ = sum(wgt)
+            for i, k in enumerate(weighted_n):
+                    rewards[k] += (1-self.distance_factor) * (wgt[i]/sum_)
             return rewards
 
         return rewards
@@ -228,7 +240,18 @@ class Game():
         return neighbours
 
     def get_weighted_neighbours(self, _id):
-        pass
+        weighted_n = {}
+        position = self.predator_pos[_id]
+        range_x = (position[0]-self.pad_width, position[0]+self.pad_width)
+        range_y = (position[1]-self.pad_width, position[1]+self.pad_width)
+        for k, v in self.predator_pos.items():
+            if v == position:
+                continue
+            if (range_x[0]<=v[0]<=range_x[1]) and \
+                    (range_y[0]<=v[1]<=range_y[1]):
+                dist = math.sqrt((position[0]-v[0])**2 + (position[1]-v[1])**2) 
+                weighted_n[k] = round(dist, 0)
+        return weighted_n
 
     def render(self, mode="human"):
         adjust = lambda x, y: (x[0]-y, x[1]-y)

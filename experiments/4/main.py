@@ -9,7 +9,7 @@ from data.helpers import dodict
 from game.game import Game
 from trainers.train_nac import train_agent
 from agents.random_agent import RandomAgent
-from agents.tor_naac import AACAgent
+from agents.tor_par_AC import AACAgent
 import argparse
 import pdb
 import logging 
@@ -38,6 +38,7 @@ config = dodict(dict(
         map_="random",
         reward_mode="individual",
         advantage_mode=True,
+        distance_factor = 0.5,
         time_mode=False,
         steps_limit=300,
         # Training control,
@@ -52,11 +53,11 @@ config = dodict(dict(
         eval_prey=False,
         # Agent Control
         class_pred=AACAgent,
-        class_prey=RandomAgent,
+        class_prey=AACAgent,
         agent_type="adv-ac",
         agent_network=actor_network,
-        lr=0.0005, 
-        gamma=0.95,
+        lr=0.0001, 
+        gamma=0.90,
         epislon=0.95,
         epsilon_dec=0.99,
         epsilon_update=10,
@@ -78,7 +79,7 @@ config = dodict(dict(
         project_name="experiment 4",
         notes="1AAC vs 4RAND Pred Test",
         log_level=10,
-        log_file="logs/exp_4.log",
+        log_file="experiments/4/runs.log",
         print_console=True,
         ))
 
