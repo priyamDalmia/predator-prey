@@ -34,6 +34,7 @@ config = dodict(dict(
         map_="random",
         reward_mode="individual",
         advantage_mode=True,
+        distance_factor=0.5,
         # Training Control
         epochs=5,
         episodes=1,       # Episodes must be set to 1 for training.

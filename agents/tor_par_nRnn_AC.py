@@ -106,7 +106,7 @@ class rAACAgent(BaseAgent):
             load_model=False, 
             eval_model=False, 
             agent_network={},
-            num_agents = None,
+            num_agents = 1,
             chain=1,
             **kwargs):
         super(rAACAgent, self).__init__(_id)

@@ -101,7 +101,7 @@ class AACAgent(BaseAgent):
         self.gamma = gamma
         self.initialize_memory(self.input_dims)
         self.device = torch.device('cuda:0'\
-                if torch.cuda.is_available() else: 'cpu')
+                if torch.cuda.is_available() else 'cpu')
         if self.load_model:
             checkpoint = torch.load(self.load_model)
             self.agent_network = dodict(checkpoint['agent_network'])

@@ -7,9 +7,9 @@ import pandas as pd
 from evaluate import Evaluate
 from data.helpers import dodict
 from game.game import Game
-from trainers.train_nac import train_agent
+from trainers.train_pshare_rnn import train_agent
 from agents.random_agent import RandomAgent
-from agents.tor_nRnn_ac.py import AACAgent
+from agents.tor_par_nRnn_AC import rAACAgent
 import argparse
 import pdb
 import logging 
@@ -39,6 +39,7 @@ config = dodict(dict(
         map_="random",
         reward_mode="individual",
         advantage_mode=True,
+        discount_factor = 0.5,
         time_mode=False,
         steps_limit=300,# Training control,
         epochs=2500,
@@ -51,8 +52,8 @@ config = dodict(dict(
         eval_pred=False,
         eval_prey=False,
         # Agent Control
-        class_pred=AACAgent,
-        class_prey=AACAgent,
+        class_pred=rAACAgent,
+        class_prey=RandomAgent,
         agent_type="adv-ac",
         agent_network=actor_network,
         lr=0.0005, 
@@ -63,8 +64,8 @@ config = dodict(dict(
         batch_size=64,
         buffer_size=1500,
         # Models
-        replay_dir="experiments/5/results/",
-        checkpoint_dir="experiments/5/policies/",
+        replay_dir="experiments/6/results/",
+        checkpoint_dir="experiments/6/policies/",
         load_prey=False, 
         load_pred=False,
         # Log Control
@@ -75,10 +76,9 @@ config = dodict(dict(
         wandb=True,
         wandb_mode="online",
         entity="rl-multi-predprey",
-        project_name="experiment 1",
-        notes="1AAC vs 4RAND Pred Test",
+        notes="RNNS",
         log_level=10,
-        log_file="logs/exp_6.log",
+        log_file="experiments/6/runs.log",
         print_console=True,
         ))
 
@@ -100,7 +100,7 @@ if __name__=="__main__":
     config = config
     # Parse and Load Config File here.
     job_id = ARGS.id
-    with open('experiments/5/config.yaml') as f:
+    with open('experiments/6/config.yaml') as f:
         job_data = yaml.load(f, Loader=yaml.FullLoader)
         config.update(job_data["experiments"]["game_config"])
         config.update(job_data["experiments"][f"run_{job_id}"])

@@ -1,48 +1,53 @@
 experiments:
     game_config:
         mode: "train"
-        project_name: "experiment-1"
+        project_name: "experiment-6"
         reward_mode: "individual"
-        advantage_mode: True
-        epochs: 1000
+        time_mode: True
+        steps_limit: 500
+        advantage_mode: False
         nsteps: 30
-        max_cycles: 1000
-        wandb: True
-        save_replay: True
-        save_model: True
-        load_prey: "experiments/common/prey_0-15if-3rand-8pac-1-199-926"
+        epochs: 1000
+        chain: 1
+        wandb: False
+        save_replay: False
+        save_model: False
+        prey_level: 0
+        model_type: "pshare-rnn"
+        load_prey: False
+        load_pred: False
         
     run_1:
         size: 15
         npred: 2
         nprey: 5
-        _name: "15ia-2pac-5(t926)"
+        _name: "15if-2rac-5(rand)"
         notes: "Training 2 vs 5"
 
     run_2:
         size: 15
         npred: 2
         nprey: 8
-        _name: "15ia-2pac-8(t926)"
+        _name: "15if-2rac-8(rand)"
         notes: "Training 2 vs 8"
     
     run_3:
         size: 15
         npred: 3
         nprey: 5
-        _name: "15ia-3pac-5(t926)"
+        _name: "15if-3rac-5(rand)"
         notes: "Training 3 s 5"
 
     run_4:
         size: 15
         npred: 3
         nprey: 8
-        _name: "15ia-3pac-8(t926)"
+        _name: "15if-3rac-8(rand)"
         notes: "Training 3 vs 8"
     
     run_5:
         size: 15
         npred: 3
         nprey: 12
-        _name: "15ia-3pac-12(t926)"
+        _name: "15if-3rac-12(rand)"
         notes: "Training 3 vs 12"

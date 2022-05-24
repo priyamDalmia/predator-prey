@@ -19,7 +19,7 @@ class Trainer(ABC):
         self.train_ids = self.pred_ids \
                 if self.config.train_type=="predator" else self.prey_ids
         self.checkpoint_state = None
-
+        self.num_agents = len(self.pred_ids)
         self.best_ = 1000 if self.config.train_type=="predator" else 1
         self.steps_avg = 0 
         self.rewards_avg = 0
