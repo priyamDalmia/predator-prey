@@ -2,40 +2,56 @@ experiments:
     game_config:
         mode: "eval"
         training: False
-        size: 15
-        save_replay: False
+        size: 20
+        save_replay: True
         reward_mode: "individual"
-        advantage_mode: False
+        advantage_mode: True
         max_cycles: 500
-        episodes: 50 # Use 50 when testing trained vs Random
-        runs: 5
-        eval_file: 'experiments/evaluate/3.log'
+        episodes: 100 # Use 50 when testing trained vs Random
+        runs: 3
+        eval_file: 'experiments/evaluate/eval_1.log'
         eval_runs: 6
-        notes: "Testing pred1 vs d3 Agent Fair"
-        prey_policies: ['experiments/common/d3']
-        pred_policies: ['experiments/common/pred1']          
+        notes: "Evaluating Trained Predator Policies vs Prey Level 2 | 20 | 3v8 | Advantage"
+        prey_policies: ['experiments/common/d2']
     
     run_0: 
-        npred: 1
-        nprey: 1
-  
-    run_1:
+        size: 20
         npred: 3
-        nprey: 5
+        nprey: 8
+        pred_policies: ['experiments/2/policies/predator_0-15ia-3p2-8(d2)-1496-92']            
+        notes: "Individual-Pred(3v8) vs Prey Level 2"
+    
+    run_1:
+        size: 20
+        npred: 3
+        nprey: 8
+        pred_policies: ['experiments/2/policies/predator_0-15ia-4p2-10(d2)-1244-87']          
+        notes: "Individual-Pred(4vs10) vs Prey Level 2"
 
     run_2:
+        size: 20
         npred: 3
         nprey: 8
+        pred_policies: ['experiments/4/policies/predator_0-15na-3ph-8(d2)-1394-91']          
+        notes: "Neighbour-Pred(3v8) vs Prey Level 2"
 
     run_3:
-        npred: 4
-        nprey: 10
-    
+        size: 20
+        npred: 3
+        nprey: 8
+        pred_policies: ['experiments/4/policies/predator_0-15na-4ph-10(d2)-1254-80']          
+        notes: "Neighbour-Pred(4v10) vs Prey Level 2"
+
     run_4:
-        npred: 2
-        nprey: 5
+        size: 20
+        npred: 3
+        nprey: 8
+        pred_policies: ['experiments/5/policies/predator_0-15da-3ph-8(d2)-1444-96']          
+        notes: "Distance (3v8) vs Prey Level 2"
 
     run_5:
-        npred: 2
+        size: 20
+        npred: 3
         nprey: 8
-
+        pred_policies: ['experiments/5/policies/predator_0-15da-4ph-10(d2)-1494-86']      
+        notes: "Distance(4v10) vs Prey Level 2"

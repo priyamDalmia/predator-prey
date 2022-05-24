@@ -38,6 +38,7 @@ config = dodict(dict(
         map_="random",
         reward_mode="individual",
         advantage_mode=False,
+        distance_factor=0.5,
         # Training control,
         epochs=2500,
         episodes=1,

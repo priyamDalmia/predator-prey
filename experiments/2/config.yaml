@@ -5,48 +5,48 @@ experiments:
         reward_mode: "individual"
         time_mode: True
         steps_limit: 500
-        advantage_mode: True
+        advantage_mode: False
         nsteps: 30
         epochs: 1500
         wandb: True
         save_replay: False
-        save_model: True
-        prey_level: 3
+        save_model: False
+        prey_level: 2
         model_type: "pshare-hot"
-        load_prey: "experiments/common/d3"
+        load_prey: "experiments/common/d2"
         load_pred: "experiments/common/pred_hot"
 
     run_1:
         size: 15
         npred: 2
         nprey: 5
-        _name: "15ia-2p2-5(d3)"
+        _name: "15if-2p2-5(d2)"
         notes: "Training 2 vs 5"
 
     run_2:
         size: 15
         npred: 2
         nprey: 8
-        _name: "15ia-2p2-8(d3)"
+        _name: "15if-2p2-8(d2)"
         notes: "Training 2 vs 8"
     
     run_3:
         size: 15
         npred: 3
         nprey: 5
-        _name: "15ia-3p2-5(d3)"
+        _name: "15if-3p2-5(d2)"
         notes: "Training 3 s 5"
 
     run_4:
         size: 15
         npred: 3
         nprey: 8
-        _name: "15ia-3p2-8(d3)"
+        _name: "15if-3p2-8(d2)"
         notes: "Training 3 vs 8"
     
     run_5:
         size: 15
         npred: 4
         nprey: 10
-        _name: "15ia-4p2-10(d3)"
+        _name: "15if-4p2-10(d2)"
         notes: "Training 3 vs 10"
