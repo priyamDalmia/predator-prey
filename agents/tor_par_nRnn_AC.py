@@ -48,7 +48,7 @@ class NetworkActorCritic(nn.Module):
         for l in range(self.nlayers):
             if l < 1: 
                 self.net.append(
-                    nn.RNN(idim, self.nl_dims[l], self.rnn_layers))
+                    nn.RNN(idim, self.nl_dims[l], self.rnn_layers, dropout=0.2))
             else:
                 self.net.append(
                     nn.Linear(idim, self.nl_dims[l]))
@@ -150,6 +150,8 @@ class rAACAgent(BaseAgent):
         observation = torch.as_tensor(observation, dtype=torch.float32,
                 device=self.device)
         probs, values, hidden_state = self.network(observation.unsqueeze(0), _id=_id)
+        if _id == "predator_0":
+            print(probs)
         action_dist = dist.Categorical(probs)
         action = action_dist.sample() 
         return action.item(), hidden_state
@@ -174,11 +176,9 @@ class rAACAgent(BaseAgent):
         state_values = []
         hidden_i = torch.as_tensor(hidden_states[0], dtype=torch.float32, device=self.device)
         for i in range(len(states)):
-            if (i%self.chain)==0:
-                hidden_i = hidden_i.detach()
             last_state = torch.as_tensor(states[i], dtype=torch.float32, device=self.device)
             probs, value, next_hidden_state = \
-                    self.network.forward_train(last_state.unsqueeze(0), hidden_state=hidden_i)
+                    self.network.forward_train(last_state.unsqueeze(0), hidden_state=hidden_i.detach())
             probs_list.append(probs)
             state_values.append(value.detach())
             hidden_i = next_hidden_state
@@ -192,9 +192,8 @@ class rAACAgent(BaseAgent):
         self.optimizer.zero_grad()
         actor_loss = (-(log_probs) * advantage)
         delta_loss = ((state_values - _rewards)**2)
-        loss = (actor_loss + delta_loss).mean()
+        loss = (actor_loss + delta_loss).sum()
         loss.backward()
-        nn.utils.clip_grad_value_(self.network.parameters(), clip_value=1.0)
         self.optimizer.step()
         return loss.item()
 

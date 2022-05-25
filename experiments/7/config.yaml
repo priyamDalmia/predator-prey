@@ -1,0 +1,104 @@
+experiments:
+    game_config:
+        mode: "train"
+        project_name: "results-final"
+        time_mode: True
+        steps_limit: 500
+        advantage_mode: False
+        nsteps: 30
+        epochs: 2000
+        wandb: True
+        save_replay: True
+        save_model: False
+        prey_level: 2
+        model_type: "distb-hot"
+        load_prey: "experiments/common/d2"
+
+    run_1:
+        size: 15
+        npred: 4
+        nprey: 10
+        _name: "15if-4ac-10(d2)"
+        notes: "individual"
+        reward_mode: "individual"
+
+    run_2:
+        size: 15
+        npred: 4
+        nprey: 10
+        _name: "15sf-4ac-10(d2)"
+        notes: "shared"
+        reward_mode: "shared"
+
+    run_3:
+        size: 15
+        npred: 4
+        nprey: 10
+        _name: "15nf-4ac-10(d2)"
+        notes: "neighbours"
+        reward_mode: "neighbours"
+
+    run_4:
+        size: 15
+        npred: 4
+        nprey: 10
+        _name: "15df-4ac-10(d2)"
+        notes: "distance-0.5"
+        reward_mode: "distance"
+        distance_factor: 0.5
+
+    run_5:
+        size: 15
+        npred: 4
+        nprey: 10
+        _name: "15df-4ac-10(d2)"
+        notes: "distance-0.3"
+        reward_mode: "distance"
+        distance_factor: 0.3
+
+    run_6:
+        size: 15
+        npred: 4
+        nprey: 10
+        _name: "15ia-4ac-10(d2)"
+        notes: "individual"
+        reward_mode: "individual"
+        advantage_mode: True
+
+    run_7:
+        size: 15
+        npred: 4
+        nprey: 10
+        _name: "15sa-4ac-10(d2)"
+        notes: "shared"
+        reward_mode: "shared"
+        advantage_mode: True
+
+    run_8:
+        size: 15
+        npred: 4
+        nprey: 10
+        _name: "15na-4ac-10(d2)"
+        notes: "neighbours"
+        reward_mode: "neighbours"
+        advantage_mode: True
+
+    run_9:
+        size: 15
+        npred: 4
+        nprey: 10
+        _name: "15da-4ac-10(d2)"
+        notes: "distance-0.5"
+        reward_mode: "distance"
+        distance_factor: 0.5
+        advantage_mode: True
+
+    run_10:
+        size: 15
+        npred: 4
+        nprey: 10
+        _name: "15da-4ac-10(d2)"
+        notes: "distance-0.3"
+        reward_mode: "distance"
+        distance_factor: 0.3
+        advantage_mode: True

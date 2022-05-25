@@ -7,7 +7,7 @@ experiments:
         steps_limit: 500
         advantage_mode: False
         nsteps: 30
-        epochs: 1500
+        epochs: 2000
         wandb: True
         save_replay: False
         save_model: False

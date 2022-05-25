@@ -148,9 +148,8 @@ class train_agent(Trainer):
             assert isinstance(agent, BaseAgent), "Error: Derive agent from BaseAgent!"
             self.log_write(f"Agent Created:predator_parashare | Policy Loaded:{self.config.load_pred}")
             self.log_model(agent.network)
-        except: 
+        except Exception as e: 
             self.log_write(f"Agent init Failed:predator_parashare | Policy Loaded:{self.config.load_pred}")
-            sys.exit() 
         for _id in self.pred_ids:
             agents[_id] = agent
             memory = None
@@ -174,10 +173,8 @@ class train_agent(Trainer):
                     agent_network = self.config.agent_network)
             assert isinstance(agent, BaseAgent), "Error: Derive agent from BaseAgent!"
             self.log_write(f"Agent Created:prey_parashare | Policy Loaded: {self.config.load_prey}")
-            self.log_model(agent.network)
-        except: 
+        except Exception as e: 
             self.log_write(f"Agent init Failed:prey_parashare | Policy Loaded:{self.config.load_prey}")
-            sys.exit() 
         for _id in self.prey_ids:
             agents[_id] = agent
             memory= None

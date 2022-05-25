@@ -7,13 +7,13 @@ experiments:
         steps_limit: 500
         advantage_mode: False
         nsteps: 30
-        epochs: 1000
+        epochs: 1500
         chain: 1
-        wandb: False
+        wandb: True
         save_replay: False
         save_model: False
         prey_level: 0
-        model_type: "pshare-rnn"
+        model_type: "pshare-2rnn-1.0-droput0.2"
         load_prey: False
         load_pred: False
         
@@ -22,32 +22,32 @@ experiments:
         npred: 2
         nprey: 5
         _name: "15if-2rac-5(rand)"
-        notes: "Training 2 vs 5"
+        notes: " dropout0.2, tanh 2 vs 5"
 
     run_2:
         size: 15
         npred: 2
         nprey: 8
         _name: "15if-2rac-8(rand)"
-        notes: "Training 2 vs 8"
+        notes: " dropout0.2, tanh 2 vs 8"
     
     run_3:
         size: 15
         npred: 3
         nprey: 5
         _name: "15if-3rac-5(rand)"
-        notes: "Training 3 s 5"
+        notes: " dropout0.2, tanh 3 s 5"
 
     run_4:
         size: 15
         npred: 3
         nprey: 8
         _name: "15if-3rac-8(rand)"
-        notes: "Training 3 vs 8"
+        notes: " dropout0.2, tanh 3 vs 8"
     
     run_5:
         size: 15
         npred: 3
         nprey: 12
         _name: "15if-3rac-12(rand)"
-        notes: "Training 3 vs 12"
+        notes: " dropout0.2, tanh 3 vs 12"

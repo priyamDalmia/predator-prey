@@ -122,11 +122,12 @@ class train_agent(Trainer):
         c_name = f"{_id}-{self.config._name}-{epoch}-{self.steps_avg:.0f}"
         self.agents[_id].save_state(self.config.checkpoint_dir+c_name)
         # Save Game Replay for the last game.
-        if self.config.save_replay:
-            # Make a replay file.
-            replay_dir = self.config.replay_dir
-            replay_file = f"{self.config._name}-{epoch}-{int(self.steps_avg)}"
-            self.env.record_episode(replay_dir+replay_file)     
+        if ((epoch+1)%100) == 0: 
+            if self.config.save_replay:
+                # Make a replay file.
+                replay_dir = self.config.replay_dir
+                replay_file = f"{self.config._name}-{epoch}-{int(self.steps_avg)}"
+                self.env.record_episode(replay_dir+replay_file)     
                 
     def initialize_agents(self):
         agents = {}

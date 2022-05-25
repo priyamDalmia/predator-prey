@@ -12,8 +12,42 @@ import pdb
 An Implementation of the CounterFactual Multi-Agent Algorithm.
 """
 
+class Memory:
+    def __init__(self, num_agents,action_dims):
+        self.num_agents = num_agents
+        self.action_dims = action_dims
+        self.actions = []
+        self.observations = []
+        self.pi = [[] for _ in range(num_agents)]
+        self.reward = []
+        self.done = [[] for _ in range(num_agents)]
+
+    def get(self):
+        action = torch.tensor(self.actions)
+        observations = self.observations
+
+        pi = []
+        for i in range(self.num_agents):
+            pi.append(torch.cat(self.pi[i])).view(len(self.pi[i]), self.action_dim)
+        
+        reward = torch.tensor(self.reward)
+        done = self.done
+        
+        return actions, observations, pi, reward, done
+
+    def clear(self):
+        self.actions = []
+        self.observations = []
+        self.pi = [[] for _ in range(self.num_agents)]
+        self.reward = []
+        self.done = [[] for _ in range(self.num_agents)]
+
+
 class CriticNetwork(nn.Module):
-    def __init__(self, input_dims, output_dims, agent_ids, 
+    def __init__(self, 
+            input_dims, 
+            output_dims, 
+            agent_ids, 
             network_dims, **kwargs):
         super(CriticNetwork, self).__init__()
         self.input_dims = input_dims
@@ -59,102 +93,12 @@ class CriticNetwork(nn.Module):
             inputs = layer(inputs)
         return inputs
         
-class CentCritic(BaseAgent):
-    def __init__(self, _id, input_dims, output_dims, 
-            action_space, agent_ids, lr=0.001, 
-            gamma=0.95, betas=(0.9, 0.99), load_model=False, 
-            eval_model=False, critic_network={}, **kwargs):
-        super(CentCritic, self).__init__(_id)
-        self.input_dims = input_dims
-        self.output_dims = output_dims
-        self.action_space = action_space
-        self.agent_ids = agent_ids
-        self.lr = lr
-        self.gamma = gamma
-        self.betas = betas 
-        # Internal Memory
-        self.obs_memory = []
-        self.reward_memory = []
-        self.action_memory = [[] for _ in range(len(self.agent_ids))]
-
-        if self.load_model:
-            pass
-        self.critic_network = critic_network
-        self.critic = CriticNetwork(input_dims, output_dims, agent_ids, 
-                self.critic_network)
-        self.critic_target = CriticNetwork(input_dims, output_dims, agent_ids,
-                self.critic_network)
-        
-
-        self.optimizer = optim.Adam(self.critic.parameters(),
-                lr=self.lr, betas=self.betas, eps=1e-3)
-        self.device = torch.device('cuda:0' if torch.cuda.is_available() else 'cpu')
-        self.critic = self.critic.to(self.device)
-        self.critic_target = self.critic_target.to(self.device)
-
-    def train_step(self):
-        states, actions, rewards = self.sample_transitions()
-        states = torch.as_tensor(states, dtype=torch.float32, device=self.device)
-        rewards_ = self.discount_rewards(rewards)
-        rewards_ = torch.as_tensor(rewards_, dtype=torch.float32, device=self.device).unsqueeze(-1)
-        len_ = len(states)
-        ones = torch.ones((len_, 1), dtype=torch.int64).to(self.device)
-        loss = []
-        Q_values = {}
-        for idx, _id in enumerate(self.agent_ids):
-            actions_ = torch.as_tensor(actions[idx], device=self.device).unsqueeze(-1)
-            actions_vec = F.one_hot(actions_, num_classes=self.output_dims).\
-                    view(-1, self.output_dims).type(torch.float32)
-            agents_vec = F.one_hot(ones*idx, num_classes=len(self.agent_ids)).\
-                    view(len_, -1).type(torch.float32)
-            values = self.critic((states, actions_vec, agents_vec))
-            q_values = self.critic_target((states, actions_vec, agents_vec)).detach()
-            Q_values[_id] = q_values
-            # Backpropogating loss.
-            q_taken = torch.gather(values, dim=1, index=actions_)
-            critic_loss = torch.mean((rewards_ - q_taken)**2)
-            self.optimizer.zero_grad()
-            critic_loss.backward()
-            self.optimizer.step()
-            # Store loss here.
-        return critic_loss.item(), Q_values
-            
-    def store_transition(self, observations, actions, rewards):
-        combined_obs = np.array([], dtype=np.int32)
-        combined_obs = combined_obs.reshape(0, self.input_dims[1], self.input_dims[2])
-        combined_rewards = 0
-        for _id in self.agent_ids:
-            combined_obs = np.vstack([combined_obs, observations[_id]])
-            combined_rewards += rewards[_id]
-        self.obs_memory.append(combined_obs)
-        self.reward_memory.append(combined_rewards)
-        for idx, _id in enumerate(self.agent_ids):
-            self.action_memory[idx].append(actions[_id])
-        
-    def sample_transitions(self):
-        states = np.stack(self.obs_memory, axis=0)
-        actions = self.action_memory
-        rewards = np.stack(self.reward_memory)
-        self.obs_memory = []
-        self.reward_memory = []
-        self.action_memory = [[] for _ in range(len(self.agent_ids))]
-        return states, actions, rewards
-
-    def update_target_critic(self):
-        self.critic_target.load_state_dict(self.critic.state_dict())
-
-    def save_checkpoint(self):
-        pass
-
-    def save_model(self, dir_):
-        pass
-
-    def get_action(self):
-        pass
-
 class NetworkActor(nn.Module):
-    def __init__(self, input_dims, output_dims, 
-            network_dims, **kwargs):
+    def __init__(self, 
+            input_dims, 
+            output_dims, 
+            network_dims, 
+            **kwargs):
         super(NetworkActor, self).__init__()
         self.input_dims = input_dims
         self.output_dims = output_dims
@@ -193,49 +137,41 @@ class NetworkActor(nn.Module):
 class COMAAgent(BaseAgent):
     def __init__(self, _id, input_dims, output_dims, 
             action_space, lr=0.01, gamma=0.95, 
-            load_model=False, eval_model=False, 
-            agent_network={}, **kwargs):
+            num_agents=1, agent_network={}, **kwargs):
         super(COMAAgent, self).__init__(_id)
         self.input_dims = input_dims
         self.output_dims = output_dims
-        self.load_model = load_model
         self.lr = lr
         self.gamma = gamma 
         # Internal Memory
-        self.action_memory = []
-        self.prob_memory = []
-        # Initialize the CAC Network 
-        if self.load_model:
-            try:
-                model = torch.load(self.load_model)
-                self.agent_network = dodict(model['agent_network'])
-                self.network = NetworkActor(input_dims, output_dim, 
-                        self.agent_network)
-                self.network.load_state_dict(model['model_state_dict'])
-                if eval_model:
-                    self.network.eval()
-                else:
-                    self.network.train()
-                print(f"Model Loaded:{_id} -> {self.load_model}")
-            except:
-                print(f"Load Failed:{_id} -> {self.load_model}")
-        else:
-            self.agent_network = agent_network
-            self.actor = NetworkActor(input_dims, output_dims, 
-                    self.agent_network)
         self.device = torch.device('cuda:0' if torch.cuda.is_available() else 'cpu')
-        self.actor = self.actor.to(self.device)
-        self.optimizer = optim.Adam(self.actor.parameters(),
-                lr=self.lr, betas=(0.9, 0.99), eps=1e-3)
+        self.target_update_steps = 5
+        self.memory = Memory()
+        # Initialize the CAC Network 
+        self.actors = []
+        for i in range(self.num_agents):
+            self.agent_network = agent_network
+            actor = NetworkActor(input_dims, output_dims, 
+                    self.agent_network)
+            self.actors.append(actors)
+        self.critic = NetworkCritic()
+        self.critic_target = NetworkCritic()
+        self.actor_optimizers = [torch.optim.Adam(self.actors[i].parameters(), lr=self.lr, eps=1e-3) \
+                for i in range(self.num_agents)]
+        self.critic_optimizer = torch.optim.Adam(self.critic.parameters(), lr=lr_c)
+        self.count = 0
 
-    def get_action(self, observation):
+    def get_action(self, observation, _id=None):
+        if not _id:
+            raise("Wrong Trainer Initialzied. Use centralzied trainers and pass _id")
+        idx = int(_id[-1])
         observation = torch.as_tensor(observation, dtype=torch.float32,
                 device=self.device)
         probs = self.actor(observation.unsqueeze(0))
         action_dist = dist.Categorical(probs)
         action = action_dist.sample()
         log_probs = action_dist.log_prob(action)
-        return action.item(), probs
+        return action.item(), 0
 
     def train_step(self, q_values):
         """train_step.
