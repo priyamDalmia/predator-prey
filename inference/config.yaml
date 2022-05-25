@@ -1,22 +1,43 @@
 infer:
     global:
-        size: 15
+        size: 10
         winsize: 9
         npred: 1
         nprey: 1
+        agent_policy: "experiments/2/policies/predator_0-15ia-3p2-8(d2)-1496-92"
         
     sce_1:
         npred: 2 
         nprey: 2
         pred_pos: [!!python/tuple [3,3], !!python/tuple [2,5]]
         prey_pos: [!!python/tuple [3,4], !!python/tuple [6,2]]
-        target_pred: [!!python/tuple [3,3]]
+        target_pos: [!!python/tuple [3,3]]
         plot_file: "0/plot1"
+        agent_policy: "experiments/2/policies/predator_0-15ia-3p2-8(d2)-1496-92"
     
     sce_2:
         npred: 2 
         nprey: 2
-        pred_pos: []
-        prey_pos: []
-        target_pos: []
+        pred_pos: [!!python/tuple [3,3], !!python/tuple [2,5]]
+        prey_pos: [!!python/tuple [5,4]]
+        target_pos: [!!python/tuple [2,5]]
         plot_file: "1/plot1"
+        agent_policy: "experiments/2/policies/predator_0-15ia-3p2-8(d2)-1496-92"
+
+    sce_3:
+        npred: 2 
+        nprey: 2
+        pred_pos: [!!python/tuple [3,3], !!python/tuple [2,5]]
+        prey_pos: [!!python/tuple [3,4], !!python/tuple [6,2]]
+        target_pos: [!!python/tuple [3,3]]
+        plot_file: "0/plot1"
+        agent_policy: "experiments/4/policies/predator_0-15na-3ph-8(d2)-1394-91"
+    
+    sce_4:
+        npred: 2 
+        nprey: 2
+        pred_pos: [!!python/tuple [3,3], !!python/tuple [2,5]]
+        prey_pos: [!!python/tuple [5,4]]
+        target_pos: [!!python/tuple [2,5]]
+        plot_file: "1/plot1"
+        agent_policy: "experiments/2/policies/predator_0-15na-3ph-8(d2)-1394-91"
