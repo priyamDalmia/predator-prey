@@ -7,10 +7,10 @@ experiments:
         reward_mode: "individual"
         advantage_mode: True
         max_cycles: 500
-        episodes: 100 # Use 50 when testing trained vs Random
+        episodes: 1 # Use 50 when testing trained vs Random
         runs: 3
         eval_file: 'experiments/evaluate/eval_1.log'
-        eval_runs: 6
+        eval_runs: 1
         notes: "Evaluating Trained Predator Policies vs Prey Level 2 | 20 | 3v8 | Advantage"
         prey_policies: ['experiments/common/d2']
     
@@ -20,6 +20,8 @@ experiments:
         nprey: 8
         pred_policies: ['experiments/2/policies/predator_0-15ia-3p2-8(d2)-1496-92']            
         notes: "Individual-Pred(3v8) vs Prey Level 2"
+        save_replay: True
+        replay_dir: "inference/20-test-"
     
     run_1:
         size: 20

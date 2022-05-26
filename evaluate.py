@@ -67,7 +67,8 @@ class Evaluate():
             self.make_log(r, steps, rewards)
             # Save the Last episodes of each run!
             if self.config.save_replay:
-                replay_file = f"experiments/evaluate/results/eval-{self.config._name}-{r}"
+                steps_avg = np.mean(steps[-self.config.episodes:]).round(0)
+                replay_file = f"{self.config.replay_dir}-{r}-{steps_avg}"
                 self.env.record_episode(replay_file)
         return 0
 
