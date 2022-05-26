@@ -209,16 +209,16 @@ class Inference():
             mat_X = np.array(mat_X, dtype=np.float32)
             mat_Y = np.array(mat_Y, dtype=np.float32)
             color = np.array(data_i[-1,:,:], dtype=np.float32)
-            breakpoint()
-            plt.quiver(self.X, -self.Y, -mat_X, -mat_Y, color, pivot='mid', units='width')
+            plt.quiver(self.Y, -self.X, -mat_X, -mat_Y, color, pivot='mid', units='width')
             ax = plt.gca()
             ax.set_xticks([x-0.5 for x in self.X[1,:]],minor=True)
             ax.set_yticks([-x-0.5 for x in self.Y[:,1]],minor=True)
             plt.grid(which="minor", ls="--",lw=1, alpha=0.5)
-            for pos in self.config.pred_pos:
-                breakpoint()
-            for prey in self.config.prey_pos:
-                breakpoint()
+            for n, pos in enumerate(self.config.pred_pos):
+                plt.text(pos[0], pos[1], f"T{n}")
+            for n, pos in enumerate(self.config.prey_pos):
+                plt.text(pos[0], pos[1], f"D{n}")
+            breakpoint()
             plt.show()
             plt.savefig(f"{self.config.plot_file}_{_id}")
             print(f"Plot Saved: {_id} -> {self.config.plot_file}_{_id}")
@@ -247,10 +247,10 @@ class Inference():
 if __name__ == "__main__":
     config = config
     infer_id = ARGS.id
-    if infer_id:
+    for i in range(infer_id):
         with open('inference/config.yaml') as f:
             config_data = yaml.load(f, Loader=yaml.FullLoader)
             config.update(config_data["infer"]["global"])
-            config.update(config_data["infer"][f"sce_{infer_id}"])
+            config.update(config_data["infer"][f"sce_{i+1}"])
     infer = Inference(config)
     infer.run_inference()
