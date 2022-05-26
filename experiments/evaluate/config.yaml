@@ -2,58 +2,108 @@ experiments:
     game_config:
         mode: "eval"
         training: False
-        size: 20
+        size: 15
         save_replay: True
         reward_mode: "individual"
         advantage_mode: True
         max_cycles: 500
-        episodes: 1 # Use 50 when testing trained vs Random
-        runs: 3
-        eval_file: 'experiments/evaluate/eval_1.log'
-        eval_runs: 1
-        notes: "Evaluating Trained Predator Policies vs Prey Level 2 | 20 | 3v8 | Advantage"
-        prey_policies: ['experiments/common/d2']
-    
-    run_0: 
-        size: 20
-        npred: 3
-        nprey: 8
-        pred_policies: ['experiments/2/policies/predator_0-15ia-3p2-8(d2)-1496-92']            
-        notes: "Individual-Pred(3v8) vs Prey Level 2"
+        episodes: 5 # Use 50 when testing trained vs Random
+        runs: 5
+        eval_file: 'inference/replays.log'
+        eval_runs: 6
+        notes: "Evaluating Trained Predator Policies vs Prey Level 2 | 20 | 4v10 | Advantage"
         save_replay: True
-        replay_dir: "inference/20-test-"
-    
+
+    run_0:
+        size: 15
+        npred: 1
+        nprey: 5
+        eval_file: 'inference/1/run0.log'
+        replay_dir: "inference/1/15-if-d2-1v5"
+        advantage_mode: False
+        notes: "Individual 1v1 No Advantage"
+        pred_policies: ['inference/1/predator_0-15ia-2p2-5(d2)-1421-92']
+        prey_policies: ['experiments/common/d1']
+
     run_1:
-        size: 20
-        npred: 3
-        nprey: 8
-        pred_policies: ['experiments/2/policies/predator_0-15ia-4p2-10(d2)-1244-87']          
-        notes: "Individual-Pred(4vs10) vs Prey Level 2"
+        size: 15
+        npred: 1
+        nprey: 5
+        eval_file: 'inference/1/run0.log'
+        replay_dir: "inference/1/15-ia-d1-1v5"
+        notes: "Individual 1v1 Advantage"
+        pred_policies: ['inference/1/predator_0-15ia-2p2-5(d2)-1421-92']
+        prey_policies: ['experiments/common/d2']
 
     run_2:
-        size: 20
-        npred: 3
-        nprey: 8
-        pred_policies: ['experiments/4/policies/predator_0-15na-3ph-8(d2)-1394-91']          
-        notes: "Neighbour-Pred(3v8) vs Prey Level 2"
+        size: 15
+        npred: 2
+        nprey: 5
+        eval_file: 'inference/1/run0.log'
+        replay_dir: "inference/1/15-ia-d1"
+        notes: "Individual 2vs5 Under Advantage - vs - d1 - Kills them all"
+        pred_policies: ['inference/1/predator_0-15ia-2p2-5(d2)-1421-92']
+        prey_policies: ['experiments/common/d1']
 
     run_3:
         size: 20
-        npred: 3
-        nprey: 8
-        pred_policies: ['experiments/4/policies/predator_0-15na-4ph-10(d2)-1254-80']          
-        notes: "Neighbour-Pred(4v10) vs Prey Level 2"
+        npred: 4
+        nprey: 10
+        notes: "Individual 1v1 Under Advantage - Expected to be hard or even impossible"
+        eval_file: 'inference/2/replays.log'
+        replay_dir: "inference/2/20-ia-d2"
+        pred_policies: ['inference/2/predator_0-15ia-4p2-10(d2)-1244-87']
+        prey_policies: ['experiments/common/d2']
 
-    run_4:
+        run_4:
         size: 20
-        npred: 3
-        nprey: 8
-        pred_policies: ['experiments/5/policies/predator_0-15da-3ph-8(d2)-1444-96']          
-        notes: "Distance (3v8) vs Prey Level 2"
+        npred: 4
+        nprey: 10
+        eval_file: 'inference/3/replays.log'
+        replay_dir: "inference/3/20-sa-d2"
+        notes: "Shared Rewards - Advantage - Not Good - Slacking Agents"
+        pred_policies: ['inference/3/predator_0-15sa-3ph-8(d2)-1219-202']
+        prey_policies: ['experiments/common/d2']
 
     run_5:
         size: 20
+        npred: 4
+        nprey: 10
+        eval_file: 'inference/4/replays.log'
+        replay_dir: "inference/4/20-nf-d2"
+        advantage_mode: False
+        notes: "Neighbour-Pred(3v8) vs Prey Level 2 - Crowding Behaviour - N0 advantge"
+        pred_policies: ['inference/4/predator_0-15na-4ph-10(d2)-1254-80']
+        prey_policies: ['experiments/common/d2']
+
+    run_6:
+        size: 20
         npred: 3
         nprey: 8
-        pred_policies: ['experiments/5/policies/predator_0-15da-4ph-10(d2)-1494-86']      
+        eval_file: 'inference/4/replays.log'
+        replay_dir: "inference/4/20-dna-d2-3v10"
+        notes: "Neighbour-Pred(4v10) vs Prey Level 2 - Advantage - see behaviour"
+        pred_policies: ['inference/4/predator_0-15na-3ph-5(d2)-1489-72']
+        prey_policies: ['experiments/common/d2']
+
+    run_7:
+        size: 20
+        npred: 3
+        nprey: 8
+        eval_file: 'inference/5/replays.log'
+        replay_dir: "inference/5/20-da-3v8"
+        notes: "Distance (3v8) vs Prey Level 2"
+        pred_policies: ['inference/5/predator_0-15df-3ph-8(d2)-1384-64']
+        prey_policies: ['experiments/common/d2']
+
+    run_8:
+        size: 15
+        npred: 3
+        nprey: 8
+        eval_file: 'inference/4/replays.log'
+        replay_dir: "inference/4/15-na-d1-3v10"
         notes: "Distance(4v10) vs Prey Level 2"
+        pred_policies: ['inference/4/predator_0-15na-3ph-5(d2)-1489-72']
+        prey_policies: ['experiments/common/d1']
+
+
