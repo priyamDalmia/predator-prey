@@ -34,11 +34,11 @@ class Renderer():
                 print(f"REWARDS: {self.record[_step]['rewards']}")
                 print(f"STEPS: {_step}")
                 if _step == '0':
-                    self.render(pred_pos, prey_pos)
+                    self.render_terminal(pred_pos, prey_pos)
                     key = input("Press Enter to START")
                     self.clear_lines((self.size+12))
                 else:
-                    self.render(pred_pos, prey_pos)
+                    self.render_terminal(pred_pos, prey_pos)
                     key = input("press Enter to continue")
                     self.clear_lines((self.size+12))
                 if key == "e":

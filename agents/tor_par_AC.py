@@ -104,7 +104,7 @@ class AACAgent(BaseAgent):
                 eps=1e-3)
         self.network = self.network.to(self.device)
 
-    def get_action(self, observation):
+    def get_action(self, observation, **kwargs):
         observation = torch.as_tensor(observation, dtype=torch.float32,
                 device=self.device)
         probs, values = self.network(observation.unsqueeze(0))

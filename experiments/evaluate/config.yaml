@@ -10,7 +10,7 @@ experiments:
         episodes: 5 # Use 50 when testing trained vs Random
         runs: 5
         eval_file: 'inference/replays.log'
-        eval_runs: 6
+        eval_runs: 2
         notes: "Evaluating Trained Predator Policies vs Prey Level 2 | 20 | 4v10 | Advantage"
         save_replay: True
 
@@ -19,11 +19,11 @@ experiments:
         npred: 1
         nprey: 5
         eval_file: 'inference/1/run0.log'
-        replay_dir: "inference/1/15-if-d2-1v5"
+        replay_dir: "inference/1/15-ia-d2-1v5"
         advantage_mode: False
         notes: "Individual 1v1 No Advantage"
         pred_policies: ['inference/1/predator_0-15ia-2p2-5(d2)-1421-92']
-        prey_policies: ['experiments/common/d1']
+        prey_policies: ['experiments/common/d2']
 
     run_1:
         size: 15
@@ -37,13 +37,14 @@ experiments:
 
     run_2:
         size: 15
-        npred: 2
-        nprey: 5
+        npred: 3
+        nprey: 6
+        advantage_mode: False
         eval_file: 'inference/1/run0.log'
-        replay_dir: "inference/1/15-ia-d1"
+        replay_dir: "inference/1/15-ia-d1-3v6"
         notes: "Individual 2vs5 Under Advantage - vs - d1 - Kills them all"
-        pred_policies: ['inference/1/predator_0-15ia-2p2-5(d2)-1421-92']
-        prey_policies: ['experiments/common/d1']
+        pred_policies: ['inference/2/predator_0-15ia-4p2-10(d2)-1244-87']
+        prey_policies: ['experiments/common/d2']
 
     run_3:
         size: 20
@@ -52,10 +53,10 @@ experiments:
         notes: "Individual 1v1 Under Advantage - Expected to be hard or even impossible"
         eval_file: 'inference/2/replays.log'
         replay_dir: "inference/2/20-ia-d2"
-        pred_policies: ['inference/2/predator_0-15ia-4p2-10(d2)-1244-87']
+        pred_policies: ['inference/1/predator_0-15ia-2p2-5(d2)-1421-92']
         prey_policies: ['experiments/common/d2']
 
-        run_4:
+    run_4:
         size: 20
         npred: 4
         nprey: 10
@@ -92,8 +93,9 @@ experiments:
         nprey: 8
         eval_file: 'inference/5/replays.log'
         replay_dir: "inference/5/20-da-3v8"
+        advantage_mode: True
         notes: "Distance (3v8) vs Prey Level 2"
-        pred_policies: ['inference/5/predator_0-15df-3ph-8(d2)-1384-64']
+        pred_policies: ['experiments/5/policies/predator_0-15da-3ph-5(d1)-1279-66']
         prey_policies: ['experiments/common/d2']
 
     run_8:

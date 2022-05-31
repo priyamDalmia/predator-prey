@@ -77,12 +77,13 @@ if __name__=="__main__":
     # Try passing Game Specific Config File - config.game
     # If Training; run trainers
     for i in range(config.eval_runs):
-        config.update(job_data["experiments"][f"run_{i}"])
+        config.update(job_data["experiments"][f"run_{i+2}"])
         try:
             env = Game(config)
         except:                
             print(f"Failed to initialzie Game Env.")
             sys.exit()
+        print(config.notes)
         logger = get_logger(config.eval_file)
         input_dims = env.observation_space.shape
         output_dims = len(env.action_space)

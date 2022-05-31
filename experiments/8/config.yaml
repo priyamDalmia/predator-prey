@@ -1,0 +1,50 @@
+experiments:
+    game_config:
+        mode: "train"
+        project_name: "experiment-8"
+        reward_mode: "individual"
+        time_mode: True
+        steps_limit: 500
+        advantage_mode: False
+        nsteps: 30
+        epochs: 15
+        wandb: False
+        save_replay: False
+        save_model: False
+        prey_level: 0
+        model_type: "coma-cold"
+
+    run_1:
+        size: 15
+        npred: 2
+        nprey: 5
+        _name: "15if-2coma-5(rand)"
+        notes: "Training 2 vs 5"
+
+    run_2:
+        size: 15
+        npred: 2
+        nprey: 8
+        _name: "15if-2coma-8(rand)"
+        notes: "Training 2 vs 8"
+    
+    run_3:
+        size: 15
+        npred: 3
+        nprey: 5
+        _name: "15if-3coma-5(rand)"
+        notes: "Training 3 s 5"
+
+    run_4:
+        size: 15
+        npred: 3
+        nprey: 8
+        _name: "15if-3coma-8(rand)"
+        notes: "Training 3 vs 8"
+    
+    run_5:
+        size: 15
+        npred: 4
+        nprey: 10
+        _name: "15if-4coma-10(rand)"
+        notes: "Training 3 vs 10"
