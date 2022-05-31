@@ -6,9 +6,9 @@ experiments:
         time_mode: True
         steps_limit: 500
         advantage_mode: False
-        nsteps: 30
-        epochs: 15
-        wandb: False
+        nsteps: 50
+        epochs: 1500
+        wandb: True
         save_replay: False
         save_model: False
         prey_level: 0

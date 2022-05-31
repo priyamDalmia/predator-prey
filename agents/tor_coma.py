@@ -183,7 +183,7 @@ class COMAAgent(BaseAgent):
         self.agent_network = agent_network
         self.critic_network = critic_network
         self.device = torch.device('cuda:0' if torch.cuda.is_available() else 'cpu')
-        self.target_update_steps = 5
+        self.target_update_steps =15
         # Internal Memory
         self.memory = Memory(self.num_agents, self.input_dims)
         # Initialize the CAC Network 
