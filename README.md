@@ -1,9 +1,16 @@
-﻿# A Predator-Prey Environment for Multi-Agent RL.
+﻿# Adversarial Pursuit Game environment for Multi-Agent Systems.
 
-An Implementation of the __algorithm__(s) on the Predator-Prey Environment. 
+The goal of this project is to serve as platform for research on interpretability in multi-agent reinforcement learning.
+
+
+## Game features 
+
+1. Explicit Communications - Direct messgaing.
+2. Implicit Communications - Reward sharing.
 
 ## Alogrithms.
 
+1. Advantage Actor-Critic 
 This repo also contains implementations of several variants of the popular multi-agent Actor-Critic Algortihms.
 1. Independent Advantage Actor-Critic (A2C) and the Asynchronus version.
 2. Independent Soft Actor-Critic with off-policy training.
