@@ -1,5 +1,5 @@
 import os 
-from game.simplePP import SimplePP
+from variations.simplePP import SimplePP
 from data.config import Config
 from data.game import Game
 
