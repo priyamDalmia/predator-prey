@@ -1,6 +1,13 @@
-﻿# Adversarial Pursuit Game environment for Multi-Agent Systems.
+﻿# Predator-Prey Variations
 
-The goal of this project is to serve as platform for research on interpretability in multi-agent reinforcement learning.
+This is the collection of environments inspiried from the classic predator-prey reinforcement learning environment. Each environemnt supports multiple agents and serve as a platform to test multi-agent algorithms.
+
+## Variations
+
+1. Classic Predator-Prey.
+2. Communication Predator-Prey.
+3. Hunter-Souct Predator-Prey.
+4. Reward Sharing Predator-Prey.
 
 
 ## Game features 

@@ -1,10 +1,8 @@
 from typing import NewType, Tuple
 
-class Object:
+class Wall:
     def __init__(self, position = None):
         self.position = position
-
-Wall = NewType("Wall", str) 
 
 class Actor:
     def __init__(self, _id, position, observation_space, action_space):

@@ -6,7 +6,7 @@ from typing import List
 class Config:
     env_name: str = "SimplePP"
     
-    map_size: int = 10
+    map_size: int = 6
 
     npred = 2
     nprey = 2 
