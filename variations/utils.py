@@ -1,5 +1,26 @@
-from typing import NewType, Tuple
+from typing import List, Tuple, Optional
+import numpy as np
+import random
 
+# Action and Observation Spaces classes for the games.
+# Similar to gym.env.spaces from the OpenAI gym library.
+class ActionSpace:
+    def __init__(self, n: int, start: int = 0) -> int:
+        self.n = n
+        self.start = start
+
+    def sample(self, mask: Optional[np.ndarray] = None) -> int:
+        # TODO create maksed return
+        return np.random.choice(self.start + self.n)
+
+    def contains(self, x: int) -> bool:
+        return self.start <= x < self.n
+
+class ObservationSpace:
+    def __init__(self, space: Tuple):
+        self.space = space
+
+# All Objects and Units(Actor) classes for the games.
 class Wall:
     def __init__(self, position = None):
         self.position = position
@@ -49,3 +70,31 @@ class Prey(Actor):
     def __init__(self, _id, position, observation_space, action_space):
         super().__init__(_id, position, observation_space, action_space)
         pass
+
+class Scout(Predator):
+    def __init__(self, _id, position, observation_space, action_space):
+        super().__init__(_id, position, observation_space, action_space)
+        pass
+
+# Action groups for the games
+# determines the order in which actors take actions
+def action_group_random(actor_ids: List) -> List:
+    return random.shuffle(actor_ids)
+
+def action_group_predator_first(actor_ids: List) -> List:
+    return actor_ids
+
+def action_group_prey_first(actor_ids: List) -> List:
+    pass
+
+# Reward functions for distributing rewards within the team. 
+# determines how the reward is distributed among team memebers.
+def reward_individual():
+    pass
+
+def reward_team():
+    pass
+
+def reward_distance():
+    pass
+

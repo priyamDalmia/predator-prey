@@ -21,13 +21,13 @@ class Environment:
             self.action_spaces[actor_id] =\
                     ActionSpace(actor.action_space)
     @property
-    def agent_ids(self):
+    def actor_ids(self):
         return list(self._actors.keys())
 
     @property
     def state_space(self):
         return self._state_space
-
+    
     @property
     def metadata(self):
         return self._metadata
@@ -51,10 +51,15 @@ class Environment:
             return self.action_spaces[actor_id]
         return self.action_spaces
     
+    def actor_observations(self, actor_id = None):
+        if actor_id:
+            return self.observations[actor_id]
+        return self.observations
+
     def render(self) -> np.array:
         # TODO iteratue over acotr sassigning Ids and numbers to positions
         lims = self.pad_width
-        render_array = self._env_state[lims-1:-lims+1, lims-1:-lims+1, 0] 
+        render_array = self._env_state[lims-1:-lims+1, lims-1:-lims+1, 0].copy() 
         for i in range(1, self.NUM_CHANNELS):
             render_array += self._env_state[lims-1:-lims+1, lims-1:-lims+1, i] 
         return render_array
@@ -72,7 +77,7 @@ class Game:
     
     @property
     def agent_ids(self):
-        return self._env.agent_ids
+        return self._env.actor_ids
     
     @property
     def state_space(self):
@@ -97,6 +102,11 @@ class Game:
 
     def step(self, actions: Dict):
         return self._env.step(actions)
+
+    def get_observations(self, actor_id = None):
+        if actor_id:
+            self._env.actor_observations()
+        return self._env.actor_observations(actor_id)
 
     def is_terminal(self):
         return self._env.is_terminal

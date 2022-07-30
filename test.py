@@ -1,5 +1,5 @@
 import os 
-from variations.simplePP import SimplePP
+from variations.simple_pp import SimplePP
 from data.config import Config
 from data.game import Game
 
@@ -15,6 +15,7 @@ def run_game(game):
             actions[agent_id] =\
                     game.action_space(agent_ids[0]).sample()
         game.step(actions) 
+        obs = game.get_observations()
         breakpoint() 
 
 

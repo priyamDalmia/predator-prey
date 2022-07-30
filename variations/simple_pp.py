@@ -1,30 +1,22 @@
 import os 
 import sys
 sys.path.append(os.getcwd())
-
+from enum import Enum
 import random
 import numpy as np
 
 from data.game import Environment
 from data.config import Config
 
-from variations.utils import Actor, Predator, Prey, Wall
-from typing import List, Tuple, Dict, Optional, Union
-
-# TODO Actor observationsdo not work -: fix it.
-# TODO build action grouops 
-# TODO make actor observations consistent
-# TODO if actor is dead return -1s 
-# TODO use dynamic action orders 
-# TODO return copies of dictionaries at the the end. 
-# TODO add penalties for hitting actors, wall obstacles and others.
-
+from variations.utils import *
+from typing import Dict
 
 NUM_CHANNELS = 3
 PREDATOR_CHANNEL = 1
 PREY_CHANNEL = 2
 PREDATOR_ACTION_SPACE = (4,)
 PREY_ACTION_SPACE = (4,)
+
 # ACTIONS (0, UP), (1, DOWN), (2, RIGHT), (3, LEFT)
 ACTION_TO_STRING = {
         0: "UP",
@@ -32,6 +24,7 @@ ACTION_TO_STRING = {
         2: "RIGHT",
         3: "LEFT",
         }
+
 # GRID (0, 0) : UPPER LEFT, (N , N) : LOWER RIGHT.
 ACTIONS = {
         0: lambda pos_x, pos_y: (pos_x - 1, pos_y),
@@ -39,6 +32,18 @@ ACTIONS = {
         2: lambda pos_x, pos_y: (pos_x, pos_y + 1),
         3: lambda pos_x, pos_y: (pos_x, pos_y - 1),
         }
+
+class REWARD_MODES(Enum):
+    individual = reward_individual
+    team = reward_team
+    distance = reward_distance
+
+class ACTION_MODES(Enum):
+    static = lambda x: x
+    random = random.shuffle
+    advantage_prey = action_group_prey_first
+    advantage_predator = action_group_predator_first
+
 
 class SimplePP(Environment):
     def __init__(self, config: Config):
@@ -50,28 +55,32 @@ class SimplePP(Environment):
         self.NUM_CHANNELS = NUM_CHANNELS
         self.PREDATOR_CHANNEL = PREDATOR_CHANNEL 
         self.PREY_CHANNEL = PREY_CHANNEL
-        # replace with config
-        self.action_order = list(self.actors.keys())
+        
+        self.action_mode = config.action_mode
+        self.time_mode = config.time_mode
+        self.health_mode = config.health_mode
+        self.reward_mode = config.reward_mode
+
         super().__init__(self._state_space, self.actors, self.make_metadata())
 
     def reset(self):
         self._steps = 0
         self.make_actors()
-        observations = self.make_observations()
-        return observations
+        self.observations = self.make_observations()
+        return self.observations
 
     def step(self, actions: Dict):
         # always pass a dict with _ids and corresponding actions
         observations = {}
         rewards = self.base_rewards.copy()
         dones = self.base_dones.copy()
-        for actor_id in self.action_order:
+        action_order = self.action_mode(list(self.actors.keys()))
+        for actor_id in action_order:
             actor = self.actors[actor_id]
             action = actions[actor_id] 
             if not actor.is_alive:
                 dones[actor_id] = 1 - actor.is_alive
                 continue
-            print(f"{actor_id} : {self.action_to_string(action)}") 
             new_position = ACTIONS[action](*actor.position)
             obj = self.check_collision(new_position)
             if obj:
@@ -132,7 +141,7 @@ class SimplePP(Environment):
                     vision = self._config.prey_vision
                     observation = self._env_state[pos_x-vision:pos_x+vision+1,\
                             pos_y-vision:pos_y+vision+1, :]
-            observations[actor_id] = observation
+            observations[actor_id] = observation.copy()
         return observations
 
     def make_base_state(self):
