@@ -2,6 +2,8 @@
 
 This is the collection of environments inspired from the classic multi-agent Predator-Prey reinforcement learning environment. Each environment supports multiple agents and serve as a platform to test decentralized and centralized multi-agent algorithms. The environments are built to include features such as environment and 
 
+![](data/renders/env-gif.gif)
+
 ## Variations.
 
 1. Classic Predator-Prey.

@@ -44,6 +44,13 @@ class ACTION_MODES(Enum):
     advantage_prey = action_group_prey_first
     advantage_predator = action_group_predator_first
 
+class HEALTH_MODES(Enum):
+    standard = 1
+    predator = (100, 1)
+
+class TIME_MODES(Enum):
+    standard = 0
+    time_mode = 500
 
 class SimplePP(Environment):
     def __init__(self, config: Config):
