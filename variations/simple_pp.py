@@ -63,9 +63,9 @@ class SimplePP(Environment):
         self.PREDATOR_CHANNEL = PREDATOR_CHANNEL 
         self.PREY_CHANNEL = PREY_CHANNEL
         
+        self.time_mode = False
+        self.health_mode = "standard"
         self.action_mode = config.action_mode
-        self.time_mode = config.time_mode
-        self.health_mode = config.health_mode
         self.reward_mode = config.reward_mode
 
         super().__init__(self._state_space, self.actors, self.make_metadata())

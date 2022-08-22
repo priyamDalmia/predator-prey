@@ -98,3 +98,7 @@ def reward_team():
 def reward_distance():
     pass
 
+
+# Health Functions for the games
+def health_standard():
+    pass

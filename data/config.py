@@ -1,6 +1,9 @@
 from dataclasses import dataclass
 from typing import List, Tuple, Callable
 
+import variations.utils as gu
+
+
 @dataclass
 class TrainerConfig:
     trainer: bool = False
@@ -9,6 +12,8 @@ class TrainerConfig:
 class GameConfig:
     env_name: str = "simplePP"
     verbose: bool = False
+    
+    map_size: int = 10
 
     npred: int = 10
     nprey: int = 10    
@@ -16,8 +21,9 @@ class GameConfig:
     prey_vision: int = 3
 
     time_mode: Tuple[bool, float] = (True, 500)
-    action_mode: int = None 
-    reward_mode: int = None
+    action_mode: int = gu.action_group_random
+    reward_mode: int = gu.reward_individual
+    health_mode: int = gu.health_standard
 
 @dataclass
 class ReplayBufferConfig:

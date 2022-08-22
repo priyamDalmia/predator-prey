@@ -131,6 +131,3 @@ class Game:
         # TODO complete clear render
         # Add render mode - pyscreen
         print(self._env.render())
-        
-
-

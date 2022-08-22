@@ -1,10 +1,14 @@
 import os 
+import sys
+sys.path.append(os.getcwd())
+
 from variations.simple_pp import SimplePP
 from data.config import Config
 from data.game import Game
 
 def run_game(game):
 
+    breakpoint()
     done = game.is_terminal()
     observations = game.reset()
     agent_ids = game.agent_ids
@@ -20,13 +24,11 @@ def run_game(game):
 
 
 if __name__ == "__main__":
-
+    breakpoint()
     # build game object here 
     config = Config()
-
-    env = SimplePP(config)
+    env = SimplePP(config.game_config)
     # wrap game 
     game = Game(config, env)
     run_game(game)
     # create and visulize states 
-    
