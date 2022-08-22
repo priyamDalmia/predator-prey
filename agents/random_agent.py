@@ -10,8 +10,8 @@ class RandomAgent(BaseAgent):
         self.outupt_dims = output_dims
         self.action_space = action_space
 
-    def get_action(self, observation):
-        return np.random.choice(self.action_space), 0
+    def get_action(self, observation=None):
+        return np.random.choice(self.action_space[0])
 
     def train_step(self):
         return dict(loss=None) 
