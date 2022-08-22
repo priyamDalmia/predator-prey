@@ -11,7 +11,8 @@ class RandomAgent(BaseAgent):
         self.action_space = action_space
 
     def get_action(self, observation=None):
-        return np.random.choice(self.action_space[0])
+        # TODO Fix action space
+        return np.random.choice(4)
 
     def train_step(self):
         return dict(loss=None) 
