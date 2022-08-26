@@ -15,16 +15,20 @@ class GameConfig:
     
     map_size: int = 10
 
-    npred: int = 10
-    nprey: int = 10    
-    pred_vision: int = 3
-    prey_vision: int = 3
+    npred: int = 3
+    nprey: int = 3   
+    pred_vision: int = 5
+    prey_vision: int = 5
 
     time_mode: Tuple[bool, float] = (True, 500)
     action_mode: int = gu.action_group_random
     reward_mode: int = gu.reward_individual
     health_mode: int = gu.health_standard
 
+@dataclass
+class AgentConfig:
+    pass
+    
 @dataclass
 class ReplayBufferConfig:
     pass
@@ -39,5 +43,4 @@ class Config:
     trainer_config: TrainerConfig = TrainerConfig()
     buffer_config: ReplayBufferConfig = ReplayBufferConfig()
     gpu_config: GPUConfig = GPUConfig()
-
-
+    agent_config: AgentConfig = AgentConfig()

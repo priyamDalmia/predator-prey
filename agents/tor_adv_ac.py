@@ -5,7 +5,6 @@ import torch.optim as optim
 import torch.distributions as dist 
 import numpy as np
 from data.agent import BaseAgent
-import pdb
 
 class NetworkActorCritic(nn.Module):
     def __init__(self, input_dims, output_dims, action_space,

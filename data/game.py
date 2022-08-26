@@ -117,6 +117,9 @@ class Game:
             pass
         # else return Dict for all agents 
         pass
+    
+    def is_alive(self, agent_id):
+        return self._env._actors[agent_id].is_alive
 
     def last_actions(self):
         pass

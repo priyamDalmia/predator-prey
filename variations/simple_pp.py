@@ -5,9 +5,10 @@ from enum import Enum
 import random
 import numpy as np
 
+# Removing custom env and replacing with gym.env
+# A inherits both the gym and the "environment" super classes
 from data.game import Environment
 from data.config import Config
-
 from variations.utils import *
 from typing import Dict
 
