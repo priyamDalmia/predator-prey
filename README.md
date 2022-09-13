@@ -49,4 +49,6 @@ New trainers must be derived from the  basecalss *Trainer*. See the [trainers]()
 
 ## Phase Portraits.
 
+## Cite the code. [![DOI](https://zenodo.org/badge/465910763.svg)](https://zenodo.org/badge/latestdoi/465910763)
+
 ## License
