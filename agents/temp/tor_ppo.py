@@ -60,11 +60,9 @@ class PPOAgent(BaseAgent):
     
     def get_action(self, observation):
         # THIS IS THE OBESEVATION AT ANY TIME STEP
-        breakpoint()
         # PASS THE OBSERVATION THROUGH A NEURAL NETWROK 
         action_prob = self.network(observation)
         # AND YOU CONVERT AND RETURN AN ACTION
-        breakpoint()
         action = np.argmax(action_prob)
         return action
     

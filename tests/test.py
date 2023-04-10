@@ -7,7 +7,7 @@ from data.config import Config
 from data.game import Game
 from data.helpers import *
 from agents.random_agent import RandomAgent
-from agents.tor_ppo import PPOAgent
+from agents.tor_a3c import A3CAgent
 
 from typing import List, Dict
 
@@ -21,8 +21,6 @@ agent_network = dodict(dict(
     network_dims=network_dims))
 
 def run_game(game):
-
-    breakpoint()
     done = game.is_terminal()
     observations = game.reset()
     agent_ids = game.agent_ids
@@ -43,12 +41,13 @@ def initialize_agents(agent_ids, agent_type="random") -> Dict:
         output_space = game.action_space(current_id)
         action_space = game.action_space(current_id)
         
-        if agent_type == "PPO":
-            agent = PPOAgent(
-                    current_id,
+        if "predator" in current_id:
+            agent = A3CAgent(
+                    current_id, 
                     input_space, 
-                    output_space,
-                    agent_network = agent_network) 
+                    output_space, 
+                    action_space,
+                    memory = "self")
         else:
             agent = RandomAgent(
                     current_id, 
@@ -61,28 +60,30 @@ def initialize_agents(agent_ids, agent_type="random") -> Dict:
     return all_agents
 
 def run_episodes(num_episodes, game, all_agents):
-    breakpoint()
     for episode in range(num_episodes):
-        game.reset()
+        current_observations, dones = game.reset()
         done = game.is_terminal()
         # THIS IS THE EXCEUTION OF A SINGLE EPISODE!
         while not done:
+            if game.game_config.render:
+                game.render()
             current_observations = game.get_observations()
             current_action = {}
 
             for agent_id in game.agent_ids:
                 current_action[agent_id] =\
                         all_agents[agent_id].get_action(current_observations[agent_id])
-            breakpoint()
-            game.step(current_action)
+            next_observations, rewards, dones, info = game.step(current_action)
 
             # THIS IS WHERE YOU STORE TRANSITIONS 
-            rewards = game.last_rewards()
-            next_observations = game.get_observations()
+            # rewards_1 = game.last_rewards()
+            # next_observations_1 = game.get_observations()
+            done = game.is_terminal()
 
-            for agent_id in game.agent_ids:
+            for agent_id, agent in all_agents.items():
+                if not agent.trains and dones[agent_id]:
+                    continue
                 # transition tuple 
-                agent = all_agents[agent_id]
                 state = current_observations[agent_id]
                 action = current_action[agent_id]
                 reward = rewards[agent_id]
@@ -90,18 +91,15 @@ def run_episodes(num_episodes, game, all_agents):
                 is_alive = game.is_alive(agent_id)
                 agent.store_transition((state, action, reward, (1-is_alive), next_state))
 
-            game.render()
-
-            done = game.is_terminal()
     pass
 
 def run_training(all_agents):
     # TRAIN ALL AGENTS 
-    for agent in all_agents:
-        agent.train_step()
+    for agent_id, agent in all_agents.items():
+        if agent.trains:
+            agent.train_step()
 
 if __name__ == "__main__":
-    breakpoint()
     # build game object here 
     config = Config()
     env = SimplePP(config.game_config)
@@ -110,7 +108,7 @@ if __name__ == "__main__":
 
     # This is the part where you initialize the agents 
     # HERE
-    all_agents = initialize_agents(game.agent_ids, agent_type="PPO") 
+    all_agents = initialize_agents(game.agent_ids, agent_type="A3C") 
     # This is the where we will train the agents 
     # HERE
     epochs = 10

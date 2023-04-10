@@ -3,9 +3,10 @@ from abc import ABC, abstractmethod
 class BaseAgent(ABC):
     def __init__(self, _id):
         self._id = _id
-        self.input_dims = None
-        self.output_dims = None
+        self.input_space = None
+        self.output_space = None
         self.aciton_space = None
+        self.trains = False
         self.lr = None
         self.gamma = None
         self.memory = None

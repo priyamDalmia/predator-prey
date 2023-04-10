@@ -9,29 +9,32 @@ import numpy as np
 # A inherits both the gym and the "environment" super classes
 from data.game import Environment
 from data.config import Config
-from variations.utils import *
+from data.utils import *
 from typing import Dict
 
 NUM_CHANNELS = 3
+GROUND_CHANNEL = 0
 PREDATOR_CHANNEL = 1
 PREY_CHANNEL = 2
-PREDATOR_ACTION_SPACE = (4,)
-PREY_ACTION_SPACE = (4,)
+PREDATOR_ACTION_SPACE = (5,)
+PREY_ACTION_SPACE = (5,)
 
-# ACTIONS (0, UP), (1, DOWN), (2, RIGHT), (3, LEFT)
+# ACTIONS  (0, CENTER), (1, UP), (2, DOWN), (3, RIGHT), (4, LEFT)
 ACTION_TO_STRING = {
-        0: "UP",
-        1: "DOWN",
-        2: "RIGHT",
-        3: "LEFT",
+        0: "CENTER",
+        1: "UP",
+        2: "DOWN",
+        3: "RIGHT",
+        4: "LEFT",
         }
 
 # GRID (0, 0) : UPPER LEFT, (N , N) : LOWER RIGHT.
 ACTIONS = {
-        0: lambda pos_x, pos_y: (pos_x - 1, pos_y),
-        1: lambda pos_x, pos_y: (pos_x + 1, pos_y),
-        2: lambda pos_x, pos_y: (pos_x, pos_y + 1),
-        3: lambda pos_x, pos_y: (pos_x, pos_y - 1),
+        0: lambda pos_x, pos_y: (pos_x, pos_y),
+        1: lambda pos_x, pos_y: (pos_x - 1, pos_y),
+        2: lambda pos_x, pos_y: (pos_x + 1, pos_y),
+        3: lambda pos_x, pos_y: (pos_x, pos_y + 1),
+        4: lambda pos_x, pos_y: (pos_x, pos_y - 1),
         }
 
 class REWARD_MODES(Enum):
@@ -57,25 +60,26 @@ class SimplePP(Environment):
     def __init__(self, config: Config):
         self._config = config
         self.map_size = config.map_size
-        self.make_base_state()
-        self.reset()
+        
         # build action groups 
         self.NUM_CHANNELS = NUM_CHANNELS
         self.PREDATOR_CHANNEL = PREDATOR_CHANNEL 
         self.PREY_CHANNEL = PREY_CHANNEL
-        
+
         self.time_mode = False
         self.health_mode = "standard"
         self.action_mode = config.action_mode
         self.reward_mode = config.reward_mode
-
-        super().__init__(self._state_space, self.actors, self.make_metadata())
+        self.reset()
+        super().__init__(self._state_space, self.actors, self.metadata())
 
     def reset(self):
-        self._steps = 0
+        self.make_base_state()
         self.make_actors()
+        self._steps = 0
+        self._is_terminal = False
         self.observations = self.make_observations()
-        return self.observations
+        return self.observations, self.dones
 
     def step(self, actions: Dict):
         # always pass a dict with _ids and corresponding actions
@@ -94,6 +98,10 @@ class SimplePP(Environment):
             if obj:
                 if isinstance(obj, Wall):
                     # if actor hits wall - nothing
+                    continue
+
+                if actor_id == obj._id:
+                    # action center; stay
                     continue
 
                 if isinstance(obj, Predator):
@@ -118,24 +126,38 @@ class SimplePP(Environment):
                     # prey hits prey - nothing        
                     continue
             actor.position = new_position
-        observations = self.make_observations()
+        self.observations = self.make_observations()
         self.actions = actions
         self.rewards = rewards
-        self._dones = dones 
+        self.dones = dones 
         info = []
         self._steps += 1
-        return observations, rewards, dones, info
+        return self.observations, rewards, dones, info
+    
+    def is_terminal(self):
+        if self._steps >= self._config.max_steps:
+            return True
+        pred_dones = []
+        prey_dones = []
+        for _, actor in self.actors.items():
+            if isinstance(actor, Predator):
+                pred_dones.append(not actor.is_alive)
+            else:
+                prey_dones.append(not actor.is_alive)
+        return bool(np.prod(pred_dones) or np.prod(prey_dones))
 
-    def make_metadata(self):
+    def metadata(self):
         # fill and add more data here
         metadata = {}
         metadata["npred"] = self.npred
         metadata["nprey"] = self.nprey
+        metadata["map_size"] = self._config.map_size
+        metadata["map_pad_width"] = self.pad_width
         return metadata
 
     def make_observations(self):
-        # update the _env_state
-        self.make_state()
+        # update the _env_state using the current positions, values of agents.
+        self.update_state()
         observations = {}
         for actor_id, actor in self.actors.items():
             observation = np.array(None)
@@ -143,12 +165,12 @@ class SimplePP(Environment):
                 pos_x, pos_y = actor.position
                 if isinstance(actor, Predator):
                     vision = self._config.pred_vision
-                    observation = self._env_state[pos_x-vision:pos_x+vision+1,\
-                            pos_y-vision:pos_y+vision+1, :]
+                    observation = self._env_state[:, pos_x-vision:pos_x+vision+1,\
+                            pos_y-vision:pos_y+vision+1]
                 else:
                     vision = self._config.prey_vision
-                    observation = self._env_state[pos_x-vision:pos_x+vision+1,\
-                            pos_y-vision:pos_y+vision+1, :]
+                    observation = self._env_state[:, pos_x-vision:pos_x+vision+1,\
+                            pos_y-vision:pos_y+vision+1]
             observations[actor_id] = observation.copy()
         return observations
 
@@ -157,9 +179,11 @@ class SimplePP(Environment):
         # base_channel + padding
         self.pad_width = max(self._config.pred_vision, self._config.prey_vision)
         arr = np.zeros((self.map_size, self.map_size), dtype=np.int32)
-        self.base_state = np.pad(arr, pad_width=self.pad_width, constant_values=1)
-        self.base_channel = np.pad(arr, pad_width=self.pad_width, constant_values=0)
-        self._state_space = (NUM_CHANNELS, self.map_size, self.map_size)
+        self.ground_channel = np.pad(arr, pad_width=self.pad_width, constant_values=1)
+        self.unit_channel = np.pad(arr, pad_width=self.pad_width, constant_values=0)
+        self.base_state = np.stack([self.ground_channel, self.unit_channel, self.unit_channel])
+        self._state_space = self.base_state.shape
+        self._env_state = self.base_state.copy()
 
     def make_actors(self):
         self.npred = self._config.npred
@@ -168,20 +192,22 @@ class SimplePP(Environment):
         self.base_dones = {}
         self.base_rewards = {}
         start_positions = []
-        predator_observation_space = (NUM_CHANNELS, self._config.pred_vision, self._config.pred_vision)
-        prey_observation_space = (NUM_CHANNELS, self._config.prey_vision, self._config.prey_vision)
+        l = (2*self._config.pred_vision+1)
+        predator_observation_space = (NUM_CHANNELS, l, l)
+        l = (2*self._config.prey_vision+1)
+        prey_observation_space = (NUM_CHANNELS, l, l)
         # if start_position == random
         # generate a list of unique tuples and poplate
         while len(start_positions) != self.num_actors:
             pos_x, pos_y =\
-                    (random.randint(0, self.map_size),\
-                    random.randint(0, self.map_size))
+                    (random.randint(self.pad_width, self.map_size+1),\
+                    random.randint(self.pad_width, self.map_size+1))
             # if v clashes with a wall then restart
             if (pos_x, pos_y) not in start_positions and\
-                    not self.check_base_collision(pos_x, pos_y):
+                    not self.check_collision((pos_x, pos_y)):
                 start_positions.append((pos_x, pos_y))
-        # if start_position == corners 
-        # generate a list of unqiue tuples (sampling from corners) and populate 
+
+        metadata = self.metadata()
         self.actors = {}
         self.actor_positions = {}
         # make Predator Actors 
@@ -191,58 +217,47 @@ class SimplePP(Environment):
                         f"predator_{idx}", 
                         position, 
                         predator_observation_space,
-                        PREDATOR_ACTION_SPACE)
+                        PREDATOR_ACTION_SPACE,
+                        metadata)
             else:
                 actor = Prey(
                         f"prey_{idx-self.npred}", 
                         position,
                         prey_observation_space,
-                        PREY_ACTION_SPACE)
+                        PREY_ACTION_SPACE,
+                        metadata)
             self.base_rewards[str(actor)] = 0.0
             self.base_dones[str(actor)] = 1 - actor.is_alive
             self.actors[str(actor)] = actor
         self.rewards = self.base_rewards.copy()
-        self._dones = self.base_dones.copy()
+        self.dones = self.base_dones.copy()
 
-    def make_state(self):
-        # a numpy array of N channels 
+    def update_state(self):
         # Channel #0 : Walls and Obstacles (base state)
         # Channel #2 : Predators
         # Channel #3 : Preys
-        channels = []
-        channel_0 = np.copy(self.base_state)
-        channels.append(channel_0)
-        # for all predators and locations 
-        channel_1 = np.copy(self.base_channel)
+        # In this version, the ground state remains static.
+        self._env_state = self.base_state.copy()
+        # for all predators and locations
         for _, actor in self.actors.items():
             if isinstance(actor, Predator):
                 if actor.is_alive:
                     pos_x, pos_y = actor.position
-                    channel_1[pos_x, pos_y] = 1
-        channels.append(channel_1)
+                    self._env_state[PREDATOR_CHANNEL, pos_x, pos_y] = 1
         # for all preys and locations
-        channel_2 = np.copy(self.base_channel)
         for _, actor in self.actors.items():
             if isinstance(actor, Prey):
                 if actor.is_alive:
                     pos_x, pos_y = actor.position
-                    channel_2[pos_x, pos_y] = 1
-        channels.append(channel_2)
-        # stack channels and build the complete state
-        self._env_state = np.dstack(channels)
+                    self._env_state[PREY_CHANNEL, pos_x, pos_y] = 1
 
     def check_collision(self, position):
-        # FIXME limited and naive
-        if sum(self._env_state[position[0], position[1], :]): 
-            if self.check_base_collision(position[0], position[1]):
+        if sum(self._env_state[:, position[0], position[1]]): 
+            if self._env_state[0, position[0], position[1]]:
                 return Wall()
+            # NOTE: this method is used for dynamic collision checking; 
             return self.check_actor_collision(position[0], position[1])
-        return None
-        
-    def check_base_collision(self, pos_x, pos_y) -> bool:
-        if self.base_state[pos_x, pos_y] == 1:
-            return True
-        return False
+        return None   
 
     def check_actor_collision(self, pos_x, pos_y) -> Actor:
         for _, actor in self.actors.items():

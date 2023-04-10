@@ -1,3 +1,5 @@
+from typing import NewType
+import random
 from typing import List, Tuple, Optional
 import numpy as np
 import random
@@ -5,8 +7,9 @@ import random
 # Action and Observation Spaces classes for the games.
 # Similar to gym.env.spaces from the OpenAI gym library.
 class ActionSpace:
-    def __init__(self, n: int, start: int = 0) -> int:
-        self.n = n
+    def __init__(self, shape: tuple, start: int = 0) -> int:
+        self.shape = shape
+        self.n = self.shape[0]
         self.start = start
 
     def sample(self, mask: Optional[np.ndarray] = None) -> int:
@@ -17,8 +20,8 @@ class ActionSpace:
         return self.start <= x < self.n
 
 class ObservationSpace:
-    def __init__(self, space: Tuple):
-        self.space = space
+    def __init__(self, shape: Tuple):
+        self.shape = shape
 
 # All Objects and Units(Actor) classes for the games.
 class Wall:
@@ -32,6 +35,8 @@ class Actor:
         self._observation_space = observation_space
         self._action_space = action_space
         self._is_alive = True
+        # FIXME: may create issues in the future
+        self._vision = int(self.observation_space[-1]/2)
     
     @property
     def position(self) -> Tuple:
@@ -57,29 +62,46 @@ class Actor:
     def is_alive(self, value: bool):
         self._is_alive = value
 
+    def rel_position(self):
+        if hasattr(self, "map_pad_width"):
+            return (self._position[0]-self.map_pad_width, self._position[1]-self.map_pad_width)
+
     def __repr__(self):
-        return self._id
+        return f"{self._id}"
+    
+    def __str__(self):
+        return f"{self._id}"
 
 class Predator(Actor):
-    def __init__(self, _id, position, observation_space, action_space):
+    def __init__(self, _id, position, observation_space, action_space, metadata=None):
         super().__init__(_id, position, observation_space, action_space)
+        if metadata:
+            self.map_size = metadata["map_size"]
+            self.map_pad_width = metadata["map_pad_width"]
         # TODO define available actions here
         pass
     
 class Prey(Actor):
-    def __init__(self, _id, position, observation_space, action_space):
+    def __init__(self, _id, position, observation_space, action_space, metadata=None):
         super().__init__(_id, position, observation_space, action_space)
+        if metadata:
+            self.map_size = metadata["map_size"]
+            self.map_pad_width = metadata["map_pad_width"]
         pass
 
 class Scout(Predator):
-    def __init__(self, _id, position, observation_space, action_space):
+    def __init__(self, _id, position, observation_space, action_space, metadata=None):
         super().__init__(_id, position, observation_space, action_space)
+        if metadata:
+            self.map_size = metadata["map_size"]
+            self.map_pad_width = metadata["map_pad_width"]
         pass
 
 # Action groups for the games
 # determines the order in which actors take actions
 def action_group_random(actor_ids: List) -> List:
-    return random.shuffle(actor_ids)
+    random.shuffle(actor_ids)
+    return actor_ids
 
 def action_group_predator_first(actor_ids: List) -> List:
     return actor_ids
@@ -102,3 +124,4 @@ def reward_distance():
 # Health Functions for the games
 def health_standard():
     pass
+
