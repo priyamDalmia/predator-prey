@@ -55,6 +55,7 @@ class Trainer:
 
             if self.config.trainer_config.wandb:
                 wandb.log(results)
+                print(f"Epoch {results['epoch']} : {results['steps']}")
             else:
                 print(f"Epoch {results['epoch']} : {results['steps']}")
 

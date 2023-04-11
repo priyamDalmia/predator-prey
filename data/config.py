@@ -8,13 +8,14 @@ class TrainerConfig:
     epochs = 1000
     episodes = 1
     epochs = 500
-    wandb = False
+    wandb = True
+    project_name = "emergeRL"
 
 @dataclass
 class GameConfig:
     env_name: str = "simplePP"
     verbose: bool = False
-    render: bool = True
+    render: bool = False
     render_info: bool = True
     
     map_size: int = 10
