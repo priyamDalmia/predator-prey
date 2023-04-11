@@ -60,29 +60,32 @@ class Environment:
         lims = self.pad_width
         render_array = self._env_state[0, self.pad_width:(self.pad_width+self.map_size), self.pad_width:(self.pad_width+self.map_size)].copy()
         render_array = render_array.astype(np.str)
+        render_array = np.char.replace(render_array, '0', '.')
+        render_array = render_array.astype('U11')
         info = dict(
             game_step = 0,
-            dead = []
+            dead = [],
+            last_actions = []
         )
         info["game_step"] = self._steps
         for actor_id, actor in self.actors.items():
+            if not actor.is_alive:
+                info["dead"].append(actor_id)
+                continue
+            else:
+                info["last_actions"].append(f"{actor_id}:{actor._last_action}")
+
             if isinstance(actor, Predator):
                 name = f"T{actor_id[-1]}"
                 position = actor.position
-                if not actor.is_alive:
-                    info["dead"].append(actor_id)
-                    continue
                 if not self._env_state[1, position[0], position[1]]:
                     print(f"Predator {actor_id} is out of place.")
                 else:
                     render_array[position[0]-lims, position[1]-lims] = name
             
             if isinstance(actor, Prey):
-                name = f"P{actor_id[-1]}"
+                name = f"P{str(actor_id[-1])}"
                 position = actor.position
-                if not actor.is_alive:
-                    info["dead"].append(actor_id)
-                    continue
                 if not self._env_state[2, position[0], position[1]]:
                     print(f"Prey {actor_id} is out of place.")
                 else:
@@ -161,6 +164,7 @@ class Game:
         # Add render mode - pyscreen
         if mode == "human":
             render, info = self._env.render()
-            print(render)
             if self.game_config.render_info:
                 print(info)
+            print(render)
+            

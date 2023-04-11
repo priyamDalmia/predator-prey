@@ -5,7 +5,8 @@ import torch.nn.functional as F
 import torch.distributions as dist
 import numpy as np
 from data.agent import BaseAgent
-import pdb
+import time 
+torch.set_default_dtype(torch.float64)
 
 class CriticNet(nn.Module):
     def __init__(self, in_channels, stride=1):
@@ -42,7 +43,7 @@ class ActorNet(nn.Module):
         self.layer_2 = nn.Linear(128, out_channels)
         
     def forward(self, x):
-        out = F.relu( self.conv1(x))
+        out = F.relu(self.conv1(x))
         out = self.bn2(self.conv2(out))
         out = F.relu(out)
         out = self.convout(out) 
@@ -86,18 +87,21 @@ class A3CAgent(BaseAgent):
                 lr = 0.0001)
 
     def get_action(self, observation):
-        x = torch.as_tensor(observation, dtype=torch.float32, device=self.device).unsqueeze(0)
+        x = torch.as_tensor(observation, dtype=torch.float64, device=self.device).unsqueeze(0)
         probs = self.actor_net(x)
         action_dist = dist.Categorical(probs)
         return action_dist.sample().item()
 
     def train_step(self):
+        start_time = time.time()
         loss = dict()
+        num_steps = len(self.mem_rewards)
         sum_rewards = sum(self.mem_rewards)
         rewards = self.discount_rewards(self.mem_rewards)
         states_t = torch.as_tensor(np.array(self.mem_states),
                                 device=self.device, 
                                 dtype=torch.float64)             
+        actions_t = torch.as_tensor(self.mem_actions).unsqueeze(-1)
         rewards_t = torch.as_tensor(rewards, 
                                     device=self.device,
                                     dtype=torch.float64).unsqueeze(-1)
@@ -111,7 +115,23 @@ class A3CAgent(BaseAgent):
         self.critic_optimizer.zero_grad()
 
         advantage = (values_target - values).detach()
-        action_probs = self.actor_net(states_t)
+        probs = self.actor_net(states_t)
+        action_probs = torch.gather(probs, 1, actions_t)
+        action_log_probs = torch.log(action_probs)
+        actor_loss = -1 * action_log_probs * advantage
+        actor_loss = actor_loss.mean()
+        actor_loss.backward()
+        torch.nn.utils.clip_grad_value_(self.actor_net.parameters(), 1.0)
+        self.actor_optimizer.step()
+        self.actor_optimizer.zero_grad()
+        self.clear_memory()
+        end_time = round(time.time() - start_time, 2)
+        return dict(
+            actor_loss = actor_loss.item(),
+            critic_loss = critic_loss.item(),
+            reward = sum_rewards,
+            num_steps = num_steps,
+        )
 
         self.clear_memory()
         return loss, dict(

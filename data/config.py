@@ -5,6 +5,10 @@ from data.utils import *
 @dataclass
 class TrainerConfig:
     trainer: bool = False
+    epochs = 1000
+    episodes = 1
+    epochs = 500
+    wandb = False
 
 @dataclass
 class GameConfig:
@@ -16,8 +20,8 @@ class GameConfig:
     map_size: int = 10
     max_steps: int = 500
 
-    npred: int = 3
-    nprey: int = 3   
+    npred: int = 2
+    nprey: int = 5   
     pred_vision: int = 5
     prey_vision: int = 5
 

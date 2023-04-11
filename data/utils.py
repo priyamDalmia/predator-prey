@@ -35,6 +35,7 @@ class Actor:
         self._observation_space = observation_space
         self._action_space = action_space
         self._is_alive = True
+        self._last_action = None
         # FIXME: may create issues in the future
         self._vision = int(self.observation_space[-1]/2)
     

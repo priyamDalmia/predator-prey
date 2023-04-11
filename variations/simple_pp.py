@@ -92,7 +92,10 @@ class SimplePP(Environment):
             action = actions[actor_id] 
             if not actor.is_alive:
                 dones[actor_id] = 1 - actor.is_alive
+                actor._last_action = None
                 continue
+            else:
+                actor._last_action = ACTION_TO_STRING[action]
             new_position = ACTIONS[action](*actor.position)
             obj = self.check_collision(new_position)
             if obj:
