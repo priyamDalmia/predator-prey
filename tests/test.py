@@ -43,13 +43,15 @@ class Trainer:
         # HERE
         all_agents = self.initialize_agents(game, game.agent_ids, agent_type="A3C") 
         # This is the where we will train the agents 
-        # HERE
+        # HEREE
         epochs = self.config.trainer_config.epochs
         num_episodes = self.config.trainer_config.episodes
         # training happens in two steps 
         for i in range(epochs):
+            results = dict()
             steps = self.run_episodes(num_episodes, game, all_agents)
-            results = self.run_training(all_agents)
+            if self.config.trainer_config.train_agents:
+                results = self.run_training(all_agents)
             results['steps'] = steps
             results['epoch'] = i
 
@@ -110,6 +112,7 @@ class Trainer:
                 # next_observations_1 = game.get_observations()
                 done = game.is_terminal()
 
+
                 for agent_id, agent in all_agents.items():
                     if not agent.trains and dones[agent_id]:
                         continue
@@ -120,6 +123,7 @@ class Trainer:
                     next_state = next_observations[agent_id]
                     is_alive = game.is_alive(agent_id)
                     agent.store_transition((state, action, reward, (1-is_alive), next_state))
+            
             steps.append(step)
         return mean(steps)
 

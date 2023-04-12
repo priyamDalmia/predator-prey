@@ -60,6 +60,7 @@ class SimplePP(Environment):
     def __init__(self, config: Config):
         self._config = config
         self.map_size = config.map_size
+        self.max_steps = self._config.max_steps
         
         # build action groups 
         self.NUM_CHANNELS = NUM_CHANNELS

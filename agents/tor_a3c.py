@@ -12,11 +12,11 @@ class CriticNet(nn.Module):
     def __init__(self, in_channels, stride=1):
         super(CriticNet, self).__init__()
         self.conv1 = nn.Conv2d(
-            in_channels, 64, kernel_size=3, stride=stride, padding=1, bias=False)
-        self.bn1 = nn.BatchNorm2d(64)
+            in_channels, 32, kernel_size=3, stride=stride, padding=1, bias=False)
+        self.bn1 = nn.BatchNorm2d(32)
         self.conv2 = nn.Conv2d(
-            64, 64, kernel_size=3, stride=1, padding=1, bias=False)
-        self.bn2 = nn.BatchNorm2d(64)
+            32, 32, kernel_size=3, stride=1, padding=1, bias=False)
+        self.bn2 = nn.BatchNorm2d(32)
         self.value_layer = nn.LazyLinear(1)
         
     def forward(self, x):
@@ -32,12 +32,12 @@ class ActorNet(nn.Module):
     def __init__(self, in_channels, out_channels, stride=1):
         super(ActorNet, self).__init__()
         self.conv1 = nn.Conv2d(
-            in_channels, 64, kernel_size=3, stride=stride, padding=1, bias=False)
-        self.bn1 = nn.BatchNorm2d(64)
+            in_channels, 32, kernel_size=3, stride=stride, padding=1, bias=False)
+        self.bn1 = nn.BatchNorm2d(32)
         self.conv2 = nn.Conv2d(
-            64, 64, kernel_size=3, stride=1, padding=1, bias=False)
-        self.bn2 = nn.BatchNorm2d(64)
-        self.convout = nn.Conv2d(64, 64, kernel_size=1, stride=1)
+            32, 32, kernel_size=3, stride=1, padding=1, bias=False)
+        self.bn2 = nn.BatchNorm2d(32)
+        self.convout = nn.Conv2d(32, 32, kernel_size=1, stride=1)
         self.flatten = nn.Flatten()
         self.layer_1 = nn.LazyLinear(128)
         self.layer_2 = nn.Linear(128, out_channels)
@@ -74,7 +74,7 @@ class A3CAgent(BaseAgent):
         else:
             self.memory = memory
         self.max_steps = 500
-        self.gamma = 0.8
+        self.gamma = 0.5
         
         self.actor_net = ActorNet(self.input_space.shape[0], self.action_space.n)
         self.critic_net = CriticNet(self.input_space.shape[0])
@@ -85,7 +85,7 @@ class A3CAgent(BaseAgent):
         self.actor_optimizer = optim.Adam( 
                 self.actor_net.parameters(),
                 lr = 0.0001)
-
+    
     def get_action(self, observation):
         x = torch.as_tensor(observation, dtype=torch.float64, device=self.device).unsqueeze(0)
         probs = self.actor_net(x)
@@ -131,11 +131,6 @@ class A3CAgent(BaseAgent):
             critic_loss = critic_loss.item(),
             reward = sum_rewards,
             num_steps = num_steps,
-        )
-
-        self.clear_memory()
-        return loss, dict(
-            sum_rewards = sum_rewards
         )
     
     def store_transition(self, transition):

@@ -4,10 +4,9 @@ from data.utils import *
 
 @dataclass
 class TrainerConfig:
-    trainer: bool = False
-    epochs = 1000
     episodes = 1
-    epochs = 500
+    epochs = 10000
+    train_agents: bool = True
     wandb = True
     project_name = "emergeRL"
 
@@ -18,11 +17,11 @@ class GameConfig:
     render: bool = False
     render_info: bool = True
     
-    map_size: int = 10
+    map_size: int = 15
     max_steps: int = 500
 
     npred: int = 2
-    nprey: int = 5   
+    nprey: int = 7   
     pred_vision: int = 5
     prey_vision: int = 5
 
