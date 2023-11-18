@@ -32,7 +32,7 @@ def create_algo(config):
         .framework(framework=config['framework'])
         .training(
             _enable_learner_api=True,
-            model={"dim": 42, "conv_filters": [[16, [4, 4], 2]]},
+            model={"conv_filters": [[16, [5,5], 1], [16, [4, 4], 2]]},
             lr = config['training']['lr'], 
             train_batch_size=config['training']['train_batch_size'],
         )
