@@ -1,0 +1,403 @@
+from curses import meta
+import os 
+import sys 
+import numpy as np 
+from environments.common import Agent
+from typing import Any, Dict
+import gymnasium 
+from gymnasium import spaces
+from gymnasium.spaces import Box, Discrete
+from pettingzoo.utils.env import ParallelEnv, ObsType, ActionType, AgentID
+
+class discrete_pp_v1(ParallelEnv):
+    """Discerete Space (2D) Predator Prey Environment
+    Predators and Preys are randomly placed on a 2D grid.
+    Predators must capture Prey.
+    Predators are the agents.
+    Preys are either fixed or move randomly.
+    Game ends when all Preys are captured or max_cycles is reached.
+    """
+    metadata: dict[str, Any]
+    agents: list[AgentID]
+    possible_agents: list[AgentID]
+    
+    observation_spaces: dict[AgentID, gymnasium.spaces.Space]  # Observation space for each agent
+    action_spaces: dict[AgentID, gymnasium.spaces.Space]
+
+    # from data.utils import Predator, Prey
+    NUM_CHANNELS = 3
+    GROUND_CHANNEL = 0
+    PREDATOR_CHANNEL = 1
+    PREY_CHANNEL = 2
+
+    # GRID (0, 0) : UPPER LEFT, (N , N) : LOWER RIGHT.
+    NUM_ACTIONS = 5
+    ACTIONS = {
+            0: lambda pos_x, pos_y: (pos_x, pos_y), # STAY
+            1: lambda pos_x, pos_y: (pos_x - 1, pos_y), # LEFT
+            2: lambda pos_x, pos_y: (pos_x + 1, pos_y), # RIGHT
+            3: lambda pos_x, pos_y: (pos_x, pos_y + 1), # DOWN
+            4: lambda pos_x, pos_y: (pos_x, pos_y - 1), # UP
+            }
+
+    def __init__(self, *args, **kwargs)-> None:
+        super().__init__()
+        self._map_size = kwargs.get("map_size", 10)
+        self._max_cycles = kwargs.get("max_cycles", 100)
+        self._npred = kwargs.get("npred", 2)
+        self._pred_vision = kwargs.get("pred_vision", 2)
+        self._nprey = kwargs.get("nprey", 6)
+        self._prey_type = kwargs.get("prey_type", 'random') # random or fixed
+        self._reward_type = kwargs.get("reward_type", "type_1") # type_1 or type_2
+        # init the reward function here; reward function will distribute the reward only. 
+        if self._reward_type == "type_1":
+            self._reward_func = self.reward_dist_1
+        elif self._reward_type == "type_2":
+            self._reward_func = self.reward_dist_2
+        else:
+            raise ValueError(f"Reward type {self._reward_type} not supported.")
+        # build base game state here 
+        self._possible_agents = list(set([f"predator_{i}" for i in range(self._npred)]))
+        self._map_pad = self._pred_vision
+        arr = np.zeros(
+            (self._map_size, self._map_size),
+            dtype = np.int32)
+        # define what the observation looks like 
+        self._base_state = np.dstack([
+            # a channel with 1s padded = ground channel
+            np.pad(arr, self._map_pad, 'constant', constant_values=1),
+            # a channel with 0s padded = unit (predator channel)
+            np.pad(arr, self._map_pad, 'constant', constant_values=0),
+            # a channel with 0s padded = unit (prey channel)
+            np.pad(arr, self._map_pad, 'constant', constant_values=0),
+        ])
+        self._state_space = self._base_state.shape
+        self._state_space_center = self._map_pad + self._map_size //  2
+        
+        window_l = 2 * self._pred_vision + 1 
+        self._observation_space = Box(
+            low=0,
+            high=1,
+            shape=(window_l, window_l, self.NUM_CHANNELS),
+            dtype=np.int32,
+        )
+        self._action_space = Discrete(self.NUM_ACTIONS)
+        self._observation_spaces = {
+            agent: self._observation_space for agent in self._possible_agents
+        }
+        self._action_spaces = {
+            agent: self._action_space for agent in self._possible_agents
+            }
+        
+        self.take_action = lambda position, action: self.ACTIONS[action](*position)
+        self._metadata = {
+            "name": "discrete_pp_v0",
+            "render.modes": ["human", "rgb_array"],
+            "map_size": self._map_size,
+            "reward_type": self._reward_type,
+            "max_cycles": self._max_cycles,
+            "npred": self._npred,
+            "nprey": self._nprey,
+            "pred_vision": self._pred_vision,
+            "prey_type": self._prey_type,}
+    
+    def reward_dist_1(self, rewards, agent_id, position):
+        rewards[agent_id] = 1 + rewards.get(agent_id, 0)
+        return rewards
+
+    def reward_dist_2(self, rewards, agent_id, position):   
+        raise NotImplementedError
+    
+    def reset(
+        self,
+        seed: int | None = None,
+        options: dict | None = None,
+    ) -> tuple[dict[AgentID, ObsType], dict[AgentID, dict]]:
+        """Resets the environment.
+
+        And returns a dictionary of observations (keyed by the agent name)
+        """
+        self._observations = {}
+        self._infos = {}
+        self._rewards = {}
+        self._terminated = {}
+        self._truncated = {}
+        self._rewards_sum = {}
+        self._kills = 0
+        self._agents = self._possible_agents.copy()
+        self._predators = {}
+        self._step_count = 0
+        self._global_state = self._base_state.copy()
+        # build the game state here
+        # picks 8 positions from 9 quadrants 
+        # or x random positions tuples; no duplicates
+        start_positions = set()
+        num_pred_prey = self._npred + self._nprey
+        while len(list(start_positions)) < num_pred_prey:
+            start_positions.add(
+                    (np.random.randint(self._pred_vision, self._pred_vision+self._map_size),
+                     (np.random.randint(self._pred_vision, self._pred_vision+self._map_size)))
+                )
+        
+        for agent_id in self._agents:
+            agent = Agent(agent_id)
+            spawn_at = start_positions.pop()
+            agent(spawn_at)
+            self._global_state[spawn_at[0], spawn_at[1], self.PREDATOR_CHANNEL] = 1
+            self._predators[agent_id] = agent
+            self._observations[agent_id] = self.get_observation(agent_id) 
+            if self._observations[agent_id].shape != self._observation_spaces[agent_id].shape:
+                print(f"Agent {agent_id} has no observation space")
+                pass
+            self._rewards[agent_id]= float(0)
+            self._terminated[agent_id] = False
+            self._truncated[agent_id] = False
+            self._infos[agent_id] = False
+
+        for _ in range(len(start_positions)):
+            position = start_positions.pop()
+            self._global_state[position[0], position[1], self.PREY_CHANNEL] = 1
+            
+        self._rewards_sum = self._rewards.copy() 
+        return self._observations.copy(), self._infos.copy()    
+    
+    def step(
+        self, actions: dict[AgentID, ActionType]
+    ) -> tuple[
+        dict[AgentID, ObsType],
+        dict[AgentID, float],
+        dict[AgentID, bool],
+        dict[AgentID, bool],
+        dict[AgentID, dict],
+    ]:
+        """Receives a dictionary of actions keyed by the agent name.
+
+        Returns the observation dictionary, reward dictionary, terminated dictionary, truncated dictionary
+        and info dictionary, where each dictionary is keyed by the agent.
+        """
+        observations = {}
+        infos = {}
+        rewards = {}
+        terminated = self._terminated.copy() 
+        truncated = self._truncated.copy()
+        assert set(self._agents) == set(actions.keys()), f"Incorrect action dict,\ngiven: {actions.keys()}, \nexpected: {self._agents}"
+
+        if self._prey_type == "random":
+            raise NotImplementedError("Random moving prey")
+        
+        for agent_id, action in actions.items():
+            # get position of the predators 
+            agent = self._predators[agent_id]
+            assert agent.is_alive and not self.is_terminal, f"Dead agent in self._agents list for game!"
+            position = agent.position 
+            next_position = self.take_action(position, action)
+
+            # if new position is wall; do not take action
+            if self._global_state[next_position[0], next_position[1], self.GROUND_CHANNEL] == 1:
+                rewards[agent_id] = float(0)
+                # if wall, do not move or do anything.
+                # and reward is zero 
+            elif self._global_state[next_position[0], next_position[1], self.PREY_CHANNEL] == 1:
+                # elif new position on prey 
+                # kill the prey 
+                # give reward acording to distribution
+                self._kills += 1
+                rewards = self._reward_func(rewards, agent_id, next_position)
+                self._global_state[next_position[0], next_position[1], self.PREY_CHANNEL] = 0
+                # move the predator 
+                agent.move(next_position)
+            else:
+                # update to new position 
+                # and reward is zero 
+                rewards[agent_id] = float(0)
+                agent.move(next_position)
+        
+        arr = np.zeros(
+            (self._map_size, self._map_size),
+            dtype = np.int32)
+        self._global_state[:, :, self.PREDATOR_CHANNEL] =  np.pad(arr, self._map_pad, 'constant', constant_values=0)
+        for agent_id in list(self._agents):
+            agent = self._predators[agent_id]
+            self._global_state[agent.position[0], agent.position[1], self.PREDATOR_CHANNEL] = 1
+            self._rewards_sum[agent_id] += rewards.get(agent_id, 0)
+            if self._step_count == self._max_cycles:
+                truncated[agent_id] = True
+                terminated[agent_id] = False
+                self._agents.remove(agent_id)
+            elif self._kills == self._nprey:
+                truncated[agent_id] = False
+                terminated[agent_id] = True
+                self._agents.remove(agent_id)
+            else:
+                infos[agent_id] = dict()
+                observations[agent_id] = self.get_observation(agent_id)
+                pass
+
+        self._observations = observations.copy()
+        self._rewards = rewards.copy()
+        self._terminated = terminated.copy()
+        self._truncated = truncated.copy()
+        self._step_count += 1
+        return observations, rewards, terminated, truncated, infos.copy()
+
+    @property
+    def is_terminal(self,) -> bool:
+        #TODO check if all prey are dead
+        return all(list(self._terminated.values())) or all(list(self._truncated.values()))
+    
+    @property
+    def agents(self):
+        # if attribute does not exist, raise AttributeError ask to reset first
+        if not hasattr(self, "_agents"):
+            raise AttributeError("Must call reset() first after env initialization")
+        return self._agents
+
+    @property
+    def possible_agents(self):
+        return self._possible_agents 
+    
+    @property
+    def observation_spaces(self):
+        return self._observation_spaces
+    
+    @property
+    def action_spaces(self):
+        return self._action_spaces
+    
+    @property
+    def metadata(self):
+        return self._metadata
+    
+    def get_observation(self, agent_id):
+        if agent_id not in self._agents:
+            raise ValueError(f"Agent {agent_id} is not alive or does not exist.")
+
+        agent = self._predators[agent_id]
+        pos_x, pos_y = agent.position
+        window_l = 2 * self._pred_vision + 1
+        observation = self._global_state[
+            pos_x - self._pred_vision: pos_x + self._pred_vision + 1,
+            pos_y - self._pred_vision: pos_y + self._pred_vision + 1,
+            :].copy()
+        return observation
+
+    def __name__(self):
+        return "discrete_pp_v1"
+    
+    def render(self) -> None | np.ndarray | str | list:
+        """Displays a rendered frame from the environment, if supported.
+
+        Alternate render modes in the default environments are `'rgb_array'`
+        which returns a numpy array and is supported by all environments outside
+        of classic, and `'ansi'` which returns the strings printed
+        (specific to classic environments).
+        """
+        raise NotImplementedError
+
+
+    def close(self):
+        """Closes the rendering window."""
+        pass
+
+    def state(self) -> np.ndarray:
+        """Returns the state.
+
+        State returns a global view of the environment appropriate for
+        centralized training decentralized execution methods like QMIX
+        """
+        return self._global_state.copy()
+
+    def last(self):
+        return (
+            self._observations.copy(),
+            self._rewards_sum.copy(),
+            self._terminated.copy(),
+            self._truncated.copy(),
+            self._infos.copy(),
+        )
+
+    @property
+    def unwrapped(self) -> ParallelEnv:
+        return self
+
+if __name__ == "__main__":
+    import os 
+    import sys
+    sys.path.append(os.getcwd())
+    # TODO move and build tests 
+    config = dict(
+        map_size = 20,
+        reward_type = "type_1",
+        max_cycles = 10000,
+        npred = 2,
+        pred_vision = 2,
+        nprey = 6,
+        prey_type = "static",
+        render_mode = None
+    )
+
+    env = discrete_pp_v1(**config)
+    print(f"Env name: {env.__name__()}, created!")
+    
+    # test action and observation spaces 
+    assert isinstance(env.observation_spaces, dict)
+    assert isinstance(env.action_spaces, dict)
+
+    # if map size is 20 and vision size is 2,
+    # then the observation space should be 5x5x3
+    window_l = 2 * env._pred_vision + 1
+    assert all([env.observation_spaces[agent_id].shape == \
+                (window_l, window_l, env.NUM_CHANNELS) \
+                for agent_id in env.possible_agents]) 
+    assert all([env.action_spaces[agent_id].n == env.NUM_ACTIONS \
+                for agent_id in env._possible_agents])
+
+    reward_hist = []
+    steps_hist = []
+    for i in range(100):
+        # test reset
+        obs, infos = env.reset()
+        assert isinstance(obs, dict)
+        assert isinstance(infos, dict)
+        assert all([agent_id in obs.keys() for agent_id in env._agents])
+        pad_width = env._pred_vision
+        assert all([observation[pad_width, pad_width, env.PREDATOR_CHANNEL] == 1 for observation in obs.values()])
+        assert all([observation.shape == env._observation_spaces[agent_id].shape \
+                    for agent_id, observation in obs.items()])
+        assert np.sum(env.state()[:, :, env.PREDATOR_CHANNEL]) == len(env._agents), "Predator count should be equal to number of agents"
+        assert np.sum(env.state()[:, :, env.PREY_CHANNEL]) == env._nprey, "Prey count should be equal to nprey"
+        
+        # test global  state 
+        state = env.state()
+        assert isinstance(state, np.ndarray)
+        assert state.shape == env._state_space
+        assert all([state[agent.position[0], agent.position[1], env.PREDATOR_CHANNEL] == 1 \
+                    for agent in env._predators.values()])
+        # assert sum of ones in the state is equal to number of prey
+        # assert sum of ones in the state is equal to number of predators
+        pd = env._pred_vision
+        # print all the positions of the preys 
+        global_state = env.state()
+        prey_positions = np.argwhere(global_state[:, :, env.PREY_CHANNEL] == 1)
+        while env.agents:
+            actions = {agent_id: env.action_spaces[agent_id].sample() \
+                    for agent_id in env.agents}
+            obs, rewards, terminated, truncated, infos = env.step(actions)
+
+            assert all([observation[pd, pd, 1] == 1 for observation in obs.values()])
+            # assert sum of 1s in the predator channel is equals len(env._agents)
+            # assert sum of 1s in the prey channel is equals len(env._nprey - env._kill_count)
+            global_state = env.state()
+            assert(np.sum(global_state[:, :, 2]) == env._nprey - env._kills)
+
+        # print(f"Game ended in {env._step_count} steps") 
+        # print(f"Total kills: {env._kills}")
+        # print(f"Total rewards: {env._rewards_sum}")
+        assert env.is_terminal, "Environment should be terminal"
+        observations, sum_rewards, terminated, truncated, infos = env.last()
+        reward_hist.append(sum_rewards)
+        steps_hist.append(env._step_count)
+
+    import pandas as pd 
+    print(f"Average reward: {pd.DataFrame(reward_hist).mean()}")
+    print(f"Average steps: {np.mean(steps_hist)}")

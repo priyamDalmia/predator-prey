@@ -1,0 +1,25 @@
+algorithm_type: "independent"
+algorithm_class: "ppo"
+framework: "torch"
+training:
+   lr: 0.001 
+   train_batch_size: 4000
+evaluate:
+   eval_episodes: 100
+rollouts:
+   num_rollout_workers: 0
+wandb: 
+   wandb_init: true 
+   wandb_project: "rllib2"
+   wandb_entity: "tpn"
+   wandb_notes: "testing setup"
+env_name: "discrete_pp_v1"
+env_config:
+   map_size: 20
+   pred_vision: 2
+   prey_type: "static"
+   max_cycles: 100
+   npred: 2
+   nprey: 6
+ray:
+   init_dashboard: false
