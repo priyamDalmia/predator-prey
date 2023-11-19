@@ -1,0 +1,100 @@
+
+Name of the cluster on which the job is executing:
+	 spartan
+Number of CPUs on the allocated node: 
+	 1
+Number of CPUs requested per task: 
+	 1
+Numer of GPUs requested: 
+	 
+Requested GPU count per allocated node: 
+	 
+Requested GPU count per allocated task:
+	  
+The ID of the job allocation:
+	  53587940
+Count of processors available to the job on this node:
+	  1
+Name of the job:
+	  tst.slurm
+List of nodes allocated to the job:
+	  spartan-gpgpu079
+Total number of nodes in the job’s resource allocation:
+	  1
+Name of the partition in which the job is running:
+	  deeplearn
+Minimum memory required per allocated CPU:
+	  4000
+Requested memory per allocated GPU:
+	  
+Total amount of memory per node that the job needs:
+	  
+List of nodes allocated to the job:
+	  spartan-gpgpu079
+Total number of CPUs allocated:
+	  1
+Maximum number of MPI tasks (that’s processes): 
+	 1
+Number of tasks requested per core: 
+	 
+Number of tasks requested per GPU: 
+	 
+Number of tasks requested per node:
+	  1
+The scheduling priority (nice value) at the time of job submission. This value is propagated to the spawned processes: 
+	 0
+The MPI rank (or relative process ID) of the current process: 
+	 0
+The directory from which SBATCH was invoked: 
+	 /data/gpfs/projects/punim1355/dalmiapriyam/predator-prey
+The Hostname of the computer from which SBATCH was invoked: 
+	 spartan-login2.hpc.unimelb.edu.au
+The process ID of the corresponding task: 
+	 82916
+
+
+
+ LOADING MODULES: 
+
+
+
+
+ PYTHON SCRIPT OUTPUT: 
+
+2023-11-19 17:39:40,359	INFO worker.py:1673 -- Started a local Ray instance.
+CPU Affinity: [2]
+Traceback (most recent call last):
+  File "/data/gpfs/projects/punim1355/dalmiapriyam/predator-prey/./test_ray.py", line 18, in <module>
+    print(ray.util.state.list_actors)
+AttributeError: module 'ray.util' has no attribute 'state'
+Job ID           : 53587940
+Cluster          : spartan
+User/Project     : dalmiapriyam/punim1355
+Nodes            : 1
+Wall-clock time  : 00:00:31 / 00:05:00
+
+Displaying overall resources usage from 2023-11-19 17:39:36 to 2023-11-19 17:40:07:
+
+NODE            CPU#        TOT%   ( USR   / SYS   / WIO   / IDLE  ) 
+
+spartan-gpgpu079 : 
+                CPU# 1    : 35.2   (  26.7 /   8.5 /   0.0 /  64.8 ) 
+
+                GPU# 1    : 0.0   
+
+
+Allocated CPUs            : 1    
+  CPUs with usage <25%    : 0    
+  CPUs with usage <50%    : 1    
+  CPUs with usage >50%    : 0    
+
+
+Allocated GPUs            : 1    
+  GPUs with usage <25%    : 1    
+  GPUs with usage <50%    : 0    
+  GPUs with usage >50%    : 0    
+
+Memory used (RAM)         : 0.1%  [4MB of 4195MB]
+
+--------------------------------------------
+

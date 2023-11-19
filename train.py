@@ -32,7 +32,7 @@ def create_algo(config):
         .framework(framework=config['framework'])
         .training(
             _enable_learner_api=True,
-            model={"dim": 42, "conv_filters": [[16, [4, 4], 2]]},
+            model={"conv_filters": [[16, [4, 4], 2]]},
             lr = config['training']['lr'], 
             train_batch_size=config['training']['train_batch_size'],
         )
@@ -144,7 +144,7 @@ if __name__ == "__main__":
     with open("config.yaml", "r") as f:
         config = yaml.load(f, Loader=yaml.FullLoader)
     
-    ray.init(num_cpus=1, local_mode=True)
+    ray.init(num_cpus=2, local_mode=True)
 
     # for config define param space 
     config['env_config']['map_size'] = tune.grid_search([15, 20])
@@ -167,10 +167,6 @@ if __name__ == "__main__":
         ),
         run_config=train.RunConfig(
             stop=stop_fn,
-            verbose=1,
-            storage_path="./experiments", 
-            name="indp_ppo_tune",
-            log_to_file=True,
         ),
     )
     results = tuner.fit()
