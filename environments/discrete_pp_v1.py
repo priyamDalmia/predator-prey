@@ -1,6 +1,10 @@
 from curses import meta
 import os 
-import sys 
+import sys
+sys.path.append(os.getcwd())
+sys.path.append(os.path.join(os.getcwd(), "environments"))
+import random
+    # TODO move and build tests s 
 import numpy as np 
 from environments.common import Agent
 from typing import Any, Dict
@@ -100,13 +104,29 @@ class discrete_pp_v1(ParallelEnv):
             "nprey": self._nprey,
             "pred_vision": self._pred_vision,
             "prey_type": self._prey_type,}
+        
+        if self._npred > 2:
+            raise NotImplementedError("Only 2 predators supported for now. Redo Reward func2 for compatibility")
     
-    def reward_dist_1(self, rewards, agent_id, position):
+    def reward_dist_1(self, rewards, agent_id, agent_position, kill_position):
         rewards[agent_id] = 1 + rewards.get(agent_id, 0)
         return rewards
 
-    def reward_dist_2(self, rewards, agent_id, position):   
-        raise NotImplementedError
+    def reward_dist_2(self, rewards, agent_id, agent_position, kill_position):  
+        kill_area = self._global_state[
+            kill_position[0] - 2: kill_position[0] + 3,
+            kill_position[1] - 2: kill_position[1] + 3,
+            self.PREDATOR_CHANNEL].copy()
+        if kill_area.sum() > 1:
+            self._assists += 1
+            for _id in self._possible_agents:
+                rewards[_id] = 0.75 + rewards.get(_id, 0)
+                if agent_id != _id:
+                    self._assists_by_id[_id] = 1 + self._assists_by_id.get(_id, 0)
+            return rewards
+        else:
+            rewards[agent_id] = 1 + rewards.get(agent_id, 0)
+            return rewards
     
     def reset(
         self,
@@ -124,6 +144,9 @@ class discrete_pp_v1(ParallelEnv):
         self._truncated = {}
         self._rewards_sum = {}
         self._kills = 0
+        self._assists = 0
+        self._kills_by_id = {}
+        self._assists_by_id = {}
         self._agents = self._possible_agents.copy()
         self._predators = {}
         self._step_count = 0
@@ -184,8 +207,10 @@ class discrete_pp_v1(ParallelEnv):
 
         if self._prey_type == "random":
             raise NotImplementedError("Random moving prey")
-        
-        for agent_id, action in actions.items():
+
+        actions_list = list(actions.items())
+        random.shuffle(actions_list) 
+        for agent_id, action in actions_list:
             # get position of the predators 
             agent = self._predators[agent_id]
             assert agent.is_alive and not self.is_terminal, f"Dead agent in self._agents list for game!"
@@ -194,7 +219,7 @@ class discrete_pp_v1(ParallelEnv):
 
             # if new position is wall; do not take action
             if self._global_state[next_position[0], next_position[1], self.GROUND_CHANNEL] == 1:
-                rewards[agent_id] = float(0)
+                rewards[agent_id] = rewards.get(agent_id, 0)
                 # if wall, do not move or do anything.
                 # and reward is zero 
             elif self._global_state[next_position[0], next_position[1], self.PREY_CHANNEL] == 1:
@@ -202,14 +227,15 @@ class discrete_pp_v1(ParallelEnv):
                 # kill the prey 
                 # give reward acording to distribution
                 self._kills += 1
-                rewards = self._reward_func(rewards, agent_id, next_position)
+                self._kills_by_id[agent_id] = 1 + self._kills_by_id.get(agent_id, 0)
+                rewards = self._reward_func(rewards, agent_id, position, next_position)
                 self._global_state[next_position[0], next_position[1], self.PREY_CHANNEL] = 0
                 # move the predator 
                 agent.move(next_position)
             else:
                 # update to new position 
                 # and reward is zero 
-                rewards[agent_id] = float(0)
+                rewards[agent_id] = rewards.get(agent_id, 0)
                 agent.move(next_position)
         
         arr = np.zeros(
@@ -321,13 +347,9 @@ class discrete_pp_v1(ParallelEnv):
         return self
 
 if __name__ == "__main__":
-    import os 
-    import sys
-    sys.path.append(os.getcwd())
-    # TODO move and build tests 
     config = dict(
-        map_size = 20,
-        reward_type = "type_1",
+        map_size = 15,
+        reward_type = "type_2",
         max_cycles = 10000,
         npred = 2,
         pred_vision = 2,
@@ -354,7 +376,8 @@ if __name__ == "__main__":
 
     reward_hist = []
     steps_hist = []
-    for i in range(100):
+    assists_hist = []
+    for i in range(1000):
         # test reset
         obs, infos = env.reset()
         assert isinstance(obs, dict)
@@ -390,14 +413,26 @@ if __name__ == "__main__":
             global_state = env.state()
             assert(np.sum(global_state[:, :, 2]) == env._nprey - env._kills)
 
+        observations, sum_rewards, terminated, truncated, infos = env.last()
         # print(f"Game ended in {env._step_count} steps") 
         # print(f"Total kills: {env._kills}")
         # print(f"Total rewards: {env._rewards_sum}")
+        if env._reward_type == "type_2":
+            assert env._kills == env._nprey, "All preys should be dead"
+            assert sum(sum_rewards.values()) ==\
+                  ((env._assists*1.5)+\
+                   ((env._kills - env._assists)*1)),\
+                      "Total rewards should be equal to number of preys killed"
+        else:
+            # sum of rewards is == kills 
+            assert env._kills == sum(sum_rewards.values()), "All preys should be dead"
+            assert env._kills == env._nprey, "All preys should be dead"
         assert env.is_terminal, "Environment should be terminal"
-        observations, sum_rewards, terminated, truncated, infos = env.last()
+        assists_hist.append(env._assists)
         reward_hist.append(sum_rewards)
         steps_hist.append(env._step_count)
 
     import pandas as pd 
     print(f"Average reward: {pd.DataFrame(reward_hist).mean()}")
     print(f"Average steps: {np.mean(steps_hist)}")
+    print(f"Average assists: {np.mean(assists_hist)}")
