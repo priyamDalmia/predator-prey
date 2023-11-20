@@ -22,38 +22,69 @@ def create_algo(config):
     env_creator = lambda cfg: ParallelPettingZooEnv(discrete_pp_v1(**cfg))
     register_env(config['env_name'], lambda config: env_creator(config))
     env = env_creator(config['env_config'])
-    algo_config = (
-        PPOConfig()
-        .framework(framework=config['framework'])
-        .training(
-            _enable_learner_api=True,
-            model={"conv_filters": [[16, [4, 4], 2]]},
-            lr = config['training']['lr'], 
-            train_batch_size=config['training']['train_batch_size'],
-        )
-        .environment(
-            config['env_name'],
-            env_config=config['env_config'],
-        )
-        .rollouts(
-            num_rollout_workers=config['rollouts']['num_rollout_workers'],
-            create_env_on_local_worker = True,
-        )
-        .multi_agent(
-            policies={
-                agent_id: (
-                    None,
-                    env.observation_space[agent_id], # type: ignore
-                    env.action_space[agent_id], # type: ignore
-                    {},
-                )
-                for agent_id in env.par_env.possible_agents
-            },
-            policy_mapping_fn=(lambda agent_id, *args, **kwargs: agent_id),
-            policies_to_train=list(env.par_env.possible_agents),
-        )
-        .rl_module(_enable_rl_module_api=True)
-    )
+
+    if config['algorithm_type'] == 'independent':
+        algo_config = (
+            PPOConfig()
+            .framework(framework=config['framework'])
+            .training(
+                _enable_learner_api=True,
+                model={"conv_filters": [[16, [4, 4], 2]]},
+                lr = config['training']['lr'], 
+                train_batch_size=config['training']['train_batch_size'],
+            )
+            .environment(
+                config['env_name'],
+                env_config=config['env_config'],
+            )
+            .rollouts(
+                num_rollout_workers=config['rollouts']['num_rollout_workers'],
+                create_env_on_local_worker = True,
+            )
+            .multi_agent(
+                policies={
+                    agent_id: (
+                        None,
+                        env.observation_space[agent_id], # type: ignore
+                        env.action_space[agent_id], # type: ignore
+                        {},
+                    )
+                    for agent_id in env.par_env.possible_agents
+                },
+                policy_mapping_fn=(lambda agent_id, *args, **kwargs: agent_id),
+                policies_to_train=list(env.par_env.possible_agents),
+            )
+            .rl_module(_enable_rl_module_api=True))
+    elif config['algorithm_type'] == 'centralized':
+        raise NotImplementedError
+    elif config['algorithm_type'] == 'shared':
+        algo_config = (
+            PPOConfig()
+            .framework(framework=config['framework'])
+            .training(
+                _enable_learner_api=True,
+                model={"conv_filters": [[16, [4, 4], 2]]},
+                lr = config['training']['lr'], 
+                train_batch_size=config['training']['train_batch_size'],
+            )
+            .environment(
+                config['env_name'],
+                env_config=config['env_config'],
+            )
+            .rollouts(
+                num_rollout_workers=config['rollouts']['num_rollout_workers'],
+                create_env_on_local_worker = True,
+            )
+            .multi_agent(
+                policies={
+                        "shared_policy"
+                },
+                policy_mapping_fn=(lambda agent_id, *args, **kwargs: "shared_policy"),
+            )
+            .rl_module(_enable_rl_module_api=True))
+    else:
+        raise NotImplementedError
+
     algo = algo_config.build()
     return algo
 
@@ -142,9 +173,11 @@ if __name__ == "__main__":
     ray.init()
     
     # # for config define param space 
-    config['env_config']['map_size'] = tune.grid_search([15, 20])
-    config['training']['train_batch_size'] = tune.grid_search([200, 500, 1000])
-    config['env_config']['pred_vision'] = tune.grid_search([2, 3]) 
+    config['algorithm_type'] = tune.grid_search(['independent', 'shared'])
+    config['env_config']['reward_type'] = tune.grid_search(['type_1', 'type_2'])
+    # config['env_config']['map_size'] = tune.grid_search([15, 20])
+    # config['training']['train_batch_size'] = tune.grid_search([200, 500, 1000])
+    # config['env_config']['pred_vision'] = tune.grid_search([2, 3]) 
     def stop_fn(trial_id, result):
         # Stop training if episode length is good enough
         stop = result['episodes_total'] > 5000
