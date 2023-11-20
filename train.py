@@ -63,7 +63,7 @@ def create_algo(config):
             .framework(framework=config['framework'])
             .training(
                 _enable_learner_api=True,
-                model={"conv_filters": [[16, [4, 4], 2]]},
+                model={"conv_filters": [[16, [4, 4], 2], [32, [3, 3], 1]]},
                 lr = config['training']['lr'], 
                 train_batch_size=config['training']['train_batch_size'],
             )
@@ -191,7 +191,7 @@ if __name__ == "__main__":
         tune_config=tune.TuneConfig(
             metric="episode_len_mean",
             mode="min",
-            num_samples=5,
+            num_samples=2,
             max_concurrent_trials=6,
         ),
         run_config=train.RunConfig(

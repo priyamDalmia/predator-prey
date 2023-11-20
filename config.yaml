@@ -2,8 +2,8 @@ algorithm_type: "independent"
 algorithm_class: "ppo"
 framework: "torch"
 training:
-   lr: 0.001 
-   train_batch_size: 4000
+   lr: 0.0001 
+   train_batch_size: 500
 evaluate:
    eval_episodes: 100
 rollouts:
@@ -15,7 +15,7 @@ wandb:
    wandb_notes: "testing setup"
 env_name: "discrete_pp_v1"
 env_config:
-   map_size: 20
+   map_size: 15
    pred_vision: 2
    prey_type: "static"
    max_cycles: 100

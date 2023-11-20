@@ -6,7 +6,7 @@
 #SBATCH --gres=gpu:1
 #SBATCH --qos=gpgpudeeplearn
 #SBATCH --partition=deeplearn
-#SBATCH --time=05:00:00
+#SBATCH --time=20:00:00
 #SBATCH -o ./slurmoutput/train-%j.out
 echo 
 echo -e "Name of the cluster on which the job is executing:\n\t $SLURM_CLUSTER_NAME"
