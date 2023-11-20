@@ -1,0 +1,90 @@
+
+Name of the cluster on which the job is executing:
+	 spartan
+Number of CPUs on the allocated node: 
+	 6
+Number of CPUs requested per task: 
+	 6
+Numer of GPUs requested: 
+	 
+Requested GPU count per allocated node: 
+	 
+Requested GPU count per allocated task:
+	  
+The ID of the job allocation:
+	  53616706
+Count of processors available to the job on this node:
+	  6
+Name of the job:
+	  tst.slurm
+List of nodes allocated to the job:
+	  spartan-gpgpu135
+Total number of nodes in the job’s resource allocation:
+	  1
+Name of the partition in which the job is running:
+	  deeplearn
+Minimum memory required per allocated CPU:
+	  4000
+Requested memory per allocated GPU:
+	  
+Total amount of memory per node that the job needs:
+	  
+List of nodes allocated to the job:
+	  spartan-gpgpu135
+Total number of CPUs allocated:
+	  1
+Maximum number of MPI tasks (that’s processes): 
+	 1
+Number of tasks requested per core: 
+	 
+Number of tasks requested per GPU: 
+	 
+Number of tasks requested per node:
+	  1
+The scheduling priority (nice value) at the time of job submission. This value is propagated to the spawned processes: 
+	 0
+The MPI rank (or relative process ID) of the current process: 
+	 0
+The directory from which SBATCH was invoked: 
+	 /data/gpfs/projects/punim1355/dalmiapriyam/predator-prey
+The Hostname of the computer from which SBATCH was invoked: 
+	 spartan-login2.hpc.unimelb.edu.au
+The process ID of the corresponding task: 
+	 132882
+
+
+
+ LOADING MODULES: 
+
+
+
+
+ PYTHON SCRIPT OUTPUT: 
+
+2023-11-20 14:24:32,964	WARNING __init__.py:10 -- PG has/have been moved to `rllib_contrib` and will no longer be maintained by the RLlib team. You can still use it/them normally inside RLlib util Ray 2.8, but from Ray 2.9 on, all `rllib_contrib` algorithms will no longer be part of the core repo, and will therefore have to be installed separately with pinned dependencies for e.g. ray[rllib] and other packages! See https://github.com/ray-project/ray/tree/master/rllib_contrib#rllib-contrib for more information on the RLlib contrib effort.
+2023-11-20 14:24:34,874	INFO worker.py:1673 -- Started a local Ray instance.
+2023-11-20 14:24:36,887	INFO tune.py:595 -- [output] This will use the new output engine with verbosity 1. To disable the new output and use the legacy output engine, set the environment variable RAY_AIR_NEW_OUTPUT=0. For more information, please see https://github.com/ray-project/ray/issues/36949
+[36m(pid=134573)[0m 2023-11-20 14:24:40,096	WARNING __init__.py:10 -- PG has/have been moved to `rllib_contrib` and will no longer be maintained by the RLlib team. You can still use it/them normally inside RLlib util Ray 2.8, but from Ray 2.9 on, all `rllib_contrib` algorithms will no longer be part of the core repo, and will therefore have to be installed separately with pinned dependencies for e.g. ray[rllib] and other packages! See https://github.com/ray-project/ray/tree/master/rllib_contrib#rllib-contrib for more information on the RLlib contrib effort.
+[36m(train_algo pid=134573)[0m /data/gpfs/projects/punim1355/dalmiapriyam/predator-prey/.venv/lib/python3.10/site-packages/ray/rllib/algorithms/algorithm.py:484: RayDeprecationWarning: This API is deprecated and may be removed in future Ray releases. You could suppress this warning by setting env variable PYTHONWARNINGS="ignore::DeprecationWarning"
+[36m(train_algo pid=134573)[0m `UnifiedLogger` will be removed in Ray 2.7.
+[36m(train_algo pid=134573)[0m   return UnifiedLogger(config, logdir, loggers=None)
+[36m(train_algo pid=134573)[0m /data/gpfs/projects/punim1355/dalmiapriyam/predator-prey/.venv/lib/python3.10/site-packages/ray/tune/logger/unified.py:53: RayDeprecationWarning: This API is deprecated and may be removed in future Ray releases. You could suppress this warning by setting env variable PYTHONWARNINGS="ignore::DeprecationWarning"
+[36m(train_algo pid=134573)[0m The `JsonLogger interface is deprecated in favor of the `ray.tune.json.JsonLoggerCallback` interface and will be removed in Ray 2.7.
+[36m(train_algo pid=134573)[0m   self._loggers.append(cls(self.config, self.logdir, self.trial))
+[36m(train_algo pid=134573)[0m /data/gpfs/projects/punim1355/dalmiapriyam/predator-prey/.venv/lib/python3.10/site-packages/ray/tune/logger/unified.py:53: RayDeprecationWarning: This API is deprecated and may be removed in future Ray releases. You could suppress this warning by setting env variable PYTHONWARNINGS="ignore::DeprecationWarning"
+[36m(train_algo pid=134573)[0m The `CSVLogger interface is deprecated in favor of the `ray.tune.csv.CSVLoggerCallback` interface and will be removed in Ray 2.7.
+[36m(train_algo pid=134573)[0m   self._loggers.append(cls(self.config, self.logdir, self.trial))
+[36m(train_algo pid=134573)[0m /data/gpfs/projects/punim1355/dalmiapriyam/predator-prey/.venv/lib/python3.10/site-packages/ray/tune/logger/unified.py:53: RayDeprecationWarning: This API is deprecated and may be removed in future Ray releases. You could suppress this warning by setting env variable PYTHONWARNINGS="ignore::DeprecationWarning"
+[36m(train_algo pid=134573)[0m The `TBXLogger interface is deprecated in favor of the `ray.tune.tensorboardx.TBXLoggerCallback` interface and will be removed in Ray 2.7.
+[36m(train_algo pid=134573)[0m   self._loggers.append(cls(self.config, self.logdir, self.trial))
+[36m(train_algo pid=134573)[0m Install gputil for GPU system monitoring.
+[36m(train_algo pid=134573)[0m Already logged into W&B.
+[36m(train_algo pid=134573)[0m wandb: Currently logged in as: theputernerdai (tpn). Use `wandb login --relogin` to force relogin
+[36m(train_algo pid=134574)[0m wandb: Tracking run with wandb version 0.16.0
+[36m(train_algo pid=134574)[0m wandb: Run data is saved locally in /home/dalmiapriyam/ray_results/train_algo_2023-11-20_14-24-36/train_algo_550c2_00001_1_map_size=20,pred_vision=2,train_batch_size=200_2023-11-20_14-24-36/wandb/run-20231120_142442-550c2_00001
+[36m(train_algo pid=134574)[0m wandb: Run `wandb offline` to turn off syncing.
+[36m(train_algo pid=134574)[0m wandb: Syncing run train_algo_550c2_00001
+[36m(train_algo pid=134574)[0m wandb: ⭐️ View project at https://wandb.ai/tpn/rllib2
+[36m(train_algo pid=134574)[0m wandb: 🚀 View run at https://wandb.ai/tpn/rllib2/runs/550c2_00001
+[36m(train_algo pid=134575)[0m wandb: - Waiting for wandb.init()...
+[36m(train_algo pid=134575)[0m wandb: \ Waiting for wandb.init()...
