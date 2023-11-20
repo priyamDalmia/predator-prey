@@ -21,12 +21,7 @@ warnings.filterwarnings("ignore")
 def create_algo(config):
     env_creator = lambda cfg: ParallelPettingZooEnv(discrete_pp_v1(**cfg))
     register_env(config['env_name'], lambda config: env_creator(config))
-    env = env_creator(
-        dict(
-            prey_type="static",
-        )
-    )
-    env = env_creator(config)
+    env = env_creator(config['env_config'])
     algo_config = (
         PPOConfig()
         .framework(framework=config['framework'])
@@ -144,12 +139,12 @@ if __name__ == "__main__":
     with open("config.yaml", "r") as f:
         config = yaml.load(f, Loader=yaml.FullLoader)
     
-    ray.init(num_cpus=2, local_mode=True)
-
-    # for config define param space 
+    ray.init()
+    
+    # # for config define param space 
     config['env_config']['map_size'] = tune.grid_search([15, 20])
     config['training']['train_batch_size'] = tune.grid_search([200, 500, 1000])
-    config['env_config']['pred_vision'] = tune.grid_search([2,3])
+    config['env_config']['pred_vision'] = tune.grid_search([2, 3]) 
     def stop_fn(trial_id, result):
         # Stop training if episode length is good enough
         stop = result['episodes_total'] > 5000
@@ -158,12 +153,13 @@ if __name__ == "__main__":
             # TODO all other calulations here - post training 
         return stop
     tuner = tune.Tuner(
-        train_algo, 
+        tune.with_resources(train_algo, {"cpu": 1, "gpu": 0}),
         param_space  = config,
         tune_config=tune.TuneConfig(
-            num_samples=3,
             metric="episode_len_mean",
             mode="min",
+            num_samples=5,
+            max_concurrent_trials=6,
         ),
         run_config=train.RunConfig(
             stop=stop_fn,

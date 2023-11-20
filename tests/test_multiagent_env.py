@@ -4,67 +4,74 @@ from environments.discrete_pp_v1 import discrete_pp_v1
 from ray.rllib.env import ParallelPettingZooEnv
 from ray.tune.registry import register_env
 
-def test_parallel_api():
-    config = dict(
+CONFIG = dict(
+    env_name = "discrete_pp",
+    framework = "torch",
+    env_config = dict(
         map_size = 20,
         reward_type = "type_1",
         max_cycles = 10000,
-        npred = 2,
+        npred = 3,
         pred_vision = 2,
         nprey = 6,
         prey_type = "static",
         render_mode = None
+    ),
+    training = dict(
+        lr = 0.0001,
+        train_batch_size = 256,
+    ),
+    rollouts = dict(
+        num_rollout_workers = 2,
     )
-    env = discrete_pp_v1(config)
-    env = ParallelPettingZooEnv(env)
-    assert isinstance(env, ParallelPettingZooEnv)         
-
-
-def test_multi_agent_env():
-    env_creator = lambda config: ParallelPettingZooEnv(discrete_pp_v1(config))
-    # register that way to make the environment under an rllib name
-    register_env('discrete_pp', lambda config: env_creator(config))
-    return env_creator({})
+) 
 
 def test_independent_algo():
-    env_creator = lambda config: ParallelPettingZooEnv(discrete_pp_v1(config))  
-    register_env('discrete_pp', lambda config: env_creator(config))
-    env = env_creator({})
-    
     from ray.rllib.algorithms.ppo import PPOConfig
+    config = CONFIG.copy()
+    env_creator = lambda cfg: ParallelPettingZooEnv(discrete_pp_v1(**cfg))
+    register_env(config['env_name'], lambda config: env_creator(config))
+    env = env_creator(config['env_config'])
     algo_config = (
         PPOConfig()
-        .framework(
-            framework="torch")
-        .environment(
-            "discrete_pp",
-            env_config=dict(
-                map_size = 20,
-                reward_type = "type_1",
-                max_cycles = 10000,
-                npred = 2,
-                pred_vision = 2,
-                nprey = 6,
-                prey_type = "static",
-                render_mode = None
-            ))
-        .rollouts(
-            num_rollout_workers=2,)
-        .resources(
-            num_gpus=0)
-        .multi_agent(
-            policies=env.par_env.possible_agents,
-            policy_mapping_fn=(lambda agent_id, *args, **kwargs: agent_id),
+        .framework(framework=config['framework'])
+        .training(
+            _enable_learner_api=True,
+            model={"conv_filters": [[16, [4, 4], 2]]},
+            lr = config['training']['lr'], 
+            train_batch_size=config['training']['train_batch_size'],
         )
+        .environment(
+            config['env_name'],
+            env_config=config['env_config'],
+        )
+        .rollouts(
+            num_rollout_workers=config['rollouts']['num_rollout_workers'],
+            create_env_on_local_worker = True,
+        )
+        .multi_agent(
+            policies={
+                agent_id: (
+                    None,
+                    env.observation_space[agent_id], # type: ignore
+                    env.action_space[agent_id], # type: ignore
+                    {},
+                )
+                for agent_id in env.par_env.possible_agents
+            },
+            policy_mapping_fn=(lambda agent_id, *args, **kwargs: agent_id),
+            policies_to_train=list(env.par_env.possible_agents),
+        )
+        .rl_module(_enable_rl_module_api=True)
     )
-
     algo = algo_config.build()
-    observations, infos = env.par_env.reset() 
+    env = algo.workers.local_worker().env.par_env
+    observations, infos = env.reset() 
     steps = 0
-    while env.par_env.agents:
+    while env.agents:
         steps +=1 
         actions = {agent:algo.get_policy(agent).compute_single_action(observations[agent])[0] \
-               for agent in env.par_env.agents}
+               for agent in env.agents}
         # actions = {agent: env.action_space(agent).sample() for agent in env.agents}
         observations, rewards, terminations, truncations, infos = env.step(actions)
         msg = f"""step: {steps}\n {print([(k, f"{v:.2f}") for k,v in rewards.items()])}"""
