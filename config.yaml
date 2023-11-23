@@ -21,6 +21,7 @@ evaluate:
    eval_episodes: 100
 rollouts:
    num_rollout_workers: 0
+   batch_mode: "complete_episodes"
 wandb: 
    wandb_init: true 
    wandb_project: "rllib3"

@@ -1109,3 +1109,68 @@ wandb: Syncing run devout-aardvark-49
 wandb: ⭐️ View project at https://wandb.ai/tpn/rllib3
 wandb: 🚀 View run at https://wandb.ai/tpn/rllib3/runs/weau8pib
 [36m(train_algo pid=91575)[0m Install gputil for GPU system monitoring.
+2023-11-24 00:50:33,178	INFO wandb.py:307 -- Already logged into W&B.
+wandb: - 0.005 MB of 0.005 MB uploadedwandb: \ 0.005 MB of 0.005 MB uploadedwandb: | 0.005 MB of 0.108 MB uploadedwandb: / 0.108 MB of 0.108 MB uploadedwandb: - 0.108 MB of 0.108 MB uploadedwandb: \ 0.108 MB of 0.108 MB uploadedwandb:                                                                                
+wandb: 
+wandb: Run history:
+wandb:      episode_len_mean ▇▃█▂█▇█▄▇▂█▄▆██▆▁▃█▇▇█▃▂▆▄███▆█▂████▁▄█▂
+wandb:   episode_reward_mean ▆█▁█▃▆▃█▆█▄█▆▂▂▆██▄▆▆▄██▆█▄▄▄▆▅█▄▄▄▄█▇▅█
+wandb:        episodes_total ▅▆▁▆▂▅▂▇▅▆▂▇▅▁▁▅▆█▂▅▅▂█▆▅█▂▂▂▅▂▇▂▂▂▂▇█▂▇
+wandb: num_env_steps_sampled ▅▅▁▅▂▅▂▇▅▅▂█▅▁▁▅▅█▂▅▅▂█▆▅█▂▂▂▅▂▆▂▂▂▂▆█▂▆
+wandb: num_env_steps_trained ▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁
+wandb:          time_total_s ▅▄▁▄▂▅▂▇▅▄▂█▅▁▁▅▄█▂▅▅▂█▄▅█▁▂▁▅▂▄▂▂▂▂▅█▂▅
+wandb:    training_iteration ▅▅▁▅▂▅▂▇▅▅▂█▅▁▁▅▅█▂▅▅▂█▆▅█▂▂▂▅▂▆▂▂▂▂▆█▂▆
+wandb: 
+wandb: Run summary:
+wandb:      episode_len_mean 89.0
+wandb:   episode_reward_mean 4.68
+wandb:        episodes_total 6153
+wandb: num_env_steps_sampled 592000
+wandb: num_env_steps_trained 0
+wandb:          time_total_s 2182.32849
+wandb:    training_iteration 2960
+wandb: 
+wandb: 🚀 View run devout-aardvark-49 at: https://wandb.ai/tpn/rllib3/runs/weau8pib
+wandb: ️⚡ View job at https://wandb.ai/tpn/rllib3/jobs/QXJ0aWZhY3RDb2xsZWN0aW9uOjExODA1Nzg0NQ==/version_details/v8
+wandb: Synced 5 W&B file(s), 0 media file(s), 0 artifact file(s) and 0 other file(s)
+wandb: Find logs at: ./wandb/run-20231124_004423-weau8pib/logs
+wandb: - Waiting for wandb.init()...wandb: \ Waiting for wandb.init()...wandb: Tracking run with wandb version 0.16.0
+wandb: Run data is saved locally in /data/gpfs/projects/punim1355/dalmiapriyam/predator-prey/wandb/run-20231124_005033-oo9x3frc
+wandb: Run `wandb offline` to turn off syncing.
+wandb: Syncing run polished-plant-50
+wandb: ⭐️ View project at https://wandb.ai/tpn/rllib3
+wandb: 🚀 View run at https://wandb.ai/tpn/rllib3/runs/oo9x3frc
+[36m(train_algo pid=91574)[0m Install gputil for GPU system monitoring.
+2023-11-24 00:55:19,774	INFO wandb.py:307 -- Already logged into W&B.
+wandb: - 0.005 MB of 0.005 MB uploadedwandb: \ 0.005 MB of 0.005 MB uploadedwandb: | 0.005 MB of 0.005 MB uploadedwandb: / 0.005 MB of 0.005 MB uploadedwandb: - 0.014 MB of 0.096 MB uploaded (0.001 MB deduped)wandb: \ 0.016 MB of 0.096 MB uploaded (0.001 MB deduped)wandb: | 0.016 MB of 0.096 MB uploaded (0.001 MB deduped)wandb: / 0.096 MB of 0.096 MB uploaded (0.001 MB deduped)wandb:                                                                                
+wandb: W&B sync reduced upload amount by 1.6%             
+wandb: 
+wandb: Run history:
+wandb:      episode_len_mean ██▃█▇█▂▆██▆▇▂██▂▇▆▇▂▇▆█▇▆▇▂█▆▂▂▁▁▇█▁▁▇▅█
+wandb:   episode_reward_mean ▂▅▇▄▅▅█▆▅▁▆▅█▁▁█▆▇▅█▅▇▂▅▇▅█▅▆████▅▂██▅▇▂
+wandb:        episodes_total ▁▂▇▂▂▃▇▅▃▁▆▂▇▁▁▇▂▆▃█▂▆▁▂▆▃█▃▆████▂▁██▃▆▁
+wandb: num_env_steps_sampled ▁▂▇▂▂▃▇▇▃▁▇▂▇▁▁█▃▇▃█▃▇▁▃▇▃█▃▇████▃▁██▃▇▂
+wandb: num_env_steps_trained ▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁
+wandb:          time_total_s ▁▂▆▂▂▃▆▇▃▁▇▂▆▁▁▆▂█▄▆▂█▁▂█▄▆▄█▆▆▆▇▃▂▇▇▃█▂
+wandb:    training_iteration ▁▂▇▂▂▃▇▇▃▁▇▂▇▁▁█▃▇▃█▃▇▁▃▇▃█▃▇████▃▁██▃▇▂
+wandb: 
+wandb: Run summary:
+wandb:      episode_len_mean 95.26
+wandb:   episode_reward_mean 4.22
+wandb:        episodes_total 2219
+wandb: num_env_steps_sampled 218000
+wandb: num_env_steps_trained 0
+wandb:          time_total_s 592.50573
+wandb:    training_iteration 1090
+wandb: 
+wandb: 🚀 View run polished-plant-50 at: https://wandb.ai/tpn/rllib3/runs/oo9x3frc
+wandb: ️⚡ View job at https://wandb.ai/tpn/rllib3/jobs/QXJ0aWZhY3RDb2xsZWN0aW9uOjExODA1Nzg0NQ==/version_details/v8
+wandb: Synced 5 W&B file(s), 0 media file(s), 2 artifact file(s) and 0 other file(s)
+wandb: Find logs at: ./wandb/run-20231124_005033-oo9x3frc/logs
+wandb: - Waiting for wandb.init()...wandb: \ Waiting for wandb.init()...wandb: Tracking run with wandb version 0.16.0
+wandb: Run data is saved locally in /data/gpfs/projects/punim1355/dalmiapriyam/predator-prey/wandb/run-20231124_005519-9mouh35f
+wandb: Run `wandb offline` to turn off syncing.
+wandb: Syncing run upbeat-dust-51
+wandb: ⭐️ View project at https://wandb.ai/tpn/rllib3
+wandb: 🚀 View run at https://wandb.ai/tpn/rllib3/runs/9mouh35f
+[36m(train_algo pid=91577)[0m Install gputil for GPU system monitoring.
