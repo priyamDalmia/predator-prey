@@ -173,7 +173,7 @@ class wandbCallback(Callback):
             time_total_s=result["time_total_s"],
             policy_reward_mean=result["policy_reward_mean"],
         ) 
-        if config['wandb']['wandb_init']:
+        if wandb.run is not None:
             wandb.log(log_dict)
         return super().on_trial_result(iteration, trials, trial, result, **info)
     
@@ -208,16 +208,17 @@ def main():
     with open("config.yaml", "r") as f:
         config = yaml.load(f, Loader=yaml.FullLoader)    
     register_env(config['env_name'], lambda config: env_creator(config))
-    
+     
     def stop_fn(trial_id, result):
         # Stop training if episode total 
-        stop = result['episodes_total'] > config['training']['max_episodes']
+        stop = result['episodes_total'] > 10000
         return stop
     config['stop_fn'] = stop_fn 
 
     if config['tune']['tune']: 
         # SET HYPERPARAMETERS for TUNING
         config['algorithm_type'] = tune.grid_search(['independent', 'shared'])
+        config['training']['model']['conv_filters'] = tune.grid_search([[[16, [2, 2], 2], [16, [4, 4], 1]], [[16, [2, 2], 2]]])
         config['training']['model']['fcnet_hiddens'] = tune.grid_search([[256, 256], [512, 512]])
         config['training']['model']['_disable_preprocessor_api'] = tune.grid_search([True, False])
         config['training']['model']['conv_activation'] = tune.grid_search(['tanh', 'relu'])
@@ -229,6 +230,7 @@ def main():
             metric="episode_len_mean",
             mode="min",
             num_samples=config['tune']['num_samples'],
+            max_concurrent_trials=config['tune']['max_concurrent_trials'],
         ),
         run_config=train.RunConfig(
             stop=stop_fn,
@@ -243,51 +245,51 @@ def main():
     return 
 
 if __name__ == "__main__":
-    # main()
+    main()
 
-    # ## DEBUGGING
-    ray.init(
-        num_cpus=1,
-    )
-    # load the yaml fiw we 
-    with open("config.yaml", "r") as f:
-        config = yaml.load(f, Loader=yaml.FullLoader)
-    register_env(config['env_name'], lambda config: env_creator(config))
+    # # ## DEBUGGING
+    # ray.init(
+    #     num_cpus=1,
+    # )
+    # # load the yaml fiw we 
+    # with open("config.yaml", "r") as f:
+    #     config = yaml.load(f, Loader=yaml.FullLoader)
+    # register_env(config['env_name'], lambda config: env_creator(config))
     
-    # # for config define param space 
-    # algo = create_algo(config)
-    # algo.train()
-    # results = algo.evaluate()
-    # print(results)
-    config['algorithm_type'] = tune.grid_search(['independent', 'shared'])
-    # config['env_config']['reward_type'] = tune.grid_search(['type_1', 'type_2'])
-    # config['env_config']['map_size'] = tune.grid_search([15, 20])
-    # config['training']['train_batch_size'] = tune.grid_search([200, 500, 1000])
-    # config['env_config']['pred_vision'] = tune.grid_search([2, 3]) 
-    def stop_fn(trial_id, result):
-        # Stop training if episode total 
-        stop = result['episodes_total'] > 50
-        return stop
-    config['stop_fn'] = stop_fn 
+    # # # for config define param space 
+    # # algo = create_algo(config)
+    # # algo.train()
+    # # results = algo.evaluate()
+    # # print(results)
+    # config['algorithm_type'] = tune.grid_search(['independent', 'shared'])
+    # # config['env_config']['reward_type'] = tune.grid_search(['type_1', 'type_2'])
+    # # config['env_config']['map_size'] = tune.grid_search([15, 20])
+    # # config['training']['train_batch_size'] = tune.grid_search([200, 500, 1000])
+    # # config['env_config']['pred_vision'] = tune.grid_search([2, 3]) 
+    # def stop_fn(trial_id, result):
+    #     # Stop training if episode total 
+    #     stop = result['episodes_total'] > 50
+    #     return stop
+    # config['stop_fn'] = stop_fn 
 
-    tuner = tune.Tuner(
-        train_algo,
-        param_space  = config,
-        tune_config=tune.TuneConfig(
-            metric="episode_len_mean",
-            mode="min",
-            num_samples=5,
-            max_concurrent_trials=6,
-        ),
-        run_config=train.RunConfig(
-            stop=stop_fn,
-            storage_path=str(Path('./experiments').absolute()),
-            log_to_file=True,
-            callbacks=[wandbCallback()],
-        ),
-    )
-    results = tuner.fit()
-    for res in results:
-        print(res.metrics_dataframe)
+    # tuner = tune.Tuner(
+    #     train_algo,
+    #     param_space  = config,
+    #     tune_config=tune.TuneConfig(
+    #         metric="episode_len_mean",
+    #         mode="min",
+    #         num_samples=5,
+    #         max_concurrent_trials=6,
+    #     ),
+    #     run_config=train.RunConfig(
+    #         stop=stop_fn,
+    #         storage_path=str(Path('./experiments').absolute()),
+    #         log_to_file=True,
+    #         callbacks=[wandbCallback()],
+    #     ),
+    # )
+    # results = tuner.fit()
+    # for res in results:
+    #     print(res.metrics_dataframe)
 
-    # sys.exit(0)
+    # # sys.exit(0)

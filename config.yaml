@@ -3,8 +3,9 @@ algorithm_class: "ppo"
 framework: "torch"
 tune:
    tune: true # if true, tune hyperparameters in main!
-   num_samples: 1
-   max_episodes: 100000
+   num_samples: 5
+   max_episodes: 10000
+   max_concurrent_trials: 5
 training:
    lr: 0.0001
    use_critic: true
@@ -21,7 +22,7 @@ evaluate:
 rollouts:
    num_rollout_workers: 0
 wandb: 
-   wandb_init: false 
+   wandb_init: true 
    wandb_project: "rllib3"
    wandb_entity: "tpn"
    wandb_notes: "testing setup"

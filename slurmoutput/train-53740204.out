@@ -1,0 +1,516 @@
+
+Name of the cluster on which the job is executing:
+	 spartan
+Number of CPUs on the allocated node: 
+	 6
+Number of CPUs requested per task: 
+	 6
+Numer of GPUs requested: 
+	 
+Requested GPU count per allocated node: 
+	 
+Requested GPU count per allocated task:
+	  
+The ID of the job allocation:
+	  53740204
+Count of processors available to the job on this node:
+	  6
+Name of the job:
+	  tst.slurm
+List of nodes allocated to the job:
+	  spartan-gpgpu091
+Total number of nodes in the job’s resource allocation:
+	  1
+Name of the partition in which the job is running:
+	  deeplearn
+Minimum memory required per allocated CPU:
+	  4000
+Requested memory per allocated GPU:
+	  
+Total amount of memory per node that the job needs:
+	  
+List of nodes allocated to the job:
+	  spartan-gpgpu091
+Total number of CPUs allocated:
+	  1
+Maximum number of MPI tasks (that’s processes): 
+	 1
+Number of tasks requested per core: 
+	 
+Number of tasks requested per GPU: 
+	 
+Number of tasks requested per node:
+	  1
+The scheduling priority (nice value) at the time of job submission. This value is propagated to the spawned processes: 
+	 0
+The MPI rank (or relative process ID) of the current process: 
+	 0
+The directory from which SBATCH was invoked: 
+	 /data/gpfs/projects/punim1355/dalmiapriyam/predator-prey
+The Hostname of the computer from which SBATCH was invoked: 
+	 spartan-bm083.hpc.unimelb.edu.au
+The process ID of the corresponding task: 
+	 67040
+
+
+
+ LOADING MODULES: 
+
+
+
+
+ PYTHON SCRIPT OUTPUT: 
+
+2023-11-23 19:38:40,746	WARNING __init__.py:10 -- PG has/have been moved to `rllib_contrib` and will no longer be maintained by the RLlib team. You can still use it/them normally inside RLlib util Ray 2.8, but from Ray 2.9 on, all `rllib_contrib` algorithms will no longer be part of the core repo, and will therefore have to be installed separately with pinned dependencies for e.g. ray[rllib] and other packages! See https://github.com/ray-project/ray/tree/master/rllib_contrib#rllib-contrib for more information on the RLlib contrib effort.
+2023-11-23 19:38:43,520	INFO worker.py:1673 -- Started a local Ray instance.
+2023-11-23 19:38:45,440	INFO tune.py:220 -- Initializing Ray automatically. For cluster usage or custom Ray initialization, call `ray.init(...)` before `Tuner(...)`.
+2023-11-23 19:38:45,442	INFO tune.py:595 -- [output] This will use the new output engine with verbosity 1. To disable the new output and use the legacy output engine, set the environment variable RAY_AIR_NEW_OUTPUT=0. For more information, please see https://github.com/ray-project/ray/issues/36949
+[36m(pid=68597)[0m 2023-11-23 19:38:48,430	WARNING __init__.py:10 -- PG has/have been moved to `rllib_contrib` and will no longer be maintained by the RLlib team. You can still use it/them normally inside RLlib util Ray 2.8, but from Ray 2.9 on, all `rllib_contrib` algorithms will no longer be part of the core repo, and will therefore have to be installed separately with pinned dependencies for e.g. ray[rllib] and other packages! See https://github.com/ray-project/ray/tree/master/rllib_contrib#rllib-contrib for more information on the RLlib contrib effort.
+2023-11-23 19:38:48,731	INFO wandb.py:307 -- Already logged into W&B.
+wandb: Currently logged in as: theputernerdai (tpn). Use `wandb login --relogin` to force relogin
+wandb: Tracking run with wandb version 0.16.0
+wandb: Run data is saved locally in /data/gpfs/projects/punim1355/dalmiapriyam/predator-prey/wandb/run-20231123_193849-uet66hlf
+wandb: Run `wandb offline` to turn off syncing.
+wandb: Syncing run proud-aardvark-16
+wandb: ⭐️ View project at https://wandb.ai/tpn/rllib3
+wandb: 🚀 View run at https://wandb.ai/tpn/rllib3/runs/uet66hlf
+2023-11-23 19:38:50,934	INFO wandb.py:307 -- Already logged into W&B.
+[36m(train_algo pid=68599)[0m /data/gpfs/projects/punim1355/dalmiapriyam/predator-prey/.venv/lib/python3.10/site-packages/ray/rllib/algorithms/algorithm.py:484: RayDeprecationWarning: This API is deprecated and may be removed in future Ray releases. You could suppress this warning by setting env variable PYTHONWARNINGS="ignore::DeprecationWarning"
+[36m(train_algo pid=68599)[0m `UnifiedLogger` will be removed in Ray 2.7.
+[36m(train_algo pid=68599)[0m   return UnifiedLogger(config, logdir, loggers=None)
+[36m(train_algo pid=68599)[0m /data/gpfs/projects/punim1355/dalmiapriyam/predator-prey/.venv/lib/python3.10/site-packages/ray/tune/logger/unified.py:53: RayDeprecationWarning: This API is deprecated and may be removed in future Ray releases. You could suppress this warning by setting env variable PYTHONWARNINGS="ignore::DeprecationWarning"
+[36m(train_algo pid=68599)[0m The `JsonLogger interface is deprecated in favor of the `ray.tune.json.JsonLoggerCallback` interface and will be removed in Ray 2.7.
+[36m(train_algo pid=68599)[0m   self._loggers.append(cls(self.config, self.logdir, self.trial))
+[36m(train_algo pid=68599)[0m /data/gpfs/projects/punim1355/dalmiapriyam/predator-prey/.venv/lib/python3.10/site-packages/ray/tune/logger/unified.py:53: RayDeprecationWarning: This API is deprecated and may be removed in future Ray releases. You could suppress this warning by setting env variable PYTHONWARNINGS="ignore::DeprecationWarning"
+[36m(train_algo pid=68599)[0m The `CSVLogger interface is deprecated in favor of the `ray.tune.csv.CSVLoggerCallback` interface and will be removed in Ray 2.7.
+[36m(train_algo pid=68599)[0m   self._loggers.append(cls(self.config, self.logdir, self.trial))
+[36m(train_algo pid=68599)[0m /data/gpfs/projects/punim1355/dalmiapriyam/predator-prey/.venv/lib/python3.10/site-packages/ray/tune/logger/unified.py:53: RayDeprecationWarning: This API is deprecated and may be removed in future Ray releases. You could suppress this warning by setting env variable PYTHONWARNINGS="ignore::DeprecationWarning"
+[36m(train_algo pid=68599)[0m The `TBXLogger interface is deprecated in favor of the `ray.tune.tensorboardx.TBXLoggerCallback` interface and will be removed in Ray 2.7.
+[36m(train_algo pid=68599)[0m   self._loggers.append(cls(self.config, self.logdir, self.trial))
+[36m(train_algo pid=68599)[0m Install gputil for GPU system monitoring.
+wandb: - 0.005 MB of 0.005 MB uploadedwandb: \ 0.005 MB of 0.005 MB uploadedwandb: | 0.005 MB of 0.005 MB uploadedwandb: / 0.005 MB of 0.005 MB uploadedwandb: - 0.013 MB of 0.016 MB uploaded (0.001 MB deduped)wandb: \ 0.013 MB of 0.019 MB uploaded (0.001 MB deduped)wandb: | 0.013 MB of 0.019 MB uploaded (0.001 MB deduped)wandb: / 0.019 MB of 0.019 MB uploaded (0.001 MB deduped)wandb:                                                                                
+wandb: W&B sync reduced upload amount by 7.7%             
+wandb: 🚀 View run proud-aardvark-16 at: https://wandb.ai/tpn/rllib3/runs/uet66hlf
+wandb: ️⚡ View job at https://wandb.ai/tpn/rllib3/jobs/QXJ0aWZhY3RDb2xsZWN0aW9uOjExODA1Nzg0NQ==/version_details/v1
+wandb: Synced 5 W&B file(s), 0 media file(s), 2 artifact file(s) and 0 other file(s)
+wandb: Find logs at: ./wandb/run-20231123_193849-uet66hlf/logs
+wandb: - Waiting for wandb.init()...wandb: \ Waiting for wandb.init()...wandb: Tracking run with wandb version 0.16.0
+wandb: Run data is saved locally in /data/gpfs/projects/punim1355/dalmiapriyam/predator-prey/wandb/run-20231123_193850-uet66hlf
+wandb: Run `wandb offline` to turn off syncing.
+wandb: Resuming run proud-aardvark-16
+wandb: ⭐️ View project at https://wandb.ai/tpn/rllib3
+wandb: 🚀 View run at https://wandb.ai/tpn/rllib3/runs/uet66hlf
+2023-11-23 19:39:04,191	INFO wandb.py:307 -- Already logged into W&B.
+[36m(pid=68598)[0m 2023-11-23 19:38:48,447	WARNING __init__.py:10 -- PG has/have been moved to `rllib_contrib` and will no longer be maintained by the RLlib team. You can still use it/them normally inside RLlib util Ray 2.8, but from Ray 2.9 on, all `rllib_contrib` algorithms will no longer be part of the core repo, and will therefore have to be installed separately with pinned dependencies for e.g. ray[rllib] and other packages! See https://github.com/ray-project/ray/tree/master/rllib_contrib#rllib-contrib for more information on the RLlib contrib effort.[32m [repeated 4x across cluster] (Ray deduplicates logs by default. Set RAY_DEDUP_LOGS=0 to disable log deduplication, or see https://docs.ray.io/en/master/ray-observability/ray-logging.html#log-deduplication for more options.)[0m
+[36m(train_algo pid=68598)[0m /data/gpfs/projects/punim1355/dalmiapriyam/predator-prey/.venv/lib/python3.10/site-packages/ray/tune/logger/unified.py:53: RayDeprecationWarning: This API is deprecated and may be removed in future Ray releases. You could suppress this warning by setting env variable PYTHONWARNINGS="ignore::DeprecationWarning"[32m [repeated 4x across cluster][0m
+[36m(train_algo pid=68598)[0m `UnifiedLogger` will be removed in Ray 2.7.
+[36m(train_algo pid=68598)[0m   return UnifiedLogger(config, logdir, loggers=None)
+[36m(train_algo pid=68598)[0m The `JsonLogger interface is deprecated in favor of the `ray.tune.json.JsonLoggerCallback` interface and will be removed in Ray 2.7.
+[36m(train_algo pid=68598)[0m   self._loggers.append(cls(self.config, self.logdir, self.trial))[32m [repeated 3x across cluster][0m
+[36m(train_algo pid=68598)[0m The `CSVLogger interface is deprecated in favor of the `ray.tune.csv.CSVLoggerCallback` interface and will be removed in Ray 2.7.
+[36m(train_algo pid=68598)[0m The `TBXLogger interface is deprecated in favor of the `ray.tune.tensorboardx.TBXLoggerCallback` interface and will be removed in Ray 2.7.
+[36m(train_algo pid=68598)[0m Install gputil for GPU system monitoring.
+wandb: WARNING No requirements.txt found, not creating job artifact. See https://docs.wandb.ai/guides/launch/create-job
+wandb: - 0.000 MB of 0.000 MB uploadedwandb: \ 0.000 MB of 0.005 MB uploadedwandb: | 0.000 MB of 0.005 MB uploadedwandb: / 0.005 MB of 0.005 MB uploadedwandb:                                                                                
+wandb: 🚀 View run proud-aardvark-16 at: https://wandb.ai/tpn/rllib3/runs/uet66hlf
+wandb: Synced 3 W&B file(s), 0 media file(s), 0 artifact file(s) and 0 other file(s)
+wandb: Find logs at: ./wandb/run-20231123_193850-uet66hlf/logs
+wandb: - Waiting for wandb.init()...wandb: \ Waiting for wandb.init()...wandb: Tracking run with wandb version 0.16.0
+wandb: Run data is saved locally in /data/gpfs/projects/punim1355/dalmiapriyam/predator-prey/wandb/run-20231123_193904-71pt9z8x
+wandb: Run `wandb offline` to turn off syncing.
+wandb: Syncing run classic-energy-17
+wandb: ⭐️ View project at https://wandb.ai/tpn/rllib3
+wandb: 🚀 View run at https://wandb.ai/tpn/rllib3/runs/71pt9z8x
+2023-11-23 19:39:14,067	INFO wandb.py:307 -- Already logged into W&B.
+[36m(train_algo pid=68600)[0m `UnifiedLogger` will be removed in Ray 2.7.
+[36m(train_algo pid=68600)[0m   return UnifiedLogger(config, logdir, loggers=None)
+[36m(train_algo pid=68600)[0m The `JsonLogger interface is deprecated in favor of the `ray.tune.json.JsonLoggerCallback` interface and will be removed in Ray 2.7.
+[36m(train_algo pid=68600)[0m The `CSVLogger interface is deprecated in favor of the `ray.tune.csv.CSVLoggerCallback` interface and will be removed in Ray 2.7.
+[36m(train_algo pid=68600)[0m The `TBXLogger interface is deprecated in favor of the `ray.tune.tensorboardx.TBXLoggerCallback` interface and will be removed in Ray 2.7.
+[36m(train_algo pid=68600)[0m /data/gpfs/projects/punim1355/dalmiapriyam/predator-prey/.venv/lib/python3.10/site-packages/ray/tune/logger/unified.py:53: RayDeprecationWarning: This API is deprecated and may be removed in future Ray releases. You could suppress this warning by setting env variable PYTHONWARNINGS="ignore::DeprecationWarning"[32m [repeated 4x across cluster][0m
+[36m(train_algo pid=68600)[0m   self._loggers.append(cls(self.config, self.logdir, self.trial))[32m [repeated 3x across cluster][0m
+[36m(train_algo pid=68600)[0m Install gputil for GPU system monitoring.
+wandb: - 0.005 MB of 0.005 MB uploadedwandb: \ 0.005 MB of 0.011 MB uploadedwandb: | 0.005 MB of 0.011 MB uploadedwandb: / 0.005 MB of 0.011 MB uploadedwandb: - 0.011 MB of 0.011 MB uploadedwandb:                                                                                
+wandb: 🚀 View run classic-energy-17 at: https://wandb.ai/tpn/rllib3/runs/71pt9z8x
+wandb: ️⚡ View job at https://wandb.ai/tpn/rllib3/jobs/QXJ0aWZhY3RDb2xsZWN0aW9uOjExODA1Nzg0NQ==/version_details/v1
+wandb: Synced 5 W&B file(s), 0 media file(s), 0 artifact file(s) and 0 other file(s)
+wandb: Find logs at: ./wandb/run-20231123_193904-71pt9z8x/logs
+wandb: - Waiting for wandb.init()...wandb: \ Waiting for wandb.init()...wandb: Tracking run with wandb version 0.16.0
+wandb: Run data is saved locally in /data/gpfs/projects/punim1355/dalmiapriyam/predator-prey/wandb/run-20231123_193914-phsiwzvs
+wandb: Run `wandb offline` to turn off syncing.
+wandb: Syncing run soft-smoke-18
+wandb: ⭐️ View project at https://wandb.ai/tpn/rllib3
+wandb: 🚀 View run at https://wandb.ai/tpn/rllib3/runs/phsiwzvs
+[36m(train_algo pid=68597)[0m `UnifiedLogger` will be removed in Ray 2.7.
+[36m(train_algo pid=68597)[0m   return UnifiedLogger(config, logdir, loggers=None)
+[36m(train_algo pid=68597)[0m The `JsonLogger interface is deprecated in favor of the `ray.tune.json.JsonLoggerCallback` interface and will be removed in Ray 2.7.
+[36m(train_algo pid=68597)[0m The `CSVLogger interface is deprecated in favor of the `ray.tune.csv.CSVLoggerCallback` interface and will be removed in Ray 2.7.
+[36m(train_algo pid=68597)[0m The `TBXLogger interface is deprecated in favor of the `ray.tune.tensorboardx.TBXLoggerCallback` interface and will be removed in Ray 2.7.
+[36m(train_algo pid=68597)[0m /data/gpfs/projects/punim1355/dalmiapriyam/predator-prey/.venv/lib/python3.10/site-packages/ray/tune/logger/unified.py:53: RayDeprecationWarning: This API is deprecated and may be removed in future Ray releases. You could suppress this warning by setting env variable PYTHONWARNINGS="ignore::DeprecationWarning"[32m [repeated 4x across cluster][0m
+[36m(train_algo pid=68597)[0m   self._loggers.append(cls(self.config, self.logdir, self.trial))[32m [repeated 3x across cluster][0m
+[36m(train_algo pid=68597)[0m Install gputil for GPU system monitoring.
+╭───────────────────────────────────────────────────────────────────╮
+│ Configuration for experiment     train_algo_2023-11-23_19-38-40   │
+├───────────────────────────────────────────────────────────────────┤
+│ Search algorithm                 BasicVariantGenerator            │
+│ Scheduler                        FIFOScheduler                    │
+│ Number of trials                 160                              │
+╰───────────────────────────────────────────────────────────────────╯
+
+View detailed results here: /data/gpfs/projects/punim1355/dalmiapriyam/predator-prey/experiments/train_algo_2023-11-23_19-38-40
+To visualize your results with TensorBoard, run: `tensorboard --logdir /home/dalmiapriyam/ray_results/train_algo_2023-11-23_19-38-40`
+
+Trial status: 5 PENDING
+Current time: 2023-11-23 19:38:45. Total running time: 0s
+Logical resource usage: 5.0/32 CPUs, 0/1 GPUs (0.0/1.0 accelerator_type:A100)
+╭──────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────╮
+│ Trial name               status     algorithm_type     ...odel/conv_filters     ...del/fcnet_hiddens     ..._preprocessor_api     ...l/conv_activation   │
+├──────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┤
+│ train_algo_b6e6f_00000   PENDING    independent        ... [16, [4, 4], 1]]     [256, 256]               True                     tanh                   │
+│ train_algo_b6e6f_00001   PENDING    shared             ... [16, [4, 4], 1]]     [256, 256]               True                     tanh                   │
+│ train_algo_b6e6f_00002   PENDING    independent        ... [16, [4, 4], 1]]     [256, 256]               False                    tanh                   │
+│ train_algo_b6e6f_00003   PENDING    shared             ... [16, [4, 4], 1]]     [256, 256]               False                    tanh                   │
+│ train_algo_b6e6f_00004   PENDING    independent        ... [16, [4, 4], 1]]     [256, 256]               True                     relu                   │
+╰──────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────╯
+
+Trial train_algo_b6e6f_00003 started with configuration:
+╭─────────────────────────────────────────────────────────────────╮
+│ Trial train_algo_b6e6f_00003 config                             │
+├─────────────────────────────────────────────────────────────────┤
+│ algorithm_class                                             ppo │
+│ algorithm_type                                           shared │
+│ env_config/map_size                                          15 │
+│ env_config/max_cycles                                       100 │
+│ env_config/npred                                              2 │
+│ env_config/nprey                                              6 │
+│ env_config/pred_vision                                        2 │
+│ env_config/prey_type                                     static │
+│ env_config/reward_type                                   type_1 │
+│ env_name                                         discrete_pp_v1 │
+│ evaluate/eval_episodes                                      100 │
+│ framework                                                 torch │
+│ ray/init_dashboard                                        False │
+│ rollouts/num_rollout_workers                                  0 │
+│ stop_fn                                    ...t 0x14c92fb0edd0> │
+│ training/lr                                              0.0001 │
+│ training/model/_disable_preprocessor_api                  False │
+│ training/model/conv_activation                             tanh │
+│ training/model/conv_filters                ... [16, [4, 4], 1]] │
+│ training/model/fcnet_activation                            relu │
+│ training/model/fcnet_hiddens                         [256, 256] │
+│ training/num_sgd_iter                                        10 │
+│ training/sgd_minibatch_size                                 128 │
+│ training/train_batch_size                                   200 │
+│ training/use_critic                                        True │
+│ training/use_kl_loss                                       True │
+│ tune/max_concurrent_trials                                    5 │
+│ tune/max_episodes                                         10000 │
+│ tune/num_samples                                              5 │
+│ tune/tune                                                  True │
+│ wandb/wandb_entity                                          tpn │
+│ wandb/wandb_init                                           True │
+│ wandb/wandb_notes                                 testing setup │
+│ wandb/wandb_project                                      rllib3 │
+╰─────────────────────────────────────────────────────────────────╯
+
+Trial train_algo_b6e6f_00002 started with configuration:
+╭─────────────────────────────────────────────────────────────────╮
+│ Trial train_algo_b6e6f_00002 config                             │
+├─────────────────────────────────────────────────────────────────┤
+│ algorithm_class                                             ppo │
+│ algorithm_type                                      independent │
+│ env_config/map_size                                          15 │
+│ env_config/max_cycles                                       100 │
+│ env_config/npred                                              2 │
+│ env_config/nprey                                              6 │
+│ env_config/pred_vision                                        2 │
+│ env_config/prey_type                                     static │
+│ env_config/reward_type                                   type_1 │
+│ env_name                                         discrete_pp_v1 │
+│ evaluate/eval_episodes                                      100 │
+│ framework                                                 torch │
+│ ray/init_dashboard                                        False │
+│ rollouts/num_rollout_workers                                  0 │
+│ stop_fn                                    ...t 0x14c92fb0edd0> │
+│ training/lr                                              0.0001 │
+│ training/model/_disable_preprocessor_api                  False │
+│ training/model/conv_activation                             tanh │
+│ training/model/conv_filters                ... [16, [4, 4], 1]] │
+│ training/model/fcnet_activation                            relu │
+│ training/model/fcnet_hiddens                         [256, 256] │
+│ training/num_sgd_iter                                        10 │
+│ training/sgd_minibatch_size                                 128 │
+│ training/train_batch_size                                   200 │
+│ training/use_critic                                        True │
+│ training/use_kl_loss                                       True │
+│ tune/max_concurrent_trials                                    5 │
+│ tune/max_episodes                                         10000 │
+│ tune/num_samples                                              5 │
+│ tune/tune                                                  True │
+│ wandb/wandb_entity                                          tpn │
+│ wandb/wandb_init                                           True │
+│ wandb/wandb_notes                                 testing setup │
+│ wandb/wandb_project                                      rllib3 │
+╰─────────────────────────────────────────────────────────────────╯
+
+Trial train_algo_b6e6f_00004 started with configuration:
+╭─────────────────────────────────────────────────────────────────╮
+│ Trial train_algo_b6e6f_00004 config                             │
+├─────────────────────────────────────────────────────────────────┤
+│ algorithm_class                                             ppo │
+│ algorithm_type                                      independent │
+│ env_config/map_size                                          15 │
+│ env_config/max_cycles                                       100 │
+│ env_config/npred                                              2 │
+│ env_config/nprey                                              6 │
+│ env_config/pred_vision                                        2 │
+│ env_config/prey_type                                     static │
+│ env_config/reward_type                                   type_1 │
+│ env_name                                         discrete_pp_v1 │
+│ evaluate/eval_episodes                                      100 │
+│ framework                                                 torch │
+│ ray/init_dashboard                                        False │
+│ rollouts/num_rollout_workers                                  0 │
+│ stop_fn                                    ...t 0x14c92fb0edd0> │
+│ training/lr                                              0.0001 │
+│ training/model/_disable_preprocessor_api                   True │
+│ training/model/conv_activation                             relu │
+│ training/model/conv_filters                ... [16, [4, 4], 1]] │
+│ training/model/fcnet_activation                            relu │
+│ training/model/fcnet_hiddens                         [256, 256] │
+│ training/num_sgd_iter                                        10 │
+│ training/sgd_minibatch_size                                 128 │
+│ training/train_batch_size                                   200 │
+│ training/use_critic                                        True │
+│ training/use_kl_loss                                       True │
+│ tune/max_concurrent_trials                                    5 │
+│ tune/max_episodes                                         10000 │
+│ tune/num_samples                                              5 │
+│ tune/tune                                                  True │
+│ wandb/wandb_entity                                          tpn │
+│ wandb/wandb_init                                           True │
+│ wandb/wandb_notes                                 testing setup │
+│ wandb/wandb_project                                      rllib3 │
+╰─────────────────────────────────────────────────────────────────╯
+
+Trial train_algo_b6e6f_00001 started with configuration:
+╭─────────────────────────────────────────────────────────────────╮
+│ Trial train_algo_b6e6f_00001 config                             │
+├─────────────────────────────────────────────────────────────────┤
+│ algorithm_class                                             ppo │
+│ algorithm_type                                           shared │
+│ env_config/map_size                                          15 │
+│ env_config/max_cycles                                       100 │
+│ env_config/npred                                              2 │
+│ env_config/nprey                                              6 │
+│ env_config/pred_vision                                        2 │
+│ env_config/prey_type                                     static │
+│ env_config/reward_type                                   type_1 │
+│ env_name                                         discrete_pp_v1 │
+│ evaluate/eval_episodes                                      100 │
+│ framework                                                 torch │
+│ ray/init_dashboard                                        False │
+│ rollouts/num_rollout_workers                                  0 │
+│ stop_fn                                    ...t 0x14c92fb0edd0> │
+│ training/lr                                              0.0001 │
+│ training/model/_disable_preprocessor_api                   True │
+│ training/model/conv_activation                             tanh │
+│ training/model/conv_filters                ... [16, [4, 4], 1]] │
+│ training/model/fcnet_activation                            relu │
+│ training/model/fcnet_hiddens                         [256, 256] │
+│ training/num_sgd_iter                                        10 │
+│ training/sgd_minibatch_size                                 128 │
+│ training/train_batch_size                                   200 │
+│ training/use_critic                                        True │
+│ training/use_kl_loss                                       True │
+│ tune/max_concurrent_trials                                    5 │
+│ tune/max_episodes                                         10000 │
+│ tune/num_samples                                              5 │
+│ tune/tune                                                  True │
+│ wandb/wandb_entity                                          tpn │
+│ wandb/wandb_init                                           True │
+│ wandb/wandb_notes                                 testing setup │
+│ wandb/wandb_project                                      rllib3 │
+╰─────────────────────────────────────────────────────────────────╯
+
+Trial status: 1 PENDING | 4 RUNNING
+Current time: 2023-11-23 19:39:24. Total running time: 38s
+Logical resource usage: 5.0/32 CPUs, 0/1 GPUs (0.0/1.0 accelerator_type:A100)
+╭──────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────╮
+│ Trial name               status     algorithm_type     ...odel/conv_filters     ...del/fcnet_hiddens     ..._preprocessor_api     ...l/conv_activation   │
+├──────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┤
+│ train_algo_b6e6f_00001   RUNNING    shared             ... [16, [4, 4], 1]]     [256, 256]               True                     tanh                   │
+│ train_algo_b6e6f_00002   RUNNING    independent        ... [16, [4, 4], 1]]     [256, 256]               False                    tanh                   │
+│ train_algo_b6e6f_00003   RUNNING    shared             ... [16, [4, 4], 1]]     [256, 256]               False                    tanh                   │
+│ train_algo_b6e6f_00004   RUNNING    independent        ... [16, [4, 4], 1]]     [256, 256]               True                     relu                   │
+│ train_algo_b6e6f_00000   PENDING    independent        ... [16, [4, 4], 1]]     [256, 256]               True                     tanh                   │
+╰──────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────╯
+
+Traceback (most recent call last):
+  File "/data/gpfs/projects/punim1355/dalmiapriyam/predator-prey/.venv/lib/python3.10/site-packages/ray/tune/execution/tune_controller.py", line 1272, in _on_result
+    on_result(trial, *args, **kwargs)
+  File "/data/gpfs/projects/punim1355/dalmiapriyam/predator-prey/.venv/lib/python3.10/site-packages/ray/tune/execution/tune_controller.py", line 1571, in _on_training_result
+    self._process_trial_results(trial, result)
+  File "/data/gpfs/projects/punim1355/dalmiapriyam/predator-prey/.venv/lib/python3.10/site-packages/ray/tune/execution/tune_controller.py", line 1584, in _process_trial_results
+    decision = self._process_trial_result(trial, result)
+  File "/data/gpfs/projects/punim1355/dalmiapriyam/predator-prey/.venv/lib/python3.10/site-packages/ray/tune/execution/tune_controller.py", line 1641, in _process_trial_result
+    self._callbacks.on_trial_result(
+  File "/data/gpfs/projects/punim1355/dalmiapriyam/predator-prey/.venv/lib/python3.10/site-packages/ray/tune/callback.py", line 412, in on_trial_result
+    callback.on_trial_result(**info)
+  File "/data/gpfs/projects/punim1355/dalmiapriyam/predator-prey/./train.py", line 176, in on_trial_result
+    if config['wandb']['wandb_init']:
+NameError: name 'config' is not defined
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/data/gpfs/projects/punim1355/dalmiapriyam/predator-prey/.venv/lib/python3.10/site-packages/ray/tune/tuner.py", line 364, in fit
+    return self._local_tuner.fit()
+  File "/data/gpfs/projects/punim1355/dalmiapriyam/predator-prey/.venv/lib/python3.10/site-packages/ray/tune/impl/tuner_internal.py", line 526, in fit
+    analysis = self._fit_internal(trainable, param_space)
+  File "/data/gpfs/projects/punim1355/dalmiapriyam/predator-prey/.venv/lib/python3.10/site-packages/ray/tune/impl/tuner_internal.py", line 645, in _fit_internal
+    analysis = run(
+  File "/data/gpfs/projects/punim1355/dalmiapriyam/predator-prey/.venv/lib/python3.10/site-packages/ray/tune/tune.py", line 1007, in run
+    runner.step()
+  File "/data/gpfs/projects/punim1355/dalmiapriyam/predator-prey/.venv/lib/python3.10/site-packages/ray/tune/execution/tune_controller.py", line 731, in step
+    if not self._actor_manager.next(timeout=0.1):
+  File "/data/gpfs/projects/punim1355/dalmiapriyam/predator-prey/.venv/lib/python3.10/site-packages/ray/air/execution/_internal/actor_manager.py", line 224, in next
+    self._actor_task_events.resolve_future(future)
+  File "/data/gpfs/projects/punim1355/dalmiapriyam/predator-prey/.venv/lib/python3.10/site-packages/ray/air/execution/_internal/event_manager.py", line 118, in resolve_future
+    on_result(result)
+  File "/data/gpfs/projects/punim1355/dalmiapriyam/predator-prey/.venv/lib/python3.10/site-packages/ray/air/execution/_internal/actor_manager.py", line 765, in on_result
+    self._actor_task_resolved(
+  File "/data/gpfs/projects/punim1355/dalmiapriyam/predator-prey/.venv/lib/python3.10/site-packages/ray/air/execution/_internal/actor_manager.py", line 300, in _actor_task_resolved
+    tracked_actor_task._on_result(tracked_actor, result)
+  File "/data/gpfs/projects/punim1355/dalmiapriyam/predator-prey/.venv/lib/python3.10/site-packages/ray/tune/execution/tune_controller.py", line 1281, in _on_result
+    raise TuneError(traceback.format_exc())
+ray.tune.error.TuneError: Traceback (most recent call last):
+  File "/data/gpfs/projects/punim1355/dalmiapriyam/predator-prey/.venv/lib/python3.10/site-packages/ray/tune/execution/tune_controller.py", line 1272, in _on_result
+    on_result(trial, *args, **kwargs)
+  File "/data/gpfs/projects/punim1355/dalmiapriyam/predator-prey/.venv/lib/python3.10/site-packages/ray/tune/execution/tune_controller.py", line 1571, in _on_training_result
+    self._process_trial_results(trial, result)
+  File "/data/gpfs/projects/punim1355/dalmiapriyam/predator-prey/.venv/lib/python3.10/site-packages/ray/tune/execution/tune_controller.py", line 1584, in _process_trial_results
+    decision = self._process_trial_result(trial, result)
+  File "/data/gpfs/projects/punim1355/dalmiapriyam/predator-prey/.venv/lib/python3.10/site-packages/ray/tune/execution/tune_controller.py", line 1641, in _process_trial_result
+    self._callbacks.on_trial_result(
+  File "/data/gpfs/projects/punim1355/dalmiapriyam/predator-prey/.venv/lib/python3.10/site-packages/ray/tune/callback.py", line 412, in on_trial_result
+    callback.on_trial_result(**info)
+  File "/data/gpfs/projects/punim1355/dalmiapriyam/predator-prey/./train.py", line 176, in on_trial_result
+    if config['wandb']['wandb_init']:
+NameError: name 'config' is not defined
+
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/data/gpfs/projects/punim1355/dalmiapriyam/predator-prey/./train.py", line 248, in <module>
+    main()
+  File "/data/gpfs/projects/punim1355/dalmiapriyam/predator-prey/./train.py", line 242, in main
+    results = tuner.fit()
+  File "/data/gpfs/projects/punim1355/dalmiapriyam/predator-prey/.venv/lib/python3.10/site-packages/ray/tune/tuner.py", line 366, in fit
+    raise TuneError(
+ray.tune.error.TuneError: The Ray Tune run failed. Please inspect the previous error messages for a cause. After fixing the issue, you can restart the run from scratch or continue this run. To continue this run, you can use `tuner = Tuner.restore("/home/dalmiapriyam/ray_results/train_algo_2023-11-23_19-38-40", trainable=...)`.
+Traceback (most recent call last):
+  File "/data/gpfs/projects/punim1355/dalmiapriyam/predator-prey/.venv/lib/python3.10/site-packages/ray/tune/execution/tune_controller.py", line 1272, in _on_result
+    on_result(trial, *args, **kwargs)
+  File "/data/gpfs/projects/punim1355/dalmiapriyam/predator-prey/.venv/lib/python3.10/site-packages/ray/tune/execution/tune_controller.py", line 1571, in _on_training_result
+    self._process_trial_results(trial, result)
+  File "/data/gpfs/projects/punim1355/dalmiapriyam/predator-prey/.venv/lib/python3.10/site-packages/ray/tune/execution/tune_controller.py", line 1584, in _process_trial_results
+    decision = self._process_trial_result(trial, result)
+  File "/data/gpfs/projects/punim1355/dalmiapriyam/predator-prey/.venv/lib/python3.10/site-packages/ray/tune/execution/tune_controller.py", line 1641, in _process_trial_result
+    self._callbacks.on_trial_result(
+  File "/data/gpfs/projects/punim1355/dalmiapriyam/predator-prey/.venv/lib/python3.10/site-packages/ray/tune/callback.py", line 412, in on_trial_result
+    callback.on_trial_result(**info)
+  File "/data/gpfs/projects/punim1355/dalmiapriyam/predator-prey/./train.py", line 176, in on_trial_result
+    if config['wandb']['wandb_init']:
+NameError: name 'config' is not defined
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/data/gpfs/projects/punim1355/dalmiapriyam/predator-prey/.venv/lib/python3.10/site-packages/ray/tune/tuner.py", line 364, in fit
+    return self._local_tuner.fit()
+  File "/data/gpfs/projects/punim1355/dalmiapriyam/predator-prey/.venv/lib/python3.10/site-packages/ray/tune/impl/tuner_internal.py", line 526, in fit
+    analysis = self._fit_internal(trainable, param_space)
+  File "/data/gpfs/projects/punim1355/dalmiapriyam/predator-prey/.venv/lib/python3.10/site-packages/ray/tune/impl/tuner_internal.py", line 645, in _fit_internal
+    analysis = run(
+  File "/data/gpfs/projects/punim1355/dalmiapriyam/predator-prey/.venv/lib/python3.10/site-packages/ray/tune/tune.py", line 1007, in run
+    runner.step()
+  File "/data/gpfs/projects/punim1355/dalmiapriyam/predator-prey/.venv/lib/python3.10/site-packages/ray/tune/execution/tune_controller.py", line 731, in step
+    if not self._actor_manager.next(timeout=0.1):
+  File "/data/gpfs/projects/punim1355/dalmiapriyam/predator-prey/.venv/lib/python3.10/site-packages/ray/air/execution/_internal/actor_manager.py", line 224, in next
+    self._actor_task_events.resolve_future(future)
+  File "/data/gpfs/projects/punim1355/dalmiapriyam/predator-prey/.venv/lib/python3.10/site-packages/ray/air/execution/_internal/event_manager.py", line 118, in resolve_future
+    on_result(result)
+  File "/data/gpfs/projects/punim1355/dalmiapriyam/predator-prey/.venv/lib/python3.10/site-packages/ray/air/execution/_internal/actor_manager.py", line 765, in on_result
+    self._actor_task_resolved(
+  File "/data/gpfs/projects/punim1355/dalmiapriyam/predator-prey/.venv/lib/python3.10/site-packages/ray/air/execution/_internal/actor_manager.py", line 300, in _actor_task_resolved
+    tracked_actor_task._on_result(tracked_actor, result)
+  File "/data/gpfs/projects/punim1355/dalmiapriyam/predator-prey/.venv/lib/python3.10/site-packages/ray/tune/execution/tune_controller.py", line 1281, in _on_result
+    raise TuneError(traceback.format_exc())
+ray.tune.error.TuneError: Traceback (most recent call last):
+  File "/data/gpfs/projects/punim1355/dalmiapriyam/predator-prey/.venv/lib/python3.10/site-packages/ray/tune/execution/tune_controller.py", line 1272, in _on_result
+    on_result(trial, *args, **kwargs)
+  File "/data/gpfs/projects/punim1355/dalmiapriyam/predator-prey/.venv/lib/python3.10/site-packages/ray/tune/execution/tune_controller.py", line 1571, in _on_training_result
+    self._process_trial_results(trial, result)
+  File "/data/gpfs/projects/punim1355/dalmiapriyam/predator-prey/.venv/lib/python3.10/site-packages/ray/tune/execution/tune_controller.py", line 1584, in _process_trial_results
+    decision = self._process_trial_result(trial, result)
+  File "/data/gpfs/projects/punim1355/dalmiapriyam/predator-prey/.venv/lib/python3.10/site-packages/ray/tune/execution/tune_controller.py", line 1641, in _process_trial_result
+    self._callbacks.on_trial_result(
+  File "/data/gpfs/projects/punim1355/dalmiapriyam/predator-prey/.venv/lib/python3.10/site-packages/ray/tune/callback.py", line 412, in on_trial_result
+    callback.on_trial_result(**info)
+  File "/data/gpfs/projects/punim1355/dalmiapriyam/predator-prey/./train.py", line 176, in on_trial_result
+    if config['wandb']['wandb_init']:
+NameError: name 'config' is not defined
+
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/data/gpfs/projects/punim1355/dalmiapriyam/predator-prey/./train.py", line 248, in <module>
+    main()
+  File "/data/gpfs/projects/punim1355/dalmiapriyam/predator-prey/./train.py", line 242, in main
+    results = tuner.fit()
+  File "/data/gpfs/projects/punim1355/dalmiapriyam/predator-prey/.venv/lib/python3.10/site-packages/ray/tune/tuner.py", line 366, in fit
+    raise TuneError(
+ray.tune.error.TuneError: The Ray Tune run failed. Please inspect the previous error messages for a cause. After fixing the issue, you can restart the run from scratch or continue this run. To continue this run, you can use `tuner = Tuner.restore("/home/dalmiapriyam/ray_results/train_algo_2023-11-23_19-38-40", trainable=...)`.
+wandb: 🚀 View run soft-smoke-18 at: https://wandb.ai/tpn/rllib3/runs/phsiwzvs
+wandb: ️⚡ View job at https://wandb.ai/tpn/rllib3/jobs/QXJ0aWZhY3RDb2xsZWN0aW9uOjExODA1Nzg0NQ==/version_details/v1
+wandb: Synced 5 W&B file(s), 0 media file(s), 0 artifact file(s) and 0 other file(s)
+wandb: Find logs at: ./wandb/run-20231123_193914-phsiwzvs/logs
+Job ID           : 53740204
+Cluster          : spartan
+User/Project     : dalmiapriyam/punim1355
+Nodes            : 1
+Wall-clock time  : 00:00:58 / 20:00:00
+
+Displaying overall resources usage from 2023-11-23 19:38:37 to 2023-11-23 19:39:35:
+
+NODE            CPU#        TOT%   ( USR   / SYS   / WIO   / IDLE  ) 
+
+spartan-gpgpu091 : 
+                CPU# 1    : 13.4   (   9.1 /   4.3 /   0.0 /  79.2 ) 
+                CPU# 2    : 11.6   (   7.5 /   4.1 /   0.0 /  79.0 ) 
+                CPU# 3    : 11.8   (   8.0 /   3.8 /   0.0 /  81.7 ) 
+                CPU# 4    : 11.5   (   7.1 /   4.3 /   0.0 /  80.7 ) 
+                CPU# 5    : 11.7   (   7.8 /   3.9 /   0.0 /  82.1 ) 
+                CPU# 6    : 16.1   (  11.6 /   4.5 /   0.0 /  79.3 ) 
+
+                GPU# 1    : 0.0   
+
+
+Allocated CPUs            : 6    
+  CPUs with usage <25%    : 6    
+  CPUs with usage <50%    : 0    
+  CPUs with usage >50%    : 0    
+
+
+Allocated GPUs            : 1    
+  GPUs with usage <25%    : 1    
+  GPUs with usage <50%    : 0    
+  GPUs with usage >50%    : 0    
+
+Memory used (RAM)         : 16.9%  [4253MB of 25166MB]
+
+--------------------------------------------
+
