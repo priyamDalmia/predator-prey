@@ -21,13 +21,6 @@ class discrete_pp_v1(ParallelEnv):
     Preys are either fixed or move randomly.
     Game ends when all Preys are captured or max_cycles is reached.
     """
-    metadata: dict[str, Any]
-    agents: list[AgentID]
-    possible_agents: list[AgentID]
-    
-    observation_spaces: dict[AgentID, gymnasium.spaces.Space]  # Observation space for each agent
-    action_spaces: dict[AgentID, gymnasium.spaces.Space]
-
     # from data.utils import Predator, Prey
     NUM_CHANNELS = 3
     GROUND_CHANNEL = 0
@@ -175,7 +168,9 @@ class discrete_pp_v1(ParallelEnv):
             self._rewards[agent_id]= float(0)
             self._terminated[agent_id] = False
             self._truncated[agent_id] = False
-            self._infos[agent_id] = False
+            self._kills_by_id[agent_id] = 0
+            self._assists_by_id[agent_id] = 0
+            self._infos[agent_id] = dict()
 
         for _ in range(len(start_positions)):
             position = start_positions.pop()
@@ -255,10 +250,18 @@ class discrete_pp_v1(ParallelEnv):
                 terminated[agent_id] = True
                 self._agents.remove(agent_id)
             else:
-                infos[agent_id] = dict()
+                infos[agent_id] = dict(
+                    assists = self._assists_by_id[agent_id],
+                    kills = self._kills_by_id[agent_id],
+                )
                 observations[agent_id] = self.get_observation(agent_id)
-                pass
 
+        infos['__all__'] = dict(
+            kills = self._kills,
+            assists = self._assists,
+            kills_by_id = self._kills_by_id.copy(),
+            assists_by_id = self._assists_by_id.copy(),
+        )
         self._observations = observations.copy()
         self._rewards = rewards.copy()
         self._terminated = terminated.copy()
