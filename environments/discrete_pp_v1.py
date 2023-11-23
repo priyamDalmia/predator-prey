@@ -1,6 +1,9 @@
 from curses import meta
 import os 
 import sys
+import time
+
+from torch import rand
 sys.path.append(os.getcwd())
 sys.path.append(os.path.join(os.getcwd(), "environments"))
 import random
@@ -36,6 +39,22 @@ class discrete_pp_v1(ParallelEnv):
             3: lambda pos_x, pos_y: (pos_x, pos_y + 1), # DOWN
             4: lambda pos_x, pos_y: (pos_x, pos_y - 1), # UP
             }
+
+    STR_TO_ACTION = {
+        "STAY": 0,
+        "LEFT": 1,
+        "RIGHT": 2,
+        "DOWN": 3,
+        "UP": 4,
+    }
+
+    ACTION_TO_STR = {
+        0: "STAY",
+        1: "LEFT",
+        2: "RIGHT",
+        3: "DOWN",
+        4: "UP",
+    }
 
     def __init__(self, *args, **kwargs)-> None:
         super().__init__()
@@ -321,7 +340,20 @@ class discrete_pp_v1(ParallelEnv):
         of classic, and `'ansi'` which returns the strings printed
         (specific to classic environments).
         """
-        raise NotImplementedError
+        lims = self._pred_vision
+        state = self.state()
+        render_array = state[lims:(lims+self._map_size), lims:(lims+self._map_size), 0].copy()
+        render_array = render_array.astype(str)
+        render_array = np.char.replace(render_array, '0', '.')
+        render_array = render_array.astype('U11')
+
+        for x,y in zip(*np.where(state[:, :, self.PREDATOR_CHANNEL])):
+            render_array[x-lims, y-lims] = 'P'
+        
+        for x,y in zip(*np.where(state[:, :, self.PREY_CHANNEL])):
+            render_array[x-lims, y-lims] = 'x'
+        
+        return render_array.T 
 
 
     def close(self):
@@ -349,6 +381,47 @@ class discrete_pp_v1(ParallelEnv):
     def unwrapped(self) -> ParallelEnv:
         return self
 
+class FixedSwing:
+    # from data.utils import Predator, Prey
+    NUM_CHANNELS = 3
+    GROUND_CHANNEL = 0
+    PREDATOR_CHANNEL = 1
+    PREY_CHANNEL = 2
+    STR_TO_ACTION = {
+        "STAY": 0,
+        "LEFT": 1,
+        "RIGHT": 2,
+        "DOWN": 3,
+        "UP": 4,
+    }
+
+    def __init__(self, env) -> None:
+        self.direction = random.choice(["LEFT", "RIGHT"])
+        pass
+
+    def get_action(self, observation):
+        center = observation.shape[0] // 2
+        observation = observation.T
+        # if close of the left wall, change direction and move 
+        if observation[0, center, :center].sum() > 1:
+            self.direction = "RIGHT"
+            return self.STR_TO_ACTION[self.direction]
+        elif observation[0, center, center:].sum() > 1:
+            self.direction = "LEFT"
+            return self.STR_TO_ACTION[self.direction]
+        else:
+            if np.random.random() < 0.8:
+                return self.STR_TO_ACTION[self.direction]
+            else:
+                # if close to the top wall, move down
+                if observation[0, :center, center].sum() > 1:
+                    return self.STR_TO_ACTION["DOWN"]
+                elif observation[0, center:, center].sum() > 1:
+                    return self.STR_TO_ACTION["UP"]
+                else:
+                    return self.STR_TO_ACTION[random.choice(["UP", "DOWN"])]
+
+
 if __name__ == "__main__":
     config = dict(
         map_size = 15,
@@ -362,6 +435,7 @@ if __name__ == "__main__":
     )
 
     env = discrete_pp_v1(**config)
+    chaser = FixedSwing(env)
     print(f"Env name: {env.__name__()}, created!")
     
     # test action and observation spaces 
@@ -405,10 +479,16 @@ if __name__ == "__main__":
         # print all the positions of the preys 
         global_state = env.state()
         prey_positions = np.argwhere(global_state[:, :, env.PREY_CHANNEL] == 1)
+        os.system("clear")
         while env.agents:
-            actions = {agent_id: env.action_spaces[agent_id].sample() \
+            os.system("clear")
+            print(env.render())
+            actions = {agent_id: chaser.get_action(obs[agent_id]) \
                     for agent_id in env.agents}
+            print(f"Actions: {env.ACTION_TO_STR[actions['predator_0']]} {env.ACTION_TO_STR[actions['predator_1']]}")
+            print(f"Positions: {env._predators['predator_0'].position} {env._predators['predator_1'].position}")
             obs, rewards, terminated, truncated, infos = env.step(actions)
+            time.sleep(0.4)
 
             assert all([observation[pd, pd, 1] == 1 for observation in obs.values()])
             # assert sum of 1s in the predator channel is equals len(env._agents)
