@@ -276,7 +276,8 @@ if __name__ == "__main__":
         tune_config=tune.TuneConfig(
             metric="episode_len_mean",
             mode="min",
-            num_samples=1,
+            num_samples=5,
+            max_concurrent_trials=6,
         ),
         run_config=train.RunConfig(
             stop=stop_fn,

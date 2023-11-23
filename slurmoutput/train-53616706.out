@@ -88,3 +88,1785 @@ The process ID of the corresponding task:
 [36m(train_algo pid=134574)[0m wandb: 🚀 View run at https://wandb.ai/tpn/rllib2/runs/550c2_00001
 [36m(train_algo pid=134575)[0m wandb: - Waiting for wandb.init()...
 [36m(train_algo pid=134575)[0m wandb: \ Waiting for wandb.init()...
+[36m(train_algo pid=134575)[0m wandb: WARNING Tried to auto resume run with id 550c2_00002 but id 550c2_00006 is set.
+[36m(pid=134575)[0m 2023-11-20 14:24:40,092	WARNING __init__.py:10 -- PG has/have been moved to `rllib_contrib` and will no longer be maintained by the RLlib team. You can still use it/them normally inside RLlib util Ray 2.8, but from Ray 2.9 on, all `rllib_contrib` algorithms will no longer be part of the core repo, and will therefore have to be installed separately with pinned dependencies for e.g. ray[rllib] and other packages! See https://github.com/ray-project/ray/tree/master/rllib_contrib#rllib-contrib for more information on the RLlib contrib effort.[32m [repeated 5x across cluster] (Ray deduplicates logs by default. Set RAY_DEDUP_LOGS=0 to disable log deduplication, or see https://docs.ray.io/en/master/ray-observability/ray-logging.html#log-deduplication for more options.)[0m
+[36m(train_algo pid=134575)[0m /data/gpfs/projects/punim1355/dalmiapriyam/predator-prey/.venv/lib/python3.10/site-packages/ray/tune/logger/unified.py:53: RayDeprecationWarning: This API is deprecated and may be removed in future Ray releases. You could suppress this warning by setting env variable PYTHONWARNINGS="ignore::DeprecationWarning"[32m [repeated 24x across cluster][0m
+[36m(train_algo pid=134575)[0m `UnifiedLogger` will be removed in Ray 2.7.[32m [repeated 6x across cluster][0m
+[36m(train_algo pid=134575)[0m   return UnifiedLogger(config, logdir, loggers=None)[32m [repeated 6x across cluster][0m
+[36m(train_algo pid=134575)[0m The `JsonLogger interface is deprecated in favor of the `ray.tune.json.JsonLoggerCallback` interface and will be removed in Ray 2.7.[32m [repeated 6x across cluster][0m
+[36m(train_algo pid=134575)[0m   self._loggers.append(cls(self.config, self.logdir, self.trial))[32m [repeated 18x across cluster][0m
+[36m(train_algo pid=134575)[0m The `CSVLogger interface is deprecated in favor of the `ray.tune.csv.CSVLoggerCallback` interface and will be removed in Ray 2.7.[32m [repeated 6x across cluster][0m
+[36m(train_algo pid=134575)[0m The `TBXLogger interface is deprecated in favor of the `ray.tune.tensorboardx.TBXLoggerCallback` interface and will be removed in Ray 2.7.[32m [repeated 6x across cluster][0m
+[36m(train_algo pid=134575)[0m Install gputil for GPU system monitoring.[32m [repeated 6x across cluster][0m
+[36m(train_algo pid=134575)[0m Already logged into W&B.[32m [repeated 6x across cluster][0m
+[36m(train_algo pid=134575)[0m wandb: Currently logged in as: theputernerdai (tpn). Use `wandb login --relogin` to force relogin[32m [repeated 5x across cluster][0m
+[36m(train_algo pid=134575)[0m wandb: Tracking run with wandb version 0.16.0[32m [repeated 5x across cluster][0m
+[36m(train_algo pid=134575)[0m wandb: Run data is saved locally in /home/dalmiapriyam/ray_results/train_algo_2023-11-20_14-24-36/train_algo_550c2_00002_2_map_size=15,pred_vision=3,train_batch_size=200_2023-11-20_14-24-36/wandb/run-20231120_142442-550c2_00002[32m [repeated 5x across cluster][0m
+[36m(train_algo pid=134575)[0m wandb: Run `wandb offline` to turn off syncing.[32m [repeated 5x across cluster][0m
+[36m(train_algo pid=134575)[0m wandb: Syncing run train_algo_550c2_00002[32m [repeated 5x across cluster][0m
+[36m(train_algo pid=134575)[0m wandb: ⭐️ View project at https://wandb.ai/tpn/rllib2[32m [repeated 5x across cluster][0m
+[36m(train_algo pid=134575)[0m wandb: 🚀 View run at https://wandb.ai/tpn/rllib2/runs/550c2_00002[32m [repeated 5x across cluster][0m
+[36m(train_algo pid=134575)[0m wandb: - 0.005 MB of 0.005 MB uploaded
+[36m(train_algo pid=134575)[0m wandb: \ 0.005 MB of 0.005 MB uploaded
+[36m(train_algo pid=134575)[0m wandb: | 0.005 MB of 0.005 MB uploadedwandb: / 0.019 MB of 0.019 MB uploadedwandb:                                                                                
+[36m(train_algo pid=134575)[0m wandb: 
+[36m(train_algo pid=134575)[0m wandb: Run history:
+[36m(train_algo pid=134575)[0m wandb:      episode_len_mean ███▇▅▄▃▂▃▃▃▂▂▁▂▂▁▁▃▃▃▂▃▄▄▃▂▂▃▄▁▃▃▁▂▂▂▂▁▁
+[36m(train_algo pid=134575)[0m wandb:   episode_reward_mean ▁▂▂▅▇██████████████████▇▇███▇▇█████▇████
+[36m(train_algo pid=134575)[0m wandb:        episodes_total ▁▁▁▁▁▂▂▂▂▂▂▃▃▃▃▃▄▄▄▄▄▅▅▅▅▅▅▆▆▆▆▆▇▇▇▇▇███
+[36m(train_algo pid=134575)[0m wandb: num_env_steps_sampled ▁▁▁▂▂▂▂▂▂▃▃▃▃▃▄▄▄▄▄▄▅▅▅▅▅▅▆▆▆▆▆▇▇▇▇▇▇███
+[36m(train_algo pid=134575)[0m wandb: num_env_steps_trained ▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁
+[36m(train_algo pid=134575)[0m wandb:          time_total_s ▁▁▁▂▂▂▂▂▂▃▃▃▃▃▄▄▄▄▄▄▅▅▅▅▅▅▆▆▆▆▆▇▇▇▇▇▇███
+[36m(train_algo pid=134575)[0m wandb:    training_iteration ▁▁▁▂▂▂▂▂▂▃▃▃▃▃▄▄▄▄▄▄▅▅▅▅▅▅▆▆▆▆▆▇▇▇▇▇▇███
+[36m(train_algo pid=134575)[0m wandb: 
+[36m(train_algo pid=134575)[0m wandb: Run summary:
+[36m(train_algo pid=134575)[0m wandb:      episode_len_mean 52.2
+[36m(train_algo pid=134575)[0m wandb:   episode_reward_mean 5.85
+[36m(train_algo pid=134575)[0m wandb:        episodes_total 5001
+[36m(train_algo pid=134575)[0m wandb: num_env_steps_sampled 298400
+[36m(train_algo pid=134575)[0m wandb: num_env_steps_trained 0
+[36m(train_algo pid=134575)[0m wandb:          time_total_s 1633.21223
+[36m(train_algo pid=134575)[0m wandb:    training_iteration 1492
+[36m(train_algo pid=134575)[0m wandb: 
+[36m(train_algo pid=134575)[0m wandb: 🚀 View run train_algo_550c2_00002 at: https://wandb.ai/tpn/rllib2/runs/550c2_00002
+[36m(train_algo pid=134575)[0m wandb: Synced 5 W&B file(s), 0 media file(s), 0 artifact file(s) and 0 other file(s)
+[36m(train_algo pid=134575)[0m wandb: Find logs at: /home/dalmiapriyam/ray_results/train_algo_2023-11-20_14-24-36/train_algo_550c2_00002_2_map_size=15,pred_vision=3,train_batch_size=200_2023-11-20_14-24-36/wandb/run-20231120_142442-550c2_00002/logs
+[36m(train_algo pid=134575)[0m wandb: - Waiting for wandb.init()...
+[36m(train_algo pid=134575)[0m wandb: \ Waiting for wandb.init()...
+[36m(train_algo pid=134575)[0m wandb: Tracking run with wandb version 0.16.0
+[36m(train_algo pid=134575)[0m wandb: Run data is saved locally in /home/dalmiapriyam/ray_results/train_algo_2023-11-20_14-24-36/train_algo_550c2_00002_2_map_size=15,pred_vision=3,train_batch_size=200_2023-11-20_14-24-36/wandb/run-20231120_145225-550c2_00006
+[36m(train_algo pid=134575)[0m wandb: Run `wandb offline` to turn off syncing.
+[36m(train_algo pid=134575)[0m wandb: Syncing run train_algo_550c2_00006
+[36m(train_algo pid=134575)[0m wandb: ⭐️ View project at https://wandb.ai/tpn/rllib2
+[36m(train_algo pid=134575)[0m wandb: 🚀 View run at https://wandb.ai/tpn/rllib2/runs/550c2_00006
+[36m(train_algo pid=134577)[0m /data/gpfs/projects/punim1355/dalmiapriyam/predator-prey/.venv/lib/python3.10/site-packages/ray/rllib/algorithms/algorithm.py:484: RayDeprecationWarning: This API is deprecated and may be removed in future Ray releases. You could suppress this warning by setting env variable PYTHONWARNINGS="ignore::DeprecationWarning"
+[36m(train_algo pid=134577)[0m `UnifiedLogger` will be removed in Ray 2.7.
+[36m(train_algo pid=134577)[0m   return UnifiedLogger(config, logdir, loggers=None)
+[36m(train_algo pid=134577)[0m /data/gpfs/projects/punim1355/dalmiapriyam/predator-prey/.venv/lib/python3.10/site-packages/ray/tune/logger/unified.py:53: RayDeprecationWarning: This API is deprecated and may be removed in future Ray releases. You could suppress this warning by setting env variable PYTHONWARNINGS="ignore::DeprecationWarning"
+[36m(train_algo pid=134577)[0m The `JsonLogger interface is deprecated in favor of the `ray.tune.json.JsonLoggerCallback` interface and will be removed in Ray 2.7.
+[36m(train_algo pid=134577)[0m   self._loggers.append(cls(self.config, self.logdir, self.trial))
+[36m(train_algo pid=134577)[0m /data/gpfs/projects/punim1355/dalmiapriyam/predator-prey/.venv/lib/python3.10/site-packages/ray/tune/logger/unified.py:53: RayDeprecationWarning: This API is deprecated and may be removed in future Ray releases. You could suppress this warning by setting env variable PYTHONWARNINGS="ignore::DeprecationWarning"
+[36m(train_algo pid=134577)[0m The `CSVLogger interface is deprecated in favor of the `ray.tune.csv.CSVLoggerCallback` interface and will be removed in Ray 2.7.
+[36m(train_algo pid=134577)[0m   self._loggers.append(cls(self.config, self.logdir, self.trial))
+[36m(train_algo pid=134577)[0m /data/gpfs/projects/punim1355/dalmiapriyam/predator-prey/.venv/lib/python3.10/site-packages/ray/tune/logger/unified.py:53: RayDeprecationWarning: This API is deprecated and may be removed in future Ray releases. You could suppress this warning by setting env variable PYTHONWARNINGS="ignore::DeprecationWarning"
+[36m(train_algo pid=134577)[0m The `TBXLogger interface is deprecated in favor of the `ray.tune.tensorboardx.TBXLoggerCallback` interface and will be removed in Ray 2.7.
+[36m(train_algo pid=134577)[0m   self._loggers.append(cls(self.config, self.logdir, self.trial))
+[36m(train_algo pid=134577)[0m Install gputil for GPU system monitoring.
+[36m(train_algo pid=134577)[0m Already logged into W&B.
+[36m(train_algo pid=134577)[0m wandb: WARNING Tried to auto resume run with id 550c2_00004 but id 550c2_00007 is set.
+[36m(train_algo pid=134577)[0m wandb: - 0.005 MB of 0.005 MB uploaded
+[36m(train_algo pid=134577)[0m wandb: \ 0.005 MB of 0.005 MB uploaded
+[36m(train_algo pid=134577)[0m wandb: | 0.019 MB of 0.019 MB uploaded
+[36m(train_algo pid=134577)[0m wandb: / 0.019 MB of 0.019 MB uploadedwandb: - 0.019 MB of 0.019 MB uploadedwandb:                                                                                
+[36m(train_algo pid=134577)[0m wandb: 
+[36m(train_algo pid=134577)[0m wandb: Run history:
+[36m(train_algo pid=134577)[0m wandb:      episode_len_mean ██▇▆▄▃▂▃▃▃▂▃▃▄▃▃▃▃▂▂▃▃▂▂▂▃▂▃▃▃▂▁▂▄▃▂▁▂▃▁
+[36m(train_algo pid=134577)[0m wandb:   episode_reward_mean ▁▃▆▇▇▇███████▇▇▇███████████▇█▇███▇▇██▇██
+[36m(train_algo pid=134577)[0m wandb:        episodes_total ▁▁▁▁▂▂▂▂▂▂▃▃▃▃▃▄▄▄▄▄▄▅▅▅▅▅▆▆▆▆▆▆▇▇▇▇▇███
+[36m(train_algo pid=134577)[0m wandb: num_env_steps_sampled ▁▁▁▁▂▂▂▂▂▃▃▃▃▃▃▄▄▄▄▄▅▅▅▅▅▅▆▆▆▆▆▇▇▇▇▇▇███
+[36m(train_algo pid=134577)[0m wandb: num_env_steps_trained ▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁
+[36m(train_algo pid=134577)[0m wandb:          time_total_s ▁▁▁▁▂▂▂▂▂▃▃▃▃▃▃▄▄▄▄▄▅▅▅▅▅▅▆▆▆▆▆▇▇▇▇▇▇███
+[36m(train_algo pid=134577)[0m wandb:    training_iteration ▁▁▁▁▂▂▂▂▂▃▃▃▃▃▃▄▄▄▄▄▅▅▅▅▅▅▆▆▆▆▆▇▇▇▇▇▇███
+[36m(train_algo pid=134577)[0m wandb: 
+[36m(train_algo pid=134577)[0m wandb: Run summary:
+[36m(train_algo pid=134577)[0m wandb:      episode_len_mean 64.88
+[36m(train_algo pid=134577)[0m wandb:   episode_reward_mean 5.69
+[36m(train_algo pid=134577)[0m wandb:        episodes_total 5006
+[36m(train_algo pid=134577)[0m wandb: num_env_steps_sampled 350500
+[36m(train_algo pid=134577)[0m wandb: num_env_steps_trained 0
+[36m(train_algo pid=134577)[0m wandb:          time_total_s 1864.40808
+[36m(train_algo pid=134577)[0m wandb:    training_iteration 701
+[36m(train_algo pid=134577)[0m wandb: 
+[36m(train_algo pid=134577)[0m wandb: 🚀 View run train_algo_550c2_00004 at: https://wandb.ai/tpn/rllib2/runs/550c2_00004
+[36m(train_algo pid=134577)[0m wandb: Synced 5 W&B file(s), 0 media file(s), 0 artifact file(s) and 0 other file(s)
+[36m(train_algo pid=134577)[0m wandb: Find logs at: /home/dalmiapriyam/ray_results/train_algo_2023-11-20_14-24-36/train_algo_550c2_00004_4_map_size=15,pred_vision=2,train_batch_size=500_2023-11-20_14-24-36/wandb/run-20231120_142442-550c2_00004/logs
+[36m(train_algo pid=134577)[0m wandb: - Waiting for wandb.init()...
+[36m(train_algo pid=134577)[0m wandb: \ Waiting for wandb.init()...
+[36m(train_algo pid=134577)[0m wandb: Tracking run with wandb version 0.16.0
+[36m(train_algo pid=134577)[0m wandb: Run data is saved locally in /home/dalmiapriyam/ray_results/train_algo_2023-11-20_14-24-36/train_algo_550c2_00004_4_map_size=15,pred_vision=2,train_batch_size=500_2023-11-20_14-24-36/wandb/run-20231120_145601-550c2_00007
+[36m(train_algo pid=134577)[0m wandb: Run `wandb offline` to turn off syncing.
+[36m(train_algo pid=134577)[0m wandb: Syncing run train_algo_550c2_00007
+[36m(train_algo pid=134577)[0m wandb: ⭐️ View project at https://wandb.ai/tpn/rllib2
+[36m(train_algo pid=134577)[0m wandb: 🚀 View run at https://wandb.ai/tpn/rllib2/runs/550c2_00007
+[36m(train_algo pid=134573)[0m /data/gpfs/projects/punim1355/dalmiapriyam/predator-prey/.venv/lib/python3.10/site-packages/ray/rllib/algorithms/algorithm.py:484: RayDeprecationWarning: This API is deprecated and may be removed in future Ray releases. You could suppress this warning by setting env variable PYTHONWARNINGS="ignore::DeprecationWarning"
+[36m(train_algo pid=134573)[0m `UnifiedLogger` will be removed in Ray 2.7.
+[36m(train_algo pid=134573)[0m   return UnifiedLogger(config, logdir, loggers=None)
+[36m(train_algo pid=134573)[0m /data/gpfs/projects/punim1355/dalmiapriyam/predator-prey/.venv/lib/python3.10/site-packages/ray/tune/logger/unified.py:53: RayDeprecationWarning: This API is deprecated and may be removed in future Ray releases. You could suppress this warning by setting env variable PYTHONWARNINGS="ignore::DeprecationWarning"
+[36m(train_algo pid=134573)[0m The `JsonLogger interface is deprecated in favor of the `ray.tune.json.JsonLoggerCallback` interface and will be removed in Ray 2.7.
+[36m(train_algo pid=134573)[0m   self._loggers.append(cls(self.config, self.logdir, self.trial))
+[36m(train_algo pid=134573)[0m /data/gpfs/projects/punim1355/dalmiapriyam/predator-prey/.venv/lib/python3.10/site-packages/ray/tune/logger/unified.py:53: RayDeprecationWarning: This API is deprecated and may be removed in future Ray releases. You could suppress this warning by setting env variable PYTHONWARNINGS="ignore::DeprecationWarning"
+[36m(train_algo pid=134573)[0m The `CSVLogger interface is deprecated in favor of the `ray.tune.csv.CSVLoggerCallback` interface and will be removed in Ray 2.7.
+[36m(train_algo pid=134573)[0m   self._loggers.append(cls(self.config, self.logdir, self.trial))
+[36m(train_algo pid=134573)[0m /data/gpfs/projects/punim1355/dalmiapriyam/predator-prey/.venv/lib/python3.10/site-packages/ray/tune/logger/unified.py:53: RayDeprecationWarning: This API is deprecated and may be removed in future Ray releases. You could suppress this warning by setting env variable PYTHONWARNINGS="ignore::DeprecationWarning"
+[36m(train_algo pid=134573)[0m The `TBXLogger interface is deprecated in favor of the `ray.tune.tensorboardx.TBXLoggerCallback` interface and will be removed in Ray 2.7.
+[36m(train_algo pid=134573)[0m   self._loggers.append(cls(self.config, self.logdir, self.trial))
+[36m(train_algo pid=134573)[0m Install gputil for GPU system monitoring.
+[36m(train_algo pid=134573)[0m Already logged into W&B.
+[36m(train_algo pid=134573)[0m wandb: WARNING Tried to auto resume run with id 550c2_00000 but id 550c2_00008 is set.
+[36m(train_algo pid=134573)[0m wandb: - 0.005 MB of 0.005 MB uploaded
+[36m(train_algo pid=134573)[0m wandb: \ 0.005 MB of 0.005 MB uploaded
+[36m(train_algo pid=134573)[0m wandb: | 0.005 MB of 0.019 MB uploaded
+[36m(train_algo pid=134573)[0m wandb: / 0.005 MB of 0.019 MB uploadedwandb: - 0.019 MB of 0.019 MB uploadedwandb:                                                                                
+[36m(train_algo pid=134573)[0m wandb: 
+[36m(train_algo pid=134573)[0m wandb: Run history:
+[36m(train_algo pid=134573)[0m wandb:      episode_len_mean ██▇▆▄▄▄▆▄▄▃▅▄▃▄▄▄▃▂▂▄▃▆▅▅▃▄▁▂▂▇▇▇▇████▃▂
+[36m(train_algo pid=134573)[0m wandb:   episode_reward_mean ▁▂▅▆▇▇▇▆▇▇▇▆▇▇▇▇▇▇█▇▆▇▆▆▇▇▇███▄▄▄▃▃▃▂▃▇█
+[36m(train_algo pid=134573)[0m wandb:        episodes_total ▁▁▁▁▂▂▂▂▂▃▃▃▃▃▃▄▄▄▄▄▅▅▅▅▅▆▆▆▆▆▆▇▇▇▇▇▇███
+[36m(train_algo pid=134573)[0m wandb: num_env_steps_sampled ▁▁▁▁▂▂▂▂▂▃▃▃▃▃▃▄▄▄▄▄▅▅▅▅▅▅▆▆▆▆▆▇▇▇▇▇▇███
+[36m(train_algo pid=134573)[0m wandb: num_env_steps_trained ▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁
+[36m(train_algo pid=134573)[0m wandb:          time_total_s ▁▁▁▁▂▂▂▂▂▃▃▃▃▃▃▄▄▄▄▄▅▅▅▅▅▅▆▆▆▆▆▇▇▇▇▇▇███
+[36m(train_algo pid=134573)[0m wandb:    training_iteration ▁▁▁▁▂▂▂▂▂▃▃▃▃▃▃▄▄▄▄▄▅▅▅▅▅▅▆▆▆▆▆▇▇▇▇▇▇███
+[36m(train_algo pid=134573)[0m wandb: 
+[36m(train_algo pid=134573)[0m wandb: Run summary:
+[36m(train_algo pid=134573)[0m wandb:      episode_len_mean 66.89
+[36m(train_algo pid=134573)[0m wandb:   episode_reward_mean 5.6
+[36m(train_algo pid=134573)[0m wandb:        episodes_total 5001
+[36m(train_algo pid=134573)[0m wandb: num_env_steps_sampled 409800
+[36m(train_algo pid=134573)[0m wandb: num_env_steps_trained 0
+[36m(train_algo pid=134573)[0m wandb:          time_total_s 2207.53059
+[36m(train_algo pid=134573)[0m wandb:    training_iteration 2049
+[36m(train_algo pid=134573)[0m wandb: 
+[36m(train_algo pid=134573)[0m wandb: 🚀 View run train_algo_550c2_00000 at: https://wandb.ai/tpn/rllib2/runs/550c2_00000
+[36m(train_algo pid=134573)[0m wandb: Synced 5 W&B file(s), 0 media file(s), 0 artifact file(s) and 0 other file(s)
+[36m(train_algo pid=134573)[0m wandb: Find logs at: /home/dalmiapriyam/ray_results/train_algo_2023-11-20_14-24-36/train_algo_550c2_00000_0_map_size=15,pred_vision=2,train_batch_size=200_2023-11-20_14-24-36/wandb/run-20231120_142442-550c2_00000/logs
+[36m(train_algo pid=134573)[0m wandb: - Waiting for wandb.init()...
+[36m(train_algo pid=134573)[0m wandb: \ Waiting for wandb.init()...
+[36m(train_algo pid=134573)[0m wandb: Tracking run with wandb version 0.16.0
+[36m(train_algo pid=134573)[0m wandb: Run data is saved locally in /home/dalmiapriyam/ray_results/train_algo_2023-11-20_14-24-36/train_algo_550c2_00000_0_map_size=15,pred_vision=2,train_batch_size=200_2023-11-20_14-24-36/wandb/run-20231120_150211-550c2_00008
+[36m(train_algo pid=134573)[0m wandb: Run `wandb offline` to turn off syncing.
+[36m(train_algo pid=134573)[0m wandb: Syncing run train_algo_550c2_00008
+[36m(train_algo pid=134573)[0m wandb: ⭐️ View project at https://wandb.ai/tpn/rllib2
+[36m(train_algo pid=134573)[0m wandb: 🚀 View run at https://wandb.ai/tpn/rllib2/runs/550c2_00008
+[36m(train_algo pid=134576)[0m /data/gpfs/projects/punim1355/dalmiapriyam/predator-prey/.venv/lib/python3.10/site-packages/ray/rllib/algorithms/algorithm.py:484: RayDeprecationWarning: This API is deprecated and may be removed in future Ray releases. You could suppress this warning by setting env variable PYTHONWARNINGS="ignore::DeprecationWarning"
+[36m(train_algo pid=134576)[0m `UnifiedLogger` will be removed in Ray 2.7.
+[36m(train_algo pid=134576)[0m   return UnifiedLogger(config, logdir, loggers=None)
+[36m(train_algo pid=134576)[0m /data/gpfs/projects/punim1355/dalmiapriyam/predator-prey/.venv/lib/python3.10/site-packages/ray/tune/logger/unified.py:53: RayDeprecationWarning: This API is deprecated and may be removed in future Ray releases. You could suppress this warning by setting env variable PYTHONWARNINGS="ignore::DeprecationWarning"
+[36m(train_algo pid=134576)[0m The `JsonLogger interface is deprecated in favor of the `ray.tune.json.JsonLoggerCallback` interface and will be removed in Ray 2.7.
+[36m(train_algo pid=134576)[0m   self._loggers.append(cls(self.config, self.logdir, self.trial))
+[36m(train_algo pid=134576)[0m /data/gpfs/projects/punim1355/dalmiapriyam/predator-prey/.venv/lib/python3.10/site-packages/ray/tune/logger/unified.py:53: RayDeprecationWarning: This API is deprecated and may be removed in future Ray releases. You could suppress this warning by setting env variable PYTHONWARNINGS="ignore::DeprecationWarning"
+[36m(train_algo pid=134576)[0m The `CSVLogger interface is deprecated in favor of the `ray.tune.csv.CSVLoggerCallback` interface and will be removed in Ray 2.7.
+[36m(train_algo pid=134576)[0m   self._loggers.append(cls(self.config, self.logdir, self.trial))
+[36m(train_algo pid=134576)[0m /data/gpfs/projects/punim1355/dalmiapriyam/predator-prey/.venv/lib/python3.10/site-packages/ray/tune/logger/unified.py:53: RayDeprecationWarning: This API is deprecated and may be removed in future Ray releases. You could suppress this warning by setting env variable PYTHONWARNINGS="ignore::DeprecationWarning"
+[36m(train_algo pid=134576)[0m The `TBXLogger interface is deprecated in favor of the `ray.tune.tensorboardx.TBXLoggerCallback` interface and will be removed in Ray 2.7.
+[36m(train_algo pid=134576)[0m   self._loggers.append(cls(self.config, self.logdir, self.trial))
+[36m(train_algo pid=134576)[0m Install gputil for GPU system monitoring.
+[36m(train_algo pid=134576)[0m Already logged into W&B.
+[36m(train_algo pid=134576)[0m wandb: WARNING Tried to auto resume run with id 550c2_00003 but id 550c2_00009 is set.
+[36m(train_algo pid=134576)[0m wandb: - 0.005 MB of 0.005 MB uploaded
+[36m(train_algo pid=134576)[0m wandb: \ 0.005 MB of 0.005 MB uploaded
+[36m(train_algo pid=134576)[0m wandb: | 0.005 MB of 0.019 MB uploaded
+[36m(train_algo pid=134576)[0m wandb: / 0.005 MB of 0.019 MB uploadedwandb: - 0.019 MB of 0.019 MB uploadedwandb:                                                                                
+[36m(train_algo pid=134576)[0m wandb: 
+[36m(train_algo pid=134576)[0m wandb: Run history:
+[36m(train_algo pid=134576)[0m wandb:      episode_len_mean ███████▇▇▆▅▄▄▄▃▆▆▄▅▇▆▅▄▃▆▄▅▄▄▃▃▄▃▃▁▂▅▅▂▂
+[36m(train_algo pid=134576)[0m wandb:   episode_reward_mean ▁▁▂▂▂▃▄▅▅▆▇▇█▇█▅▆▇▇▆▆▇▇▇▆▇▇▇▇██▇▇▇██▇▆██
+[36m(train_algo pid=134576)[0m wandb:        episodes_total ▁▁▁▁▂▂▂▂▂▂▂▃▃▃▃▃▄▄▄▄▄▄▅▅▅▅▅▆▆▆▆▆▇▇▇▇▇███
+[36m(train_algo pid=134576)[0m wandb: num_env_steps_sampled ▁▁▁▂▂▂▂▂▂▃▃▃▃▃▃▄▄▄▄▄▅▅▅▅▅▅▆▆▆▆▆▇▇▇▇▇▇███
+[36m(train_algo pid=134576)[0m wandb: num_env_steps_trained ▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁
+[36m(train_algo pid=134576)[0m wandb:          time_total_s ▁▁▁▂▂▂▂▂▂▃▃▃▃▃▃▄▄▄▄▄▄▅▅▅▅▅▆▆▆▆▆▇▇▇▇▇▇███
+[36m(train_algo pid=134576)[0m wandb:    training_iteration ▁▁▁▂▂▂▂▂▂▃▃▃▃▃▃▄▄▄▄▄▅▅▅▅▅▅▆▆▆▆▆▇▇▇▇▇▇███
+[36m(train_algo pid=134576)[0m wandb: 
+[36m(train_algo pid=134576)[0m wandb: Run summary:
+[36m(train_algo pid=134576)[0m wandb:      episode_len_mean 77.22
+[36m(train_algo pid=134576)[0m wandb:   episode_reward_mean 5.26
+[36m(train_algo pid=134576)[0m wandb:        episodes_total 5002
+[36m(train_algo pid=134576)[0m wandb: num_env_steps_sampled 433400
+[36m(train_algo pid=134576)[0m wandb: num_env_steps_trained 0
+[36m(train_algo pid=134576)[0m wandb:          time_total_s 2381.71552
+[36m(train_algo pid=134576)[0m wandb:    training_iteration 2167
+[36m(train_algo pid=134576)[0m wandb: 
+[36m(train_algo pid=134576)[0m wandb: 🚀 View run train_algo_550c2_00003 at: https://wandb.ai/tpn/rllib2/runs/550c2_00003
+[36m(train_algo pid=134576)[0m wandb: Synced 5 W&B file(s), 0 media file(s), 0 artifact file(s) and 0 other file(s)
+[36m(train_algo pid=134576)[0m wandb: Find logs at: /home/dalmiapriyam/ray_results/train_algo_2023-11-20_14-24-36/train_algo_550c2_00003_3_map_size=20,pred_vision=3,train_batch_size=200_2023-11-20_14-24-36/wandb/run-20231120_142442-550c2_00003/logs
+[36m(train_algo pid=134576)[0m wandb: - Waiting for wandb.init()...
+[36m(train_algo pid=134576)[0m wandb: \ Waiting for wandb.init()...
+[36m(train_algo pid=134576)[0m wandb: Tracking run with wandb version 0.16.0
+[36m(train_algo pid=134576)[0m wandb: Run data is saved locally in /home/dalmiapriyam/ray_results/train_algo_2023-11-20_14-24-36/train_algo_550c2_00003_3_map_size=20,pred_vision=3,train_batch_size=200_2023-11-20_14-24-36/wandb/run-20231120_150508-550c2_00009
+[36m(train_algo pid=134576)[0m wandb: Run `wandb offline` to turn off syncing.
+[36m(train_algo pid=134576)[0m wandb: Syncing run train_algo_550c2_00009
+[36m(train_algo pid=134576)[0m wandb: ⭐️ View project at https://wandb.ai/tpn/rllib2
+[36m(train_algo pid=134576)[0m wandb: 🚀 View run at https://wandb.ai/tpn/rllib2/runs/550c2_00009
+[36m(train_algo pid=134578)[0m /data/gpfs/projects/punim1355/dalmiapriyam/predator-prey/.venv/lib/python3.10/site-packages/ray/rllib/algorithms/algorithm.py:484: RayDeprecationWarning: This API is deprecated and may be removed in future Ray releases. You could suppress this warning by setting env variable PYTHONWARNINGS="ignore::DeprecationWarning"
+[36m(train_algo pid=134578)[0m `UnifiedLogger` will be removed in Ray 2.7.
+[36m(train_algo pid=134578)[0m   return UnifiedLogger(config, logdir, loggers=None)
+[36m(train_algo pid=134578)[0m /data/gpfs/projects/punim1355/dalmiapriyam/predator-prey/.venv/lib/python3.10/site-packages/ray/tune/logger/unified.py:53: RayDeprecationWarning: This API is deprecated and may be removed in future Ray releases. You could suppress this warning by setting env variable PYTHONWARNINGS="ignore::DeprecationWarning"
+[36m(train_algo pid=134578)[0m The `JsonLogger interface is deprecated in favor of the `ray.tune.json.JsonLoggerCallback` interface and will be removed in Ray 2.7.
+[36m(train_algo pid=134578)[0m   self._loggers.append(cls(self.config, self.logdir, self.trial))
+[36m(train_algo pid=134578)[0m /data/gpfs/projects/punim1355/dalmiapriyam/predator-prey/.venv/lib/python3.10/site-packages/ray/tune/logger/unified.py:53: RayDeprecationWarning: This API is deprecated and may be removed in future Ray releases. You could suppress this warning by setting env variable PYTHONWARNINGS="ignore::DeprecationWarning"
+[36m(train_algo pid=134578)[0m The `CSVLogger interface is deprecated in favor of the `ray.tune.csv.CSVLoggerCallback` interface and will be removed in Ray 2.7.
+[36m(train_algo pid=134578)[0m   self._loggers.append(cls(self.config, self.logdir, self.trial))
+[36m(train_algo pid=134578)[0m /data/gpfs/projects/punim1355/dalmiapriyam/predator-prey/.venv/lib/python3.10/site-packages/ray/tune/logger/unified.py:53: RayDeprecationWarning: This API is deprecated and may be removed in future Ray releases. You could suppress this warning by setting env variable PYTHONWARNINGS="ignore::DeprecationWarning"
+[36m(train_algo pid=134578)[0m The `TBXLogger interface is deprecated in favor of the `ray.tune.tensorboardx.TBXLoggerCallback` interface and will be removed in Ray 2.7.
+[36m(train_algo pid=134578)[0m   self._loggers.append(cls(self.config, self.logdir, self.trial))
+[36m(train_algo pid=134578)[0m Install gputil for GPU system monitoring.
+[36m(train_algo pid=134578)[0m Already logged into W&B.
+[36m(train_algo pid=134578)[0m wandb: WARNING Tried to auto resume run with id 550c2_00005 but id 550c2_00010 is set.
+[36m(train_algo pid=134578)[0m wandb: - 0.005 MB of 0.005 MB uploaded
+[36m(train_algo pid=134578)[0m wandb: \ 0.005 MB of 0.005 MB uploaded
+[36m(train_algo pid=134578)[0m wandb: | 0.005 MB of 0.019 MB uploaded
+[36m(train_algo pid=134578)[0m wandb: / 0.005 MB of 0.019 MB uploadedwandb: - 0.019 MB of 0.019 MB uploadedwandb:                                                                                
+[36m(train_algo pid=134578)[0m wandb: 
+[36m(train_algo pid=134578)[0m wandb: Run history:
+[36m(train_algo pid=134578)[0m wandb:      episode_len_mean ███▆▅▅▅▄▄▄▄▁▅▄▂▃▂▃▄▄▄▅▄▅▃▃▅▄▃▁▂▄▇▇▅▄▁▄▆▅
+[36m(train_algo pid=134578)[0m wandb:   episode_reward_mean ▁▃▃▆▇▇▇▇▇▇▆█▇▇█▇▇▇▇▇▇▆▇▇▇▇▇▇▇█▇▇▆▅▇▇█▇▆▆
+[36m(train_algo pid=134578)[0m wandb:        episodes_total ▁▁▁▁▂▂▂▂▂▃▃▃▃▃▃▄▄▄▄▄▅▅▅▅▅▅▆▆▆▆▆▇▇▇▇▇▇███
+[36m(train_algo pid=134578)[0m wandb: num_env_steps_sampled ▁▁▁▁▂▂▂▂▂▃▃▃▃▃▃▄▄▄▄▄▅▅▅▅▅▅▆▆▆▆▆▇▇▇▇▇▇███
+[36m(train_algo pid=134578)[0m wandb: num_env_steps_trained ▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁
+[36m(train_algo pid=134578)[0m wandb:          time_total_s ▁▁▁▁▂▂▂▂▂▃▃▃▃▃▃▄▄▄▄▄▅▅▅▅▅▅▆▆▆▆▆▇▇▇▇▇▇███
+[36m(train_algo pid=134578)[0m wandb:    training_iteration ▁▁▁▁▂▂▂▂▂▃▃▃▃▃▃▄▄▄▄▄▅▅▅▅▅▅▆▆▆▆▆▇▇▇▇▇▇███
+[36m(train_algo pid=134578)[0m wandb: 
+[36m(train_algo pid=134578)[0m wandb: Run summary:
+[36m(train_algo pid=134578)[0m wandb:      episode_len_mean 95.96
+[36m(train_algo pid=134578)[0m wandb:   episode_reward_mean 4.2
+[36m(train_algo pid=134578)[0m wandb:        episodes_total 5004
+[36m(train_algo pid=134578)[0m wandb: num_env_steps_sampled 468000
+[36m(train_algo pid=134578)[0m wandb: num_env_steps_trained 0
+[36m(train_algo pid=134578)[0m wandb:          time_total_s 2490.3967
+[36m(train_algo pid=134578)[0m wandb:    training_iteration 936
+[36m(train_algo pid=134578)[0m wandb: 
+[36m(train_algo pid=134578)[0m wandb: 🚀 View run train_algo_550c2_00005 at: https://wandb.ai/tpn/rllib2/runs/550c2_00005
+[36m(train_algo pid=134578)[0m wandb: Synced 5 W&B file(s), 0 media file(s), 0 artifact file(s) and 0 other file(s)
+[36m(train_algo pid=134578)[0m wandb: Find logs at: /home/dalmiapriyam/ray_results/train_algo_2023-11-20_14-24-36/train_algo_550c2_00005_5_map_size=20,pred_vision=2,train_batch_size=500_2023-11-20_14-24-36/wandb/run-20231120_142442-550c2_00005/logs
+[36m(train_algo pid=134578)[0m wandb: - Waiting for wandb.init()...
+[36m(train_algo pid=134578)[0m wandb: \ Waiting for wandb.init()...
+[36m(train_algo pid=134578)[0m wandb: Tracking run with wandb version 0.16.0
+[36m(train_algo pid=134578)[0m wandb: Run data is saved locally in /home/dalmiapriyam/ray_results/train_algo_2023-11-20_14-24-36/train_algo_550c2_00005_5_map_size=20,pred_vision=2,train_batch_size=500_2023-11-20_14-24-36/wandb/run-20231120_150632-550c2_00010
+[36m(train_algo pid=134578)[0m wandb: Run `wandb offline` to turn off syncing.
+[36m(train_algo pid=134578)[0m wandb: Syncing run train_algo_550c2_00010
+[36m(train_algo pid=134578)[0m wandb: ⭐️ View project at https://wandb.ai/tpn/rllib2
+[36m(train_algo pid=134578)[0m wandb: 🚀 View run at https://wandb.ai/tpn/rllib2/runs/550c2_00010
+[36m(train_algo pid=134574)[0m /data/gpfs/projects/punim1355/dalmiapriyam/predator-prey/.venv/lib/python3.10/site-packages/ray/rllib/algorithms/algorithm.py:484: RayDeprecationWarning: This API is deprecated and may be removed in future Ray releases. You could suppress this warning by setting env variable PYTHONWARNINGS="ignore::DeprecationWarning"
+[36m(train_algo pid=134574)[0m `UnifiedLogger` will be removed in Ray 2.7.
+[36m(train_algo pid=134574)[0m   return UnifiedLogger(config, logdir, loggers=None)
+[36m(train_algo pid=134574)[0m /data/gpfs/projects/punim1355/dalmiapriyam/predator-prey/.venv/lib/python3.10/site-packages/ray/tune/logger/unified.py:53: RayDeprecationWarning: This API is deprecated and may be removed in future Ray releases. You could suppress this warning by setting env variable PYTHONWARNINGS="ignore::DeprecationWarning"
+[36m(train_algo pid=134574)[0m The `JsonLogger interface is deprecated in favor of the `ray.tune.json.JsonLoggerCallback` interface and will be removed in Ray 2.7.
+[36m(train_algo pid=134574)[0m   self._loggers.append(cls(self.config, self.logdir, self.trial))
+[36m(train_algo pid=134574)[0m /data/gpfs/projects/punim1355/dalmiapriyam/predator-prey/.venv/lib/python3.10/site-packages/ray/tune/logger/unified.py:53: RayDeprecationWarning: This API is deprecated and may be removed in future Ray releases. You could suppress this warning by setting env variable PYTHONWARNINGS="ignore::DeprecationWarning"
+[36m(train_algo pid=134574)[0m The `CSVLogger interface is deprecated in favor of the `ray.tune.csv.CSVLoggerCallback` interface and will be removed in Ray 2.7.
+[36m(train_algo pid=134574)[0m   self._loggers.append(cls(self.config, self.logdir, self.trial))
+[36m(train_algo pid=134574)[0m /data/gpfs/projects/punim1355/dalmiapriyam/predator-prey/.venv/lib/python3.10/site-packages/ray/tune/logger/unified.py:53: RayDeprecationWarning: This API is deprecated and may be removed in future Ray releases. You could suppress this warning by setting env variable PYTHONWARNINGS="ignore::DeprecationWarning"
+[36m(train_algo pid=134574)[0m The `TBXLogger interface is deprecated in favor of the `ray.tune.tensorboardx.TBXLoggerCallback` interface and will be removed in Ray 2.7.
+[36m(train_algo pid=134574)[0m   self._loggers.append(cls(self.config, self.logdir, self.trial))
+[36m(train_algo pid=134574)[0m Install gputil for GPU system monitoring.
+[36m(train_algo pid=134574)[0m Already logged into W&B.
+[36m(train_algo pid=134574)[0m wandb: WARNING Tried to auto resume run with id 550c2_00001 but id 550c2_00011 is set.
+[36m(train_algo pid=134574)[0m wandb: - 0.005 MB of 0.005 MB uploaded
+[36m(train_algo pid=134574)[0m wandb: \ 0.005 MB of 0.005 MB uploaded
+[36m(train_algo pid=134574)[0m wandb: | 0.005 MB of 0.005 MB uploadedwandb: / 0.019 MB of 0.019 MB uploadedwandb:                                                                                
+[36m(train_algo pid=134574)[0m wandb: 
+[36m(train_algo pid=134574)[0m wandb: Run history:
+[36m(train_algo pid=134574)[0m wandb:      episode_len_mean ████████▆▇▇▇▆▄▆▆▇▅▇▆▆▆▇▅▄▂▁▃▅▄▆▆▅▅▇▅▄▆▇▇
+[36m(train_algo pid=134574)[0m wandb:   episode_reward_mean ▁▂▂▂▂▃▃▄▅▄▅▅▆▆▆▇▅▆▆▇▇▆▅▇▇██▇▅▆▆▆▆▆▃▅▅▅▅▄
+[36m(train_algo pid=134574)[0m wandb:        episodes_total ▁▁▁▁▂▂▂▂▂▃▃▃▃▃▃▄▄▄▄▄▄▅▅▅▅▅▆▆▆▆▆▇▇▇▇▇▇███
+[36m(train_algo pid=134574)[0m wandb: num_env_steps_sampled ▁▁▁▁▂▂▂▂▂▃▃▃▃▃▃▄▄▄▄▄▅▅▅▅▅▅▆▆▆▆▆▇▇▇▇▇▇███
+[36m(train_algo pid=134574)[0m wandb: num_env_steps_trained ▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁
+[36m(train_algo pid=134574)[0m wandb:          time_total_s ▁▁▁▁▂▂▂▂▂▃▃▃▃▃▃▄▄▄▄▄▅▅▅▅▅▅▆▆▆▆▆▇▇▇▇▇▇███
+[36m(train_algo pid=134574)[0m wandb:    training_iteration ▁▁▁▁▂▂▂▂▂▃▃▃▃▃▃▄▄▄▄▄▅▅▅▅▅▅▆▆▆▆▆▇▇▇▇▇▇███
+[36m(train_algo pid=134574)[0m wandb: 
+[36m(train_algo pid=134574)[0m wandb: Run summary:
+[36m(train_algo pid=134574)[0m wandb:      episode_len_mean 100.16
+[36m(train_algo pid=134574)[0m wandb:   episode_reward_mean 2.43
+[36m(train_algo pid=134574)[0m wandb:        episodes_total 5001
+[36m(train_algo pid=134574)[0m wandb: num_env_steps_sampled 493400
+[36m(train_algo pid=134574)[0m wandb: num_env_steps_trained 0
+[36m(train_algo pid=134574)[0m wandb:          time_total_s 2636.98651
+[36m(train_algo pid=134574)[0m wandb:    training_iteration 2467
+[36m(train_algo pid=134574)[0m wandb: 
+[36m(train_algo pid=134574)[0m wandb: 🚀 View run train_algo_550c2_00001 at: https://wandb.ai/tpn/rllib2/runs/550c2_00001
+[36m(train_algo pid=134574)[0m wandb: Synced 5 W&B file(s), 0 media file(s), 0 artifact file(s) and 0 other file(s)
+[36m(train_algo pid=134574)[0m wandb: Find logs at: /home/dalmiapriyam/ray_results/train_algo_2023-11-20_14-24-36/train_algo_550c2_00001_1_map_size=20,pred_vision=2,train_batch_size=200_2023-11-20_14-24-36/wandb/run-20231120_142442-550c2_00001/logs
+[36m(train_algo pid=134574)[0m wandb: - Waiting for wandb.init()...
+[36m(train_algo pid=134574)[0m wandb: \ Waiting for wandb.init()...
+[36m(train_algo pid=134574)[0m wandb: Tracking run with wandb version 0.16.0
+[36m(train_algo pid=134574)[0m wandb: Run data is saved locally in /home/dalmiapriyam/ray_results/train_algo_2023-11-20_14-24-36/train_algo_550c2_00001_1_map_size=20,pred_vision=2,train_batch_size=200_2023-11-20_14-24-36/wandb/run-20231120_150931-550c2_00011
+[36m(train_algo pid=134574)[0m wandb: Run `wandb offline` to turn off syncing.
+[36m(train_algo pid=134574)[0m wandb: Syncing run train_algo_550c2_00011
+[36m(train_algo pid=134574)[0m wandb: ⭐️ View project at https://wandb.ai/tpn/rllib2
+[36m(train_algo pid=134574)[0m wandb: 🚀 View run at https://wandb.ai/tpn/rllib2/runs/550c2_00011
+[36m(train_algo pid=134575)[0m Install gputil for GPU system monitoring.
+[36m(train_algo pid=134575)[0m Already logged into W&B.
+[36m(train_algo pid=134575)[0m wandb: - 0.005 MB of 0.005 MB uploaded
+[36m(train_algo pid=134575)[0m wandb: \ 0.005 MB of 0.005 MB uploaded
+[36m(train_algo pid=134575)[0m wandb: | 0.017 MB of 0.017 MB uploaded
+[36m(train_algo pid=134575)[0m wandb: / 0.017 MB of 0.017 MB uploadedwandb: - 0.017 MB of 0.017 MB uploadedwandb:                                                                                
+[36m(train_algo pid=134575)[0m wandb: 
+[36m(train_algo pid=134575)[0m wandb: Run history:
+[36m(train_algo pid=134575)[0m wandb:      episode_len_mean ██▇▆▄▃▃▃▂▂▂▂▂▁▂▂▂▃▂▂▂▁▁▂▁▂▂▂▁▁▂▃▃▂▂▁▂▁▁▂
+[36m(train_algo pid=134575)[0m wandb:   episode_reward_mean ▁▂▆▆████████████████████████████████████
+[36m(train_algo pid=134575)[0m wandb:        episodes_total ▁▁▁▁▁▂▂▂▂▂▂▃▃▃▃▃▄▄▄▄▄▄▅▅▅▅▅▆▆▆▆▆▇▇▇▇▇███
+[36m(train_algo pid=134575)[0m wandb: num_env_steps_sampled ▁▁▁▁▂▂▂▂▂▃▃▃▃▃▃▄▄▄▄▄▅▅▅▅▅▅▆▆▆▆▆▆▇▇▇▇▇███
+[36m(train_algo pid=134575)[0m wandb: num_env_steps_trained ▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁
+[36m(train_algo pid=134575)[0m wandb:          time_total_s ▁▁▁▁▂▂▂▂▂▃▃▃▃▃▃▄▄▄▄▄▄▅▅▅▅▅▆▆▆▆▆▆▇▇▇▇▇███
+[36m(train_algo pid=134575)[0m wandb:    training_iteration ▁▁▁▁▂▂▂▂▂▃▃▃▃▃▃▄▄▄▄▄▅▅▅▅▅▅▆▆▆▆▆▆▇▇▇▇▇███
+[36m(train_algo pid=134575)[0m wandb: 
+[36m(train_algo pid=134575)[0m wandb: Run summary:
+[36m(train_algo pid=134575)[0m wandb:      episode_len_mean 47.54
+[36m(train_algo pid=134575)[0m wandb:   episode_reward_mean 5.96
+[36m(train_algo pid=134575)[0m wandb:        episodes_total 5004
+[36m(train_algo pid=134575)[0m wandb: num_env_steps_sampled 260000
+[36m(train_algo pid=134575)[0m wandb: num_env_steps_trained 0
+[36m(train_algo pid=134575)[0m wandb:          time_total_s 1414.41008
+[36m(train_algo pid=134575)[0m wandb:    training_iteration 520
+[36m(train_algo pid=134575)[0m wandb: 
+[36m(train_algo pid=134575)[0m wandb: 🚀 View run train_algo_550c2_00006 at: https://wandb.ai/tpn/rllib2/runs/550c2_00006
+[36m(train_algo pid=134575)[0m wandb: Synced 5 W&B file(s), 0 media file(s), 0 artifact file(s) and 0 other file(s)
+[36m(train_algo pid=134575)[0m wandb: Find logs at: /home/dalmiapriyam/ray_results/train_algo_2023-11-20_14-24-36/train_algo_550c2_00002_2_map_size=15,pred_vision=3,train_batch_size=200_2023-11-20_14-24-36/wandb/run-20231120_145225-550c2_00006/logs
+[36m(train_algo pid=134575)[0m wandb: - Waiting for wandb.init()...
+[36m(train_algo pid=134575)[0m wandb: \ Waiting for wandb.init()...
+[36m(train_algo pid=134575)[0m wandb: Tracking run with wandb version 0.16.0
+[36m(train_algo pid=134575)[0m wandb: Run data is saved locally in /home/dalmiapriyam/ray_results/train_algo_2023-11-20_14-24-36/train_algo_550c2_00002_2_map_size=15,pred_vision=3,train_batch_size=200_2023-11-20_14-24-36/wandb/run-20231120_151617-550c2_00012
+[36m(train_algo pid=134575)[0m wandb: Run `wandb offline` to turn off syncing.
+[36m(train_algo pid=134575)[0m wandb: Syncing run train_algo_550c2_00012
+[36m(train_algo pid=134575)[0m wandb: ⭐️ View project at https://wandb.ai/tpn/rllib2
+[36m(train_algo pid=134575)[0m wandb: 🚀 View run at https://wandb.ai/tpn/rllib2/runs/550c2_00012
+[36m(train_algo pid=134578)[0m Install gputil for GPU system monitoring.
+[36m(train_algo pid=134578)[0m Already logged into W&B.
+[36m(train_algo pid=134578)[0m wandb: - 0.005 MB of 0.005 MB uploaded
+[36m(train_algo pid=134578)[0m wandb: \ 0.005 MB of 0.005 MB uploaded
+[36m(train_algo pid=134578)[0m wandb: | 0.005 MB of 0.017 MB uploaded
+[36m(train_algo pid=134578)[0m wandb: / 0.005 MB of 0.017 MB uploadedwandb: - 0.017 MB of 0.017 MB uploadedwandb:                                                                                
+[36m(train_algo pid=134578)[0m wandb: 
+[36m(train_algo pid=134578)[0m wandb: Run history:
+[36m(train_algo pid=134578)[0m wandb:      episode_len_mean ███▇▆▅▄▄▂▃▂▂▂▂▁▁▂▂▁▂▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁
+[36m(train_algo pid=134578)[0m wandb:   episode_reward_mean ▁▁▃▅▇▇██████████████████████████████████
+[36m(train_algo pid=134578)[0m wandb:        episodes_total ▁▁▁▁▁▁▂▂▂▂▂▂▃▃▃▃▃▄▄▄▄▄▅▅▅▅▅▆▆▆▆▆▇▇▇▇▇███
+[36m(train_algo pid=134578)[0m wandb: num_env_steps_sampled ▁▁▁▁▂▂▂▂▂▃▃▃▃▃▃▄▄▄▄▄▅▅▅▅▅▅▆▆▆▆▆▇▇▇▇▇▇███
+[36m(train_algo pid=134578)[0m wandb: num_env_steps_trained ▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁
+[36m(train_algo pid=134578)[0m wandb:          time_total_s ▁▁▁▁▂▂▂▂▂▃▃▃▃▃▃▄▄▄▄▄▅▅▅▅▅▅▆▆▆▆▆▇▇▇▇▇▇███
+[36m(train_algo pid=134578)[0m wandb:    training_iteration ▁▁▁▁▂▂▂▂▂▃▃▃▃▃▃▄▄▄▄▄▅▅▅▅▅▅▆▆▆▆▆▇▇▇▇▇▇███
+[36m(train_algo pid=134578)[0m wandb: 
+[36m(train_algo pid=134578)[0m wandb: Run summary:
+[36m(train_algo pid=134578)[0m wandb:      episode_len_mean 41.14
+[36m(train_algo pid=134578)[0m wandb:   episode_reward_mean 5.99
+[36m(train_algo pid=134578)[0m wandb:        episodes_total 5007
+[36m(train_algo pid=134578)[0m wandb: num_env_steps_sampled 234000
+[36m(train_algo pid=134578)[0m wandb: num_env_steps_trained 0
+[36m(train_algo pid=134578)[0m wandb:          time_total_s 1309.26837
+[36m(train_algo pid=134578)[0m wandb:    training_iteration 234
+[36m(train_algo pid=134578)[0m wandb: 
+[36m(train_algo pid=134578)[0m wandb: 🚀 View run train_algo_550c2_00010 at: https://wandb.ai/tpn/rllib2/runs/550c2_00010
+[36m(train_algo pid=134578)[0m wandb: Synced 5 W&B file(s), 0 media file(s), 0 artifact file(s) and 0 other file(s)
+[36m(train_algo pid=134578)[0m wandb: Find logs at: /home/dalmiapriyam/ray_results/train_algo_2023-11-20_14-24-36/train_algo_550c2_00005_5_map_size=20,pred_vision=2,train_batch_size=500_2023-11-20_14-24-36/wandb/run-20231120_150632-550c2_00010/logs
+[36m(train_algo pid=134578)[0m wandb: - Waiting for wandb.init()...
+[36m(train_algo pid=134578)[0m wandb: \ Waiting for wandb.init()...
+[36m(train_algo pid=134578)[0m wandb: Tracking run with wandb version 0.16.0
+[36m(train_algo pid=134578)[0m wandb: Run data is saved locally in /home/dalmiapriyam/ray_results/train_algo_2023-11-20_14-24-36/train_algo_550c2_00005_5_map_size=20,pred_vision=2,train_batch_size=500_2023-11-20_14-24-36/wandb/run-20231120_152834-550c2_00013
+[36m(train_algo pid=134578)[0m wandb: Run `wandb offline` to turn off syncing.
+[36m(train_algo pid=134578)[0m wandb: Syncing run train_algo_550c2_00013
+[36m(train_algo pid=134578)[0m wandb: ⭐️ View project at https://wandb.ai/tpn/rllib2
+[36m(train_algo pid=134578)[0m wandb: 🚀 View run at https://wandb.ai/tpn/rllib2/runs/550c2_00013
+[36m(train_algo pid=134573)[0m Install gputil for GPU system monitoring.
+[36m(train_algo pid=134573)[0m Already logged into W&B.
+[36m(train_algo pid=134573)[0m wandb: - 0.005 MB of 0.005 MB uploaded
+[36m(train_algo pid=134573)[0m wandb: \ 0.005 MB of 0.005 MB uploaded
+[36m(train_algo pid=134573)[0m wandb: | 0.005 MB of 0.017 MB uploaded
+[36m(train_algo pid=134573)[0m wandb: / 0.005 MB of 0.017 MB uploadedwandb: - 0.017 MB of 0.017 MB uploadedwandb:                                                                                
+[36m(train_algo pid=134573)[0m wandb: 
+[36m(train_algo pid=134573)[0m wandb: Run history:
+[36m(train_algo pid=134573)[0m wandb:      episode_len_mean ██▇▇▅▄▄▃▂▂▂▃▃▂▂▂▂▃▂▂▂▂▂▂▂▂▂▃▄▂▂▁▂▁▂▁▂▂▁▂
+[36m(train_algo pid=134573)[0m wandb:   episode_reward_mean ▁▃▄▅▇▇▇████████████████████▇▇███████████
+[36m(train_algo pid=134573)[0m wandb:        episodes_total ▁▁▁▁▁▂▂▂▂▂▃▃▃▃▃▃▄▄▄▄▄▅▅▅▅▅▅▆▆▆▆▆▇▇▇▇▇███
+[36m(train_algo pid=134573)[0m wandb: num_env_steps_sampled ▁▁▁▂▂▂▂▂▂▃▃▃▃▃▃▄▄▄▄▄▅▅▅▅▅▅▆▆▆▆▆▆▇▇▇▇▇███
+[36m(train_algo pid=134573)[0m wandb: num_env_steps_trained ▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁
+[36m(train_algo pid=134573)[0m wandb:          time_total_s ▁▁▁▂▂▂▂▂▂▃▃▃▃▃▃▄▄▄▄▄▅▅▅▅▅▅▆▆▆▆▆▆▇▇▇▇▇███
+[36m(train_algo pid=134573)[0m wandb:    training_iteration ▁▁▁▂▂▂▂▂▂▃▃▃▃▃▃▄▄▄▄▄▅▅▅▅▅▅▆▆▆▆▆▆▇▇▇▇▇███
+[36m(train_algo pid=134573)[0m wandb: 
+[36m(train_algo pid=134573)[0m wandb: Run summary:
+[36m(train_algo pid=134573)[0m wandb:      episode_len_mean 61.53
+[36m(train_algo pid=134573)[0m wandb:   episode_reward_mean 5.81
+[36m(train_algo pid=134573)[0m wandb:        episodes_total 5006
+[36m(train_algo pid=134573)[0m wandb: num_env_steps_sampled 323000
+[36m(train_algo pid=134573)[0m wandb: num_env_steps_trained 0
+[36m(train_algo pid=134573)[0m wandb:          time_total_s 1754.99075
+[36m(train_algo pid=134573)[0m wandb:    training_iteration 323
+[36m(train_algo pid=134573)[0m wandb: 
+[36m(train_algo pid=134573)[0m wandb: 🚀 View run train_algo_550c2_00008 at: https://wandb.ai/tpn/rllib2/runs/550c2_00008
+[36m(train_algo pid=134573)[0m wandb: Synced 5 W&B file(s), 0 media file(s), 0 artifact file(s) and 0 other file(s)
+[36m(train_algo pid=134573)[0m wandb: Find logs at: /home/dalmiapriyam/ray_results/train_algo_2023-11-20_14-24-36/train_algo_550c2_00000_0_map_size=15,pred_vision=2,train_batch_size=200_2023-11-20_14-24-36/wandb/run-20231120_150211-550c2_00008/logs
+[36m(train_algo pid=134573)[0m wandb: - Waiting for wandb.init()...
+[36m(train_algo pid=134573)[0m wandb: \ Waiting for wandb.init()...
+[36m(train_algo pid=134573)[0m wandb: Tracking run with wandb version 0.16.0
+[36m(train_algo pid=134573)[0m wandb: Run data is saved locally in /home/dalmiapriyam/ray_results/train_algo_2023-11-20_14-24-36/train_algo_550c2_00000_0_map_size=15,pred_vision=2,train_batch_size=200_2023-11-20_14-24-36/wandb/run-20231120_153140-550c2_00014
+[36m(train_algo pid=134573)[0m wandb: Run `wandb offline` to turn off syncing.
+[36m(train_algo pid=134573)[0m wandb: Syncing run train_algo_550c2_00014
+[36m(train_algo pid=134573)[0m wandb: ⭐️ View project at https://wandb.ai/tpn/rllib2
+[36m(train_algo pid=134573)[0m wandb: 🚀 View run at https://wandb.ai/tpn/rllib2/runs/550c2_00014
+[36m(train_algo pid=134577)[0m Install gputil for GPU system monitoring.
+[36m(train_algo pid=134577)[0m Already logged into W&B.
+[36m(train_algo pid=134577)[0m wandb: - 0.005 MB of 0.005 MB uploaded
+[36m(train_algo pid=134577)[0m wandb: \ 0.005 MB of 0.005 MB uploaded
+[36m(train_algo pid=134577)[0m wandb: | 0.005 MB of 0.017 MB uploaded
+[36m(train_algo pid=134577)[0m wandb: / 0.005 MB of 0.017 MB uploadedwandb: - 0.017 MB of 0.017 MB uploadedwandb:                                                                                
+[36m(train_algo pid=134577)[0m wandb: 
+[36m(train_algo pid=134577)[0m wandb: Run history:
+[36m(train_algo pid=134577)[0m wandb:      episode_len_mean ███▇▇▆▆▆▅▅▄▄▃▃▃▃▃▂▃▂▃▂▃▂▁▂▂▃▂▃▃▃▂▃▃▂▂▃▃▃
+[36m(train_algo pid=134577)[0m wandb:   episode_reward_mean ▁▃▄▅▅▆▆▇▇▇▇██▇█████████████▇█████████▇▇▇
+[36m(train_algo pid=134577)[0m wandb:        episodes_total ▁▁▁▁▂▂▂▂▂▂▃▃▃▃▃▃▄▄▄▄▄▅▅▅▅▅▆▆▆▆▆▆▇▇▇▇▇███
+[36m(train_algo pid=134577)[0m wandb: num_env_steps_sampled ▁▁▁▁▂▂▂▂▂▃▃▃▃▃▃▄▄▄▄▄▅▅▅▅▅▅▆▆▆▆▆▇▇▇▇▇▇███
+[36m(train_algo pid=134577)[0m wandb: num_env_steps_trained ▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁
+[36m(train_algo pid=134577)[0m wandb:          time_total_s ▁▁▁▁▂▂▂▂▂▃▃▃▃▃▃▄▄▄▄▄▅▅▅▅▅▅▆▆▆▆▆▆▇▇▇▇▇███
+[36m(train_algo pid=134577)[0m wandb:    training_iteration ▁▁▁▁▂▂▂▂▂▃▃▃▃▃▃▄▄▄▄▄▅▅▅▅▅▅▆▆▆▆▆▇▇▇▇▇▇███
+[36m(train_algo pid=134577)[0m wandb: 
+[36m(train_algo pid=134577)[0m wandb: Run summary:
+[36m(train_algo pid=134577)[0m wandb:      episode_len_mean 75.56
+[36m(train_algo pid=134577)[0m wandb:   episode_reward_mean 5.4
+[36m(train_algo pid=134577)[0m wandb:        episodes_total 5009
+[36m(train_algo pid=134577)[0m wandb: num_env_steps_sampled 396000
+[36m(train_algo pid=134577)[0m wandb: num_env_steps_trained 0
+[36m(train_algo pid=134577)[0m wandb:          time_total_s 2195.25827
+[36m(train_algo pid=134577)[0m wandb:    training_iteration 792
+[36m(train_algo pid=134577)[0m wandb: 
+[36m(train_algo pid=134577)[0m wandb: 🚀 View run train_algo_550c2_00007 at: https://wandb.ai/tpn/rllib2/runs/550c2_00007
+[36m(train_algo pid=134577)[0m wandb: Synced 5 W&B file(s), 0 media file(s), 0 artifact file(s) and 0 other file(s)
+[36m(train_algo pid=134577)[0m wandb: Find logs at: /home/dalmiapriyam/ray_results/train_algo_2023-11-20_14-24-36/train_algo_550c2_00004_4_map_size=15,pred_vision=2,train_batch_size=500_2023-11-20_14-24-36/wandb/run-20231120_145601-550c2_00007/logs
+[36m(train_algo pid=134577)[0m wandb: - Waiting for wandb.init()...
+[36m(train_algo pid=134577)[0m wandb: \ Waiting for wandb.init()...
+[36m(train_algo pid=134577)[0m wandb: Tracking run with wandb version 0.16.0
+[36m(train_algo pid=134577)[0m wandb: Run data is saved locally in /home/dalmiapriyam/ray_results/train_algo_2023-11-20_14-24-36/train_algo_550c2_00004_4_map_size=15,pred_vision=2,train_batch_size=500_2023-11-20_14-24-36/wandb/run-20231120_153300-550c2_00015
+[36m(train_algo pid=134577)[0m wandb: Run `wandb offline` to turn off syncing.
+[36m(train_algo pid=134577)[0m wandb: Syncing run train_algo_550c2_00015
+[36m(train_algo pid=134577)[0m wandb: ⭐️ View project at https://wandb.ai/tpn/rllib2
+[36m(train_algo pid=134577)[0m wandb: 🚀 View run at https://wandb.ai/tpn/rllib2/runs/550c2_00015
+[36m(train_algo pid=134574)[0m Install gputil for GPU system monitoring.
+[36m(train_algo pid=134574)[0m Already logged into W&B.
+[36m(train_algo pid=134574)[0m wandb: - 0.005 MB of 0.005 MB uploaded
+[36m(train_algo pid=134574)[0m wandb: \ 0.005 MB of 0.005 MB uploaded
+[36m(train_algo pid=134574)[0m wandb: | 0.005 MB of 0.017 MB uploaded
+[36m(train_algo pid=134574)[0m wandb: / 0.005 MB of 0.017 MB uploadedwandb: - 0.017 MB of 0.017 MB uploadedwandb:                                                                                
+[36m(train_algo pid=134574)[0m wandb: 
+[36m(train_algo pid=134574)[0m wandb: Run history:
+[36m(train_algo pid=134574)[0m wandb:      episode_len_mean ███▇▆▆▄▄▄▃▃▃▃▄▂▂▂▁▃▃▂▂▁▂▁▂▂▃▂▂▂▁▂▂▂▃▃▂▂▂
+[36m(train_algo pid=134574)[0m wandb:   episode_reward_mean ▁▃▅▆▇▇▇▇█████▇██████████████████████████
+[36m(train_algo pid=134574)[0m wandb:        episodes_total ▁▁▁▁▂▂▂▂▂▂▃▃▃▃▃▃▄▄▄▄▄▅▅▅▅▅▅▆▆▆▆▆▇▇▇▇▇███
+[36m(train_algo pid=134574)[0m wandb: num_env_steps_sampled ▁▁▁▂▂▂▂▂▂▃▃▃▃▃▃▄▄▄▄▄▅▅▅▅▅▅▆▆▆▆▆▇▇▇▇▇▇███
+[36m(train_algo pid=134574)[0m wandb: num_env_steps_trained ▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁
+[36m(train_algo pid=134574)[0m wandb:          time_total_s ▁▁▁▂▂▂▂▂▂▃▃▃▃▃▃▄▄▄▄▄▅▅▅▅▅▅▆▆▆▆▆▇▇▇▇▇▇███
+[36m(train_algo pid=134574)[0m wandb:    training_iteration ▁▁▁▂▂▂▂▂▂▃▃▃▃▃▃▄▄▄▄▄▅▅▅▅▅▅▆▆▆▆▆▇▇▇▇▇▇███
+[36m(train_algo pid=134574)[0m wandb: 
+[36m(train_algo pid=134574)[0m wandb: Run summary:
+[36m(train_algo pid=134574)[0m wandb:      episode_len_mean 67.31
+[36m(train_algo pid=134574)[0m wandb:   episode_reward_mean 5.8
+[36m(train_algo pid=134574)[0m wandb:        episodes_total 5010
+[36m(train_algo pid=134574)[0m wandb: num_env_steps_sampled 371000
+[36m(train_algo pid=134574)[0m wandb: num_env_steps_trained 0
+[36m(train_algo pid=134574)[0m wandb:          time_total_s 2055.38754
+[36m(train_algo pid=134574)[0m wandb:    training_iteration 371
+[36m(train_algo pid=134574)[0m wandb: 
+[36m(train_algo pid=134574)[0m wandb: 🚀 View run train_algo_550c2_00011 at: https://wandb.ai/tpn/rllib2/runs/550c2_00011
+[36m(train_algo pid=134574)[0m wandb: Synced 5 W&B file(s), 0 media file(s), 0 artifact file(s) and 0 other file(s)
+[36m(train_algo pid=134574)[0m wandb: Find logs at: /home/dalmiapriyam/ray_results/train_algo_2023-11-20_14-24-36/train_algo_550c2_00001_1_map_size=20,pred_vision=2,train_batch_size=200_2023-11-20_14-24-36/wandb/run-20231120_150931-550c2_00011/logs
+[36m(train_algo pid=134574)[0m wandb: - Waiting for wandb.init()...
+[36m(train_algo pid=134574)[0m wandb: \ Waiting for wandb.init()...
+[36m(train_algo pid=134574)[0m wandb: Tracking run with wandb version 0.16.0
+[36m(train_algo pid=134574)[0m wandb: Run data is saved locally in /home/dalmiapriyam/ray_results/train_algo_2023-11-20_14-24-36/train_algo_550c2_00001_1_map_size=20,pred_vision=2,train_batch_size=200_2023-11-20_14-24-36/wandb/run-20231120_154401-550c2_00016
+[36m(train_algo pid=134574)[0m wandb: Run `wandb offline` to turn off syncing.
+[36m(train_algo pid=134574)[0m wandb: Syncing run train_algo_550c2_00016
+[36m(train_algo pid=134574)[0m wandb: ⭐️ View project at https://wandb.ai/tpn/rllib2
+[36m(train_algo pid=134574)[0m wandb: 🚀 View run at https://wandb.ai/tpn/rllib2/runs/550c2_00016
+[36m(train_algo pid=134576)[0m Install gputil for GPU system monitoring.
+[36m(train_algo pid=134576)[0m Already logged into W&B.
+[36m(train_algo pid=134576)[0m wandb: - 0.005 MB of 0.005 MB uploaded
+[36m(train_algo pid=134576)[0m wandb: \ 0.005 MB of 0.005 MB uploadedwandb: | 0.017 MB of 0.017 MB uploadedwandb:                                                                                
+[36m(train_algo pid=134576)[0m wandb: 
+[36m(train_algo pid=134576)[0m wandb: Run history:
+[36m(train_algo pid=134576)[0m wandb:      episode_len_mean ███▇▆▆▆▅▅▄▃▄▆▄▄▃▄▂▂▄▅▄▄▄▃▄▄▄▅▅▅▅▄▂▄▄▃▁▁▃
+[36m(train_algo pid=134576)[0m wandb:   episode_reward_mean ▁▂▃▄▅▆▆▇▇▇▇▇▆▇▇▇▇▇█▇▆▇▇▇▇▇▇▇▇▇▇▇▇█▇▇██▇▇
+[36m(train_algo pid=134576)[0m wandb:        episodes_total ▁▁▁▁▂▂▂▂▂▃▃▃▃▃▃▄▄▄▄▄▄▅▅▅▅▅▆▆▆▆▆▆▇▇▇▇▇███
+[36m(train_algo pid=134576)[0m wandb: num_env_steps_sampled ▁▁▁▁▂▂▂▂▂▃▃▃▃▃▃▄▄▄▄▄▅▅▅▅▅▅▆▆▆▆▆▇▇▇▇▇▇███
+[36m(train_algo pid=134576)[0m wandb: num_env_steps_trained ▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁
+[36m(train_algo pid=134576)[0m wandb:          time_total_s ▁▁▁▁▂▂▂▂▂▃▃▃▃▃▃▄▄▄▄▄▅▅▅▅▅▅▆▆▆▆▆▇▇▇▇▇▇███
+[36m(train_algo pid=134576)[0m wandb:    training_iteration ▁▁▁▁▂▂▂▂▂▃▃▃▃▃▃▄▄▄▄▄▅▅▅▅▅▅▆▆▆▆▆▇▇▇▇▇▇███
+[36m(train_algo pid=134576)[0m wandb: 
+[36m(train_algo pid=134576)[0m wandb: Run summary:
+[36m(train_algo pid=134576)[0m wandb:      episode_len_mean 87.91
+[36m(train_algo pid=134576)[0m wandb:   episode_reward_mean 5.1
+[36m(train_algo pid=134576)[0m wandb:        episodes_total 5009
+[36m(train_algo pid=134576)[0m wandb: num_env_steps_sampled 460000
+[36m(train_algo pid=134576)[0m wandb: num_env_steps_trained 0
+[36m(train_algo pid=134576)[0m wandb:          time_total_s 2495.99923
+[36m(train_algo pid=134576)[0m wandb:    training_iteration 460
+[36m(train_algo pid=134576)[0m wandb: 
+[36m(train_algo pid=134576)[0m wandb: 🚀 View run train_algo_550c2_00009 at: https://wandb.ai/tpn/rllib2/runs/550c2_00009
+[36m(train_algo pid=134576)[0m wandb: Synced 5 W&B file(s), 0 media file(s), 0 artifact file(s) and 0 other file(s)
+[36m(train_algo pid=134576)[0m wandb: Find logs at: /home/dalmiapriyam/ray_results/train_algo_2023-11-20_14-24-36/train_algo_550c2_00003_3_map_size=20,pred_vision=3,train_batch_size=200_2023-11-20_14-24-36/wandb/run-20231120_150508-550c2_00009/logs
+[36m(train_algo pid=134576)[0m wandb: - Waiting for wandb.init()...
+[36m(train_algo pid=134576)[0m wandb: \ Waiting for wandb.init()...
+[36m(train_algo pid=134576)[0m wandb: Tracking run with wandb version 0.16.0
+[36m(train_algo pid=134576)[0m wandb: Run data is saved locally in /home/dalmiapriyam/ray_results/train_algo_2023-11-20_14-24-36/train_algo_550c2_00003_3_map_size=20,pred_vision=3,train_batch_size=200_2023-11-20_14-24-36/wandb/run-20231120_154702-550c2_00017
+[36m(train_algo pid=134576)[0m wandb: Run `wandb offline` to turn off syncing.
+[36m(train_algo pid=134576)[0m wandb: Syncing run train_algo_550c2_00017
+[36m(train_algo pid=134576)[0m wandb: ⭐️ View project at https://wandb.ai/tpn/rllib2
+[36m(train_algo pid=134576)[0m wandb: 🚀 View run at https://wandb.ai/tpn/rllib2/runs/550c2_00017
+[36m(train_algo pid=134575)[0m Install gputil for GPU system monitoring.
+[36m(train_algo pid=134575)[0m Already logged into W&B.
+[36m(train_algo pid=134575)[0m wandb: - 0.005 MB of 0.005 MB uploaded
+[36m(train_algo pid=134575)[0m wandb: \ 0.005 MB of 0.005 MB uploadedwandb: | 0.017 MB of 0.017 MB uploadedwandb:                                                                                
+[36m(train_algo pid=134575)[0m wandb: 
+[36m(train_algo pid=134575)[0m wandb: Run history:
+[36m(train_algo pid=134575)[0m wandb:      episode_len_mean ███▇▇▇▇▆▅▃▄▃▁▁▂▅▄▅▃▄▄▅▃▃▂▂▃▁▁▂▂▃▅▁▂▄▃▄▅▄
+[36m(train_algo pid=134575)[0m wandb:   episode_reward_mean ▁▂▃▄▄▅▅▅▇▇▇███▇▆▇▆▇▆▇▇▇▇█▇▇█▇▇██▆██▇▇▇▇▇
+[36m(train_algo pid=134575)[0m wandb:        episodes_total ▁▁▁▁▂▂▂▂▂▂▃▃▃▃▃▃▄▄▄▄▄▅▅▅▅▅▆▆▆▆▆▇▇▇▇▇▇███
+[36m(train_algo pid=134575)[0m wandb: num_env_steps_sampled ▁▁▁▂▂▂▂▂▂▃▃▃▃▃▃▄▄▄▄▄▅▅▅▅▅▅▆▆▆▆▆▇▇▇▇▇▇███
+[36m(train_algo pid=134575)[0m wandb: num_env_steps_trained ▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁
+[36m(train_algo pid=134575)[0m wandb:          time_total_s ▁▁▁▂▂▂▂▂▂▃▃▃▃▃▃▄▄▄▄▄▅▅▅▅▅▅▆▆▆▆▆▇▇▇▇▇▇███
+[36m(train_algo pid=134575)[0m wandb:    training_iteration ▁▁▁▂▂▂▂▂▂▃▃▃▃▃▃▄▄▄▄▄▅▅▅▅▅▅▆▆▆▆▆▇▇▇▇▇▇███
+[36m(train_algo pid=134575)[0m wandb: 
+[36m(train_algo pid=134575)[0m wandb: Run summary:
+[36m(train_algo pid=134575)[0m wandb:      episode_len_mean 80.52
+[36m(train_algo pid=134575)[0m wandb:   episode_reward_mean 4.97
+[36m(train_algo pid=134575)[0m wandb:        episodes_total 5001
+[36m(train_algo pid=134575)[0m wandb: num_env_steps_sampled 386000
+[36m(train_algo pid=134575)[0m wandb: num_env_steps_trained 0
+[36m(train_algo pid=134575)[0m wandb:          time_total_s 2114.51687
+[36m(train_algo pid=134575)[0m wandb:    training_iteration 1930
+[36m(train_algo pid=134575)[0m wandb: 
+[36m(train_algo pid=134575)[0m wandb: 🚀 View run train_algo_550c2_00012 at: https://wandb.ai/tpn/rllib2/runs/550c2_00012
+[36m(train_algo pid=134575)[0m wandb: Synced 5 W&B file(s), 0 media file(s), 0 artifact file(s) and 0 other file(s)
+[36m(train_algo pid=134575)[0m wandb: Find logs at: /home/dalmiapriyam/ray_results/train_algo_2023-11-20_14-24-36/train_algo_550c2_00002_2_map_size=15,pred_vision=3,train_batch_size=200_2023-11-20_14-24-36/wandb/run-20231120_151617-550c2_00012/logs
+[36m(train_algo pid=134575)[0m wandb: - Waiting for wandb.init()...
+[36m(train_algo pid=134575)[0m wandb: \ Waiting for wandb.init()...
+[36m(train_algo pid=134575)[0m wandb: Tracking run with wandb version 0.16.0
+[36m(train_algo pid=134575)[0m wandb: Run data is saved locally in /home/dalmiapriyam/ray_results/train_algo_2023-11-20_14-24-36/train_algo_550c2_00002_2_map_size=15,pred_vision=3,train_batch_size=200_2023-11-20_14-24-36/wandb/run-20231120_155219-550c2_00018
+[36m(train_algo pid=134575)[0m wandb: Run `wandb offline` to turn off syncing.
+[36m(train_algo pid=134575)[0m wandb: Syncing run train_algo_550c2_00018
+[36m(train_algo pid=134575)[0m wandb: ⭐️ View project at https://wandb.ai/tpn/rllib2
+[36m(train_algo pid=134575)[0m wandb: 🚀 View run at https://wandb.ai/tpn/rllib2/runs/550c2_00018
+[36m(train_algo pid=134573)[0m Install gputil for GPU system monitoring.
+[36m(train_algo pid=134573)[0m Already logged into W&B.
+[36m(train_algo pid=134573)[0m wandb: - 0.005 MB of 0.005 MB uploaded
+[36m(train_algo pid=134573)[0m wandb: \ 0.005 MB of 0.005 MB uploaded
+[36m(train_algo pid=134573)[0m wandb: | 0.017 MB of 0.017 MB uploaded
+[36m(train_algo pid=134573)[0m wandb: / 0.017 MB of 0.017 MB uploadedwandb: - 0.017 MB of 0.017 MB uploadedwandb:                                                                                
+[36m(train_algo pid=134573)[0m wandb: 
+[36m(train_algo pid=134573)[0m wandb: Run history:
+[36m(train_algo pid=134573)[0m wandb:      episode_len_mean ███▆▇▇▇▆▅▅▄▅▅▅▃▃▄▂▃▃▂▃▂▃▃▅▃▂▂▂▂▁▁▁▁▂▂▂▂▃
+[36m(train_algo pid=134573)[0m wandb:   episode_reward_mean ▁▃▄▆▅▅▅▆▇▆▇▇▇▇█▇▇██▇█▇██▇▇██████████████
+[36m(train_algo pid=134573)[0m wandb:        episodes_total ▁▁▁▁▁▂▂▂▂▂▂▂▃▃▃▃▃▃▄▄▄▄▄▄▅▅▅▅▅▆▆▆▆▇▇▇▇███
+[36m(train_algo pid=134573)[0m wandb: num_env_steps_sampled ▁▁▁▂▂▂▂▂▂▃▃▃▃▃▃▄▄▄▄▄▅▅▅▅▅▅▆▆▆▆▆▆▇▇▇▇▇███
+[36m(train_algo pid=134573)[0m wandb: num_env_steps_trained ▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁
+[36m(train_algo pid=134573)[0m wandb:          time_total_s ▁▁▁▂▂▂▂▂▂▃▃▃▃▃▃▄▄▄▄▄▅▅▅▅▅▅▆▆▆▆▆▆▇▇▇▇▇███
+[36m(train_algo pid=134573)[0m wandb:    training_iteration ▁▁▁▂▂▂▂▂▂▃▃▃▃▃▃▄▄▄▄▄▅▅▅▅▅▅▆▆▆▆▆▆▇▇▇▇▇███
+[36m(train_algo pid=134573)[0m wandb: 
+[36m(train_algo pid=134573)[0m wandb: Run summary:
+[36m(train_algo pid=134573)[0m wandb:      episode_len_mean 58.85
+[36m(train_algo pid=134573)[0m wandb:   episode_reward_mean 5.75
+[36m(train_algo pid=134573)[0m wandb:        episodes_total 5003
+[36m(train_algo pid=134573)[0m wandb: num_env_steps_sampled 303000
+[36m(train_algo pid=134573)[0m wandb: num_env_steps_trained 0
+[36m(train_algo pid=134573)[0m wandb:          time_total_s 1723.44515
+[36m(train_algo pid=134573)[0m wandb:    training_iteration 1515
+[36m(train_algo pid=134573)[0m wandb: 
+[36m(train_algo pid=134573)[0m wandb: 🚀 View run train_algo_550c2_00014 at: https://wandb.ai/tpn/rllib2/runs/550c2_00014
+[36m(train_algo pid=134573)[0m wandb: Synced 5 W&B file(s), 0 media file(s), 0 artifact file(s) and 0 other file(s)
+[36m(train_algo pid=134573)[0m wandb: Find logs at: /home/dalmiapriyam/ray_results/train_algo_2023-11-20_14-24-36/train_algo_550c2_00000_0_map_size=15,pred_vision=2,train_batch_size=200_2023-11-20_14-24-36/wandb/run-20231120_153140-550c2_00014/logs
+[36m(train_algo pid=134573)[0m wandb: - Waiting for wandb.init()...
+[36m(train_algo pid=134573)[0m wandb: \ Waiting for wandb.init()...
+[36m(train_algo pid=134573)[0m wandb: Tracking run with wandb version 0.16.0
+[36m(train_algo pid=134573)[0m wandb: Run data is saved locally in /home/dalmiapriyam/ray_results/train_algo_2023-11-20_14-24-36/train_algo_550c2_00000_0_map_size=15,pred_vision=2,train_batch_size=200_2023-11-20_14-24-36/wandb/run-20231120_160102-550c2_00019
+[36m(train_algo pid=134573)[0m wandb: Run `wandb offline` to turn off syncing.
+[36m(train_algo pid=134573)[0m wandb: Syncing run train_algo_550c2_00019
+[36m(train_algo pid=134573)[0m wandb: ⭐️ View project at https://wandb.ai/tpn/rllib2
+[36m(train_algo pid=134573)[0m wandb: 🚀 View run at https://wandb.ai/tpn/rllib2/runs/550c2_00019
+[36m(train_algo pid=134577)[0m Install gputil for GPU system monitoring.
+[36m(train_algo pid=134577)[0m Already logged into W&B.
+[36m(train_algo pid=134577)[0m wandb: - 0.005 MB of 0.005 MB uploaded
+[36m(train_algo pid=134577)[0m wandb: \ 0.005 MB of 0.005 MB uploadedwandb: | 0.017 MB of 0.017 MB uploadedwandb:                                                                                
+[36m(train_algo pid=134577)[0m wandb: 
+[36m(train_algo pid=134577)[0m wandb: Run history:
+[36m(train_algo pid=134577)[0m wandb:      episode_len_mean ████▇▇██▆▆▆▆▅▅▅▅▅▅▆▅▅▅▄▅▃▃▂▄▅▂▂▃▃▂▁▁▅▆▆▆
+[36m(train_algo pid=134577)[0m wandb:   episode_reward_mean ▁▃▃▄▅▆▄▃▆▆▆▅▇▇▆▆▇▆▆▆▇▆▇▇█▇█▇▆██▇▇███▇▇▆▆
+[36m(train_algo pid=134577)[0m wandb:        episodes_total ▁▁▁▁▂▂▂▂▂▂▃▃▃▃▃▃▄▄▄▄▄▅▅▅▅▅▅▆▆▆▆▆▇▇▇▇▇███
+[36m(train_algo pid=134577)[0m wandb: num_env_steps_sampled ▁▁▁▂▂▂▂▂▂▃▃▃▃▃▃▄▄▄▄▄▅▅▅▅▅▅▆▆▆▆▆▆▇▇▇▇▇███
+[36m(train_algo pid=134577)[0m wandb: num_env_steps_trained ▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁
+[36m(train_algo pid=134577)[0m wandb:          time_total_s ▁▁▁▂▂▂▂▂▂▃▃▃▃▃▃▄▄▄▄▄▅▅▅▅▅▅▆▆▆▆▆▆▇▇▇▇▇███
+[36m(train_algo pid=134577)[0m wandb:    training_iteration ▁▁▁▂▂▂▂▂▂▃▃▃▃▃▃▄▄▄▄▄▅▅▅▅▅▅▆▆▆▆▆▆▇▇▇▇▇███
+[36m(train_algo pid=134577)[0m wandb: 
+[36m(train_algo pid=134577)[0m wandb: Run summary:
+[36m(train_algo pid=134577)[0m wandb:      episode_len_mean 91.82
+[36m(train_algo pid=134577)[0m wandb:   episode_reward_mean 4.76
+[36m(train_algo pid=134577)[0m wandb:        episodes_total 5001
+[36m(train_algo pid=134577)[0m wandb: num_env_steps_sampled 428600
+[36m(train_algo pid=134577)[0m wandb: num_env_steps_trained 0
+[36m(train_algo pid=134577)[0m wandb:          time_total_s 2422.06511
+[36m(train_algo pid=134577)[0m wandb:    training_iteration 2143
+[36m(train_algo pid=134577)[0m wandb: 
+[36m(train_algo pid=134577)[0m wandb: 🚀 View run train_algo_550c2_00015 at: https://wandb.ai/tpn/rllib2/runs/550c2_00015
+[36m(train_algo pid=134577)[0m wandb: Synced 5 W&B file(s), 0 media file(s), 0 artifact file(s) and 0 other file(s)
+[36m(train_algo pid=134577)[0m wandb: Find logs at: /home/dalmiapriyam/ray_results/train_algo_2023-11-20_14-24-36/train_algo_550c2_00004_4_map_size=15,pred_vision=2,train_batch_size=500_2023-11-20_14-24-36/wandb/run-20231120_153300-550c2_00015/logs
+[36m(train_algo pid=134577)[0m wandb: - Waiting for wandb.init()...
+[36m(train_algo pid=134577)[0m wandb: \ Waiting for wandb.init()...
+[36m(train_algo pid=134577)[0m wandb: Tracking run with wandb version 0.16.0
+[36m(train_algo pid=134577)[0m wandb: Run data is saved locally in /home/dalmiapriyam/ray_results/train_algo_2023-11-20_14-24-36/train_algo_550c2_00004_4_map_size=15,pred_vision=2,train_batch_size=500_2023-11-20_14-24-36/wandb/run-20231120_161416-550c2_00020
+[36m(train_algo pid=134577)[0m wandb: Run `wandb offline` to turn off syncing.
+[36m(train_algo pid=134577)[0m wandb: Syncing run train_algo_550c2_00020
+[36m(train_algo pid=134577)[0m wandb: ⭐️ View project at https://wandb.ai/tpn/rllib2
+[36m(train_algo pid=134577)[0m wandb: 🚀 View run at https://wandb.ai/tpn/rllib2/runs/550c2_00020
+[36m(train_algo pid=134578)[0m Install gputil for GPU system monitoring.
+[36m(train_algo pid=134578)[0m Already logged into W&B.
+[36m(train_algo pid=134578)[0m wandb: - 0.005 MB of 0.005 MB uploaded
+[36m(train_algo pid=134578)[0m wandb: \ 0.005 MB of 0.005 MB uploaded
+[36m(train_algo pid=134578)[0m wandb: | 0.005 MB of 0.005 MB uploadedwandb: / 0.017 MB of 0.017 MB uploadedwandb:                                                                                
+[36m(train_algo pid=134578)[0m wandb: 
+[36m(train_algo pid=134578)[0m wandb: Run history:
+[36m(train_algo pid=134578)[0m wandb:      episode_len_mean █████▇▅▆▁▄▃▇▇▇▆▃▄▂▅▇▇█▇▆▄▇▅▆▅▆█▅█▅▇▇▆▅▅▄
+[36m(train_algo pid=134578)[0m wandb:   episode_reward_mean ▁▂▂▂▄▅▆▇█▇▇▆▅▅▆██▇▆▄▅▂▆▅▇▅▅▆▇▆▃▆▅▇▃▄▅▆▇▆
+[36m(train_algo pid=134578)[0m wandb:        episodes_total ▁▁▁▁▂▂▂▂▂▃▃▃▃▃▃▄▄▄▄▄▅▅▅▅▅▅▆▆▆▆▆▇▇▇▇▇▇███
+[36m(train_algo pid=134578)[0m wandb: num_env_steps_sampled ▁▁▁▁▂▂▂▂▂▃▃▃▃▃▃▄▄▄▄▄▅▅▅▅▅▅▆▆▆▆▆▇▇▇▇▇▇███
+[36m(train_algo pid=134578)[0m wandb: num_env_steps_trained ▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁
+[36m(train_algo pid=134578)[0m wandb:          time_total_s ▁▁▁▁▂▂▂▂▂▃▃▃▃▃▃▄▄▄▄▄▅▅▅▅▅▅▆▆▆▆▆▇▇▇▇▇▇███
+[36m(train_algo pid=134578)[0m wandb:    training_iteration ▁▁▁▁▂▂▂▂▂▃▃▃▃▃▃▄▄▄▄▄▅▅▅▅▅▅▆▆▆▆▆▇▇▇▇▇▇███
+[36m(train_algo pid=134578)[0m wandb: 
+[36m(train_algo pid=134578)[0m wandb: Run summary:
+[36m(train_algo pid=134578)[0m wandb:      episode_len_mean 98.32
+[36m(train_algo pid=134578)[0m wandb:   episode_reward_mean 3.61
+[36m(train_algo pid=134578)[0m wandb:        episodes_total 5001
+[36m(train_algo pid=134578)[0m wandb: num_env_steps_sampled 491400
+[36m(train_algo pid=134578)[0m wandb: num_env_steps_trained 0
+[36m(train_algo pid=134578)[0m wandb:          time_total_s 2710.31428
+[36m(train_algo pid=134578)[0m wandb:    training_iteration 2457
+[36m(train_algo pid=134578)[0m wandb: 
+[36m(train_algo pid=134578)[0m wandb: 🚀 View run train_algo_550c2_00013 at: https://wandb.ai/tpn/rllib2/runs/550c2_00013
+[36m(train_algo pid=134578)[0m wandb: Synced 5 W&B file(s), 0 media file(s), 0 artifact file(s) and 0 other file(s)
+[36m(train_algo pid=134578)[0m wandb: Find logs at: /home/dalmiapriyam/ray_results/train_algo_2023-11-20_14-24-36/train_algo_550c2_00005_5_map_size=20,pred_vision=2,train_batch_size=500_2023-11-20_14-24-36/wandb/run-20231120_152834-550c2_00013/logs
+[36m(train_algo pid=134578)[0m wandb: - Waiting for wandb.init()...
+[36m(train_algo pid=134578)[0m wandb: \ Waiting for wandb.init()...
+[36m(train_algo pid=134578)[0m wandb: Tracking run with wandb version 0.16.0
+[36m(train_algo pid=134578)[0m wandb: Run data is saved locally in /home/dalmiapriyam/ray_results/train_algo_2023-11-20_14-24-36/train_algo_550c2_00005_5_map_size=20,pred_vision=2,train_batch_size=500_2023-11-20_14-24-36/wandb/run-20231120_161446-550c2_00021
+[36m(train_algo pid=134578)[0m wandb: Run `wandb offline` to turn off syncing.
+[36m(train_algo pid=134578)[0m wandb: Syncing run train_algo_550c2_00021
+[36m(train_algo pid=134578)[0m wandb: ⭐️ View project at https://wandb.ai/tpn/rllib2
+[36m(train_algo pid=134578)[0m wandb: 🚀 View run at https://wandb.ai/tpn/rllib2/runs/550c2_00021
+[36m(train_algo pid=134575)[0m Install gputil for GPU system monitoring.
+[36m(train_algo pid=134575)[0m Already logged into W&B.
+[36m(train_algo pid=134575)[0m wandb: - 0.005 MB of 0.005 MB uploaded
+[36m(train_algo pid=134575)[0m wandb: \ 0.017 MB of 0.017 MB uploaded
+[36m(train_algo pid=134575)[0m wandb: | 0.017 MB of 0.017 MB uploadedwandb: / 0.017 MB of 0.017 MB uploadedwandb:                                                                                
+[36m(train_algo pid=134575)[0m wandb: 
+[36m(train_algo pid=134575)[0m wandb: Run history:
+[36m(train_algo pid=134575)[0m wandb:      episode_len_mean ██▇▅▅▄▃▃▃▃▂▂▂▂▂▂▂▂▂▂▂▁▂▂▂▃▂▂▂▂▂▂▂▁▁▁▁▁▂▁
+[36m(train_algo pid=134575)[0m wandb:   episode_reward_mean ▁▂▅▇▇███████████████████████████████████
+[36m(train_algo pid=134575)[0m wandb:        episodes_total ▁▁▁▁▁▂▂▂▂▂▂▃▃▃▃▃▃▄▄▄▄▄▅▅▅▅▅▅▆▆▆▆▆▇▇▇▇▇██
+[36m(train_algo pid=134575)[0m wandb: num_env_steps_sampled ▁▁▁▁▂▂▂▂▂▃▃▃▃▃▃▄▄▄▄▄▅▅▅▅▅▅▆▆▆▆▆▇▇▇▇▇▇███
+[36m(train_algo pid=134575)[0m wandb: num_env_steps_trained ▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁
+[36m(train_algo pid=134575)[0m wandb:          time_total_s ▁▁▁▁▂▂▂▂▂▃▃▃▃▃▃▄▄▄▄▄▅▅▅▅▅▅▆▆▆▆▆▇▇▇▇▇▇███
+[36m(train_algo pid=134575)[0m wandb:    training_iteration ▁▁▁▁▂▂▂▂▂▃▃▃▃▃▃▄▄▄▄▄▅▅▅▅▅▅▆▆▆▆▆▇▇▇▇▇▇███
+[36m(train_algo pid=134575)[0m wandb: 
+[36m(train_algo pid=134575)[0m wandb: Run summary:
+[36m(train_algo pid=134575)[0m wandb:      episode_len_mean 43.81
+[36m(train_algo pid=134575)[0m wandb:   episode_reward_mean 5.98
+[36m(train_algo pid=134575)[0m wandb:        episodes_total 5002
+[36m(train_algo pid=134575)[0m wandb: num_env_steps_sampled 257500
+[36m(train_algo pid=134575)[0m wandb: num_env_steps_trained 0
+[36m(train_algo pid=134575)[0m wandb:          time_total_s 1436.03567
+[36m(train_algo pid=134575)[0m wandb:    training_iteration 515
+[36m(train_algo pid=134575)[0m wandb: 
+[36m(train_algo pid=134575)[0m wandb: 🚀 View run train_algo_550c2_00018 at: https://wandb.ai/tpn/rllib2/runs/550c2_00018
+[36m(train_algo pid=134575)[0m wandb: Synced 5 W&B file(s), 0 media file(s), 0 artifact file(s) and 0 other file(s)
+[36m(train_algo pid=134575)[0m wandb: Find logs at: /home/dalmiapriyam/ray_results/train_algo_2023-11-20_14-24-36/train_algo_550c2_00002_2_map_size=15,pred_vision=3,train_batch_size=200_2023-11-20_14-24-36/wandb/run-20231120_155219-550c2_00018/logs
+[36m(train_algo pid=134575)[0m wandb: - Waiting for wandb.init()...
+[36m(train_algo pid=134575)[0m wandb: \ Waiting for wandb.init()...
+[36m(train_algo pid=134575)[0m wandb: Tracking run with wandb version 0.16.0
+[36m(train_algo pid=134575)[0m wandb: Run data is saved locally in /home/dalmiapriyam/ray_results/train_algo_2023-11-20_14-24-36/train_algo_550c2_00002_2_map_size=15,pred_vision=3,train_batch_size=200_2023-11-20_14-24-36/wandb/run-20231120_161633-550c2_00022
+[36m(train_algo pid=134575)[0m wandb: Run `wandb offline` to turn off syncing.
+[36m(train_algo pid=134575)[0m wandb: Syncing run train_algo_550c2_00022
+[36m(train_algo pid=134575)[0m wandb: ⭐️ View project at https://wandb.ai/tpn/rllib2
+[36m(train_algo pid=134575)[0m wandb: 🚀 View run at https://wandb.ai/tpn/rllib2/runs/550c2_00022
+[36m(train_algo pid=134574)[0m Install gputil for GPU system monitoring.
+[36m(train_algo pid=134574)[0m Already logged into W&B.
+[36m(train_algo pid=134574)[0m wandb: - 0.005 MB of 0.005 MB uploaded
+[36m(train_algo pid=134574)[0m wandb: \ 0.005 MB of 0.005 MB uploaded
+[36m(train_algo pid=134574)[0m wandb: | 0.005 MB of 0.017 MB uploaded
+[36m(train_algo pid=134574)[0m wandb: / 0.005 MB of 0.017 MB uploadedwandb: - 0.017 MB of 0.017 MB uploadedwandb:                                                                                
+[36m(train_algo pid=134574)[0m wandb: 
+[36m(train_algo pid=134574)[0m wandb: Run history:
+[36m(train_algo pid=134574)[0m wandb:      episode_len_mean ███▇▆▆▆▅▄▄▄▄▂▃▃▂▃▄▄▃▅▃▃▄▂▁▂▄▂▂▃▂▂▄▄▄▃▁▂▃
+[36m(train_algo pid=134574)[0m wandb:   episode_reward_mean ▁▃▄▅▆▆▆▇▇▇▇▇█▇██▇▇▇▇▇▇█▇███▇█▇█▇█▇▇▇███▇
+[36m(train_algo pid=134574)[0m wandb:        episodes_total ▁▁▁▁▂▂▂▂▂▂▃▃▃▃▃▃▄▄▄▄▄▅▅▅▅▅▅▆▆▆▆▆▇▇▇▇▇███
+[36m(train_algo pid=134574)[0m wandb: num_env_steps_sampled ▁▁▁▁▂▂▂▂▂▃▃▃▃▃▄▄▄▄▄▄▅▅▅▅▅▅▆▆▆▆▆▇▇▇▇▇████
+[36m(train_algo pid=134574)[0m wandb: num_env_steps_trained ▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁
+[36m(train_algo pid=134574)[0m wandb:          time_total_s ▁▁▁▁▂▂▂▂▂▃▃▃▃▃▄▄▄▄▄▄▅▅▅▅▅▅▆▆▆▆▆▇▇▇▇▇████
+[36m(train_algo pid=134574)[0m wandb:    training_iteration ▁▁▁▁▂▂▂▂▂▃▃▃▃▃▄▄▄▄▄▄▅▅▅▅▅▅▆▆▆▆▆▇▇▇▇▇████
+[36m(train_algo pid=134574)[0m wandb: 
+[36m(train_algo pid=134574)[0m wandb: Run summary:
+[36m(train_algo pid=134574)[0m wandb:      episode_len_mean 64.49
+[36m(train_algo pid=134574)[0m wandb:   episode_reward_mean 5.75
+[36m(train_algo pid=134574)[0m wandb:        episodes_total 5003
+[36m(train_algo pid=134574)[0m wandb: num_env_steps_sampled 366000
+[36m(train_algo pid=134574)[0m wandb: num_env_steps_trained 0
+[36m(train_algo pid=134574)[0m wandb:          time_total_s 1994.17676
+[36m(train_algo pid=134574)[0m wandb:    training_iteration 732
+[36m(train_algo pid=134574)[0m wandb: 
+[36m(train_algo pid=134574)[0m wandb: 🚀 View run train_algo_550c2_00016 at: https://wandb.ai/tpn/rllib2/runs/550c2_00016
+[36m(train_algo pid=134574)[0m wandb: Synced 5 W&B file(s), 0 media file(s), 0 artifact file(s) and 0 other file(s)
+[36m(train_algo pid=134574)[0m wandb: Find logs at: /home/dalmiapriyam/ray_results/train_algo_2023-11-20_14-24-36/train_algo_550c2_00001_1_map_size=20,pred_vision=2,train_batch_size=200_2023-11-20_14-24-36/wandb/run-20231120_154401-550c2_00016/logs
+[36m(train_algo pid=134574)[0m wandb: - Waiting for wandb.init()...
+[36m(train_algo pid=134574)[0m wandb: \ Waiting for wandb.init()...
+[36m(train_algo pid=134574)[0m wandb: Tracking run with wandb version 0.16.0
+[36m(train_algo pid=134574)[0m wandb: Run data is saved locally in /home/dalmiapriyam/ray_results/train_algo_2023-11-20_14-24-36/train_algo_550c2_00001_1_map_size=20,pred_vision=2,train_batch_size=200_2023-11-20_14-24-36/wandb/run-20231120_161739-550c2_00023
+[36m(train_algo pid=134574)[0m wandb: Run `wandb offline` to turn off syncing.
+[36m(train_algo pid=134574)[0m wandb: Syncing run train_algo_550c2_00023
+[36m(train_algo pid=134574)[0m wandb: ⭐️ View project at https://wandb.ai/tpn/rllib2
+[36m(train_algo pid=134574)[0m wandb: 🚀 View run at https://wandb.ai/tpn/rllib2/runs/550c2_00023
+[36m(train_algo pid=134576)[0m Install gputil for GPU system monitoring.
+[36m(train_algo pid=134576)[0m Already logged into W&B.
+[36m(train_algo pid=134576)[0m wandb: - 0.005 MB of 0.005 MB uploaded
+[36m(train_algo pid=134576)[0m wandb: \ 0.017 MB of 0.017 MB uploaded
+[36m(train_algo pid=134576)[0m wandb: | 0.017 MB of 0.017 MB uploadedwandb: / 0.017 MB of 0.017 MB uploadedwandb:                                                                                
+[36m(train_algo pid=134576)[0m wandb: 
+[36m(train_algo pid=134576)[0m wandb: Run history:
+[36m(train_algo pid=134576)[0m wandb:      episode_len_mean ███▇▇▆▆▇█▇▇▆▆▆▄▄▃▄▃▃▃▂▂▁▃▅▅▅▄▄▄▁▅▅▅▅▆▅▅▆
+[36m(train_algo pid=134576)[0m wandb:   episode_reward_mean ▁▂▄▄▅▅▅▅▄▅▄▇▆▆▇▇▇▇▇▇▇▇▇█▆▆▆▅▇▇▇█▇▅▆▆▆▆▆▆
+[36m(train_algo pid=134576)[0m wandb:        episodes_total ▁▁▁▁▂▂▂▂▂▂▃▃▃▃▃▄▄▄▄▄▅▅▅▅▅▅▆▆▆▆▆▇▇▇▇▇▇███
+[36m(train_algo pid=134576)[0m wandb: num_env_steps_sampled ▁▁▁▁▂▂▂▂▂▃▃▃▃▃▃▄▄▄▄▄▅▅▅▅▅▅▆▆▆▆▆▇▇▇▇▇▇███
+[36m(train_algo pid=134576)[0m wandb: num_env_steps_trained ▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁
+[36m(train_algo pid=134576)[0m wandb:          time_total_s ▁▁▁▁▂▂▂▂▂▃▃▃▃▃▃▄▄▄▄▄▅▅▅▅▅▅▆▆▆▆▆▇▇▇▇▇▇███
+[36m(train_algo pid=134576)[0m wandb:    training_iteration ▁▁▁▁▂▂▂▂▂▃▃▃▃▃▃▄▄▄▄▄▅▅▅▅▅▅▆▆▆▆▆▇▇▇▇▇▇███
+[36m(train_algo pid=134576)[0m wandb: 
+[36m(train_algo pid=134576)[0m wandb: Run summary:
+[36m(train_algo pid=134576)[0m wandb:      episode_len_mean 94.0
+[36m(train_algo pid=134576)[0m wandb:   episode_reward_mean 4.34
+[36m(train_algo pid=134576)[0m wandb:        episodes_total 5006
+[36m(train_algo pid=134576)[0m wandb: num_env_steps_sampled 471500
+[36m(train_algo pid=134576)[0m wandb: num_env_steps_trained 0
+[36m(train_algo pid=134576)[0m wandb:          time_total_s 2576.6193
+[36m(train_algo pid=134576)[0m wandb:    training_iteration 943
+[36m(train_algo pid=134576)[0m wandb: 
+[36m(train_algo pid=134576)[0m wandb: 🚀 View run train_algo_550c2_00017 at: https://wandb.ai/tpn/rllib2/runs/550c2_00017
+[36m(train_algo pid=134576)[0m wandb: Synced 5 W&B file(s), 0 media file(s), 0 artifact file(s) and 0 other file(s)
+[36m(train_algo pid=134576)[0m wandb: Find logs at: /home/dalmiapriyam/ray_results/train_algo_2023-11-20_14-24-36/train_algo_550c2_00003_3_map_size=20,pred_vision=3,train_batch_size=200_2023-11-20_14-24-36/wandb/run-20231120_154702-550c2_00017/logs
+[36m(train_algo pid=134576)[0m wandb: - Waiting for wandb.init()...
+[36m(train_algo pid=134576)[0m wandb: \ Waiting for wandb.init()...
+[36m(train_algo pid=134576)[0m wandb: Tracking run with wandb version 0.16.0
+[36m(train_algo pid=134576)[0m wandb: Run data is saved locally in /home/dalmiapriyam/ray_results/train_algo_2023-11-20_14-24-36/train_algo_550c2_00003_3_map_size=20,pred_vision=3,train_batch_size=200_2023-11-20_14-24-36/wandb/run-20231120_163026-550c2_00024
+[36m(train_algo pid=134576)[0m wandb: Run `wandb offline` to turn off syncing.
+[36m(train_algo pid=134576)[0m wandb: Syncing run train_algo_550c2_00024
+[36m(train_algo pid=134576)[0m wandb: ⭐️ View project at https://wandb.ai/tpn/rllib2
+[36m(train_algo pid=134576)[0m wandb: 🚀 View run at https://wandb.ai/tpn/rllib2/runs/550c2_00024
+[36m(train_algo pid=134573)[0m Install gputil for GPU system monitoring.
+[36m(train_algo pid=134573)[0m Already logged into W&B.
+[36m(train_algo pid=134573)[0m wandb: - 0.005 MB of 0.005 MB uploaded
+[36m(train_algo pid=134573)[0m wandb: \ 0.005 MB of 0.005 MB uploaded
+[36m(train_algo pid=134573)[0m wandb: | 0.005 MB of 0.017 MB uploaded
+[36m(train_algo pid=134573)[0m wandb: / 0.005 MB of 0.017 MB uploadedwandb: - 0.017 MB of 0.017 MB uploadedwandb:                                                                                
+[36m(train_algo pid=134573)[0m wandb: 
+[36m(train_algo pid=134573)[0m wandb: Run history:
+[36m(train_algo pid=134573)[0m wandb:      episode_len_mean ███▆▅▄▅▃▃▄▃▃▅▂▃▄▃▃▂▃▄▄▂▂▂▄▄▃▃▃▄▃▃▃▂▂▄▃▂▁
+[36m(train_algo pid=134573)[0m wandb:   episode_reward_mean ▁▃▄▆▇▇▇▇████▇██▇████▇▇███▇▇██▇▇██▇██▇▇██
+[36m(train_algo pid=134573)[0m wandb:        episodes_total ▁▁▁▁▂▂▂▂▂▂▃▃▃▃▃▄▄▄▄▄▄▅▅▅▅▅▆▆▆▆▆▆▇▇▇▇▇███
+[36m(train_algo pid=134573)[0m wandb: num_env_steps_sampled ▁▁▁▂▂▂▂▂▂▃▃▃▃▃▃▄▄▄▄▄▅▅▅▅▅▅▆▆▆▆▆▇▇▇▇▇▇███
+[36m(train_algo pid=134573)[0m wandb: num_env_steps_trained ▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁
+[36m(train_algo pid=134573)[0m wandb:          time_total_s ▁▁▁▂▂▂▂▂▂▃▃▃▃▃▃▄▄▄▄▄▅▅▅▅▅▅▆▆▆▆▆▇▇▇▇▇▇███
+[36m(train_algo pid=134573)[0m wandb:    training_iteration ▁▁▁▂▂▂▂▂▂▃▃▃▃▃▃▄▄▄▄▄▅▅▅▅▅▅▆▆▆▆▆▇▇▇▇▇▇███
+[36m(train_algo pid=134573)[0m wandb: 
+[36m(train_algo pid=134573)[0m wandb: Run summary:
+[36m(train_algo pid=134573)[0m wandb:      episode_len_mean 66.77
+[36m(train_algo pid=134573)[0m wandb:   episode_reward_mean 5.63
+[36m(train_algo pid=134573)[0m wandb:        episodes_total 5008
+[36m(train_algo pid=134573)[0m wandb: num_env_steps_sampled 382000
+[36m(train_algo pid=134573)[0m wandb: num_env_steps_trained 0
+[36m(train_algo pid=134573)[0m wandb:          time_total_s 2152.61266
+[36m(train_algo pid=134573)[0m wandb:    training_iteration 764
+[36m(train_algo pid=134573)[0m wandb: 
+[36m(train_algo pid=134573)[0m wandb: 🚀 View run train_algo_550c2_00019 at: https://wandb.ai/tpn/rllib2/runs/550c2_00019
+[36m(train_algo pid=134573)[0m wandb: Synced 5 W&B file(s), 0 media file(s), 0 artifact file(s) and 0 other file(s)
+[36m(train_algo pid=134573)[0m wandb: Find logs at: /home/dalmiapriyam/ray_results/train_algo_2023-11-20_14-24-36/train_algo_550c2_00000_0_map_size=15,pred_vision=2,train_batch_size=200_2023-11-20_14-24-36/wandb/run-20231120_160102-550c2_00019/logs
+[36m(train_algo pid=134573)[0m wandb: - Waiting for wandb.init()...
+[36m(train_algo pid=134573)[0m wandb: \ Waiting for wandb.init()...
+[36m(train_algo pid=134573)[0m wandb: Tracking run with wandb version 0.16.0
+[36m(train_algo pid=134573)[0m wandb: Run data is saved locally in /home/dalmiapriyam/ray_results/train_algo_2023-11-20_14-24-36/train_algo_550c2_00000_0_map_size=15,pred_vision=2,train_batch_size=200_2023-11-20_14-24-36/wandb/run-20231120_163718-550c2_00025
+[36m(train_algo pid=134573)[0m wandb: Run `wandb offline` to turn off syncing.
+[36m(train_algo pid=134573)[0m wandb: Syncing run train_algo_550c2_00025
+[36m(train_algo pid=134573)[0m wandb: ⭐️ View project at https://wandb.ai/tpn/rllib2
+[36m(train_algo pid=134573)[0m wandb: 🚀 View run at https://wandb.ai/tpn/rllib2/runs/550c2_00025
+[36m(train_algo pid=134575)[0m Install gputil for GPU system monitoring.
+[36m(train_algo pid=134575)[0m Already logged into W&B.
+[36m(train_algo pid=134575)[0m wandb: - 0.005 MB of 0.005 MB uploaded
+[36m(train_algo pid=134575)[0m wandb: \ 0.005 MB of 0.005 MB uploaded
+[36m(train_algo pid=134575)[0m wandb: | 0.005 MB of 0.005 MB uploaded
+[36m(train_algo pid=134575)[0m wandb: / 0.005 MB of 0.005 MB uploadedwandb: - 0.017 MB of 0.017 MB uploadedwandb:                                                                                
+[36m(train_algo pid=134575)[0m wandb: 
+[36m(train_algo pid=134575)[0m wandb: Run history:
+[36m(train_algo pid=134575)[0m wandb:      episode_len_mean ███▆▅▄▄▃▃▂▂▂▂▂▂▂▂▂▂▂▁▂▁▁▁▂▂▂▁▂▁▁▂▂▂▂▁▁▁▂
+[36m(train_algo pid=134575)[0m wandb:   episode_reward_mean ▁▃▅▇▇███████████████████████████████████
+[36m(train_algo pid=134575)[0m wandb:        episodes_total ▁▁▁▁▁▂▂▂▂▂▂▂▃▃▃▃▃▄▄▄▄▄▅▅▅▅▅▆▆▆▆▆▇▇▇▇▇███
+[36m(train_algo pid=134575)[0m wandb: num_env_steps_sampled ▁▁▁▂▂▂▂▂▂▃▃▃▃▃▄▄▄▄▄▄▅▅▅▅▅▅▆▆▆▆▆▇▇▇▇▇▇███
+[36m(train_algo pid=134575)[0m wandb: num_env_steps_trained ▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁
+[36m(train_algo pid=134575)[0m wandb:          time_total_s ▁▁▁▂▂▂▂▂▂▃▃▃▃▃▄▄▄▄▄▄▅▅▅▅▅▅▆▆▆▆▆▇▇▇▇▇▇███
+[36m(train_algo pid=134575)[0m wandb:    training_iteration ▁▁▁▂▂▂▂▂▂▃▃▃▃▃▄▄▄▄▄▄▅▅▅▅▅▅▆▆▆▆▆▇▇▇▇▇▇███
+[36m(train_algo pid=134575)[0m wandb: 
+[36m(train_algo pid=134575)[0m wandb: Run summary:
+[36m(train_algo pid=134575)[0m wandb:      episode_len_mean 45.39
+[36m(train_algo pid=134575)[0m wandb:   episode_reward_mean 5.96
+[36m(train_algo pid=134575)[0m wandb:        episodes_total 5001
+[36m(train_algo pid=134575)[0m wandb: num_env_steps_sampled 242000
+[36m(train_algo pid=134575)[0m wandb: num_env_steps_trained 0
+[36m(train_algo pid=134575)[0m wandb:          time_total_s 1339.67102
+[36m(train_algo pid=134575)[0m wandb:    training_iteration 242
+[36m(train_algo pid=134575)[0m wandb: 
+[36m(train_algo pid=134575)[0m wandb: 🚀 View run train_algo_550c2_00022 at: https://wandb.ai/tpn/rllib2/runs/550c2_00022
+[36m(train_algo pid=134575)[0m wandb: Synced 5 W&B file(s), 0 media file(s), 0 artifact file(s) and 0 other file(s)
+[36m(train_algo pid=134575)[0m wandb: Find logs at: /home/dalmiapriyam/ray_results/train_algo_2023-11-20_14-24-36/train_algo_550c2_00002_2_map_size=15,pred_vision=3,train_batch_size=200_2023-11-20_14-24-36/wandb/run-20231120_161633-550c2_00022/logs
+[36m(train_algo pid=134575)[0m wandb: - Waiting for wandb.init()...
+[36m(train_algo pid=134575)[0m wandb: \ Waiting for wandb.init()...
+[36m(train_algo pid=134575)[0m wandb: Tracking run with wandb version 0.16.0
+[36m(train_algo pid=134575)[0m wandb: Run data is saved locally in /home/dalmiapriyam/ray_results/train_algo_2023-11-20_14-24-36/train_algo_550c2_00002_2_map_size=15,pred_vision=3,train_batch_size=200_2023-11-20_14-24-36/wandb/run-20231120_163905-550c2_00026
+[36m(train_algo pid=134575)[0m wandb: Run `wandb offline` to turn off syncing.
+[36m(train_algo pid=134575)[0m wandb: Syncing run train_algo_550c2_00026
+[36m(train_algo pid=134575)[0m wandb: ⭐️ View project at https://wandb.ai/tpn/rllib2
+[36m(train_algo pid=134575)[0m wandb: 🚀 View run at https://wandb.ai/tpn/rllib2/runs/550c2_00026
+[36m(train_algo pid=134577)[0m Install gputil for GPU system monitoring.
+[36m(train_algo pid=134577)[0m Already logged into W&B.
+[36m(train_algo pid=134577)[0m wandb: - 0.005 MB of 0.005 MB uploaded
+[36m(train_algo pid=134577)[0m wandb: \ 0.005 MB of 0.016 MB uploaded
+[36m(train_algo pid=134577)[0m wandb: | 0.005 MB of 0.016 MB uploadedwandb: / 0.017 MB of 0.017 MB uploadedwandb:                                                                                
+[36m(train_algo pid=134577)[0m wandb: 
+[36m(train_algo pid=134577)[0m wandb: Run history:
+[36m(train_algo pid=134577)[0m wandb:      episode_len_mean ███▇▆▅▅▅▄▃▄▃▄▄▅▄▃▄▂▂▃▃▁▂▃▂▁▁▃▂▂▂▁▂▁▂▂▂▂▁
+[36m(train_algo pid=134577)[0m wandb:   episode_reward_mean ▁▃▅▆▇▇▇▇▇█████▇▇████████████████████████
+[36m(train_algo pid=134577)[0m wandb:        episodes_total ▁▁▁▁▁▂▂▂▂▂▂▃▃▃▃▃▃▄▄▄▄▄▅▅▅▅▅▆▆▆▆▆▆▇▇▇▇███
+[36m(train_algo pid=134577)[0m wandb: num_env_steps_sampled ▁▁▁▁▂▂▂▂▂▃▃▃▃▃▃▄▄▄▄▄▅▅▅▅▅▅▆▆▆▆▆▇▇▇▇▇▇███
+[36m(train_algo pid=134577)[0m wandb: num_env_steps_trained ▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁
+[36m(train_algo pid=134577)[0m wandb:          time_total_s ▁▁▁▁▂▂▂▂▂▃▃▃▃▃▃▄▄▄▄▄▅▅▅▅▅▅▆▆▆▆▆▆▇▇▇▇▇███
+[36m(train_algo pid=134577)[0m wandb:    training_iteration ▁▁▁▁▂▂▂▂▂▃▃▃▃▃▃▄▄▄▄▄▅▅▅▅▅▅▆▆▆▆▆▇▇▇▇▇▇███
+[36m(train_algo pid=134577)[0m wandb: 
+[36m(train_algo pid=134577)[0m wandb: Run summary:
+[36m(train_algo pid=134577)[0m wandb:      episode_len_mean 57.48
+[36m(train_algo pid=134577)[0m wandb:   episode_reward_mean 5.86
+[36m(train_algo pid=134577)[0m wandb:        episodes_total 5002
+[36m(train_algo pid=134577)[0m wandb: num_env_steps_sampled 340000
+[36m(train_algo pid=134577)[0m wandb: num_env_steps_trained 0
+[36m(train_algo pid=134577)[0m wandb:          time_total_s 1850.85901
+[36m(train_algo pid=134577)[0m wandb:    training_iteration 340
+[36m(train_algo pid=134577)[0m wandb: 
+[36m(train_algo pid=134577)[0m wandb: 🚀 View run train_algo_550c2_00020 at: https://wandb.ai/tpn/rllib2/runs/550c2_00020
+[36m(train_algo pid=134577)[0m wandb: Synced 5 W&B file(s), 0 media file(s), 0 artifact file(s) and 0 other file(s)
+[36m(train_algo pid=134577)[0m wandb: Find logs at: /home/dalmiapriyam/ray_results/train_algo_2023-11-20_14-24-36/train_algo_550c2_00004_4_map_size=15,pred_vision=2,train_batch_size=500_2023-11-20_14-24-36/wandb/run-20231120_161416-550c2_00020/logs
+[36m(train_algo pid=134577)[0m wandb: - Waiting for wandb.init()...
+[36m(train_algo pid=134577)[0m wandb: \ Waiting for wandb.init()...
+[36m(train_algo pid=134577)[0m wandb: Tracking run with wandb version 0.16.0
+[36m(train_algo pid=134577)[0m wandb: Run data is saved locally in /home/dalmiapriyam/ray_results/train_algo_2023-11-20_14-24-36/train_algo_550c2_00004_4_map_size=15,pred_vision=2,train_batch_size=500_2023-11-20_14-24-36/wandb/run-20231120_164521-550c2_00027
+[36m(train_algo pid=134577)[0m wandb: Run `wandb offline` to turn off syncing.
+[36m(train_algo pid=134577)[0m wandb: Syncing run train_algo_550c2_00027
+[36m(train_algo pid=134577)[0m wandb: ⭐️ View project at https://wandb.ai/tpn/rllib2
+[36m(train_algo pid=134577)[0m wandb: 🚀 View run at https://wandb.ai/tpn/rllib2/runs/550c2_00027
+[36m(train_algo pid=134574)[0m Install gputil for GPU system monitoring.
+[36m(train_algo pid=134574)[0m Already logged into W&B.
+[36m(train_algo pid=134574)[0m wandb: - 0.005 MB of 0.005 MB uploaded
+[36m(train_algo pid=134574)[0m wandb: \ 0.005 MB of 0.005 MB uploadedwandb: | 0.017 MB of 0.017 MB uploadedwandb:                                                                                
+[36m(train_algo pid=134574)[0m wandb: 
+[36m(train_algo pid=134574)[0m wandb: Run history:
+[36m(train_algo pid=134574)[0m wandb:      episode_len_mean ███▇▇▇▇▄▄▃▂▃▃▃▄▃▁▂▃▂▂▂▁▁▂▂▃▃▃▃▃▃▂▂▃▂▂▃▂▁
+[36m(train_algo pid=134574)[0m wandb:   episode_reward_mean ▁▃▄▅▅▅▅▇▇▇█▇▇█▇██████████████▇▇▇██▇█▇███
+[36m(train_algo pid=134574)[0m wandb:        episodes_total ▁▁▁▁▂▂▂▂▂▂▃▃▃▃▃▃▄▄▄▄▄▅▅▅▅▅▆▆▆▆▆▆▇▇▇▇▇███
+[36m(train_algo pid=134574)[0m wandb: num_env_steps_sampled ▁▁▁▂▂▂▂▂▂▃▃▃▃▃▃▄▄▄▄▄▅▅▅▅▅▅▆▆▆▆▆▇▇▇▇▇▇███
+[36m(train_algo pid=134574)[0m wandb: num_env_steps_trained ▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁
+[36m(train_algo pid=134574)[0m wandb:          time_total_s ▁▁▁▂▂▂▂▂▂▃▃▃▃▃▃▄▄▄▄▄▅▅▅▅▅▅▆▆▆▆▆▇▇▇▇▇▇███
+[36m(train_algo pid=134574)[0m wandb:    training_iteration ▁▁▁▂▂▂▂▂▂▃▃▃▃▃▃▄▄▄▄▄▅▅▅▅▅▅▆▆▆▆▆▇▇▇▇▇▇███
+[36m(train_algo pid=134574)[0m wandb: 
+[36m(train_algo pid=134574)[0m wandb: Run summary:
+[36m(train_algo pid=134574)[0m wandb:      episode_len_mean 72.93
+[36m(train_algo pid=134574)[0m wandb:   episode_reward_mean 5.59
+[36m(train_algo pid=134574)[0m wandb:        episodes_total 5012
+[36m(train_algo pid=134574)[0m wandb: num_env_steps_sampled 391000
+[36m(train_algo pid=134574)[0m wandb: num_env_steps_trained 0
+[36m(train_algo pid=134574)[0m wandb:          time_total_s 2170.51055
+[36m(train_algo pid=134574)[0m wandb:    training_iteration 391
+[36m(train_algo pid=134574)[0m wandb: 
+[36m(train_algo pid=134574)[0m wandb: 🚀 View run train_algo_550c2_00023 at: https://wandb.ai/tpn/rllib2/runs/550c2_00023
+[36m(train_algo pid=134574)[0m wandb: Synced 5 W&B file(s), 0 media file(s), 0 artifact file(s) and 0 other file(s)
+[36m(train_algo pid=134574)[0m wandb: Find logs at: /home/dalmiapriyam/ray_results/train_algo_2023-11-20_14-24-36/train_algo_550c2_00001_1_map_size=20,pred_vision=2,train_batch_size=200_2023-11-20_14-24-36/wandb/run-20231120_161739-550c2_00023/logs
+[36m(train_algo pid=134574)[0m wandb: - Waiting for wandb.init()...
+[36m(train_algo pid=134574)[0m wandb: \ Waiting for wandb.init()...
+[36m(train_algo pid=134574)[0m wandb: Tracking run with wandb version 0.16.0
+[36m(train_algo pid=134574)[0m wandb: Run data is saved locally in /home/dalmiapriyam/ray_results/train_algo_2023-11-20_14-24-36/train_algo_550c2_00001_1_map_size=20,pred_vision=2,train_batch_size=200_2023-11-20_14-24-36/wandb/run-20231120_165405-550c2_00028
+[36m(train_algo pid=134574)[0m wandb: Run `wandb offline` to turn off syncing.
+[36m(train_algo pid=134574)[0m wandb: Syncing run train_algo_550c2_00028
+[36m(train_algo pid=134574)[0m wandb: ⭐️ View project at https://wandb.ai/tpn/rllib2
+[36m(train_algo pid=134574)[0m wandb: 🚀 View run at https://wandb.ai/tpn/rllib2/runs/550c2_00028
+[36m(train_algo pid=134578)[0m Install gputil for GPU system monitoring.
+[36m(train_algo pid=134578)[0m Already logged into W&B.
+[36m(train_algo pid=134578)[0m wandb: - 0.005 MB of 0.005 MB uploaded
+[36m(train_algo pid=134578)[0m wandb: \ 0.005 MB of 0.005 MB uploaded
+[36m(train_algo pid=134578)[0m wandb: | 0.005 MB of 0.017 MB uploaded
+[36m(train_algo pid=134578)[0m wandb: / 0.005 MB of 0.017 MB uploadedwandb: - 0.017 MB of 0.017 MB uploadedwandb:                                                                                
+[36m(train_algo pid=134578)[0m wandb: 
+[36m(train_algo pid=134578)[0m wandb: Run history:
+[36m(train_algo pid=134578)[0m wandb:      episode_len_mean ███▇▆▇▇▆▆▆▄▅▃▄▄▅▄▅▄▃▃▃▄▂▅▄▅▁▂▅▃▃▃▁▃▆▄▅▄▂
+[36m(train_algo pid=134578)[0m wandb:   episode_reward_mean ▁▂▄▄▆▆▆▆▆▆▇▇▇▇▇▇▇▆▇▇▇█▇█▇▇▇██▇▇████▇▇▇▇▇
+[36m(train_algo pid=134578)[0m wandb:        episodes_total ▁▁▁▁▂▂▂▂▂▂▃▃▃▃▃▄▄▄▄▄▄▅▅▅▅▅▆▆▆▆▆▇▇▇▇▇▇███
+[36m(train_algo pid=134578)[0m wandb: num_env_steps_sampled ▁▁▁▁▂▂▂▂▂▃▃▃▃▃▃▄▄▄▄▄▅▅▅▅▅▅▆▆▆▆▆▇▇▇▇▇▇███
+[36m(train_algo pid=134578)[0m wandb: num_env_steps_trained ▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁
+[36m(train_algo pid=134578)[0m wandb:          time_total_s ▁▁▁▁▂▂▂▂▂▃▃▃▃▃▃▄▄▄▄▄▅▅▅▅▅▅▆▆▆▆▆▇▇▇▇▇▇███
+[36m(train_algo pid=134578)[0m wandb:    training_iteration ▁▁▁▁▂▂▂▂▂▃▃▃▃▃▃▄▄▄▄▄▅▅▅▅▅▅▆▆▆▆▆▇▇▇▇▇▇███
+[36m(train_algo pid=134578)[0m wandb: 
+[36m(train_algo pid=134578)[0m wandb: Run summary:
+[36m(train_algo pid=134578)[0m wandb:      episode_len_mean 88.76
+[36m(train_algo pid=134578)[0m wandb:   episode_reward_mean 4.76
+[36m(train_algo pid=134578)[0m wandb:        episodes_total 5004
+[36m(train_algo pid=134578)[0m wandb: num_env_steps_sampled 464000
+[36m(train_algo pid=134578)[0m wandb: num_env_steps_trained 0
+[36m(train_algo pid=134578)[0m wandb:          time_total_s 2526.46456
+[36m(train_algo pid=134578)[0m wandb:    training_iteration 464
+[36m(train_algo pid=134578)[0m wandb: 
+[36m(train_algo pid=134578)[0m wandb: 🚀 View run train_algo_550c2_00021 at: https://wandb.ai/tpn/rllib2/runs/550c2_00021
+[36m(train_algo pid=134578)[0m wandb: Synced 5 W&B file(s), 0 media file(s), 0 artifact file(s) and 0 other file(s)
+[36m(train_algo pid=134578)[0m wandb: Find logs at: /home/dalmiapriyam/ray_results/train_algo_2023-11-20_14-24-36/train_algo_550c2_00005_5_map_size=20,pred_vision=2,train_batch_size=500_2023-11-20_14-24-36/wandb/run-20231120_161446-550c2_00021/logs
+[36m(train_algo pid=134578)[0m wandb: - Waiting for wandb.init()...
+[36m(train_algo pid=134578)[0m wandb: \ Waiting for wandb.init()...
+[36m(train_algo pid=134578)[0m wandb: Tracking run with wandb version 0.16.0
+[36m(train_algo pid=134578)[0m wandb: Run data is saved locally in /home/dalmiapriyam/ray_results/train_algo_2023-11-20_14-24-36/train_algo_550c2_00005_5_map_size=20,pred_vision=2,train_batch_size=500_2023-11-20_14-24-36/wandb/run-20231120_165710-550c2_00029
+[36m(train_algo pid=134578)[0m wandb: Run `wandb offline` to turn off syncing.
+[36m(train_algo pid=134578)[0m wandb: Syncing run train_algo_550c2_00029
+[36m(train_algo pid=134578)[0m wandb: ⭐️ View project at https://wandb.ai/tpn/rllib2
+[36m(train_algo pid=134578)[0m wandb: 🚀 View run at https://wandb.ai/tpn/rllib2/runs/550c2_00029
+[36m(train_algo pid=134576)[0m Install gputil for GPU system monitoring.
+[36m(train_algo pid=134576)[0m Already logged into W&B.
+[36m(train_algo pid=134576)[0m wandb: - 0.005 MB of 0.005 MB uploaded
+[36m(train_algo pid=134576)[0m wandb: \ 0.005 MB of 0.005 MB uploaded
+[36m(train_algo pid=134576)[0m wandb: | 0.005 MB of 0.017 MB uploaded
+[36m(train_algo pid=134576)[0m wandb: / 0.005 MB of 0.017 MB uploadedwandb: - 0.017 MB of 0.017 MB uploadedwandb:                                                                                
+[36m(train_algo pid=134576)[0m wandb: 
+[36m(train_algo pid=134576)[0m wandb: Run history:
+[36m(train_algo pid=134576)[0m wandb:      episode_len_mean ██▇▆▄▄▄▃▁▂▂▃▃▄▄▄▄▁▁▂▂▃▆▄▇▆▃▄▄▃▂▅▇▇▆▆▅▄▂▅
+[36m(train_algo pid=134576)[0m wandb:   episode_reward_mean ▁▄▅▆▇▇█▇█████▇▇▇▇████▇▆▇▅▅▇▇▇██▇▅▅▅▅▆▇▇▇
+[36m(train_algo pid=134576)[0m wandb:        episodes_total ▁▁▁▁▂▂▂▂▂▃▃▃▃▃▄▄▄▄▄▅▅▅▅▅▅▆▆▆▆▆▆▇▇▇▇▇▇███
+[36m(train_algo pid=134576)[0m wandb: num_env_steps_sampled ▁▁▁▂▂▂▂▂▂▃▃▃▃▃▃▄▄▄▄▄▅▅▅▅▅▅▆▆▆▆▆▇▇▇▇▇▇███
+[36m(train_algo pid=134576)[0m wandb: num_env_steps_trained ▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁
+[36m(train_algo pid=134576)[0m wandb:          time_total_s ▁▁▁▂▂▂▂▂▂▃▃▃▃▃▃▄▄▄▄▄▅▅▅▅▅▅▆▆▆▆▆▇▇▇▇▇▇███
+[36m(train_algo pid=134576)[0m wandb:    training_iteration ▁▁▁▂▂▂▂▂▂▃▃▃▃▃▃▄▄▄▄▄▅▅▅▅▅▅▆▆▆▆▆▇▇▇▇▇▇███
+[36m(train_algo pid=134576)[0m wandb: 
+[36m(train_algo pid=134576)[0m wandb: Run summary:
+[36m(train_algo pid=134576)[0m wandb:      episode_len_mean 85.2
+[36m(train_algo pid=134576)[0m wandb:   episode_reward_mean 5.1
+[36m(train_algo pid=134576)[0m wandb:        episodes_total 5001
+[36m(train_algo pid=134576)[0m wandb: num_env_steps_sampled 382600
+[36m(train_algo pid=134576)[0m wandb: num_env_steps_trained 0
+[36m(train_algo pid=134576)[0m wandb:          time_total_s 2117.96123
+[36m(train_algo pid=134576)[0m wandb:    training_iteration 1913
+[36m(train_algo pid=134576)[0m wandb: 
+[36m(train_algo pid=134576)[0m wandb: 🚀 View run train_algo_550c2_00024 at: https://wandb.ai/tpn/rllib2/runs/550c2_00024
+[36m(train_algo pid=134576)[0m wandb: Synced 5 W&B file(s), 0 media file(s), 0 artifact file(s) and 0 other file(s)
+[36m(train_algo pid=134576)[0m wandb: Find logs at: /home/dalmiapriyam/ray_results/train_algo_2023-11-20_14-24-36/train_algo_550c2_00003_3_map_size=20,pred_vision=3,train_batch_size=200_2023-11-20_14-24-36/wandb/run-20231120_163026-550c2_00024/logs
+[36m(train_algo pid=134576)[0m wandb: - Waiting for wandb.init()...
+[36m(train_algo pid=134576)[0m wandb: \ Waiting for wandb.init()...
+[36m(train_algo pid=134576)[0m wandb: Tracking run with wandb version 0.16.0
+[36m(train_algo pid=134576)[0m wandb: Run data is saved locally in /home/dalmiapriyam/ray_results/train_algo_2023-11-20_14-24-36/train_algo_550c2_00003_3_map_size=20,pred_vision=3,train_batch_size=200_2023-11-20_14-24-36/wandb/run-20231120_170631-550c2_00030
+[36m(train_algo pid=134576)[0m wandb: Run `wandb offline` to turn off syncing.
+[36m(train_algo pid=134576)[0m wandb: Syncing run train_algo_550c2_00030
+[36m(train_algo pid=134576)[0m wandb: ⭐️ View project at https://wandb.ai/tpn/rllib2
+[36m(train_algo pid=134576)[0m wandb: 🚀 View run at https://wandb.ai/tpn/rllib2/runs/550c2_00030
+[36m(train_algo pid=134575)[0m Install gputil for GPU system monitoring.
+[36m(train_algo pid=134575)[0m Already logged into W&B.
+[36m(train_algo pid=134575)[0m wandb: - 0.005 MB of 0.005 MB uploaded
+[36m(train_algo pid=134575)[0m wandb: \ 0.005 MB of 0.005 MB uploaded
+[36m(train_algo pid=134575)[0m wandb: | 0.015 MB of 0.017 MB uploaded
+[36m(train_algo pid=134575)[0m wandb: / 0.015 MB of 0.017 MB uploadedwandb: - 0.017 MB of 0.017 MB uploadedwandb:                                                                                
+[36m(train_algo pid=134575)[0m wandb: 
+[36m(train_algo pid=134575)[0m wandb: Run history:
+[36m(train_algo pid=134575)[0m wandb:      episode_len_mean ███▇▆▆▅▃▂▃▄▃▃▂▂▃▄▄▄▃▂▂▂▁▂▃▆▅▄▃▂▂▂▂▁▁▂▁▁▂
+[36m(train_algo pid=134575)[0m wandb:   episode_reward_mean ▁▂▂▆▇▇▇████████▇▇▇▇▇█████▇▆▆▇███████████
+[36m(train_algo pid=134575)[0m wandb:        episodes_total ▁▁▁▁▁▂▂▂▂▂▂▃▃▃▃▃▃▄▄▄▄▄▅▅▅▅▅▆▆▆▆▆▆▇▇▇▇███
+[36m(train_algo pid=134575)[0m wandb: num_env_steps_sampled ▁▁▁▂▂▂▂▂▂▃▃▃▃▃▃▄▄▄▄▄▅▅▅▅▅▅▆▆▆▆▆▇▇▇▇▇▇███
+[36m(train_algo pid=134575)[0m wandb: num_env_steps_trained ▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁
+[36m(train_algo pid=134575)[0m wandb:          time_total_s ▁▁▁▂▂▂▂▂▂▃▃▃▃▃▃▄▄▄▄▄▅▅▅▅▅▅▆▆▆▆▆▇▇▇▇▇▇███
+[36m(train_algo pid=134575)[0m wandb:    training_iteration ▁▁▁▂▂▂▂▂▂▃▃▃▃▃▃▄▄▄▄▄▅▅▅▅▅▅▆▆▆▆▆▇▇▇▇▇▇███
+[36m(train_algo pid=134575)[0m wandb: 
+[36m(train_algo pid=134575)[0m wandb: Run summary:
+[36m(train_algo pid=134575)[0m wandb:      episode_len_mean 55.88
+[36m(train_algo pid=134575)[0m wandb:   episode_reward_mean 5.71
+[36m(train_algo pid=134575)[0m wandb:        episodes_total 5004
+[36m(train_algo pid=134575)[0m wandb: num_env_steps_sampled 306800
+[36m(train_algo pid=134575)[0m wandb: num_env_steps_trained 0
+[36m(train_algo pid=134575)[0m wandb:          time_total_s 1726.7285
+[36m(train_algo pid=134575)[0m wandb:    training_iteration 1534
+[36m(train_algo pid=134575)[0m wandb: 
+[36m(train_algo pid=134575)[0m wandb: 🚀 View run train_algo_550c2_00026 at: https://wandb.ai/tpn/rllib2/runs/550c2_00026
+[36m(train_algo pid=134575)[0m wandb: Synced 5 W&B file(s), 0 media file(s), 0 artifact file(s) and 0 other file(s)
+[36m(train_algo pid=134575)[0m wandb: Find logs at: /home/dalmiapriyam/ray_results/train_algo_2023-11-20_14-24-36/train_algo_550c2_00002_2_map_size=15,pred_vision=3,train_batch_size=200_2023-11-20_14-24-36/wandb/run-20231120_163905-550c2_00026/logs
+[36m(train_algo pid=134575)[0m wandb: - Waiting for wandb.init()...
+[36m(train_algo pid=134575)[0m wandb: \ Waiting for wandb.init()...
+[36m(train_algo pid=134575)[0m wandb: Tracking run with wandb version 0.16.0
+[36m(train_algo pid=134575)[0m wandb: Run data is saved locally in /home/dalmiapriyam/ray_results/train_algo_2023-11-20_14-24-36/train_algo_550c2_00002_2_map_size=15,pred_vision=3,train_batch_size=200_2023-11-20_14-24-36/wandb/run-20231120_170831-550c2_00031
+[36m(train_algo pid=134575)[0m wandb: Run `wandb offline` to turn off syncing.
+[36m(train_algo pid=134575)[0m wandb: Syncing run train_algo_550c2_00031
+[36m(train_algo pid=134575)[0m wandb: ⭐️ View project at https://wandb.ai/tpn/rllib2
+[36m(train_algo pid=134575)[0m wandb: 🚀 View run at https://wandb.ai/tpn/rllib2/runs/550c2_00031
+[36m(train_algo pid=134573)[0m Install gputil for GPU system monitoring.
+[36m(train_algo pid=134573)[0m Already logged into W&B.
+[36m(train_algo pid=134573)[0m wandb: - 0.005 MB of 0.005 MB uploaded
+[36m(train_algo pid=134573)[0m wandb: \ 0.005 MB of 0.016 MB uploaded
+[36m(train_algo pid=134573)[0m wandb: | 0.005 MB of 0.016 MB uploadedwandb: / 0.017 MB of 0.017 MB uploadedwandb:                                                                                
+[36m(train_algo pid=134573)[0m wandb: 
+[36m(train_algo pid=134573)[0m wandb: Run history:
+[36m(train_algo pid=134573)[0m wandb:      episode_len_mean ██▆▆▄▁▇▆███▆▅▄▆▆█▄▅▇▆▃▄▃▅█▂▃▅▃▆▄▅▅▄▆█▆▅▂
+[36m(train_algo pid=134573)[0m wandb:   episode_reward_mean ▁▂▆▆▇█▃▅▃▃▃▄▇▇▅▃▃▆▆▅▅▆▇▇▅▄▇▇▆▇▇▇▇▇▇▆▂▅▆▅
+[36m(train_algo pid=134573)[0m wandb:        episodes_total ▁▁▁▁▂▂▂▂▂▃▃▃▃▃▃▄▄▄▄▄▅▅▅▅▅▅▆▆▆▆▆▇▇▇▇▇▇███
+[36m(train_algo pid=134573)[0m wandb: num_env_steps_sampled ▁▁▁▁▂▂▂▂▂▃▃▃▃▃▃▄▄▄▄▄▅▅▅▅▅▅▆▆▆▆▆▇▇▇▇▇▇███
+[36m(train_algo pid=134573)[0m wandb: num_env_steps_trained ▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁
+[36m(train_algo pid=134573)[0m wandb:          time_total_s ▁▁▁▁▂▂▂▂▂▃▃▃▃▃▃▄▄▄▄▄▅▅▅▅▅▅▆▆▆▆▆▇▇▇▇▇▇███
+[36m(train_algo pid=134573)[0m wandb:    training_iteration ▁▁▁▁▂▂▂▂▂▃▃▃▃▃▃▄▄▄▄▄▅▅▅▅▅▅▆▆▆▆▆▇▇▇▇▇▇███
+[36m(train_algo pid=134573)[0m wandb: 
+[36m(train_algo pid=134573)[0m wandb: Run summary:
+[36m(train_algo pid=134573)[0m wandb:      episode_len_mean 100.1
+[36m(train_algo pid=134573)[0m wandb:   episode_reward_mean 2.88
+[36m(train_algo pid=134573)[0m wandb:        episodes_total 5001
+[36m(train_algo pid=134573)[0m wandb: num_env_steps_sampled 489200
+[36m(train_algo pid=134573)[0m wandb: num_env_steps_trained 0
+[36m(train_algo pid=134573)[0m wandb:          time_total_s 2725.54449
+[36m(train_algo pid=134573)[0m wandb:    training_iteration 2446
+[36m(train_algo pid=134573)[0m wandb: 
+[36m(train_algo pid=134573)[0m wandb: 🚀 View run train_algo_550c2_00025 at: https://wandb.ai/tpn/rllib2/runs/550c2_00025
+[36m(train_algo pid=134573)[0m wandb: Synced 5 W&B file(s), 0 media file(s), 0 artifact file(s) and 0 other file(s)
+[36m(train_algo pid=134573)[0m wandb: Find logs at: /home/dalmiapriyam/ray_results/train_algo_2023-11-20_14-24-36/train_algo_550c2_00000_0_map_size=15,pred_vision=2,train_batch_size=200_2023-11-20_14-24-36/wandb/run-20231120_163718-550c2_00025/logs
+[36m(train_algo pid=134573)[0m wandb: - Waiting for wandb.init()...
+[36m(train_algo pid=134573)[0m wandb: \ Waiting for wandb.init()...
+[36m(train_algo pid=134573)[0m wandb: Tracking run with wandb version 0.16.0
+[36m(train_algo pid=134573)[0m wandb: Run data is saved locally in /home/dalmiapriyam/ray_results/train_algo_2023-11-20_14-24-36/train_algo_550c2_00000_0_map_size=15,pred_vision=2,train_batch_size=200_2023-11-20_14-24-36/wandb/run-20231120_172344-550c2_00032
+[36m(train_algo pid=134573)[0m wandb: Run `wandb offline` to turn off syncing.
+[36m(train_algo pid=134573)[0m wandb: Syncing run train_algo_550c2_00032
+[36m(train_algo pid=134573)[0m wandb: ⭐️ View project at https://wandb.ai/tpn/rllib2
+[36m(train_algo pid=134573)[0m wandb: 🚀 View run at https://wandb.ai/tpn/rllib2/runs/550c2_00032
+[36m(train_algo pid=134574)[0m Install gputil for GPU system monitoring.
+[36m(train_algo pid=134574)[0m Already logged into W&B.
+[36m(train_algo pid=134574)[0m wandb: - 0.005 MB of 0.005 MB uploaded
+[36m(train_algo pid=134574)[0m wandb: \ 0.005 MB of 0.005 MB uploaded
+[36m(train_algo pid=134574)[0m wandb: | 0.005 MB of 0.005 MB uploadedwandb: / 0.017 MB of 0.017 MB uploadedwandb:                                                                                
+[36m(train_algo pid=134574)[0m wandb: 
+[36m(train_algo pid=134574)[0m wandb: Run history:
+[36m(train_algo pid=134574)[0m wandb:      episode_len_mean ██▇▆▄▅▅▄▃▃▃▄▂▂▂▃▃▄▄▂▂▃▂▂▃▃▂▁▂▁▂▂▂▂▂▁▂▃▃▃
+[36m(train_algo pid=134574)[0m wandb:   episode_reward_mean ▁▃▄▇▇▇▇▇▇█▇███▇▇▇▇▇▇█▇██▇▇███████▇██▇▇██
+[36m(train_algo pid=134574)[0m wandb:        episodes_total ▁▁▁▁▂▂▂▂▂▂▃▃▃▃▃▃▄▄▄▄▄▄▅▅▅▅▅▆▆▆▆▆▇▇▇▇▇███
+[36m(train_algo pid=134574)[0m wandb: num_env_steps_sampled ▁▁▁▂▂▂▂▂▂▃▃▃▃▃▃▄▄▄▄▄▅▅▅▅▅▅▆▆▆▆▆▆▇▇▇▇▇███
+[36m(train_algo pid=134574)[0m wandb: num_env_steps_trained ▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁
+[36m(train_algo pid=134574)[0m wandb:          time_total_s ▁▁▁▂▂▂▂▂▂▃▃▃▃▃▃▄▄▄▄▄▅▅▅▅▅▅▆▆▆▆▆▆▇▇▇▇▇███
+[36m(train_algo pid=134574)[0m wandb:    training_iteration ▁▁▁▂▂▂▂▂▂▃▃▃▃▃▃▄▄▄▄▄▅▅▅▅▅▅▆▆▆▆▆▆▇▇▇▇▇███
+[36m(train_algo pid=134574)[0m wandb: 
+[36m(train_algo pid=134574)[0m wandb: Run summary:
+[36m(train_algo pid=134574)[0m wandb:      episode_len_mean 67.01
+[36m(train_algo pid=134574)[0m wandb:   episode_reward_mean 5.67
+[36m(train_algo pid=134574)[0m wandb:        episodes_total 5001
+[36m(train_algo pid=134574)[0m wandb: num_env_steps_sampled 336500
+[36m(train_algo pid=134574)[0m wandb: num_env_steps_trained 0
+[36m(train_algo pid=134574)[0m wandb:          time_total_s 1838.17002
+[36m(train_algo pid=134574)[0m wandb:    training_iteration 673
+[36m(train_algo pid=134574)[0m wandb: 
+[36m(train_algo pid=134574)[0m wandb: 🚀 View run train_algo_550c2_00028 at: https://wandb.ai/tpn/rllib2/runs/550c2_00028
+[36m(train_algo pid=134574)[0m wandb: Synced 5 W&B file(s), 0 media file(s), 0 artifact file(s) and 0 other file(s)
+[36m(train_algo pid=134574)[0m wandb: Find logs at: /home/dalmiapriyam/ray_results/train_algo_2023-11-20_14-24-36/train_algo_550c2_00001_1_map_size=20,pred_vision=2,train_batch_size=200_2023-11-20_14-24-36/wandb/run-20231120_165405-550c2_00028/logs
+[36m(train_algo pid=134574)[0m wandb: - Waiting for wandb.init()...
+[36m(train_algo pid=134574)[0m wandb: \ Waiting for wandb.init()...
+[36m(train_algo pid=134574)[0m wandb: Tracking run with wandb version 0.16.0
+[36m(train_algo pid=134574)[0m wandb: Run data is saved locally in /home/dalmiapriyam/ray_results/train_algo_2023-11-20_14-24-36/train_algo_550c2_00001_1_map_size=20,pred_vision=2,train_batch_size=200_2023-11-20_14-24-36/wandb/run-20231120_172505-550c2_00033
+[36m(train_algo pid=134574)[0m wandb: Run `wandb offline` to turn off syncing.
+[36m(train_algo pid=134574)[0m wandb: Syncing run train_algo_550c2_00033
+[36m(train_algo pid=134574)[0m wandb: ⭐️ View project at https://wandb.ai/tpn/rllib2
+[36m(train_algo pid=134574)[0m wandb: 🚀 View run at https://wandb.ai/tpn/rllib2/runs/550c2_00033
+[36m(train_algo pid=134577)[0m Install gputil for GPU system monitoring.
+[36m(train_algo pid=134577)[0m Already logged into W&B.
+[36m(train_algo pid=134577)[0m wandb: - 0.005 MB of 0.005 MB uploaded
+[36m(train_algo pid=134577)[0m wandb: \ 0.005 MB of 0.017 MB uploaded
+[36m(train_algo pid=134577)[0m wandb: | 0.005 MB of 0.017 MB uploadedwandb: / 0.017 MB of 0.017 MB uploadedwandb:                                                                                
+[36m(train_algo pid=134577)[0m wandb: 
+[36m(train_algo pid=134577)[0m wandb: Run history:
+[36m(train_algo pid=134577)[0m wandb:      episode_len_mean ███▆▅▅▅▅▃▄▄▃▅▅▄▆▆▅▁▁▂▃▂▆▄▅▇▆▆▅▆▇▆▆▆▆▆▇▅▆
+[36m(train_algo pid=134577)[0m wandb:   episode_reward_mean ▁▂▄▆▇▇▇▇▇▇▇▇▇▇▇▆▇▇████▇▇▇▆▅▆▆▇▆▆▆▇▇▆▆▅▆▆
+[36m(train_algo pid=134577)[0m wandb:        episodes_total ▁▁▁▁▂▂▂▂▂▃▃▃▃▃▃▄▄▄▄▄▅▅▅▅▅▆▆▆▆▆▆▇▇▇▇▇▇███
+[36m(train_algo pid=134577)[0m wandb: num_env_steps_sampled ▁▁▁▂▂▂▂▂▂▃▃▃▃▃▃▄▄▄▄▄▅▅▅▅▅▅▆▆▆▆▆▇▇▇▇▇▇███
+[36m(train_algo pid=134577)[0m wandb: num_env_steps_trained ▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁
+[36m(train_algo pid=134577)[0m wandb:          time_total_s ▁▁▁▂▂▂▂▂▂▃▃▃▃▃▃▄▄▄▄▄▄▅▅▅▅▅▆▆▆▆▆▇▇▇▇▇▇███
+[36m(train_algo pid=134577)[0m wandb:    training_iteration ▁▁▁▂▂▂▂▂▂▃▃▃▃▃▃▄▄▄▄▄▅▅▅▅▅▅▆▆▆▆▆▇▇▇▇▇▇███
+[36m(train_algo pid=134577)[0m wandb: 
+[36m(train_algo pid=134577)[0m wandb: Run summary:
+[36m(train_algo pid=134577)[0m wandb:      episode_len_mean 90.99
+[36m(train_algo pid=134577)[0m wandb:   episode_reward_mean 4.72
+[36m(train_algo pid=134577)[0m wandb:        episodes_total 5001
+[36m(train_algo pid=134577)[0m wandb: num_env_steps_sampled 442200
+[36m(train_algo pid=134577)[0m wandb: num_env_steps_trained 0
+[36m(train_algo pid=134577)[0m wandb:          time_total_s 2507.94165
+[36m(train_algo pid=134577)[0m wandb:    training_iteration 2211
+[36m(train_algo pid=134577)[0m wandb: 
+[36m(train_algo pid=134577)[0m wandb: 🚀 View run train_algo_550c2_00027 at: https://wandb.ai/tpn/rllib2/runs/550c2_00027
+[36m(train_algo pid=134577)[0m wandb: Synced 5 W&B file(s), 0 media file(s), 0 artifact file(s) and 0 other file(s)
+[36m(train_algo pid=134577)[0m wandb: Find logs at: /home/dalmiapriyam/ray_results/train_algo_2023-11-20_14-24-36/train_algo_550c2_00004_4_map_size=15,pred_vision=2,train_batch_size=500_2023-11-20_14-24-36/wandb/run-20231120_164521-550c2_00027/logs
+[36m(train_algo pid=134577)[0m wandb: - Waiting for wandb.init()...
+[36m(train_algo pid=134577)[0m wandb: \ Waiting for wandb.init()...
+[36m(train_algo pid=134577)[0m wandb: Tracking run with wandb version 0.16.0
+[36m(train_algo pid=134577)[0m wandb: Run data is saved locally in /home/dalmiapriyam/ray_results/train_algo_2023-11-20_14-24-36/train_algo_550c2_00004_4_map_size=15,pred_vision=2,train_batch_size=500_2023-11-20_14-24-36/wandb/run-20231120_172803-550c2_00034
+[36m(train_algo pid=134577)[0m wandb: Run `wandb offline` to turn off syncing.
+[36m(train_algo pid=134577)[0m wandb: Syncing run train_algo_550c2_00034
+[36m(train_algo pid=134577)[0m wandb: ⭐️ View project at https://wandb.ai/tpn/rllib2
+[36m(train_algo pid=134577)[0m wandb: 🚀 View run at https://wandb.ai/tpn/rllib2/runs/550c2_00034
+[36m(train_algo pid=134576)[0m Install gputil for GPU system monitoring.
+[36m(train_algo pid=134576)[0m Already logged into W&B.
+[36m(train_algo pid=134576)[0m wandb: - 0.005 MB of 0.005 MB uploaded
+[36m(train_algo pid=134576)[0m wandb: \ 0.005 MB of 0.005 MB uploaded
+[36m(train_algo pid=134576)[0m wandb: | 0.005 MB of 0.017 MB uploaded
+[36m(train_algo pid=134576)[0m wandb: / 0.005 MB of 0.017 MB uploadedwandb: - 0.017 MB of 0.017 MB uploadedwandb:                                                                                
+[36m(train_algo pid=134576)[0m wandb: 
+[36m(train_algo pid=134576)[0m wandb: Run history:
+[36m(train_algo pid=134576)[0m wandb:      episode_len_mean ██▇▆▅▅▄▄▄▃▄▃▃▃▃▃▃▃▃▄▄▃▃▂▃▂▃▂▂▃▄▃▂▂▂▂▂▁▂▁
+[36m(train_algo pid=134576)[0m wandb:   episode_reward_mean ▁▂▆▆▇▇▇▇▇███▇██▇███▇▇███████████████████
+[36m(train_algo pid=134576)[0m wandb:        episodes_total ▁▁▁▁▁▂▂▂▂▂▂▃▃▃▃▃▃▄▄▄▄▄▅▅▅▅▅▆▆▆▆▆▆▇▇▇▇▇██
+[36m(train_algo pid=134576)[0m wandb: num_env_steps_sampled ▁▁▁▁▂▂▂▂▂▃▃▃▃▃▃▄▄▄▄▄▅▅▅▅▅▅▆▆▆▆▆▇▇▇▇▇▇███
+[36m(train_algo pid=134576)[0m wandb: num_env_steps_trained ▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁
+[36m(train_algo pid=134576)[0m wandb:          time_total_s ▁▁▁▁▂▂▂▂▂▃▃▃▃▃▃▄▄▄▄▄▅▅▅▅▅▅▆▆▆▆▆▇▇▇▇▇▇███
+[36m(train_algo pid=134576)[0m wandb:    training_iteration ▁▁▁▁▂▂▂▂▂▃▃▃▃▃▃▄▄▄▄▄▅▅▅▅▅▅▆▆▆▆▆▇▇▇▇▇▇███
+[36m(train_algo pid=134576)[0m wandb: 
+[36m(train_algo pid=134576)[0m wandb: Run summary:
+[36m(train_algo pid=134576)[0m wandb:      episode_len_mean 45.94
+[36m(train_algo pid=134576)[0m wandb:   episode_reward_mean 5.94
+[36m(train_algo pid=134576)[0m wandb:        episodes_total 5002
+[36m(train_algo pid=134576)[0m wandb: num_env_steps_sampled 291000
+[36m(train_algo pid=134576)[0m wandb: num_env_steps_trained 0
+[36m(train_algo pid=134576)[0m wandb:          time_total_s 1636.532
+[36m(train_algo pid=134576)[0m wandb:    training_iteration 582
+[36m(train_algo pid=134576)[0m wandb: 
+[36m(train_algo pid=134576)[0m wandb: 🚀 View run train_algo_550c2_00030 at: https://wandb.ai/tpn/rllib2/runs/550c2_00030
+[36m(train_algo pid=134576)[0m wandb: Synced 5 W&B file(s), 0 media file(s), 0 artifact file(s) and 0 other file(s)
+[36m(train_algo pid=134576)[0m wandb: Find logs at: /home/dalmiapriyam/ray_results/train_algo_2023-11-20_14-24-36/train_algo_550c2_00003_3_map_size=20,pred_vision=3,train_batch_size=200_2023-11-20_14-24-36/wandb/run-20231120_170631-550c2_00030/logs
+[36m(train_algo pid=134576)[0m wandb: - Waiting for wandb.init()...
+[36m(train_algo pid=134576)[0m wandb: \ Waiting for wandb.init()...
+[36m(train_algo pid=134576)[0m wandb: Tracking run with wandb version 0.16.0
+[36m(train_algo pid=134576)[0m wandb: Run data is saved locally in /home/dalmiapriyam/ray_results/train_algo_2023-11-20_14-24-36/train_algo_550c2_00003_3_map_size=20,pred_vision=3,train_batch_size=200_2023-11-20_14-24-36/wandb/run-20231120_173408-550c2_00035
+[36m(train_algo pid=134576)[0m wandb: Run `wandb offline` to turn off syncing.
+[36m(train_algo pid=134576)[0m wandb: Syncing run train_algo_550c2_00035
+[36m(train_algo pid=134576)[0m wandb: ⭐️ View project at https://wandb.ai/tpn/rllib2
+[36m(train_algo pid=134576)[0m wandb: 🚀 View run at https://wandb.ai/tpn/rllib2/runs/550c2_00035
+[36m(train_algo pid=134578)[0m Install gputil for GPU system monitoring.
+[36m(train_algo pid=134578)[0m Already logged into W&B.
+[36m(train_algo pid=134578)[0m wandb: - 0.005 MB of 0.005 MB uploaded
+[36m(train_algo pid=134578)[0m wandb: \ 0.005 MB of 0.005 MB uploaded
+[36m(train_algo pid=134578)[0m wandb: | 0.017 MB of 0.017 MB uploaded
+[36m(train_algo pid=134578)[0m wandb: / 0.017 MB of 0.017 MB uploadedwandb: - 0.017 MB of 0.017 MB uploadedwandb:                                                                                
+[36m(train_algo pid=134578)[0m wandb: 
+[36m(train_algo pid=134578)[0m wandb: Run history:
+[36m(train_algo pid=134578)[0m wandb:      episode_len_mean ███▇▇▆▆▅▅▅▆▆▄▃▄▄▅▄▅▅▅▄▁▃▃▄▃▄▅▅▇▅▃▅▅▇▆▄▅▅
+[36m(train_algo pid=134578)[0m wandb:   episode_reward_mean ▁▂▄▅▅▆▆▇▇▇▇▇▇▇▇▇▆▇▇▇▇▇██▇▇█▇▇▇▅▇█▇▇▅▆▇▆▆
+[36m(train_algo pid=134578)[0m wandb:        episodes_total ▁▁▁▁▂▂▂▂▂▃▃▃▃▃▃▄▄▄▄▄▄▅▅▅▅▅▆▆▆▆▆▇▇▇▇▇▇███
+[36m(train_algo pid=134578)[0m wandb: num_env_steps_sampled ▁▁▁▁▂▂▂▂▂▃▃▃▃▃▃▄▄▄▄▄▅▅▅▅▅▅▆▆▆▆▆▇▇▇▇▇▇███
+[36m(train_algo pid=134578)[0m wandb: num_env_steps_trained ▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁
+[36m(train_algo pid=134578)[0m wandb:          time_total_s ▁▁▁▁▂▂▂▂▂▃▃▃▃▃▃▄▄▄▄▄▅▅▅▅▅▅▆▆▆▆▆▇▇▇▇▇▇███
+[36m(train_algo pid=134578)[0m wandb:    training_iteration ▁▁▁▁▂▂▂▂▂▃▃▃▃▃▃▄▄▄▄▄▅▅▅▅▅▅▆▆▆▆▆▇▇▇▇▇▇███
+[36m(train_algo pid=134578)[0m wandb: 
+[36m(train_algo pid=134578)[0m wandb: Run summary:
+[36m(train_algo pid=134578)[0m wandb:      episode_len_mean 93.39
+[36m(train_algo pid=134578)[0m wandb:   episode_reward_mean 4.58
+[36m(train_algo pid=134578)[0m wandb:        episodes_total 5003
+[36m(train_algo pid=134578)[0m wandb: num_env_steps_sampled 467500
+[36m(train_algo pid=134578)[0m wandb: num_env_steps_trained 0
+[36m(train_algo pid=134578)[0m wandb:          time_total_s 2564.28956
+[36m(train_algo pid=134578)[0m wandb:    training_iteration 935
+[36m(train_algo pid=134578)[0m wandb: 
+[36m(train_algo pid=134578)[0m wandb: 🚀 View run train_algo_550c2_00029 at: https://wandb.ai/tpn/rllib2/runs/550c2_00029
+[36m(train_algo pid=134578)[0m wandb: Synced 5 W&B file(s), 0 media file(s), 0 artifact file(s) and 0 other file(s)
+[36m(train_algo pid=134578)[0m wandb: Find logs at: /home/dalmiapriyam/ray_results/train_algo_2023-11-20_14-24-36/train_algo_550c2_00005_5_map_size=20,pred_vision=2,train_batch_size=500_2023-11-20_14-24-36/wandb/run-20231120_165710-550c2_00029/logs
+[36m(train_algo pid=134578)[0m wandb: - Waiting for wandb.init()...
+[36m(train_algo pid=134578)[0m wandb: \ Waiting for wandb.init()...
+[36m(train_algo pid=134578)[0m wandb: Tracking run with wandb version 0.16.0
+[36m(train_algo pid=134578)[0m wandb: Run data is saved locally in /home/dalmiapriyam/ray_results/train_algo_2023-11-20_14-24-36/train_algo_550c2_00005_5_map_size=20,pred_vision=2,train_batch_size=500_2023-11-20_14-24-36/wandb/run-20231120_174022-550c2_00036
+[36m(train_algo pid=134578)[0m wandb: Run `wandb offline` to turn off syncing.
+[36m(train_algo pid=134578)[0m wandb: Syncing run train_algo_550c2_00036
+[36m(train_algo pid=134578)[0m wandb: ⭐️ View project at https://wandb.ai/tpn/rllib2
+[36m(train_algo pid=134578)[0m wandb: 🚀 View run at https://wandb.ai/tpn/rllib2/runs/550c2_00036
+[36m(train_algo pid=134575)[0m Install gputil for GPU system monitoring.
+[36m(train_algo pid=134575)[0m Already logged into W&B.
+[36m(train_algo pid=134575)[0m wandb: - 0.005 MB of 0.005 MB uploaded
+[36m(train_algo pid=134575)[0m wandb: \ 0.005 MB of 0.005 MB uploaded
+[36m(train_algo pid=134575)[0m wandb: | 0.005 MB of 0.005 MB uploadedwandb: / 0.017 MB of 0.017 MB uploadedwandb:                                                                                
+[36m(train_algo pid=134575)[0m wandb: 
+[36m(train_algo pid=134575)[0m wandb: Run history:
+[36m(train_algo pid=134575)[0m wandb:      episode_len_mean ███▇▆▅▅▄▄▅▄▄▄▄▃▂▃▂▂▁▂▃▂▂▃▂▂▁▂▃▃▃▄▄▃▂▃▂▃▃
+[36m(train_algo pid=134575)[0m wandb:   episode_reward_mean ▁▃▄▆▆▇▇▇▇▇▇▇▇▇▇█████████████████▇▇██████
+[36m(train_algo pid=134575)[0m wandb:        episodes_total ▁▁▁▁▂▂▂▂▂▂▃▃▃▃▃▃▄▄▄▄▄▅▅▅▅▅▆▆▆▆▆▇▇▇▇▇▇███
+[36m(train_algo pid=134575)[0m wandb: num_env_steps_sampled ▁▁▁▂▂▂▂▂▂▃▃▃▃▃▃▄▄▄▄▄▅▅▅▅▅▅▆▆▆▆▆▇▇▇▇▇▇███
+[36m(train_algo pid=134575)[0m wandb: num_env_steps_trained ▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁
+[36m(train_algo pid=134575)[0m wandb:          time_total_s ▁▁▁▂▂▂▂▂▂▃▃▃▃▃▃▄▄▄▄▄▅▅▅▅▅▅▆▆▆▆▆▇▇▇▇▇▇███
+[36m(train_algo pid=134575)[0m wandb:    training_iteration ▁▁▁▂▂▂▂▂▂▃▃▃▃▃▃▄▄▄▄▄▅▅▅▅▅▅▆▆▆▆▆▇▇▇▇▇▇███
+[36m(train_algo pid=134575)[0m wandb: 
+[36m(train_algo pid=134575)[0m wandb: Run summary:
+[36m(train_algo pid=134575)[0m wandb:      episode_len_mean 80.13
+[36m(train_algo pid=134575)[0m wandb:   episode_reward_mean 5.45
+[36m(train_algo pid=134575)[0m wandb:        episodes_total 5002
+[36m(train_algo pid=134575)[0m wandb: num_env_steps_sampled 395500
+[36m(train_algo pid=134575)[0m wandb: num_env_steps_trained 0
+[36m(train_algo pid=134575)[0m wandb:          time_total_s 2200.71691
+[36m(train_algo pid=134575)[0m wandb:    training_iteration 791
+[36m(train_algo pid=134575)[0m wandb: 
+[36m(train_algo pid=134575)[0m wandb: 🚀 View run train_algo_550c2_00031 at: https://wandb.ai/tpn/rllib2/runs/550c2_00031
+[36m(train_algo pid=134575)[0m wandb: Synced 5 W&B file(s), 0 media file(s), 0 artifact file(s) and 0 other file(s)
+[36m(train_algo pid=134575)[0m wandb: Find logs at: /home/dalmiapriyam/ray_results/train_algo_2023-11-20_14-24-36/train_algo_550c2_00002_2_map_size=15,pred_vision=3,train_batch_size=200_2023-11-20_14-24-36/wandb/run-20231120_170831-550c2_00031/logs
+[36m(train_algo pid=134575)[0m wandb: - Waiting for wandb.init()...
+[36m(train_algo pid=134575)[0m wandb: \ Waiting for wandb.init()...
+[36m(train_algo pid=134575)[0m wandb: Tracking run with wandb version 0.16.0
+[36m(train_algo pid=134575)[0m wandb: Run data is saved locally in /home/dalmiapriyam/ray_results/train_algo_2023-11-20_14-24-36/train_algo_550c2_00002_2_map_size=15,pred_vision=3,train_batch_size=200_2023-11-20_14-24-36/wandb/run-20231120_174536-550c2_00037
+[36m(train_algo pid=134575)[0m wandb: Run `wandb offline` to turn off syncing.
+[36m(train_algo pid=134575)[0m wandb: Syncing run train_algo_550c2_00037
+[36m(train_algo pid=134575)[0m wandb: ⭐️ View project at https://wandb.ai/tpn/rllib2
+[36m(train_algo pid=134575)[0m wandb: 🚀 View run at https://wandb.ai/tpn/rllib2/runs/550c2_00037
+[36m(train_algo pid=134577)[0m Install gputil for GPU system monitoring.
+[36m(train_algo pid=134577)[0m Already logged into W&B.
+[36m(train_algo pid=134577)[0m wandb: - 0.005 MB of 0.005 MB uploaded
+[36m(train_algo pid=134577)[0m wandb: \ 0.005 MB of 0.005 MB uploaded
+[36m(train_algo pid=134577)[0m wandb: | 0.005 MB of 0.017 MB uploaded
+[36m(train_algo pid=134577)[0m wandb: / 0.005 MB of 0.017 MB uploadedwandb: - 0.017 MB of 0.017 MB uploadedwandb:                                                                                
+[36m(train_algo pid=134577)[0m wandb: 
+[36m(train_algo pid=134577)[0m wandb: Run history:
+[36m(train_algo pid=134577)[0m wandb:      episode_len_mean ██▇▅▄▃▃▃▂▂▂▂▂▂▁▂▂▁▂▂▂▂▁▂▂▂▂▂▂▂▂▂▂▂▁▁▁▁▂▂
+[36m(train_algo pid=134577)[0m wandb:   episode_reward_mean ▁▃▆▇████████████████████████████████████
+[36m(train_algo pid=134577)[0m wandb:        episodes_total ▁▁▁▁▁▂▂▂▂▂▂▃▃▃▃▃▄▄▄▄▄▄▅▅▅▅▅▆▆▆▆▆▇▇▇▇▇███
+[36m(train_algo pid=134577)[0m wandb: num_env_steps_sampled ▁▁▁▂▂▂▂▂▂▃▃▃▃▃▃▄▄▄▄▄▅▅▅▅▅▅▆▆▆▆▆▇▇▇▇▇▇███
+[36m(train_algo pid=134577)[0m wandb: num_env_steps_trained ▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁
+[36m(train_algo pid=134577)[0m wandb:          time_total_s ▁▁▁▂▂▂▂▂▂▃▃▃▃▃▃▄▄▄▄▄▅▅▅▅▅▅▆▆▆▆▆▇▇▇▇▇▇███
+[36m(train_algo pid=134577)[0m wandb:    training_iteration ▁▁▁▂▂▂▂▂▂▃▃▃▃▃▃▄▄▄▄▄▅▅▅▅▅▅▆▆▆▆▆▇▇▇▇▇▇███
+[36m(train_algo pid=134577)[0m wandb: 
+[36m(train_algo pid=134577)[0m wandb: Run summary:
+[36m(train_algo pid=134577)[0m wandb:      episode_len_mean 43.75
+[36m(train_algo pid=134577)[0m wandb:   episode_reward_mean 5.98
+[36m(train_algo pid=134577)[0m wandb:        episodes_total 5002
+[36m(train_algo pid=134577)[0m wandb: num_env_steps_sampled 238000
+[36m(train_algo pid=134577)[0m wandb: num_env_steps_trained 0
+[36m(train_algo pid=134577)[0m wandb:          time_total_s 1331.78686
+[36m(train_algo pid=134577)[0m wandb:    training_iteration 238
+[36m(train_algo pid=134577)[0m wandb: 
+[36m(train_algo pid=134577)[0m wandb: 🚀 View run train_algo_550c2_00034 at: https://wandb.ai/tpn/rllib2/runs/550c2_00034
+[36m(train_algo pid=134577)[0m wandb: Synced 5 W&B file(s), 0 media file(s), 0 artifact file(s) and 0 other file(s)
+[36m(train_algo pid=134577)[0m wandb: Find logs at: /home/dalmiapriyam/ray_results/train_algo_2023-11-20_14-24-36/train_algo_550c2_00004_4_map_size=15,pred_vision=2,train_batch_size=500_2023-11-20_14-24-36/wandb/run-20231120_172803-550c2_00034/logs
+[36m(train_algo pid=134577)[0m wandb: - Waiting for wandb.init()...
+[36m(train_algo pid=134577)[0m wandb: \ Waiting for wandb.init()...
+[36m(train_algo pid=134577)[0m wandb: Tracking run with wandb version 0.16.0
+[36m(train_algo pid=134577)[0m wandb: Run data is saved locally in /home/dalmiapriyam/ray_results/train_algo_2023-11-20_14-24-36/train_algo_550c2_00004_4_map_size=15,pred_vision=2,train_batch_size=500_2023-11-20_14-24-36/wandb/run-20231120_175028-550c2_00038
+[36m(train_algo pid=134577)[0m wandb: Run `wandb offline` to turn off syncing.
+[36m(train_algo pid=134577)[0m wandb: Syncing run train_algo_550c2_00038
+[36m(train_algo pid=134577)[0m wandb: ⭐️ View project at https://wandb.ai/tpn/rllib2
+[36m(train_algo pid=134577)[0m wandb: 🚀 View run at https://wandb.ai/tpn/rllib2/runs/550c2_00038
+[36m(train_algo pid=134573)[0m Install gputil for GPU system monitoring.
+[36m(train_algo pid=134573)[0m Already logged into W&B.
+[36m(train_algo pid=134573)[0m wandb: - 0.005 MB of 0.005 MB uploaded
+[36m(train_algo pid=134573)[0m wandb: \ 0.005 MB of 0.005 MB uploadedwandb: | 0.017 MB of 0.017 MB uploadedwandb:                                                                                
+[36m(train_algo pid=134573)[0m wandb: 
+[36m(train_algo pid=134573)[0m wandb: Run history:
+[36m(train_algo pid=134573)[0m wandb:      episode_len_mean ██▆▅▄▄▂▁▂▁▂▁▂▁▁▂▂▁▂▂▃▂▃▃▃▄▄▃▄▂▄▂▃▃▃▄▃▂▃▃
+[36m(train_algo pid=134573)[0m wandb:   episode_reward_mean ▁▃▆▆▇██████████████▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇
+[36m(train_algo pid=134573)[0m wandb:        episodes_total ▁▁▁▁▂▂▂▂▂▃▃▃▃▃▃▄▄▄▄▄▅▅▅▅▅▆▆▆▆▆▆▇▇▇▇▇▇███
+[36m(train_algo pid=134573)[0m wandb: num_env_steps_sampled ▁▁▁▁▂▂▂▂▂▃▃▃▃▃▃▄▄▄▄▄▅▅▅▅▅▅▆▆▆▆▆▆▇▇▇▇▇███
+[36m(train_algo pid=134573)[0m wandb: num_env_steps_trained ▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁
+[36m(train_algo pid=134573)[0m wandb:          time_total_s ▁▁▁▁▂▂▂▂▂▃▃▃▃▃▃▄▄▄▄▄▅▅▅▅▅▅▆▆▆▆▆▆▇▇▇▇▇███
+[36m(train_algo pid=134573)[0m wandb:    training_iteration ▁▁▁▁▂▂▂▂▂▃▃▃▃▃▃▄▄▄▄▄▅▅▅▅▅▅▆▆▆▆▆▆▇▇▇▇▇███
+[36m(train_algo pid=134573)[0m wandb: 
+[36m(train_algo pid=134573)[0m wandb: Run summary:
+[36m(train_algo pid=134573)[0m wandb:      episode_len_mean 72.78
+[36m(train_algo pid=134573)[0m wandb:   episode_reward_mean 5.48
+[36m(train_algo pid=134573)[0m wandb:        episodes_total 5012
+[36m(train_algo pid=134573)[0m wandb: num_env_steps_sampled 359000
+[36m(train_algo pid=134573)[0m wandb: num_env_steps_trained 0
+[36m(train_algo pid=134573)[0m wandb:          time_total_s 1969.86583
+[36m(train_algo pid=134573)[0m wandb:    training_iteration 359
+[36m(train_algo pid=134573)[0m wandb: 
+[36m(train_algo pid=134573)[0m wandb: 🚀 View run train_algo_550c2_00032 at: https://wandb.ai/tpn/rllib2/runs/550c2_00032
+[36m(train_algo pid=134573)[0m wandb: Synced 5 W&B file(s), 0 media file(s), 0 artifact file(s) and 0 other file(s)
+[36m(train_algo pid=134573)[0m wandb: Find logs at: /home/dalmiapriyam/ray_results/train_algo_2023-11-20_14-24-36/train_algo_550c2_00000_0_map_size=15,pred_vision=2,train_batch_size=200_2023-11-20_14-24-36/wandb/run-20231120_172344-550c2_00032/logs
+[36m(train_algo pid=134573)[0m wandb: - Waiting for wandb.init()...
+[36m(train_algo pid=134573)[0m wandb: \ Waiting for wandb.init()...
+[36m(train_algo pid=134573)[0m wandb: Tracking run with wandb version 0.16.0
+[36m(train_algo pid=134573)[0m wandb: Run data is saved locally in /home/dalmiapriyam/ray_results/train_algo_2023-11-20_14-24-36/train_algo_550c2_00000_0_map_size=15,pred_vision=2,train_batch_size=200_2023-11-20_14-24-36/wandb/run-20231120_175649-550c2_00039
+[36m(train_algo pid=134573)[0m wandb: Run `wandb offline` to turn off syncing.
+[36m(train_algo pid=134573)[0m wandb: Syncing run train_algo_550c2_00039
+[36m(train_algo pid=134573)[0m wandb: ⭐️ View project at https://wandb.ai/tpn/rllib2
+[36m(train_algo pid=134573)[0m wandb: 🚀 View run at https://wandb.ai/tpn/rllib2/runs/550c2_00039
+[36m(train_algo pid=134574)[0m Install gputil for GPU system monitoring.
+[36m(train_algo pid=134574)[0m Already logged into W&B.
+[36m(train_algo pid=134574)[0m wandb: - 0.005 MB of 0.005 MB uploaded
+[36m(train_algo pid=134574)[0m wandb: \ 0.005 MB of 0.005 MB uploaded
+[36m(train_algo pid=134574)[0m wandb: | 0.017 MB of 0.017 MB uploaded
+[36m(train_algo pid=134574)[0m wandb: / 0.017 MB of 0.017 MB uploadedwandb: - 0.017 MB of 0.017 MB uploadedwandb:                                                                                
+[36m(train_algo pid=134574)[0m wandb: 
+[36m(train_algo pid=134574)[0m wandb: Run history:
+[36m(train_algo pid=134574)[0m wandb:      episode_len_mean ███▆▅▆▅▄▄▄▄▅▆▅▆▄▆▆▆▅▄▃▃▁▄▁▃▄▂▄▁▃▂▂▂▃▃▂▄▂
+[36m(train_algo pid=134574)[0m wandb:   episode_reward_mean ▁▃▅▆▇▇▆▇▇▇▇▇▇▇▆▇▆▆▇▆▇▇▇█▇█▇██▇█▇██▇▇██▇█
+[36m(train_algo pid=134574)[0m wandb:        episodes_total ▁▁▁▁▂▂▂▂▂▃▃▃▃▃▃▄▄▄▄▄▄▅▅▅▅▅▆▆▆▆▆▇▇▇▇▇▇███
+[36m(train_algo pid=134574)[0m wandb: num_env_steps_sampled ▁▁▁▁▂▂▂▂▂▃▃▃▃▃▃▄▄▄▄▄▅▅▅▅▅▅▆▆▆▆▆▇▇▇▇▇▇███
+[36m(train_algo pid=134574)[0m wandb: num_env_steps_trained ▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁
+[36m(train_algo pid=134574)[0m wandb:          time_total_s ▁▁▁▁▂▂▂▂▂▃▃▃▃▃▃▄▄▄▄▄▅▅▅▅▅▅▆▆▆▆▆▇▇▇▇▇▇███
+[36m(train_algo pid=134574)[0m wandb:    training_iteration ▁▁▁▁▂▂▂▂▂▃▃▃▃▃▃▄▄▄▄▄▅▅▅▅▅▅▆▆▆▆▆▇▇▇▇▇▇███
+[36m(train_algo pid=134574)[0m wandb: 
+[36m(train_algo pid=134574)[0m wandb: Run summary:
+[36m(train_algo pid=134574)[0m wandb:      episode_len_mean 90.69
+[36m(train_algo pid=134574)[0m wandb:   episode_reward_mean 4.94
+[36m(train_algo pid=134574)[0m wandb:        episodes_total 5006
+[36m(train_algo pid=134574)[0m wandb: num_env_steps_sampled 469000
+[36m(train_algo pid=134574)[0m wandb: num_env_steps_trained 0
+[36m(train_algo pid=134574)[0m wandb:          time_total_s 2544.79363
+[36m(train_algo pid=134574)[0m wandb:    training_iteration 469
+[36m(train_algo pid=134574)[0m wandb: 
+[36m(train_algo pid=134574)[0m wandb: 🚀 View run train_algo_550c2_00033 at: https://wandb.ai/tpn/rllib2/runs/550c2_00033
+[36m(train_algo pid=134574)[0m wandb: Synced 5 W&B file(s), 0 media file(s), 0 artifact file(s) and 0 other file(s)
+[36m(train_algo pid=134574)[0m wandb: Find logs at: /home/dalmiapriyam/ray_results/train_algo_2023-11-20_14-24-36/train_algo_550c2_00001_1_map_size=20,pred_vision=2,train_batch_size=200_2023-11-20_14-24-36/wandb/run-20231120_172505-550c2_00033/logs
+[36m(train_algo pid=134574)[0m wandb: - Waiting for wandb.init()...
+[36m(train_algo pid=134574)[0m wandb: \ Waiting for wandb.init()...
+[36m(train_algo pid=134574)[0m wandb: Tracking run with wandb version 0.16.0
+[36m(train_algo pid=134574)[0m wandb: Run data is saved locally in /home/dalmiapriyam/ray_results/train_algo_2023-11-20_14-24-36/train_algo_550c2_00001_1_map_size=20,pred_vision=2,train_batch_size=200_2023-11-20_14-24-36/wandb/run-20231120_180747-550c2_00040
+[36m(train_algo pid=134574)[0m wandb: Run `wandb offline` to turn off syncing.
+[36m(train_algo pid=134574)[0m wandb: Syncing run train_algo_550c2_00040
+[36m(train_algo pid=134574)[0m wandb: ⭐️ View project at https://wandb.ai/tpn/rllib2
+[36m(train_algo pid=134574)[0m wandb: 🚀 View run at https://wandb.ai/tpn/rllib2/runs/550c2_00040
+[36m(train_algo pid=134576)[0m Install gputil for GPU system monitoring.
+[36m(train_algo pid=134576)[0m Already logged into W&B.
+[36m(train_algo pid=134576)[0m wandb: - 0.005 MB of 0.005 MB uploaded
+[36m(train_algo pid=134576)[0m wandb: \ 0.005 MB of 0.005 MB uploaded
+[36m(train_algo pid=134576)[0m wandb: | 0.017 MB of 0.017 MB uploaded
+[36m(train_algo pid=134576)[0m wandb: / 0.017 MB of 0.017 MB uploadedwandb: - 0.017 MB of 0.017 MB uploadedwandb:                                                                                
+[36m(train_algo pid=134576)[0m wandb: 
+[36m(train_algo pid=134576)[0m wandb: Run history:
+[36m(train_algo pid=134576)[0m wandb:      episode_len_mean ██▇▇▆▆▅▄▃▃▁▂▂▂▃▂▂▁▂▁▂▂▂▃▁▂▁▂▂▁▃▂▂▂▃▂▂▃▂▂
+[36m(train_algo pid=134576)[0m wandb:   episode_reward_mean ▁▃▅▅▆▆▇▇██████████████████████▇█████████
+[36m(train_algo pid=134576)[0m wandb:        episodes_total ▁▁▁▁▂▂▂▂▂▂▂▃▃▃▃▃▄▄▄▄▄▅▅▅▅▅▆▆▆▆▆▆▇▇▇▇▇███
+[36m(train_algo pid=134576)[0m wandb: num_env_steps_sampled ▁▁▁▁▂▂▂▂▂▃▃▃▃▃▃▄▄▄▄▄▅▅▅▅▅▅▆▆▆▆▆▇▇▇▇▇▇███
+[36m(train_algo pid=134576)[0m wandb: num_env_steps_trained ▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁
+[36m(train_algo pid=134576)[0m wandb:          time_total_s ▁▁▁▁▂▂▂▂▂▃▃▃▃▃▃▄▄▄▄▄▅▅▅▅▅▅▆▆▆▆▆▇▇▇▇▇▇███
+[36m(train_algo pid=134576)[0m wandb:    training_iteration ▁▁▁▁▂▂▂▂▂▃▃▃▃▃▃▄▄▄▄▄▅▅▅▅▅▅▆▆▆▆▆▇▇▇▇▇▇███
+[36m(train_algo pid=134576)[0m wandb: 
+[36m(train_algo pid=134576)[0m wandb: Run summary:
+[36m(train_algo pid=134576)[0m wandb:      episode_len_mean 68.41
+[36m(train_algo pid=134576)[0m wandb:   episode_reward_mean 5.68
+[36m(train_algo pid=134576)[0m wandb:        episodes_total 5003
+[36m(train_algo pid=134576)[0m wandb: num_env_steps_sampled 363000
+[36m(train_algo pid=134576)[0m wandb: num_env_steps_trained 0
+[36m(train_algo pid=134576)[0m wandb:          time_total_s 2026.83751
+[36m(train_algo pid=134576)[0m wandb:    training_iteration 363
+[36m(train_algo pid=134576)[0m wandb: 
+[36m(train_algo pid=134576)[0m wandb: 🚀 View run train_algo_550c2_00035 at: https://wandb.ai/tpn/rllib2/runs/550c2_00035
+[36m(train_algo pid=134576)[0m wandb: Synced 5 W&B file(s), 0 media file(s), 0 artifact file(s) and 0 other file(s)
+[36m(train_algo pid=134576)[0m wandb: Find logs at: /home/dalmiapriyam/ray_results/train_algo_2023-11-20_14-24-36/train_algo_550c2_00003_3_map_size=20,pred_vision=3,train_batch_size=200_2023-11-20_14-24-36/wandb/run-20231120_173408-550c2_00035/logs
+[36m(train_algo pid=134576)[0m wandb: - Waiting for wandb.init()...
+[36m(train_algo pid=134576)[0m wandb: \ Waiting for wandb.init()...
+[36m(train_algo pid=134576)[0m wandb: Tracking run with wandb version 0.16.0
+[36m(train_algo pid=134576)[0m wandb: Run data is saved locally in /home/dalmiapriyam/ray_results/train_algo_2023-11-20_14-24-36/train_algo_550c2_00003_3_map_size=20,pred_vision=3,train_batch_size=200_2023-11-20_14-24-36/wandb/run-20231120_180810-550c2_00041
+[36m(train_algo pid=134576)[0m wandb: Run `wandb offline` to turn off syncing.
+[36m(train_algo pid=134576)[0m wandb: Syncing run train_algo_550c2_00041
+[36m(train_algo pid=134576)[0m wandb: ⭐️ View project at https://wandb.ai/tpn/rllib2
+[36m(train_algo pid=134576)[0m wandb: 🚀 View run at https://wandb.ai/tpn/rllib2/runs/550c2_00041
+[36m(train_algo pid=134577)[0m Install gputil for GPU system monitoring.
+[36m(train_algo pid=134577)[0m Already logged into W&B.
+[36m(train_algo pid=134577)[0m wandb: - 0.005 MB of 0.005 MB uploaded
+[36m(train_algo pid=134577)[0m wandb: \ 0.005 MB of 0.017 MB uploaded
+[36m(train_algo pid=134577)[0m wandb: | 0.005 MB of 0.017 MB uploadedwandb: / 0.017 MB of 0.017 MB uploadedwandb:                                                                                
+[36m(train_algo pid=134577)[0m wandb: 
+[36m(train_algo pid=134577)[0m wandb: Run history:
+[36m(train_algo pid=134577)[0m wandb:      episode_len_mean ████▇▆▆▆▆▅▅▆▆▄▂▄▃▃▃▂▂▂▁▁▁▂▂▃▂▂▁▂▂▁▂▂▂▃▂▁
+[36m(train_algo pid=134577)[0m wandb:   episode_reward_mean ▁▂▃▄▅▆▆▆▆▇▇▆▆▇██████████████████████████
+[36m(train_algo pid=134577)[0m wandb:        episodes_total ▁▁▁▁▁▂▂▂▂▂▂▂▂▃▃▃▃▃▄▄▄▄▄▅▅▅▅▅▆▆▆▆▆▇▇▇▇███
+[36m(train_algo pid=134577)[0m wandb: num_env_steps_sampled ▁▁▁▂▂▂▂▂▂▃▃▃▃▃▄▄▄▄▄▄▅▅▅▅▅▅▆▆▆▆▆▇▇▇▇▇▇███
+[36m(train_algo pid=134577)[0m wandb: num_env_steps_trained ▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁
+[36m(train_algo pid=134577)[0m wandb:          time_total_s ▁▁▁▂▂▂▂▂▂▃▃▃▃▃▄▄▄▄▄▄▅▅▅▅▅▅▆▆▆▆▆▇▇▇▇▇▇███
+[36m(train_algo pid=134577)[0m wandb:    training_iteration ▁▁▁▂▂▂▂▂▂▃▃▃▃▃▄▄▄▄▄▄▅▅▅▅▅▅▆▆▆▆▆▇▇▇▇▇▇███
+[36m(train_algo pid=134577)[0m wandb: 
+[36m(train_algo pid=134577)[0m wandb: Run summary:
+[36m(train_algo pid=134577)[0m wandb:      episode_len_mean 46.66
+[36m(train_algo pid=134577)[0m wandb:   episode_reward_mean 5.97
+[36m(train_algo pid=134577)[0m wandb:        episodes_total 5003
+[36m(train_algo pid=134577)[0m wandb: num_env_steps_sampled 297600
+[36m(train_algo pid=134577)[0m wandb: num_env_steps_trained 0
+[36m(train_algo pid=134577)[0m wandb:          time_total_s 1690.06131
+[36m(train_algo pid=134577)[0m wandb:    training_iteration 1488
+[36m(train_algo pid=134577)[0m wandb: 
+[36m(train_algo pid=134577)[0m wandb: 🚀 View run train_algo_550c2_00038 at: https://wandb.ai/tpn/rllib2/runs/550c2_00038
+[36m(train_algo pid=134577)[0m wandb: Synced 5 W&B file(s), 0 media file(s), 0 artifact file(s) and 0 other file(s)
+[36m(train_algo pid=134577)[0m wandb: Find logs at: /home/dalmiapriyam/ray_results/train_algo_2023-11-20_14-24-36/train_algo_550c2_00004_4_map_size=15,pred_vision=2,train_batch_size=500_2023-11-20_14-24-36/wandb/run-20231120_175028-550c2_00038/logs
+[36m(train_algo pid=134577)[0m wandb: - Waiting for wandb.init()...
+[36m(train_algo pid=134577)[0m wandb: \ Waiting for wandb.init()...
+[36m(train_algo pid=134577)[0m wandb: | Waiting for wandb.init()...
+[36m(train_algo pid=134577)[0m wandb: Tracking run with wandb version 0.16.0
+[36m(train_algo pid=134577)[0m wandb: Run data is saved locally in /home/dalmiapriyam/ray_results/train_algo_2023-11-20_14-24-36/train_algo_550c2_00004_4_map_size=15,pred_vision=2,train_batch_size=500_2023-11-20_14-24-36/wandb/run-20231120_181917-550c2_00042
+[36m(train_algo pid=134577)[0m wandb: Run `wandb offline` to turn off syncing.
+[36m(train_algo pid=134577)[0m wandb: Syncing run train_algo_550c2_00042
+[36m(train_algo pid=134577)[0m wandb: ⭐️ View project at https://wandb.ai/tpn/rllib2
+[36m(train_algo pid=134577)[0m wandb: 🚀 View run at https://wandb.ai/tpn/rllib2/runs/550c2_00042
+[36m(train_algo pid=134578)[0m Install gputil for GPU system monitoring.
+[36m(train_algo pid=134578)[0m Already logged into W&B.
+[36m(train_algo pid=134578)[0m wandb: - 0.005 MB of 0.005 MB uploaded
+[36m(train_algo pid=134578)[0m wandb: \ 0.005 MB of 0.005 MB uploaded
+[36m(train_algo pid=134578)[0m wandb: | 0.005 MB of 0.005 MB uploadedwandb: / 0.017 MB of 0.017 MB uploadedwandb:                                                                                
+[36m(train_algo pid=134578)[0m wandb: 
+[36m(train_algo pid=134578)[0m wandb: Run history:
+[36m(train_algo pid=134578)[0m wandb:      episode_len_mean ███▇▆▅▅▂▂▄▅▄▃▄▄▃▄▄▅▄▂▄▆▄▄▃▂▂▂▄▂▂▅▄▄▂▃▃▁▅
+[36m(train_algo pid=134578)[0m wandb:   episode_reward_mean ▁▁▄▆▇▇▇██▇▇▇▇▇▇█▇▇▇▇█▇▆▇▇▇▇██▇██▆▆▇█▇██▅
+[36m(train_algo pid=134578)[0m wandb:        episodes_total ▁▁▁▁▂▂▂▂▂▂▃▃▃▃▃▄▄▄▄▄▄▅▅▅▅▅▆▆▆▆▆▇▇▇▇▇▇███
+[36m(train_algo pid=134578)[0m wandb: num_env_steps_sampled ▁▁▁▁▂▂▂▂▂▃▃▃▃▃▃▄▄▄▄▄▅▅▅▅▅▅▆▆▆▆▆▇▇▇▇▇▇███
+[36m(train_algo pid=134578)[0m wandb: num_env_steps_trained ▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁
+[36m(train_algo pid=134578)[0m wandb:          time_total_s ▁▁▁▁▂▂▂▂▂▃▃▃▃▃▃▄▄▄▄▄▅▅▅▅▅▅▆▆▆▆▆▇▇▇▇▇▇███
+[36m(train_algo pid=134578)[0m wandb:    training_iteration ▁▁▁▁▂▂▂▂▂▃▃▃▃▃▃▄▄▄▄▄▅▅▅▅▅▅▆▆▆▆▆▇▇▇▇▇▇███
+[36m(train_algo pid=134578)[0m wandb: 
+[36m(train_algo pid=134578)[0m wandb: Run summary:
+[36m(train_algo pid=134578)[0m wandb:      episode_len_mean 93.88
+[36m(train_algo pid=134578)[0m wandb:   episode_reward_mean 3.84
+[36m(train_algo pid=134578)[0m wandb:        episodes_total 5002
+[36m(train_algo pid=134578)[0m wandb: num_env_steps_sampled 413000
+[36m(train_algo pid=134578)[0m wandb: num_env_steps_trained 0
+[36m(train_algo pid=134578)[0m wandb:          time_total_s 2294.9413
+[36m(train_algo pid=134578)[0m wandb:    training_iteration 2065
+[36m(train_algo pid=134578)[0m wandb: 
+[36m(train_algo pid=134578)[0m wandb: 🚀 View run train_algo_550c2_00036 at: https://wandb.ai/tpn/rllib2/runs/550c2_00036
+[36m(train_algo pid=134578)[0m wandb: Synced 5 W&B file(s), 0 media file(s), 0 artifact file(s) and 0 other file(s)
+[36m(train_algo pid=134578)[0m wandb: Find logs at: /home/dalmiapriyam/ray_results/train_algo_2023-11-20_14-24-36/train_algo_550c2_00005_5_map_size=20,pred_vision=2,train_batch_size=500_2023-11-20_14-24-36/wandb/run-20231120_174022-550c2_00036/logs
+[36m(train_algo pid=134578)[0m wandb: - Waiting for wandb.init()...
+[36m(train_algo pid=134578)[0m wandb: \ Waiting for wandb.init()...
+[36m(train_algo pid=134578)[0m wandb: Tracking run with wandb version 0.16.0
+[36m(train_algo pid=134578)[0m wandb: Run data is saved locally in /home/dalmiapriyam/ray_results/train_algo_2023-11-20_14-24-36/train_algo_550c2_00005_5_map_size=20,pred_vision=2,train_batch_size=500_2023-11-20_14-24-36/wandb/run-20231120_181928-550c2_00043
+[36m(train_algo pid=134578)[0m wandb: Run `wandb offline` to turn off syncing.
+[36m(train_algo pid=134578)[0m wandb: Syncing run train_algo_550c2_00043
+[36m(train_algo pid=134578)[0m wandb: ⭐️ View project at https://wandb.ai/tpn/rllib2
+[36m(train_algo pid=134578)[0m wandb: 🚀 View run at https://wandb.ai/tpn/rllib2/runs/550c2_00043
+[36m(train_algo pid=134575)[0m Install gputil for GPU system monitoring.
+[36m(train_algo pid=134575)[0m Already logged into W&B.
+[36m(train_algo pid=134575)[0m wandb: - 0.005 MB of 0.005 MB uploaded
+[36m(train_algo pid=134575)[0m wandb: \ 0.005 MB of 0.017 MB uploaded
+[36m(train_algo pid=134575)[0m wandb: | 0.005 MB of 0.017 MB uploadedwandb: / 0.017 MB of 0.017 MB uploadedwandb:                                                                                
+[36m(train_algo pid=134575)[0m wandb: 
+[36m(train_algo pid=134575)[0m wandb: Run history:
+[36m(train_algo pid=134575)[0m wandb:      episode_len_mean █████▅▆████▇▆▆█▆▆██▇█▇▇▁▄▂▃▆▆█▇█▇▇▆▆▃▆█▇
+[36m(train_algo pid=134575)[0m wandb:   episode_reward_mean ▁▁▁▂▃▆▇▄▄▄▄▆▅▄▄▄▅▃▄▄▄▄▅█▇██▆▄▃▅▅▅▆▆▆▇▆▅▆
+[36m(train_algo pid=134575)[0m wandb:        episodes_total ▁▁▁▁▂▂▂▂▂▃▃▃▃▃▃▄▄▄▄▄▄▅▅▅▅▅▆▆▆▆▆▇▇▇▇▇▇███
+[36m(train_algo pid=134575)[0m wandb: num_env_steps_sampled ▁▁▁▁▂▂▂▂▂▃▃▃▃▃▃▄▄▄▄▄▅▅▅▅▅▅▆▆▆▆▆▇▇▇▇▇▇███
+[36m(train_algo pid=134575)[0m wandb: num_env_steps_trained ▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁
+[36m(train_algo pid=134575)[0m wandb:          time_total_s ▁▁▁▁▂▂▂▂▂▃▃▃▃▃▃▄▄▄▄▄▄▅▅▅▅▅▆▆▆▆▆▇▇▇▇▇▇███
+[36m(train_algo pid=134575)[0m wandb:    training_iteration ▁▁▁▁▂▂▂▂▂▃▃▃▃▃▃▄▄▄▄▄▅▅▅▅▅▅▆▆▆▆▆▇▇▇▇▇▇███
+[36m(train_algo pid=134575)[0m wandb: 
+[36m(train_algo pid=134575)[0m wandb: Run summary:
+[36m(train_algo pid=134575)[0m wandb:      episode_len_mean 100.4
+[36m(train_algo pid=134575)[0m wandb:   episode_reward_mean 3.29
+[36m(train_algo pid=134575)[0m wandb:        episodes_total 5001
+[36m(train_algo pid=134575)[0m wandb: num_env_steps_sampled 496600
+[36m(train_algo pid=134575)[0m wandb: num_env_steps_trained 0
+[36m(train_algo pid=134575)[0m wandb:          time_total_s 2729.62243
+[36m(train_algo pid=134575)[0m wandb:    training_iteration 2483
+[36m(train_algo pid=134575)[0m wandb: 
+[36m(train_algo pid=134575)[0m wandb: 🚀 View run train_algo_550c2_00037 at: https://wandb.ai/tpn/rllib2/runs/550c2_00037
+[36m(train_algo pid=134575)[0m wandb: Synced 5 W&B file(s), 0 media file(s), 0 artifact file(s) and 0 other file(s)
+[36m(train_algo pid=134575)[0m wandb: Find logs at: /home/dalmiapriyam/ray_results/train_algo_2023-11-20_14-24-36/train_algo_550c2_00002_2_map_size=15,pred_vision=3,train_batch_size=200_2023-11-20_14-24-36/wandb/run-20231120_174536-550c2_00037/logs
+[36m(train_algo pid=134575)[0m wandb: - Waiting for wandb.init()...
+[36m(train_algo pid=134575)[0m wandb: \ Waiting for wandb.init()...
+[36m(train_algo pid=134575)[0m wandb: Tracking run with wandb version 0.16.0
+[36m(train_algo pid=134575)[0m wandb: Run data is saved locally in /home/dalmiapriyam/ray_results/train_algo_2023-11-20_14-24-36/train_algo_550c2_00002_2_map_size=15,pred_vision=3,train_batch_size=200_2023-11-20_14-24-36/wandb/run-20231120_183208-550c2_00044
+[36m(train_algo pid=134575)[0m wandb: Run `wandb offline` to turn off syncing.
+[36m(train_algo pid=134575)[0m wandb: Syncing run train_algo_550c2_00044
+[36m(train_algo pid=134575)[0m wandb: ⭐️ View project at https://wandb.ai/tpn/rllib2
+[36m(train_algo pid=134575)[0m wandb: 🚀 View run at https://wandb.ai/tpn/rllib2/runs/550c2_00044
+[36m(train_algo pid=134574)[0m Install gputil for GPU system monitoring.
+[36m(train_algo pid=134574)[0m Already logged into W&B.
+[36m(train_algo pid=134574)[0m wandb: - 0.005 MB of 0.005 MB uploaded
+[36m(train_algo pid=134574)[0m wandb: \ 0.005 MB of 0.005 MB uploaded
+[36m(train_algo pid=134574)[0m wandb: | 0.017 MB of 0.017 MB uploaded
+[36m(train_algo pid=134574)[0m wandb: / 0.017 MB of 0.017 MB uploadedwandb: - 0.017 MB of 0.017 MB uploadedwandb:                                                                                
+[36m(train_algo pid=134574)[0m wandb: 
+[36m(train_algo pid=134574)[0m wandb: Run history:
+[36m(train_algo pid=134574)[0m wandb:      episode_len_mean ██▇▆▄▂▃▁▂▂▃▃▂▃▃▃▄▃▄▄▃▂▃▂▂▂▂▂▃▃▂▁▂▂▂▂▂▂▃▅
+[36m(train_algo pid=134574)[0m wandb:   episode_reward_mean ▁▃▄▆███████████████▇████████▇██████████▇
+[36m(train_algo pid=134574)[0m wandb:        episodes_total ▁▁▁▁▂▂▂▂▂▂▃▃▃▃▃▄▄▄▄▄▄▅▅▅▅▅▆▆▆▆▆▆▇▇▇▇▇███
+[36m(train_algo pid=134574)[0m wandb: num_env_steps_sampled ▁▁▁▂▂▂▂▂▂▃▃▃▃▃▃▄▄▄▄▄▅▅▅▅▅▅▆▆▆▆▆▇▇▇▇▇▇███
+[36m(train_algo pid=134574)[0m wandb: num_env_steps_trained ▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁
+[36m(train_algo pid=134574)[0m wandb:          time_total_s ▁▁▁▂▂▂▂▂▂▃▃▃▃▃▃▄▄▄▄▄▅▅▅▅▅▅▆▆▆▆▆▇▇▇▇▇▇███
+[36m(train_algo pid=134574)[0m wandb:    training_iteration ▁▁▁▂▂▂▂▂▂▃▃▃▃▃▃▄▄▄▄▄▅▅▅▅▅▅▆▆▆▆▆▇▇▇▇▇▇███
+[36m(train_algo pid=134574)[0m wandb: 
+[36m(train_algo pid=134574)[0m wandb: Run summary:
+[36m(train_algo pid=134574)[0m wandb:      episode_len_mean 76.0
+[36m(train_algo pid=134574)[0m wandb:   episode_reward_mean 5.57
+[36m(train_algo pid=134574)[0m wandb:        episodes_total 5007
+[36m(train_algo pid=134574)[0m wandb: num_env_steps_sampled 326000
+[36m(train_algo pid=134574)[0m wandb: num_env_steps_trained 0
+[36m(train_algo pid=134574)[0m wandb:          time_total_s 1782.50873
+[36m(train_algo pid=134574)[0m wandb:    training_iteration 652
+[36m(train_algo pid=134574)[0m wandb: 
+[36m(train_algo pid=134574)[0m wandb: 🚀 View run train_algo_550c2_00040 at: https://wandb.ai/tpn/rllib2/runs/550c2_00040
+[36m(train_algo pid=134574)[0m wandb: Synced 5 W&B file(s), 0 media file(s), 0 artifact file(s) and 0 other file(s)
+[36m(train_algo pid=134574)[0m wandb: Find logs at: /home/dalmiapriyam/ray_results/train_algo_2023-11-20_14-24-36/train_algo_550c2_00001_1_map_size=20,pred_vision=2,train_batch_size=200_2023-11-20_14-24-36/wandb/run-20231120_180747-550c2_00040/logs
+[36m(train_algo pid=134574)[0m wandb: - Waiting for wandb.init()...
+[36m(train_algo pid=134574)[0m wandb: \ Waiting for wandb.init()...
+[36m(train_algo pid=134574)[0m wandb: Tracking run with wandb version 0.16.0
+[36m(train_algo pid=134574)[0m wandb: Run data is saved locally in /home/dalmiapriyam/ray_results/train_algo_2023-11-20_14-24-36/train_algo_550c2_00001_1_map_size=20,pred_vision=2,train_batch_size=200_2023-11-20_14-24-36/wandb/run-20231120_183750-550c2_00045
+[36m(train_algo pid=134574)[0m wandb: Run `wandb offline` to turn off syncing.
+[36m(train_algo pid=134574)[0m wandb: Syncing run train_algo_550c2_00045
+[36m(train_algo pid=134574)[0m wandb: ⭐️ View project at https://wandb.ai/tpn/rllib2
+[36m(train_algo pid=134574)[0m wandb: 🚀 View run at https://wandb.ai/tpn/rllib2/runs/550c2_00045
+[36m(train_algo pid=134573)[0m Install gputil for GPU system monitoring.
+[36m(train_algo pid=134573)[0m Already logged into W&B.
+[36m(train_algo pid=134573)[0m wandb: - 0.005 MB of 0.005 MB uploaded
+[36m(train_algo pid=134573)[0m wandb: \ 0.005 MB of 0.005 MB uploaded
+[36m(train_algo pid=134573)[0m wandb: | 0.005 MB of 0.005 MB uploadedwandb: / 0.017 MB of 0.017 MB uploadedwandb:                                                                                
+[36m(train_algo pid=134573)[0m wandb: 
+[36m(train_algo pid=134573)[0m wandb: Run history:
+[36m(train_algo pid=134573)[0m wandb:      episode_len_mean ███▇▇▆▅▇▆▇▇▅▅▆▃▅▃▆▃▄▅▂▃▅▆▂▃▅▇█▅▆▅▄▃▁▁▃▃▃
+[36m(train_algo pid=134573)[0m wandb:   episode_reward_mean ▁▂▃▅▅▆▆▅▅▅▅▆▆▆▇▆▇▆▆▇▆▇▇▆▆▇▇▆▄▃▆▆▇▇███▇█▇
+[36m(train_algo pid=134573)[0m wandb:        episodes_total ▁▁▁▁▂▂▂▂▂▂▃▃▃▃▃▄▄▄▄▄▄▅▅▅▅▅▆▆▆▆▆▆▇▇▇▇▇███
+[36m(train_algo pid=134573)[0m wandb: num_env_steps_sampled ▁▁▁▂▂▂▂▂▂▃▃▃▃▃▃▄▄▄▄▄▅▅▅▅▅▅▆▆▆▆▆▇▇▇▇▇▇███
+[36m(train_algo pid=134573)[0m wandb: num_env_steps_trained ▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁
+[36m(train_algo pid=134573)[0m wandb:          time_total_s ▁▁▁▂▂▂▂▂▂▃▃▃▃▃▃▄▄▄▄▄▄▅▅▅▅▅▆▆▆▆▆▇▇▇▇▇▇███
+[36m(train_algo pid=134573)[0m wandb:    training_iteration ▁▁▁▂▂▂▂▂▂▃▃▃▃▃▃▄▄▄▄▄▅▅▅▅▅▅▆▆▆▆▆▇▇▇▇▇▇███
+[36m(train_algo pid=134573)[0m wandb: 
+[36m(train_algo pid=134573)[0m wandb: Run summary:
+[36m(train_algo pid=134573)[0m wandb:      episode_len_mean 86.2
+[36m(train_algo pid=134573)[0m wandb:   episode_reward_mean 5.02
+[36m(train_algo pid=134573)[0m wandb:        episodes_total 5002
+[36m(train_algo pid=134573)[0m wandb: num_env_steps_sampled 443800
+[36m(train_algo pid=134573)[0m wandb: num_env_steps_trained 0
+[36m(train_algo pid=134573)[0m wandb:          time_total_s 2533.36579
+[36m(train_algo pid=134573)[0m wandb:    training_iteration 2219
+[36m(train_algo pid=134573)[0m wandb: 
+[36m(train_algo pid=134573)[0m wandb: 🚀 View run train_algo_550c2_00039 at: https://wandb.ai/tpn/rllib2/runs/550c2_00039
+[36m(train_algo pid=134573)[0m wandb: Synced 5 W&B file(s), 0 media file(s), 0 artifact file(s) and 0 other file(s)
+[36m(train_algo pid=134573)[0m wandb: Find logs at: /home/dalmiapriyam/ray_results/train_algo_2023-11-20_14-24-36/train_algo_550c2_00000_0_map_size=15,pred_vision=2,train_batch_size=200_2023-11-20_14-24-36/wandb/run-20231120_175649-550c2_00039/logs
+[36m(train_algo pid=134573)[0m wandb: - Waiting for wandb.init()...
+[36m(train_algo pid=134573)[0m wandb: \ Waiting for wandb.init()...
+[36m(train_algo pid=134573)[0m wandb: Tracking run with wandb version 0.16.0
+[36m(train_algo pid=134573)[0m wandb: Run data is saved locally in /home/dalmiapriyam/ray_results/train_algo_2023-11-20_14-24-36/train_algo_550c2_00000_0_map_size=15,pred_vision=2,train_batch_size=200_2023-11-20_14-24-36/wandb/run-20231120_183958-550c2_00046
+[36m(train_algo pid=134573)[0m wandb: Run `wandb offline` to turn off syncing.
+[36m(train_algo pid=134573)[0m wandb: Syncing run train_algo_550c2_00046
+[36m(train_algo pid=134573)[0m wandb: ⭐️ View project at https://wandb.ai/tpn/rllib2
+[36m(train_algo pid=134573)[0m wandb: 🚀 View run at https://wandb.ai/tpn/rllib2/runs/550c2_00046
+[36m(train_algo pid=134577)[0m Install gputil for GPU system monitoring.
+[36m(train_algo pid=134577)[0m Already logged into W&B.
+[36m(train_algo pid=134577)[0m wandb: - 0.005 MB of 0.005 MB uploaded
+[36m(train_algo pid=134577)[0m wandb: \ 0.005 MB of 0.017 MB uploaded
+[36m(train_algo pid=134577)[0m wandb: | 0.005 MB of 0.017 MB uploadedwandb: / 0.017 MB of 0.017 MB uploadedwandb:                                                                                
+[36m(train_algo pid=134577)[0m wandb: 
+[36m(train_algo pid=134577)[0m wandb: Run history:
+[36m(train_algo pid=134577)[0m wandb:      episode_len_mean ██▆▆▄▃▃▃▂▂▃▂▂▂▂▁▁▁▂▁▁▁▁▁▁▂▂▂▃▃▂▂▃▂▂▂▂▂▂▂
+[36m(train_algo pid=134577)[0m wandb:   episode_reward_mean ▁▂▆▇█████████████████████▇██▇▇▇█▇▇▇███▇█
+[36m(train_algo pid=134577)[0m wandb:        episodes_total ▁▁▁▁▁▂▂▂▂▂▂▃▃▃▃▃▄▄▄▄▄▅▅▅▅▆▆▆▆▆▆▆▇▇▇▇▇███
+[36m(train_algo pid=134577)[0m wandb: num_env_steps_sampled ▁▁▁▁▂▂▂▂▂▃▃▃▃▃▃▄▄▄▄▄▅▅▅▅▅▅▆▆▆▆▆▆▇▇▇▇▇███
+[36m(train_algo pid=134577)[0m wandb: num_env_steps_trained ▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁
+[36m(train_algo pid=134577)[0m wandb:          time_total_s ▁▁▁▁▂▂▂▂▂▃▃▃▃▃▃▄▄▄▄▄▄▅▅▅▅▅▆▆▆▆▆▆▇▇▇▇▇███
+[36m(train_algo pid=134577)[0m wandb:    training_iteration ▁▁▁▁▂▂▂▂▂▃▃▃▃▃▃▄▄▄▄▄▅▅▅▅▅▅▆▆▆▆▆▆▇▇▇▇▇███
+[36m(train_algo pid=134577)[0m wandb: 
+[36m(train_algo pid=134577)[0m wandb: Run summary:
+[36m(train_algo pid=134577)[0m wandb:      episode_len_mean 47.87
+[36m(train_algo pid=134577)[0m wandb:   episode_reward_mean 5.86
+[36m(train_algo pid=134577)[0m wandb:        episodes_total 5005
+[36m(train_algo pid=134577)[0m wandb: num_env_steps_sampled 263500
+[36m(train_algo pid=134577)[0m wandb: num_env_steps_trained 0
+[36m(train_algo pid=134577)[0m wandb:          time_total_s 1485.51987
+[36m(train_algo pid=134577)[0m wandb:    training_iteration 527
+[36m(train_algo pid=134577)[0m wandb: 
+[36m(train_algo pid=134577)[0m wandb: 🚀 View run train_algo_550c2_00042 at: https://wandb.ai/tpn/rllib2/runs/550c2_00042
+[36m(train_algo pid=134577)[0m wandb: Synced 5 W&B file(s), 0 media file(s), 0 artifact file(s) and 0 other file(s)
+[36m(train_algo pid=134577)[0m wandb: Find logs at: /home/dalmiapriyam/ray_results/train_algo_2023-11-20_14-24-36/train_algo_550c2_00004_4_map_size=15,pred_vision=2,train_batch_size=500_2023-11-20_14-24-36/wandb/run-20231120_181917-550c2_00042/logs
+[36m(train_algo pid=134577)[0m wandb: - Waiting for wandb.init()...
+[36m(train_algo pid=134577)[0m wandb: \ Waiting for wandb.init()...
+[36m(train_algo pid=134577)[0m wandb: Tracking run with wandb version 0.16.0
+[36m(train_algo pid=134577)[0m wandb: Run data is saved locally in /home/dalmiapriyam/ray_results/train_algo_2023-11-20_14-24-36/train_algo_550c2_00004_4_map_size=15,pred_vision=2,train_batch_size=500_2023-11-20_14-24-36/wandb/run-20231120_184422-550c2_00047
+[36m(train_algo pid=134577)[0m wandb: Run `wandb offline` to turn off syncing.
+[36m(train_algo pid=134577)[0m wandb: Syncing run train_algo_550c2_00047
+[36m(train_algo pid=134577)[0m wandb: ⭐️ View project at https://wandb.ai/tpn/rllib2
+[36m(train_algo pid=134577)[0m wandb: 🚀 View run at https://wandb.ai/tpn/rllib2/runs/550c2_00047
+[36m(train_algo pid=134576)[0m Install gputil for GPU system monitoring.
+[36m(train_algo pid=134576)[0m Already logged into W&B.
+[36m(train_algo pid=134576)[0m wandb: - 0.005 MB of 0.005 MB uploaded
+[36m(train_algo pid=134576)[0m wandb: \ 0.005 MB of 0.005 MB uploaded
+[36m(train_algo pid=134576)[0m wandb: | 0.005 MB of 0.005 MB uploadedwandb: / 0.017 MB of 0.017 MB uploadedwandb:                                                                                
+[36m(train_algo pid=134576)[0m wandb: 
+[36m(train_algo pid=134576)[0m wandb: Run history:
+[36m(train_algo pid=134576)[0m wandb:      episode_len_mean ██▇▆▅▅▄▃▃▁▄▄▂▃▃▃▄▃▅▄▄▃▄▂▃▃▂▃▅▄▅▆▅▅▄▆▇▇▆▆
+[36m(train_algo pid=134576)[0m wandb:   episode_reward_mean ▁▂▃▆▆▆▇▇██▇███▇█▇▇▆▇▇█████▇▇▇▇▇▆▆▇▇▆▇▆▆▆
+[36m(train_algo pid=134576)[0m wandb:        episodes_total ▁▁▁▂▂▂▂▂▂▃▃▃▃▃▄▄▄▄▄▄▅▅▅▅▅▅▆▆▆▆▆▇▇▇▇▇▇███
+[36m(train_algo pid=134576)[0m wandb: num_env_steps_sampled ▁▁▁▂▂▂▂▂▂▃▃▃▃▃▃▄▄▄▄▄▅▅▅▅▅▅▆▆▆▆▆▇▇▇▇▇▇███
+[36m(train_algo pid=134576)[0m wandb: num_env_steps_trained ▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁
+[36m(train_algo pid=134576)[0m wandb:          time_total_s ▁▁▁▂▂▂▂▂▂▃▃▃▃▃▃▄▄▄▄▄▅▅▅▅▅▅▆▆▆▆▆▇▇▇▇▇▇███
+[36m(train_algo pid=134576)[0m wandb:    training_iteration ▁▁▁▂▂▂▂▂▂▃▃▃▃▃▃▄▄▄▄▄▅▅▅▅▅▅▆▆▆▆▆▇▇▇▇▇▇███
+[36m(train_algo pid=134576)[0m wandb: 
+[36m(train_algo pid=134576)[0m wandb: Run summary:
+[36m(train_algo pid=134576)[0m wandb:      episode_len_mean 97.47
+[36m(train_algo pid=134576)[0m wandb:   episode_reward_mean 3.86
+[36m(train_algo pid=134576)[0m wandb:        episodes_total 5005
+[36m(train_algo pid=134576)[0m wandb: num_env_steps_sampled 478500
+[36m(train_algo pid=134576)[0m wandb: num_env_steps_trained 0
+[36m(train_algo pid=134576)[0m wandb:          time_total_s 2628.6456
+[36m(train_algo pid=134576)[0m wandb:    training_iteration 957
+[36m(train_algo pid=134576)[0m wandb: 
+[36m(train_algo pid=134576)[0m wandb: 🚀 View run train_algo_550c2_00041 at: https://wandb.ai/tpn/rllib2/runs/550c2_00041
+[36m(train_algo pid=134576)[0m wandb: Synced 5 W&B file(s), 0 media file(s), 0 artifact file(s) and 0 other file(s)
+[36m(train_algo pid=134576)[0m wandb: Find logs at: /home/dalmiapriyam/ray_results/train_algo_2023-11-20_14-24-36/train_algo_550c2_00003_3_map_size=20,pred_vision=3,train_batch_size=200_2023-11-20_14-24-36/wandb/run-20231120_180810-550c2_00041/logs
+[36m(train_algo pid=134576)[0m wandb: - Waiting for wandb.init()...
+[36m(train_algo pid=134576)[0m wandb: \ Waiting for wandb.init()...
+[36m(train_algo pid=134576)[0m wandb: Tracking run with wandb version 0.16.0
+[36m(train_algo pid=134576)[0m wandb: Run data is saved locally in /home/dalmiapriyam/ray_results/train_algo_2023-11-20_14-24-36/train_algo_550c2_00003_3_map_size=20,pred_vision=3,train_batch_size=200_2023-11-20_14-24-36/wandb/run-20231120_185227-550c2_00048
+[36m(train_algo pid=134576)[0m wandb: Run `wandb offline` to turn off syncing.
+[36m(train_algo pid=134576)[0m wandb: Syncing run train_algo_550c2_00048
+[36m(train_algo pid=134576)[0m wandb: ⭐️ View project at https://wandb.ai/tpn/rllib2
+[36m(train_algo pid=134576)[0m wandb: 🚀 View run at https://wandb.ai/tpn/rllib2/runs/550c2_00048
+[36m(train_algo pid=134578)[0m Install gputil for GPU system monitoring.
+[36m(train_algo pid=134578)[0m Already logged into W&B.
+[36m(train_algo pid=134578)[0m wandb: - 0.005 MB of 0.005 MB uploaded
+[36m(train_algo pid=134578)[0m wandb: \ 0.005 MB of 0.005 MB uploaded
+[36m(train_algo pid=134578)[0m wandb: | 0.005 MB of 0.017 MB uploadedwandb: / 0.005 MB of 0.017 MB uploadedwandb: - 0.017 MB of 0.017 MB uploadedwandb:                                                                                
+[36m(train_algo pid=134578)[0m wandb: 
+[36m(train_algo pid=134578)[0m wandb: Run history:
+[36m(train_algo pid=134578)[0m wandb:      episode_len_mean ██▇▇▅▅▄▃▅▄▃▄▂▂▃▃▄▅▃▃▅▄▂▃▂▃▂▂▃▄▄▄▃▂▃▁▂▁▁▂
+[36m(train_algo pid=134578)[0m wandb:   episode_reward_mean ▁▂▅▆▇▇▇█▇█████▇▇▇▇█▇▇▇███████▇▇▇██▇█▇██▇
+[36m(train_algo pid=134578)[0m wandb:        episodes_total ▁▁▁▁▂▂▂▂▂▂▃▃▃▃▃▄▄▄▄▄▄▅▅▅▅▅▆▆▆▆▆▆▇▇▇▇▇███
+[36m(train_algo pid=134578)[0m wandb: num_env_steps_sampled ▁▁▁▁▂▂▂▂▂▃▃▃▃▃▃▄▄▄▄▄▅▅▅▅▅▅▆▆▆▆▆▇▇▇▇▇▇███
+[36m(train_algo pid=134578)[0m wandb: num_env_steps_trained ▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁
+[36m(train_algo pid=134578)[0m wandb:          time_total_s ▁▁▁▁▂▂▂▂▂▃▃▃▃▃▃▄▄▄▄▄▅▅▅▅▅▅▆▆▆▆▆▇▇▇▇▇▇███
+[36m(train_algo pid=134578)[0m wandb:    training_iteration ▁▁▁▁▂▂▂▂▂▃▃▃▃▃▃▄▄▄▄▄▅▅▅▅▅▅▆▆▆▆▆▇▇▇▇▇▇███
+[36m(train_algo pid=134578)[0m wandb: 
+[36m(train_algo pid=134578)[0m wandb: Run summary:
+[36m(train_algo pid=134578)[0m wandb:      episode_len_mean 76.44
+[36m(train_algo pid=134578)[0m wandb:   episode_reward_mean 5.12
+[36m(train_algo pid=134578)[0m wandb:        episodes_total 5003
+[36m(train_algo pid=134578)[0m wandb: num_env_steps_sampled 414500
+[36m(train_algo pid=134578)[0m wandb: num_env_steps_trained 0
+[36m(train_algo pid=134578)[0m wandb:          time_total_s 2335.59345
+[36m(train_algo pid=134578)[0m wandb:    training_iteration 829
+[36m(train_algo pid=134578)[0m wandb: 
+[36m(train_algo pid=134578)[0m wandb: 🚀 View run train_algo_550c2_00043 at: https://wandb.ai/tpn/rllib2/runs/550c2_00043
+[36m(train_algo pid=134578)[0m wandb: Synced 5 W&B file(s), 0 media file(s), 0 artifact file(s) and 0 other file(s)
+[36m(train_algo pid=134578)[0m wandb: Find logs at: /home/dalmiapriyam/ray_results/train_algo_2023-11-20_14-24-36/train_algo_550c2_00005_5_map_size=20,pred_vision=2,train_batch_size=500_2023-11-20_14-24-36/wandb/run-20231120_181928-550c2_00043/logs
+[36m(train_algo pid=134578)[0m wandb: - Waiting for wandb.init()...
+[36m(train_algo pid=134578)[0m wandb: \ Waiting for wandb.init()...
+[36m(train_algo pid=134578)[0m wandb: Tracking run with wandb version 0.16.0
+[36m(train_algo pid=134578)[0m wandb: Run data is saved locally in /home/dalmiapriyam/ray_results/train_algo_2023-11-20_14-24-36/train_algo_550c2_00005_5_map_size=20,pred_vision=2,train_batch_size=500_2023-11-20_14-24-36/wandb/run-20231120_185849-550c2_00049
+[36m(train_algo pid=134578)[0m wandb: Run `wandb offline` to turn off syncing.
+[36m(train_algo pid=134578)[0m wandb: Syncing run train_algo_550c2_00049
+[36m(train_algo pid=134578)[0m wandb: ⭐️ View project at https://wandb.ai/tpn/rllib2
+[36m(train_algo pid=134578)[0m wandb: 🚀 View run at https://wandb.ai/tpn/rllib2/runs/550c2_00049
+[36m(train_algo pid=134575)[0m Install gputil for GPU system monitoring.
+[36m(train_algo pid=134575)[0m Already logged into W&B.
+[36m(train_algo pid=134575)[0m wandb: - 0.005 MB of 0.005 MB uploaded
+[36m(train_algo pid=134575)[0m wandb: \ 0.005 MB of 0.005 MB uploaded
+[36m(train_algo pid=134575)[0m wandb: | 0.015 MB of 0.017 MB uploaded
+[36m(train_algo pid=134575)[0m wandb: / 0.015 MB of 0.017 MB uploadedwandb: - 0.017 MB of 0.017 MB uploadedwandb:                                                                                
+[36m(train_algo pid=134575)[0m wandb: 
+[36m(train_algo pid=134575)[0m wandb: Run history:
+[36m(train_algo pid=134575)[0m wandb:      episode_len_mean ██▇▆▅▄▃▄▃▃▃▃▃▃▂▃▃▃▂▂▂▂▂▂▂▁▂▁▂▂▂▃▂▁▂▁▁▂▂▂
+[36m(train_algo pid=134575)[0m wandb:   episode_reward_mean ▁▂▅▇▇█████▇█████████████▇███████████████
+[36m(train_algo pid=134575)[0m wandb:        episodes_total ▁▁▁▁▁▂▂▂▂▂▂▃▃▃▃▃▄▄▄▄▄▄▅▅▅▅▅▆▆▆▆▆▇▇▇▇▇███
+[36m(train_algo pid=134575)[0m wandb: num_env_steps_sampled ▁▁▁▁▂▂▂▂▂▃▃▃▃▃▃▄▄▄▄▄▅▅▅▅▅▅▆▆▆▆▆▇▇▇▇▇▇███
+[36m(train_algo pid=134575)[0m wandb: num_env_steps_trained ▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁
+[36m(train_algo pid=134575)[0m wandb:          time_total_s ▁▁▁▁▂▂▂▂▂▃▃▃▃▃▃▄▄▄▄▄▄▅▅▅▅▅▆▆▆▆▆▇▇▇▇▇▇███
+[36m(train_algo pid=134575)[0m wandb:    training_iteration ▁▁▁▁▂▂▂▂▂▃▃▃▃▃▃▄▄▄▄▄▅▅▅▅▅▅▆▆▆▆▆▇▇▇▇▇▇███
+[36m(train_algo pid=134575)[0m wandb: 
+[36m(train_algo pid=134575)[0m wandb: Run summary:
+[36m(train_algo pid=134575)[0m wandb:      episode_len_mean 57.08
+[36m(train_algo pid=134575)[0m wandb:   episode_reward_mean 5.75
+[36m(train_algo pid=134575)[0m wandb:        episodes_total 5010
+[36m(train_algo pid=134575)[0m wandb: num_env_steps_sampled 309000
+[36m(train_algo pid=134575)[0m wandb: num_env_steps_trained 0
+[36m(train_algo pid=134575)[0m wandb:          time_total_s 1674.71461
+[36m(train_algo pid=134575)[0m wandb:    training_iteration 309
+[36m(train_algo pid=134575)[0m wandb: 
+[36m(train_algo pid=134575)[0m wandb: 🚀 View run train_algo_550c2_00044 at: https://wandb.ai/tpn/rllib2/runs/550c2_00044
+[36m(train_algo pid=134575)[0m wandb: Synced 5 W&B file(s), 0 media file(s), 0 artifact file(s) and 0 other file(s)
+[36m(train_algo pid=134575)[0m wandb: Find logs at: /home/dalmiapriyam/ray_results/train_algo_2023-11-20_14-24-36/train_algo_550c2_00002_2_map_size=15,pred_vision=3,train_batch_size=200_2023-11-20_14-24-36/wandb/run-20231120_183208-550c2_00044/logs
+[36m(train_algo pid=134575)[0m wandb: - Waiting for wandb.init()...
+[36m(train_algo pid=134575)[0m wandb: \ Waiting for wandb.init()...
+[36m(train_algo pid=134575)[0m wandb: Tracking run with wandb version 0.16.0
+[36m(train_algo pid=134575)[0m wandb: Run data is saved locally in /home/dalmiapriyam/ray_results/train_algo_2023-11-20_14-24-36/train_algo_550c2_00002_2_map_size=15,pred_vision=3,train_batch_size=200_2023-11-20_14-24-36/wandb/run-20231120_190017-550c2_00050
+[36m(train_algo pid=134575)[0m wandb: Run `wandb offline` to turn off syncing.
+[36m(train_algo pid=134575)[0m wandb: Syncing run train_algo_550c2_00050
+[36m(train_algo pid=134575)[0m wandb: ⭐️ View project at https://wandb.ai/tpn/rllib2
+[36m(train_algo pid=134575)[0m wandb: 🚀 View run at https://wandb.ai/tpn/rllib2/runs/550c2_00050
+[36m(train_algo pid=134573)[0m Install gputil for GPU system monitoring.
+[36m(train_algo pid=134573)[0m Already logged into W&B.
+[36m(train_algo pid=134573)[0m wandb: - 0.005 MB of 0.005 MB uploaded
+[36m(train_algo pid=134573)[0m wandb: \ 0.005 MB of 0.005 MB uploaded
+[36m(train_algo pid=134573)[0m wandb: | 0.005 MB of 0.005 MB uploadedwandb: / 0.017 MB of 0.017 MB uploadedwandb:                                                                                
+[36m(train_algo pid=134573)[0m wandb: 
+[36m(train_algo pid=134573)[0m wandb: Run history:
+[36m(train_algo pid=134573)[0m wandb:      episode_len_mean ██▇▇▆▅▃▃▃▂▂▂▂▂▂▂▂▂▂▁▁▂▁▁▂▁▂▂▁▁▂▁▁▁▂▁▁▁▂▁
+[36m(train_algo pid=134573)[0m wandb:   episode_reward_mean ▁▂▄▆▇▇██████████████████████████████████
+[36m(train_algo pid=134573)[0m wandb:        episodes_total ▁▁▁▁▁▂▂▂▂▂▂▂▃▃▃▃▃▄▄▄▄▄▅▅▅▅▅▆▆▆▆▆▇▇▇▇▇███
+[36m(train_algo pid=134573)[0m wandb: num_env_steps_sampled ▁▁▁▂▂▂▂▂▂▃▃▃▃▃▄▄▄▄▄▄▅▅▅▅▅▅▆▆▆▆▆▇▇▇▇▇▇███
+[36m(train_algo pid=134573)[0m wandb: num_env_steps_trained ▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁
+[36m(train_algo pid=134573)[0m wandb:          time_total_s ▁▁▁▂▂▂▂▂▂▃▃▃▃▃▄▄▄▄▄▄▅▅▅▅▅▅▆▆▆▆▆▇▇▇▇▇▇███
+[36m(train_algo pid=134573)[0m wandb:    training_iteration ▁▁▁▂▂▂▂▂▂▃▃▃▃▃▄▄▄▄▄▄▅▅▅▅▅▅▆▆▆▆▆▇▇▇▇▇▇███
+[36m(train_algo pid=134573)[0m wandb: 
+[36m(train_algo pid=134573)[0m wandb: Run summary:
+[36m(train_algo pid=134573)[0m wandb:      episode_len_mean 41.04
+[36m(train_algo pid=134573)[0m wandb:   episode_reward_mean 5.99
+[36m(train_algo pid=134573)[0m wandb:        episodes_total 5009
+[36m(train_algo pid=134573)[0m wandb: num_env_steps_sampled 237000
+[36m(train_algo pid=134573)[0m wandb: num_env_steps_trained 0
+[36m(train_algo pid=134573)[0m wandb:          time_total_s 1335.72964
+[36m(train_algo pid=134573)[0m wandb:    training_iteration 237
+[36m(train_algo pid=134573)[0m wandb: 
+[36m(train_algo pid=134573)[0m wandb: 🚀 View run train_algo_550c2_00046 at: https://wandb.ai/tpn/rllib2/runs/550c2_00046
+[36m(train_algo pid=134573)[0m wandb: Synced 5 W&B file(s), 0 media file(s), 0 artifact file(s) and 0 other file(s)
+[36m(train_algo pid=134573)[0m wandb: Find logs at: /home/dalmiapriyam/ray_results/train_algo_2023-11-20_14-24-36/train_algo_550c2_00000_0_map_size=15,pred_vision=2,train_batch_size=200_2023-11-20_14-24-36/wandb/run-20231120_183958-550c2_00046/logs
+[36m(train_algo pid=134573)[0m wandb: - Waiting for wandb.init()...
+[36m(train_algo pid=134573)[0m wandb: \ Waiting for wandb.init()...
+[36m(train_algo pid=134573)[0m wandb: Tracking run with wandb version 0.16.0
+[36m(train_algo pid=134573)[0m wandb: Run data is saved locally in /home/dalmiapriyam/ray_results/train_algo_2023-11-20_14-24-36/train_algo_550c2_00000_0_map_size=15,pred_vision=2,train_batch_size=200_2023-11-20_14-24-36/wandb/run-20231120_190225-550c2_00051
+[36m(train_algo pid=134573)[0m wandb: Run `wandb offline` to turn off syncing.
+[36m(train_algo pid=134573)[0m wandb: Syncing run train_algo_550c2_00051
+[36m(train_algo pid=134573)[0m wandb: ⭐️ View project at https://wandb.ai/tpn/rllib2
+[36m(train_algo pid=134573)[0m wandb: 🚀 View run at https://wandb.ai/tpn/rllib2/runs/550c2_00051
+[36m(train_algo pid=134577)[0m Install gputil for GPU system monitoring.
+[36m(train_algo pid=134577)[0m Already logged into W&B.
+[36m(train_algo pid=134577)[0m wandb: - 0.005 MB of 0.005 MB uploaded
+[36m(train_algo pid=134577)[0m wandb: \ 0.005 MB of 0.005 MB uploaded
+[36m(train_algo pid=134577)[0m wandb: | 0.005 MB of 0.005 MB uploadedwandb: / 0.017 MB of 0.017 MB uploadedwandb:                                                                                
+[36m(train_algo pid=134577)[0m wandb: 
+[36m(train_algo pid=134577)[0m wandb: Run history:
+[36m(train_algo pid=134577)[0m wandb:      episode_len_mean ███▇▇▆▄▄▃▃▃▂▃▃▃▂▂▂▃▂▂▂▃▃▂▂▃▂▃▂▂▃▂▂▂▁▂▂▃▂
+[36m(train_algo pid=134577)[0m wandb:   episode_reward_mean ▁▂▃▅▆▇▇█████████████████████▇███████████
+[36m(train_algo pid=134577)[0m wandb:        episodes_total ▁▁▁▁▂▂▂▂▂▂▃▃▃▃▃▃▄▄▄▄▄▅▅▅▅▅▅▆▆▆▆▆▇▇▇▇▇███
+[36m(train_algo pid=134577)[0m wandb: num_env_steps_sampled ▁▁▁▂▂▂▂▂▂▃▃▃▃▃▃▄▄▄▄▄▅▅▅▅▅▅▆▆▆▆▆▇▇▇▇▇▇███
+[36m(train_algo pid=134577)[0m wandb: num_env_steps_trained ▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁
+[36m(train_algo pid=134577)[0m wandb:          time_total_s ▁▁▁▂▂▂▂▂▂▃▃▃▃▃▃▄▄▄▄▄▅▅▅▅▅▅▆▆▆▆▆▇▇▇▇▇▇███
+[36m(train_algo pid=134577)[0m wandb:    training_iteration ▁▁▁▂▂▂▂▂▂▃▃▃▃▃▃▄▄▄▄▄▅▅▅▅▅▅▆▆▆▆▆▇▇▇▇▇▇███
+[36m(train_algo pid=134577)[0m wandb: 
+[36m(train_algo pid=134577)[0m wandb: Run summary:
+[36m(train_algo pid=134577)[0m wandb:      episode_len_mean 71.04
+[36m(train_algo pid=134577)[0m wandb:   episode_reward_mean 5.74
+[36m(train_algo pid=134577)[0m wandb:        episodes_total 5009
+[36m(train_algo pid=134577)[0m wandb: num_env_steps_sampled 369000
+[36m(train_algo pid=134577)[0m wandb: num_env_steps_trained 0
+[36m(train_algo pid=134577)[0m wandb:          time_total_s 2067.13006
+[36m(train_algo pid=134577)[0m wandb:    training_iteration 369
+[36m(train_algo pid=134577)[0m wandb: 
+[36m(train_algo pid=134577)[0m wandb: 🚀 View run train_algo_550c2_00047 at: https://wandb.ai/tpn/rllib2/runs/550c2_00047
+[36m(train_algo pid=134577)[0m wandb: Synced 5 W&B file(s), 0 media file(s), 0 artifact file(s) and 0 other file(s)
+[36m(train_algo pid=134577)[0m wandb: Find logs at: /home/dalmiapriyam/ray_results/train_algo_2023-11-20_14-24-36/train_algo_550c2_00004_4_map_size=15,pred_vision=2,train_batch_size=500_2023-11-20_14-24-36/wandb/run-20231120_184422-550c2_00047/logs
+[36m(train_algo pid=134577)[0m wandb: - Waiting for wandb.init()...
+[36m(train_algo pid=134577)[0m wandb: \ Waiting for wandb.init()...
+[36m(train_algo pid=134577)[0m wandb: Tracking run with wandb version 0.16.0
+[36m(train_algo pid=134577)[0m wandb: Run data is saved locally in /home/dalmiapriyam/ray_results/train_algo_2023-11-20_14-24-36/train_algo_550c2_00004_4_map_size=15,pred_vision=2,train_batch_size=500_2023-11-20_14-24-36/wandb/run-20231120_191904-550c2_00052
+[36m(train_algo pid=134577)[0m wandb: Run `wandb offline` to turn off syncing.
+[36m(train_algo pid=134577)[0m wandb: Syncing run train_algo_550c2_00052
+[36m(train_algo pid=134577)[0m wandb: ⭐️ View project at https://wandb.ai/tpn/rllib2
+[36m(train_algo pid=134577)[0m wandb: 🚀 View run at https://wandb.ai/tpn/rllib2/runs/550c2_00052
+[36m(train_algo pid=134574)[0m Install gputil for GPU system monitoring.
+[36m(train_algo pid=134574)[0m Already logged into W&B.
+[36m(train_algo pid=134574)[0m wandb: - 0.005 MB of 0.005 MB uploaded
+[36m(train_algo pid=134574)[0m wandb: \ 0.005 MB of 0.005 MB uploaded
+[36m(train_algo pid=134574)[0m wandb: | 0.005 MB of 0.017 MB uploaded
+[36m(train_algo pid=134574)[0m wandb: / 0.005 MB of 0.017 MB uploadedwandb: - 0.017 MB of 0.017 MB uploadedwandb:                                                                                
+[36m(train_algo pid=134574)[0m wandb: 
+[36m(train_algo pid=134574)[0m wandb: Run history:
+[36m(train_algo pid=134574)[0m wandb:      episode_len_mean ██▇▇▇▇▇▆▅▄▆▂▂▃▃▄▄▃▄▂▂▃▄▅▄▃▁▃▁▃▆▃▁▅▂▁▁▃▃▃
+[36m(train_algo pid=134574)[0m wandb:   episode_reward_mean ▁▂▄▅▅▅▆▆▇▇▇████▇▇████▇▇▇▇▇█▇▇█▇▇█▇█████▇
+[36m(train_algo pid=134574)[0m wandb:        episodes_total ▁▁▁▁▂▂▂▂▂▂▃▃▃▃▃▄▄▄▄▄▄▅▅▅▅▅▆▆▆▆▆▆▇▇▇▇▇███
+[36m(train_algo pid=134574)[0m wandb: num_env_steps_sampled ▁▁▁▁▂▂▂▂▂▃▃▃▃▃▃▄▄▄▄▄▅▅▅▅▅▅▆▆▆▆▆▇▇▇▇▇▇███
+[36m(train_algo pid=134574)[0m wandb: num_env_steps_trained ▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁
+[36m(train_algo pid=134574)[0m wandb:          time_total_s ▁▁▁▁▂▂▂▂▂▃▃▃▃▃▃▄▄▄▄▄▅▅▅▅▅▅▆▆▆▆▆▇▇▇▇▇▇███
+[36m(train_algo pid=134574)[0m wandb:    training_iteration ▁▁▁▁▂▂▂▂▂▃▃▃▃▃▃▄▄▄▄▄▅▅▅▅▅▅▆▆▆▆▆▇▇▇▇▇▇███
+[36m(train_algo pid=134574)[0m wandb: 
+[36m(train_algo pid=134574)[0m wandb: Run summary:
+[36m(train_algo pid=134574)[0m wandb:      episode_len_mean 91.2
+[36m(train_algo pid=134574)[0m wandb:   episode_reward_mean 4.62
+[36m(train_algo pid=134574)[0m wandb:        episodes_total 5008
+[36m(train_algo pid=134574)[0m wandb: num_env_steps_sampled 460000
+[36m(train_algo pid=134574)[0m wandb: num_env_steps_trained 0
+[36m(train_algo pid=134574)[0m wandb:          time_total_s 2500.29457
+[36m(train_algo pid=134574)[0m wandb:    training_iteration 460
+[36m(train_algo pid=134574)[0m wandb: 
+[36m(train_algo pid=134574)[0m wandb: 🚀 View run train_algo_550c2_00045 at: https://wandb.ai/tpn/rllib2/runs/550c2_00045
+[36m(train_algo pid=134574)[0m wandb: Synced 5 W&B file(s), 0 media file(s), 0 artifact file(s) and 0 other file(s)
+[36m(train_algo pid=134574)[0m wandb: Find logs at: /home/dalmiapriyam/ray_results/train_algo_2023-11-20_14-24-36/train_algo_550c2_00001_1_map_size=20,pred_vision=2,train_batch_size=200_2023-11-20_14-24-36/wandb/run-20231120_183750-550c2_00045/logs
+[36m(train_algo pid=134574)[0m wandb: - Waiting for wandb.init()...
+[36m(train_algo pid=134574)[0m wandb: \ Waiting for wandb.init()...
+[36m(train_algo pid=134574)[0m wandb: Tracking run with wandb version 0.16.0
+[36m(train_algo pid=134574)[0m wandb: Run data is saved locally in /home/dalmiapriyam/ray_results/train_algo_2023-11-20_14-24-36/train_algo_550c2_00001_1_map_size=20,pred_vision=2,train_batch_size=200_2023-11-20_14-24-36/wandb/run-20231120_191948-550c2_00053
+[36m(train_algo pid=134574)[0m wandb: Run `wandb offline` to turn off syncing.
+[36m(train_algo pid=134574)[0m wandb: Syncing run train_algo_550c2_00053
+[36m(train_algo pid=134574)[0m wandb: ⭐️ View project at https://wandb.ai/tpn/rllib2
+[36m(train_algo pid=134574)[0m wandb: 🚀 View run at https://wandb.ai/tpn/rllib2/runs/550c2_00053
+slurmstepd: error: *** JOB 53616706 ON spartan-gpgpu135 CANCELLED AT 2023-11-20T19:24:37 DUE TO TIME LIMIT ***
