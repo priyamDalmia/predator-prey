@@ -1,3 +1,4 @@
+from math import log
 from re import I
 import sys
 import warnings
@@ -163,6 +164,8 @@ class wandbCallback(Callback):
         return super().on_trial_start(iteration, trials, trial, **info)
     
     def on_trial_result(self, iteration: int, trials: List[Trial], trial: Trial, result: Dict, **info):
+        if result['training_iteration'] % 3 != 0:
+            return
         log_dict = dict(
             training_iteration=result["training_iteration"],
             episode_len_mean=result["episode_len_mean"],
@@ -180,13 +183,17 @@ class wandbCallback(Callback):
     @classmethod
     def on_trial_completed(cls, algo: Algorithm, result: Dict):
         if wandb.run is not None:
-            wandb.run.summary["training_iteration"] = result["training_iteration"]
-            wandb.run.summary["episode_len_mean"] = result["episode_len_mean"]
-            wandb.run.summary["episode_reward_mean"] = result["episode_reward_mean"]
-            wandb.run.summary["num_env_steps_sampled"] = result["num_env_steps_sampled"]
-            wandb.run.summary["num_env_steps_trained"] = result["num_env_steps_trained"]
-            wandb.run.summary["episodes_total"] = result["episodes_total"]
-            wandb.run.summary["time_total_s"] = result["time_total_s"]
+            log_dict = dict(
+            training_iteration=result["training_iteration"],
+            episode_len_mean=result["episode_len_mean"],
+            episode_reward_mean=result["episode_reward_mean"],
+            num_env_steps_sampled=result["num_env_steps_sampled"],
+            num_env_steps_trained=result["num_env_steps_trained"],
+            episodes_total=result["episodes_total"],
+            time_total_s=result["time_total_s"],
+            policy_reward_mean=result["policy_reward_mean"],
+        ) 
+            wandb.log(log_dict)
             wandb.run.summary["policy_reward_mean"] = result["policy_reward_mean"]
         return 
 
@@ -218,10 +225,7 @@ def main():
     if config['tune']['tune']: 
         # SET HYPERPARAMETERS for TUNING
         config['algorithm_type'] = tune.grid_search(['independent', 'shared'])
-        config['training']['model']['conv_filters'] = tune.grid_search([[[16, [2, 2], 2], [16, [4, 4], 1]], [[16, [2, 2], 2]]])
-        config['training']['model']['fcnet_hiddens'] = tune.grid_search([[256, 256], [512, 512]])
-        config['training']['model']['_disable_preprocessor_api'] = tune.grid_search([True, False])
-        config['training']['model']['conv_activation'] = tune.grid_search(['tanh', 'relu'])
+        config['env_config']['reward_type'] = tune.grid_search(['type_1', 'type_2', 'type_3'])
 
     tuner = tune.Tuner(
         train_algo,
@@ -247,7 +251,7 @@ def main():
 if __name__ == "__main__":
     main()
 
-    # # ## DEBUGGING
+    # # # ## DEBUGGING
     # ray.init(
     #     num_cpus=1,
     # )

@@ -70,6 +70,8 @@ class discrete_pp_v1(ParallelEnv):
             self._reward_func = self.reward_dist_1
         elif self._reward_type == "type_2":
             self._reward_func = self.reward_dist_2
+        elif self._reward_type == "type_3":
+            self._reward_func = self.reward_dist_3
         else:
             raise ValueError(f"Reward type {self._reward_type} not supported.")
         # build base game state here 
@@ -133,6 +135,22 @@ class discrete_pp_v1(ParallelEnv):
             self._assists += 1
             for _id in self._possible_agents:
                 rewards[_id] = 0.75 + rewards.get(_id, 0)
+                if agent_id != _id:
+                    self._assists_by_id[_id] = 1 + self._assists_by_id.get(_id, 0)
+            return rewards
+        else:
+            rewards[agent_id] = 1 + rewards.get(agent_id, 0)
+            return rewards
+    
+    def reward_dist_3(self, rewards, agent_id, agent_position, kill_position):  
+        kill_area = self._global_state[
+            kill_position[0] - 2: kill_position[0] + 3,
+            kill_position[1] - 2: kill_position[1] + 3,
+            self.PREDATOR_CHANNEL].copy()
+        if kill_area.sum() > 1:
+            self._assists += 1
+            for _id in self._possible_agents:
+                rewards[_id] = 1.5 + rewards.get(_id, 0)
                 if agent_id != _id:
                     self._assists_by_id[_id] = 1 + self._assists_by_id.get(_id, 0)
             return rewards
