@@ -413,7 +413,7 @@ class FixedSwing:
         "UP": 4,
     }
 
-    def __init__(self, env) -> None:
+    def __init__(self, env=None) -> None:
         self.direction = random.choice(["LEFT", "RIGHT"])
         pass
 

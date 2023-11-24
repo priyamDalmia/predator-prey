@@ -4,15 +4,20 @@ from logging import config
 from math import inf
 import re
 from typing import Any
+from matplotlib.pylab import f
 import pandas as pd
+import numpy as np
 from sympy import N 
 from itertools import product
 from environments.discrete_pp_v1 import discrete_pp_v1
+from environments.discrete_pp_v1 import FixedSwing
+from causal_ccm.causal_ccm import ccm
+from sklearn.decomposition import PCA
 
 EMULATION_MODES = ["original", "modified"]
 CAUSAL_PAIRS = [("predator_0", "predator_1"), ("predator_1", "predator_0")]
 CAUSAL_TESTS = ["ccm", "granger", "spatial_ccm", "ccm_pval"]
-DIMENSIONS = ["x", "y", "dx", "dy", "action", "reward"]
+DIMENSIONS = ["x", "y", "dx", "dy", "reward", "PCA"]
 TRAJ_LENGTH = [str(i) for i in range(1000, 10001, 1000)]
 _traj_data = [0 for i in range(1000, 10001, 1000)]
 _df_data = [
@@ -28,22 +33,34 @@ _df_index = pd.MultiIndex.from_tuples(
 )
 ANALYSIS_DF = pd.DataFrame(index=_df_index, columns=TRAJ_LENGTH).fillna(0.0)
 
-def get_ccm_score(X, Y, tau=1, E=1) -> list[tuple[str, float]]:
+def get_ccm_score(X, Y, tau=4, E=1) -> list[tuple[str, float]]:
     """
     return ccm coorelation and p-value
     """
-    return [("ccm", 0.0), ("ccm_pval", 0.0)]
+    corr, pval = ccm(list(X), list(Y), tau=tau, E=E).causality()
+    if pd.isna(corr):
+        corr = 0.0
+        pval = -1.0
+    return [("ccm", corr), ("ccm_pval", pval)]
 
 def get_granger_score(X, Y, maxlag=1) -> tuple[str, float]:
     """
     return granger causality and p-value
     """
+    import statsmodels as sm
+    from statsmodels.tsa.stattools import grangercausalitytests
+    data = np.array([X, Y]).T
+    results = grangercausalitytests(data, maxlag=5)
+    print(results[5][0])
+
+
     return ("granger", 0.0)
 
 # Given an algorithm do
 # 1. Generate a maPolicy object
 class maPolicy:
     def __init__(self, algo):
+        self.mode = None
         if algo is None:
             self.algorithm_class = "random"
             self.algorith_type = "random"
@@ -59,16 +76,29 @@ class maPolicy:
     def __call__(self, mode: str) -> Any:
         self.steps_sampled = 0
         if mode == 'original':
+            self.mode = 'original'
             return
         elif mode == 'modified':
             # modify the get action function of the algorithm
-            raise NotImplementedError("Not implemented yet")
+            self.modified_agent = FixedSwing()
+            self.mode = 'modified'
         else:
             raise ValueError("Invalid mode")
     
     def compute_actions(self, observations):
-        actions = {agent_id: self.get_action_for_agent(agent_id, obs)
+
+        if self.mode == 'original':
+            actions = {agent_id: self.get_action_for_agent(agent_id, obs)
                    for agent_id, obs in observations.items()}
+        elif self.mode == 'modified':
+            # modify the get action function of the algorithm
+            actions = dict()
+            actions['predator_0'] = self.get_action_for_agent('predator_0', observations['predator_0'])
+            actions['predator_1'] = self.modified_agent.get_action(observations['predator_1'])
+            return actions
+        else:
+            raise ValueError("Set mode before calling compute_actions")
+
         self.steps_sampled += 1
         return actions
 
@@ -79,25 +109,30 @@ class maPolicy:
             raise NotImplementedError("Not implemented yet")
 
 # Given a maPolicy object do
-def analyze(maPolicy, config):
+def analyze(algo, config):
+    policy = maPolicy(algo)
     # 1. use maPolicy.env to get the env (RecordWrapper obj)
-    env = maPolicy.env
-    rollout_env_steps = []
+    env = policy.env
+    rollout_env_steps = pd.DataFrame([]) 
     
     for mode in EMULATION_MODES:
-        maPolicy(mode)
-        assert maPolicy.steps_sampled == 0, "policy mode set incorrectly, steps sampled should be 0"
+        policy(mode)
+        assert policy.steps_sampled == 0, "policy mode set incorrectly, steps sampled should be 0"
 
         # 1. Generate epsiode data
         for i in TRAJ_LENGTH:
-            episode_record, metadata = get_episode_record(env, maPolicy)
-            rollout_env_steps.append(episode_record)
+            while len(rollout_env_steps) <= int(i):
+                episode_record, metadata = get_episode_record(env, policy)
+                rollout_env_steps = pd.concat([rollout_env_steps, episode_record], axis=0)\
+                    if len(rollout_env_steps) > 0 else episode_record
+                rollout_env_steps.reset_index(drop=True, inplace=False)
             for pair in CAUSAL_PAIRS:
                 for dim in DIMENSIONS:
-                    X: pd.Series = episode_record.loc[:, (pair[0], dim)]
-                    Y: pd.Series = episode_record.loc[:, (pair[1], dim)]
+                    X: pd.Series = rollout_env_steps.loc[:, (pair[0], dim)]
+                    Y: pd.Series = rollout_env_steps.loc[:, (pair[1], dim)]
 
                     # CCM analysis
+                    print(f"CCM analysis for {pair[0]} and {pair[1]} in {dim} dimension")
                     if config['pref_ccm_analysis']:
                         results = get_ccm_score(X, Y, tau=1, E=1)
                         for result in results:
@@ -105,7 +140,8 @@ def analyze(maPolicy, config):
                     
                     # Granger analysis
                     if config['pref_granger_analysis']:
-                        raise NotImplementedError("Not implemented yet")
+                        results = get_granger_score(X, Y, maxlag=1)
+
                     
                     # Spatial CCM analysis
                     if config['pref_spatial_ccm_analysis']:
@@ -114,6 +150,7 @@ def analyze(maPolicy, config):
                     # Graph analysis
                     if i==10000 and config['pref_graph_analysis']:
                         raise NotImplementedError("Not implemented yet")
+    return ANALYSIS_DF.copy()
 
 def get_episode_record(env, policy):
     # create a data frame to store the data for
@@ -139,7 +176,17 @@ def get_episode_record(env, policy):
             episode_record.loc[step, (agent_id, 'done')] = int(terminated[agent_id])
             episode_record.loc[step, (agent_id, 'reward')] = rewards[agent_id]
             episode_record.loc[step, (agent_id, 'action')] = actions[agent_id]
+            episode_record.loc[step, (agent_id, 'PCA')] = 0.0
         step += 1
+    
+    for agent_id in env.possible_agents:
+        episode_record.loc[:, (agent_id, 'dx')] =\
+            episode_record.loc[:, (agent_id, 'x')].diff().fillna(0)
+        episode_record.loc[:, (agent_id, 'dy')] =\
+            episode_record.loc[:, (agent_id, 'y')].diff().fillna(0)
+        xy_data = episode_record.loc[:, (agent_id, ['x', 'y'])].to_numpy()
+        episode_record.loc[:, (agent_id, 'PCA')] =\
+            PCA(n_components=1).fit_transform(xy_data).flatten()
     metadata['steps'] = step
     metadata['assists'] = env._assists
     metadata['kills'] = env._kills
@@ -147,11 +194,11 @@ def get_episode_record(env, policy):
 
 if __name__ == "__main__":
     config = dict(
-        pref_ccm_analysis = False,
-        pref_granger_analysis = False,
+        pref_ccm_analysis = True,
+        pref_granger_analysis = True,
         pref_spatial_ccm_analysis = False,
         pref_graph_analysis = False,
     )
     algo = None 
-    maPolicy = maPolicy(algo)
-    analyze(maPolicy, config)
+    results = analyze(algo, config)
+    print(results)

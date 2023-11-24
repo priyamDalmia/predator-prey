@@ -25,6 +25,7 @@ from ray.rllib.algorithms.callbacks import DefaultCallbacks
 from ray.rllib.env import BaseEnv
 from ray.rllib.evaluation import RolloutWorker, Episode
 from ray.rllib.policy import Policy
+from analyze import maPolicy, analyze
 warnings.filterwarnings("ignore")
 env_creator = lambda config:\
     ParallelPettingZooEnv(discrete_pp_v1(**config))
@@ -190,12 +191,15 @@ def train_algo(config):
         # if config['wandb']['wandb_init'] and \
         #     (results['training_iteration'] % config['wandb']['wandb_log_freq'] == 0
         #      or results['training_iteration'] == 1):
-        if results['training_iteration'] % config['wandb']['wandb_log_freq'] == 0:
+        if config['wandb']['wandb_init'] and results['training_iteration'] % config['wandb']['wandb_log_freq'] == 0:
             wandb.log(log_dict)   
         
         if config['stop_fn'](None, results):
-            print("STOPPING TRAINING")
-            wandb.finish()
+            print("STOPPING TRAINING. Performing analysis")
+            analysis_df = analyze(algo, config)
+
+            if config['wandb']['wandb_init']:
+                wandb.finish()
         
         train.report(results)
 
@@ -239,46 +243,49 @@ def main():
     return 
 
 if __name__ == "__main__":
-    main()
+    # main()
 
-    # # load the yaml fiw we 
-    # with open("config.yaml", "r") as f:
-    #     config = yaml.load(f, Loader=yaml.FullLoader)
-    # register_env(config['env_name'], lambda config: env_creator(config))
+    # load the yaml fiw we 
+    with open("config.yaml", "r") as f:
+        config = yaml.load(f, Loader=yaml.FullLoader)
+    register_env(config['env_name'], lambda config: env_creator(config))
     
-    # # # for config define param space 
-    # # algo = create_algo(config)
-    # # algo.train()
-    # # results = algo.evaluate()
-    # # print(results)
-    # config['algorithm_type'] = tune.grid_search(['independent', 'shared'])
-    # config['env_config']['reward_type'] = tune.grid_search(['type_1', 'type_2'])
-    # # config['env_config']['map_size'] = tune.grid_search([15, 20])
-    # # config['training']['train_batch_size'] = tune.grid_search([200, 500, 1000])
-    # # config['env_config']['pred_vision'] = tune.grid_search([2, 3]) 
-    # def stop_fn(trial_id, result):
-    #     # Stop training if episode total 
-    #     stop = result['episodes_total'] > 200
-    #     return stop
-    # config['stop_fn'] = stop_fn 
-    # config['wandb']['wandb_dir_path'] = str(Path('./wandb').absolute())
+    # # for config define param space 
+    ray.init(
+        num_cpus=1
+    )
+    # algo = create_algo(config)
+    # algo.train()
+    # results = algo.evaluate()
+    # print(results)
+    config['algorithm_type'] = tune.grid_search(['independent', 'shared'])
+    config['env_config']['reward_type'] = tune.grid_search(['type_1', 'type_2'])
+    # config['env_config']['map_size'] = tune.grid_search([15, 20])
+    # config['training']['train_batch_size'] = tune.grid_search([200, 500, 1000])
+    # config['env_config']['pred_vision'] = tune.grid_search([2, 3]) 
+    def stop_fn(trial_id, result):
+        # Stop training if episode total 
+        stop = result['episodes_total'] > 200
+        return stop
+    config['stop_fn'] = stop_fn 
+    config['wandb']['wandb_dir_path'] = str(Path('./wandb').absolute())
 
-    # tuner = tune.Tuner(
-    #     tune.with_resources(train_algo, {'cpu': 1}),
-    #     param_space  = config,
-    #     tune_config=tune.TuneConfig(
-    #         metric="episode_len_mean",
-    #         mode="min",
-    #         num_samples=1,
-    #         max_concurrent_trials=4,
-    #     ),
-    #     run_config=train.RunConfig(
-    #         stop=stop_fn,
-    #         storage_path=str(Path('./experiments').absolute()),
-    #     ),
-    # )
-    # results = tuner.fit()
-    # for res in results:
-    #     print(res.metrics_dataframe)
+    tuner = tune.Tuner(
+        tune.with_resources(train_algo, {'cpu': 1}),
+        param_space  = config,
+        tune_config=tune.TuneConfig(
+            metric="episode_len_mean",
+            mode="min",
+            num_samples=1,
+            max_concurrent_trials=4,
+        ),
+        run_config=train.RunConfig(
+            stop=stop_fn,
+            storage_path=str(Path('./experiments').absolute()),
+        ),
+    )
+    results = tuner.fit()
+    for res in results:
+        print(res.metrics_dataframe)
 
-    # # sys.exit(0)
+    # sys.exit(0)

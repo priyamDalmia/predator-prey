@@ -6,6 +6,11 @@ tune:
    num_samples: 2
    max_episodes: 25000
    max_concurrent_trials: 6
+analysis:
+   pref_ccm_analysis: false
+   pref_granger_analysis: false
+   pref_graph_analysis: false
+   pref_spatial_ccm_analysis: false
 training:
    lr: 0.0001
    use_critic: true
@@ -24,7 +29,7 @@ rollouts:
    num_rollout_workers: 0
    batch_mode: "complete_episodes"
 wandb: 
-   wandb_init: true 
+   wandb_init: false 
    wandb_project: "rllib4"
    wandb_entity: "tpn"
    wandb_notes: "testing setup"
