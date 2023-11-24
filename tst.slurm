@@ -8,7 +8,7 @@
 #SBATCH --qos=gpgpudeeplearn
 #SBATCH --partition=deeplearn
 
-# SBATCH --mem 16G
+# SBATCH --mem 8G
 # SBATCH --partition=cascade
 
 #SBATCH --time=20:00:00

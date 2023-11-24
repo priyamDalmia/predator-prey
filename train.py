@@ -1,5 +1,6 @@
 from math import log
 from re import I
+import re
 import sys
 import os
 import warnings
@@ -159,7 +160,6 @@ def train_algo(config):
             entity=config['wandb']['wandb_entity'],
             project=config['wandb']['wandb_project'],
             name = "df" + str(int(time.time())+random.randint(0, 100000)),
-            mode = "offline"
             )
 
     
@@ -190,7 +190,8 @@ def train_algo(config):
         # if config['wandb']['wandb_init'] and \
         #     (results['training_iteration'] % config['wandb']['wandb_log_freq'] == 0
         #      or results['training_iteration'] == 1):
-        wandb.log(log_dict)   
+        if results['training_iteration'] % config['wandb']['wandb_log_freq'] == 0:
+            wandb.log(log_dict)   
         
         if config['stop_fn'](None, results):
             print("STOPPING TRAINING")
@@ -216,7 +217,7 @@ def main():
         # SET HYPERPARAMETERS for TUNING
         config['algorithm_type'] = tune.grid_search(['independent', 'shared'])
         config['env_config']['reward_type'] = tune.grid_search(['type_1', 'type_2', 'type_3'])
-
+    storage_path = str(Path('./experiments').absolute())
     tuner = tune.Tuner(
         tune.with_resources(train_algo, {'cpu': 1}),
         param_space  = config,
@@ -228,8 +229,8 @@ def main():
         ),
         run_config=train.RunConfig(
             stop=stop_fn,
-            storage_path=str(Path('./experiments').absolute()),
-            log_to_file=False,
+            storage_path=storage_path,
+            log_to_file=True,
         ),
     )
     results = tuner.fit()

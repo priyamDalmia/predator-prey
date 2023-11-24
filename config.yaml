@@ -3,8 +3,8 @@ algorithm_class: "ppo"
 framework: "torch"
 tune:
    tune: true # if true, tune hyperparameters in main!
-   num_samples: 5
-   max_episodes: 10000
+   num_samples: 2
+   max_episodes: 25000
    max_concurrent_trials: 6
 training:
    lr: 0.0001
@@ -28,6 +28,7 @@ wandb:
    wandb_project: "rllib4"
    wandb_entity: "tpn"
    wandb_notes: "testing setup"
+   wandb_log_freq: 10
 env_name: "discrete_pp_v1"
 env_config:
    map_size: 15
