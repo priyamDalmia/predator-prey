@@ -5,7 +5,7 @@ tune:
    tune: true # if true, tune hyperparameters in main!
    num_samples: 5
    max_episodes: 10000
-   max_concurrent_trials: 1
+   max_concurrent_trials: 6
 training:
    lr: 0.0001
    use_critic: true
@@ -17,6 +17,7 @@ training:
       conv_filters: [[16, [3, 3], 2]]
       fcnet_hiddens: [256, 256]
       fcnet_activation: "relu"
+      conv_activation: "relu"
 evaluate:
    eval_episodes: 100
 rollouts:

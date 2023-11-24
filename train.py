@@ -160,7 +160,9 @@ class wandbCallback(Callback):
                 entity=config['wandb']['wandb_entity'],
                 project=config['wandb']['wandb_project'],
                 notes=config['wandb']['wandb_notes'],
-                rank_zero_only=False,)
+                rank_zero_only=False,
+                mode='offline',)
+                
         return super().on_trial_start(iteration, trials, trial, **info)
     
     def on_trial_result(self, iteration: int, trials: List[Trial], trial: Trial, result: Dict, **info):
@@ -175,6 +177,7 @@ class wandbCallback(Callback):
             episodes_total=result["episodes_total"],
             time_total_s=result["time_total_s"],
             policy_reward_mean=result["policy_reward_mean"],
+            custom=result['custom_metrics'],
         ) 
         if wandb.run is not None:
             wandb.log(log_dict)
@@ -192,6 +195,7 @@ class wandbCallback(Callback):
             episodes_total=result["episodes_total"],
             time_total_s=result["time_total_s"],
             policy_reward_mean=result["policy_reward_mean"],
+            custom = result['custom_metrics'],
         ) 
             wandb.log(log_dict)
             wandb.run.summary["policy_reward_mean"] = result["policy_reward_mean"]
@@ -218,7 +222,7 @@ def main():
      
     def stop_fn(trial_id, result):
         # Stop training if episode total 
-        stop = result['episodes_total'] > 10000
+        stop = result['episodes_total'] > 25000
         return stop
     config['stop_fn'] = stop_fn 
 
@@ -239,7 +243,7 @@ def main():
         run_config=train.RunConfig(
             stop=stop_fn,
             storage_path=str(Path('./experiments').absolute()),
-            log_to_file=True,
+            log_to_file=False,
             callbacks=[wandbCallback()],
         ),
     )

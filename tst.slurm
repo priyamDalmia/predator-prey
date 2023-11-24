@@ -3,9 +3,14 @@
 #SBTACH --ntasks=1
 #SBATCH --ntasks-per-node=1
 #SBATCH --cpus-per-task=6
+
 #SBATCH --gres=gpu:1
 #SBATCH --qos=gpgpudeeplearn
 #SBATCH --partition=deeplearn
+
+# SBATCH --mem 16G
+# SBATCH --partition=cascade
+
 #SBATCH --time=20:00:00
 #SBATCH -o ./slurmoutput/train-%j.out
 echo 
