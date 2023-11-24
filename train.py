@@ -1,6 +1,7 @@
 from math import log
 from re import I
 import sys
+import os
 import warnings
 import json
 import time 
@@ -144,73 +145,57 @@ class episodeMetrics(DefaultCallbacks):
         for agent_id, val in episode.user_data['kills_by_id'].items():
             episode.custom_metrics[f'{agent_id}_kills'] = val
 
-    def on_train_result(self, *, algorithm, result: dict, **kwargs):
-        # you can mutate the result dict to add new fields to return
-        result["callback_ok"] = True
-
-# define the callback for wandb and ANALYSIS
-class wandbCallback(Callback):
-    def on_trial_start(self, iteration: int, trials: List[Trial], trial: Trial, **info):
-        config = trial.config
-        if config['wandb']['wandb_init']:
-            response = setup_wandb({
-                'algorithm_type' : config['algorithm_type'],
-                'algorithm_class': config['algorithm_class'],
-                    **(config)},
-                entity=config['wandb']['wandb_entity'],
-                project=config['wandb']['wandb_project'],
-                notes=config['wandb']['wandb_notes'],
-                rank_zero_only=False,
-                mode='offline',)
-                
-        return super().on_trial_start(iteration, trials, trial, **info)
-    
-    def on_trial_result(self, iteration: int, trials: List[Trial], trial: Trial, result: Dict, **info):
-        if result['training_iteration'] % 3 != 0:
-            return
-        log_dict = dict(
-            training_iteration=result["training_iteration"],
-            episode_len_mean=result["episode_len_mean"],
-            episode_reward_mean=result["episode_reward_mean"],
-            num_env_steps_sampled=result["num_env_steps_sampled"],
-            num_env_steps_trained=result["num_env_steps_trained"],
-            episodes_total=result["episodes_total"],
-            time_total_s=result["time_total_s"],
-            policy_reward_mean=result["policy_reward_mean"],
-            custom=result['custom_metrics'],
-        ) 
-        if wandb.run is not None:
-            wandb.log(log_dict)
-        return super().on_trial_result(iteration, trials, trial, result, **info)
-    
-    @classmethod
-    def on_trial_completed(cls, algo: Algorithm, result: Dict):
-        if wandb.run is not None:
-            log_dict = dict(
-            training_iteration=result["training_iteration"],
-            episode_len_mean=result["episode_len_mean"],
-            episode_reward_mean=result["episode_reward_mean"],
-            num_env_steps_sampled=result["num_env_steps_sampled"],
-            num_env_steps_trained=result["num_env_steps_trained"],
-            episodes_total=result["episodes_total"],
-            time_total_s=result["time_total_s"],
-            policy_reward_mean=result["policy_reward_mean"],
-            custom = result['custom_metrics'],
-        ) 
-            wandb.log(log_dict)
-            wandb.run.summary["policy_reward_mean"] = result["policy_reward_mean"]
-        return 
-
 # define the Trainable
 def train_algo(config):
     algo = create_algo(config)
+    import random
+    if config['wandb']['wandb_init']:
+        wandb.init(
+            dir = config['wandb']['wandb_dir_path'],
+            config = {
+                'algorithm_type' : config['algorithm_type'],
+                'algorithm_class': config['algorithm_class'],
+                    **(config)},
+            entity=config['wandb']['wandb_entity'],
+            project=config['wandb']['wandb_project'],
+            name = "df" + str(int(time.time())+random.randint(0, 100000)),
+            mode = "offline"
+            )
+
+    
     results = {}
     i = 0
     while True:
         results = algo.train()
+        # if config['stop_fn'](None, results):
+        #     wandbCallback.on_trial_completed(algo, results)
+        #     break
+        
+        log_dict = dict(
+            training_iteration=results["training_iteration"],
+            episode_len_mean=results["episode_len_mean"],
+            episode_reward_mean=results["episode_reward_mean"],
+            num_env_steps_sampled=results["num_env_steps_sampled"],
+            episodes_total=results["episodes_total"],
+            time_total_s=results["time_total_s"],
+            policy_reward_mean=results["policy_reward_mean"],
+            assists = results['custom_metrics']['assists_mean'],
+            kills = results['custom_metrics']['kills_mean'],
+            predator_0_assists = results['custom_metrics']['predator_0_assists_mean'],
+            predator_0_kills = results['custom_metrics']['predator_0_kills_mean'],
+            predator_1_assists = results['custom_metrics']['predator_1_assists_mean'],
+            predator_1_kills = results['custom_metrics']['predator_1_kills_mean'],
+        ) 
+
+        # if config['wandb']['wandb_init'] and \
+        #     (results['training_iteration'] % config['wandb']['wandb_log_freq'] == 0
+        #      or results['training_iteration'] == 1):
+        wandb.log(log_dict)   
+        
         if config['stop_fn'](None, results):
-            wandbCallback.on_trial_completed(algo, results)
-            break
+            print("STOPPING TRAINING")
+            wandb.finish()
+        
         train.report(results)
 
 # define the main function
@@ -225,6 +210,7 @@ def main():
         stop = result['episodes_total'] > 25000
         return stop
     config['stop_fn'] = stop_fn 
+    config['wandb']['wandb_dir_path'] = str(Path('./wandb').absolute())
 
     if config['tune']['tune']: 
         # SET HYPERPARAMETERS for TUNING
@@ -232,7 +218,7 @@ def main():
         config['env_config']['reward_type'] = tune.grid_search(['type_1', 'type_2', 'type_3'])
 
     tuner = tune.Tuner(
-        train_algo,
+        tune.with_resources(train_algo, {'cpu': 1}),
         param_space  = config,
         tune_config=tune.TuneConfig(
             metric="episode_len_mean",
@@ -244,7 +230,6 @@ def main():
             stop=stop_fn,
             storage_path=str(Path('./experiments').absolute()),
             log_to_file=False,
-            callbacks=[wandbCallback()],
         ),
     )
     results = tuner.fit()
@@ -255,10 +240,6 @@ def main():
 if __name__ == "__main__":
     main()
 
-    # # # ## DEBUGGING
-    # ray.init(
-    #     num_cpus=1,
-    # )
     # # load the yaml fiw we 
     # with open("config.yaml", "r") as f:
     #     config = yaml.load(f, Loader=yaml.FullLoader)
@@ -270,30 +251,29 @@ if __name__ == "__main__":
     # # results = algo.evaluate()
     # # print(results)
     # config['algorithm_type'] = tune.grid_search(['independent', 'shared'])
-    # # config['env_config']['reward_type'] = tune.grid_search(['type_1', 'type_2'])
+    # config['env_config']['reward_type'] = tune.grid_search(['type_1', 'type_2'])
     # # config['env_config']['map_size'] = tune.grid_search([15, 20])
     # # config['training']['train_batch_size'] = tune.grid_search([200, 500, 1000])
     # # config['env_config']['pred_vision'] = tune.grid_search([2, 3]) 
     # def stop_fn(trial_id, result):
     #     # Stop training if episode total 
-    #     stop = result['episodes_total'] > 50
+    #     stop = result['episodes_total'] > 200
     #     return stop
     # config['stop_fn'] = stop_fn 
+    # config['wandb']['wandb_dir_path'] = str(Path('./wandb').absolute())
 
     # tuner = tune.Tuner(
-    #     train_algo,
+    #     tune.with_resources(train_algo, {'cpu': 1}),
     #     param_space  = config,
     #     tune_config=tune.TuneConfig(
     #         metric="episode_len_mean",
     #         mode="min",
-    #         num_samples=5,
-    #         max_concurrent_trials=6,
+    #         num_samples=1,
+    #         max_concurrent_trials=4,
     #     ),
     #     run_config=train.RunConfig(
     #         stop=stop_fn,
     #         storage_path=str(Path('./experiments').absolute()),
-    #         log_to_file=True,
-    #         callbacks=[wandbCallback()],
     #     ),
     # )
     # results = tuner.fit()
