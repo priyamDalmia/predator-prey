@@ -1,4 +1,4 @@
-algorithm_type: "independent"
+algorithm_type: "centralized"
 algorithm_class: "ppo"
 framework: "torch"
 tune:
@@ -29,8 +29,8 @@ rollouts:
    num_rollout_workers: 0
    batch_mode: "complete_episodes"
 wandb: 
-   wandb_init: false 
-   wandb_project: "rllib4"
+   wandb_init: true 
+   wandb_project: "rllib1"
    wandb_entity: "tpn"
    wandb_notes: "testing setup"
    wandb_log_freq: 10

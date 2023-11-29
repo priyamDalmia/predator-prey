@@ -229,23 +229,6 @@ class FillInActions(DefaultCallbacks):
         to_update[:, -2:] = opponent_actions
 
 
-def central_critic_observer(agent_obs, **kw):
-    """Rewrites the agent obs to include opponent data for training."""
-
-    new_obs = {
-        0: {
-            "own_obs": agent_obs[0],
-            "opponent_obs": agent_obs[1],
-            "opponent_action": 0,  # filled in by FillInActions
-        },
-        1: {
-            "own_obs": agent_obs[1],
-            "opponent_obs": agent_obs[0],
-            "opponent_action": 0,  # filled in by FillInActions
-        },
-    }
-    return new_obs
-
 def test_centralized_algo():
     config = CONFIG.copy()
     env_creator = lambda cfg: ParallelPettingZooEnv(discrete_pp_v1(**cfg))
@@ -295,7 +278,6 @@ def test_centralized_algo():
                 )   for agent_id in env.par_env.possible_agents
             },
             policy_mapping_fn=(lambda agent_id, *args, **kwargs: agent_id),
-            observation_fn=central_critic_observer, 
         )
         .rl_module(_enable_rl_module_api=False)
     )

@@ -63,7 +63,7 @@ class discrete_pp_v1(ParallelEnv):
         self._npred = kwargs.get("npred", 2)
         self._pred_vision = kwargs.get("pred_vision", 2)
         self._nprey = kwargs.get("nprey", 6)
-        self._prey_type = kwargs.get("prey_type", 'random') # random or fixed
+        self._prey_type = kwargs.get("prey_type", 'static') # random or fixed
         self._reward_type = kwargs.get("reward_type", "type_1") # type_1 or type_2
         # init the reward function here; reward function will distribute the reward only. 
         if self._reward_type == "type_1":
