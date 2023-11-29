@@ -1,1176 +1,0 @@
-
-Name of the cluster on which the job is executing:
-	 spartan
-Number of CPUs on the allocated node: 
-	 6
-Number of CPUs requested per task: 
-	 6
-Numer of GPUs requested: 
-	 
-Requested GPU count per allocated node: 
-	 
-Requested GPU count per allocated task:
-	  
-The ID of the job allocation:
-	  53740393
-Count of processors available to the job on this node:
-	  6
-Name of the job:
-	  tst.slurm
-List of nodes allocated to the job:
-	  spartan-gpgpu091
-Total number of nodes in the job’s resource allocation:
-	  1
-Name of the partition in which the job is running:
-	  deeplearn
-Minimum memory required per allocated CPU:
-	  4000
-Requested memory per allocated GPU:
-	  
-Total amount of memory per node that the job needs:
-	  
-List of nodes allocated to the job:
-	  spartan-gpgpu091
-Total number of CPUs allocated:
-	  1
-Maximum number of MPI tasks (that’s processes): 
-	 1
-Number of tasks requested per core: 
-	 
-Number of tasks requested per GPU: 
-	 
-Number of tasks requested per node:
-	  1
-The scheduling priority (nice value) at the time of job submission. This value is propagated to the spawned processes: 
-	 0
-The MPI rank (or relative process ID) of the current process: 
-	 0
-The directory from which SBATCH was invoked: 
-	 /data/gpfs/projects/punim1355/dalmiapriyam/predator-prey
-The Hostname of the computer from which SBATCH was invoked: 
-	 spartan-login1.hpc.unimelb.edu.au
-The process ID of the corresponding task: 
-	 89967
-
-
-
- LOADING MODULES: 
-
-
-
-
- PYTHON SCRIPT OUTPUT: 
-
-2023-11-23 19:56:28,359	WARNING __init__.py:10 -- PG has/have been moved to `rllib_contrib` and will no longer be maintained by the RLlib team. You can still use it/them normally inside RLlib util Ray 2.8, but from Ray 2.9 on, all `rllib_contrib` algorithms will no longer be part of the core repo, and will therefore have to be installed separately with pinned dependencies for e.g. ray[rllib] and other packages! See https://github.com/ray-project/ray/tree/master/rllib_contrib#rllib-contrib for more information on the RLlib contrib effort.
-2023-11-23 19:56:30,999	INFO worker.py:1673 -- Started a local Ray instance.
-2023-11-23 19:56:32,901	INFO tune.py:220 -- Initializing Ray automatically. For cluster usage or custom Ray initialization, call `ray.init(...)` before `Tuner(...)`.
-2023-11-23 19:56:32,902	INFO tune.py:595 -- [output] This will use the new output engine with verbosity 1. To disable the new output and use the legacy output engine, set the environment variable RAY_AIR_NEW_OUTPUT=0. For more information, please see https://github.com/ray-project/ray/issues/36949
-[36m(pid=91574)[0m 2023-11-23 19:56:35,848	WARNING __init__.py:10 -- PG has/have been moved to `rllib_contrib` and will no longer be maintained by the RLlib team. You can still use it/them normally inside RLlib util Ray 2.8, but from Ray 2.9 on, all `rllib_contrib` algorithms will no longer be part of the core repo, and will therefore have to be installed separately with pinned dependencies for e.g. ray[rllib] and other packages! See https://github.com/ray-project/ray/tree/master/rllib_contrib#rllib-contrib for more information on the RLlib contrib effort.
-2023-11-23 19:56:36,153	INFO wandb.py:307 -- Already logged into W&B.
-wandb: Currently logged in as: theputernerdai (tpn). Use `wandb login --relogin` to force relogin
-wandb: Tracking run with wandb version 0.16.0
-wandb: Run data is saved locally in /data/gpfs/projects/punim1355/dalmiapriyam/predator-prey/wandb/run-20231123_195637-ozql0w22
-wandb: Run `wandb offline` to turn off syncing.
-wandb: Syncing run fresh-meadow-19
-wandb: ⭐️ View project at https://wandb.ai/tpn/rllib3
-wandb: 🚀 View run at https://wandb.ai/tpn/rllib3/runs/ozql0w22
-2023-11-23 19:56:38,460	INFO wandb.py:307 -- Already logged into W&B.
-[36m(train_algo pid=91574)[0m /data/gpfs/projects/punim1355/dalmiapriyam/predator-prey/.venv/lib/python3.10/site-packages/ray/rllib/algorithms/algorithm.py:484: RayDeprecationWarning: This API is deprecated and may be removed in future Ray releases. You could suppress this warning by setting env variable PYTHONWARNINGS="ignore::DeprecationWarning"
-[36m(train_algo pid=91574)[0m `UnifiedLogger` will be removed in Ray 2.7.
-[36m(train_algo pid=91574)[0m   return UnifiedLogger(config, logdir, loggers=None)
-[36m(train_algo pid=91574)[0m /data/gpfs/projects/punim1355/dalmiapriyam/predator-prey/.venv/lib/python3.10/site-packages/ray/tune/logger/unified.py:53: RayDeprecationWarning: This API is deprecated and may be removed in future Ray releases. You could suppress this warning by setting env variable PYTHONWARNINGS="ignore::DeprecationWarning"
-[36m(train_algo pid=91574)[0m The `JsonLogger interface is deprecated in favor of the `ray.tune.json.JsonLoggerCallback` interface and will be removed in Ray 2.7.
-[36m(train_algo pid=91574)[0m   self._loggers.append(cls(self.config, self.logdir, self.trial))
-[36m(train_algo pid=91574)[0m /data/gpfs/projects/punim1355/dalmiapriyam/predator-prey/.venv/lib/python3.10/site-packages/ray/tune/logger/unified.py:53: RayDeprecationWarning: This API is deprecated and may be removed in future Ray releases. You could suppress this warning by setting env variable PYTHONWARNINGS="ignore::DeprecationWarning"
-[36m(train_algo pid=91574)[0m The `CSVLogger interface is deprecated in favor of the `ray.tune.csv.CSVLoggerCallback` interface and will be removed in Ray 2.7.
-[36m(train_algo pid=91574)[0m   self._loggers.append(cls(self.config, self.logdir, self.trial))
-[36m(train_algo pid=91574)[0m /data/gpfs/projects/punim1355/dalmiapriyam/predator-prey/.venv/lib/python3.10/site-packages/ray/tune/logger/unified.py:53: RayDeprecationWarning: This API is deprecated and may be removed in future Ray releases. You could suppress this warning by setting env variable PYTHONWARNINGS="ignore::DeprecationWarning"
-[36m(train_algo pid=91574)[0m The `TBXLogger interface is deprecated in favor of the `ray.tune.tensorboardx.TBXLoggerCallback` interface and will be removed in Ray 2.7.
-[36m(train_algo pid=91574)[0m   self._loggers.append(cls(self.config, self.logdir, self.trial))
-[36m(train_algo pid=91574)[0m Install gputil for GPU system monitoring.
-wandb: - 0.005 MB of 0.005 MB uploadedwandb: \ 0.005 MB of 0.005 MB uploadedwandb: | 0.005 MB of 0.008 MB uploadedwandb: / 0.005 MB of 0.011 MB uploadedwandb: - 0.005 MB of 0.011 MB uploadedwandb: \ 0.011 MB of 0.011 MB uploadedwandb:                                                                                
-wandb: 🚀 View run fresh-meadow-19 at: https://wandb.ai/tpn/rllib3/runs/ozql0w22
-wandb: ️⚡ View job at https://wandb.ai/tpn/rllib3/jobs/QXJ0aWZhY3RDb2xsZWN0aW9uOjExODA1Nzg0NQ==/version_details/v1
-wandb: Synced 5 W&B file(s), 0 media file(s), 0 artifact file(s) and 0 other file(s)
-wandb: Find logs at: ./wandb/run-20231123_195637-ozql0w22/logs
-wandb: - Waiting for wandb.init()...wandb: \ Waiting for wandb.init()...wandb: Tracking run with wandb version 0.16.0
-wandb: Run data is saved locally in /data/gpfs/projects/punim1355/dalmiapriyam/predator-prey/wandb/run-20231123_195638-ozql0w22
-wandb: Run `wandb offline` to turn off syncing.
-wandb: Resuming run fresh-meadow-19
-wandb: ⭐️ View project at https://wandb.ai/tpn/rllib3
-wandb: 🚀 View run at https://wandb.ai/tpn/rllib3/runs/ozql0w22
-2023-11-23 19:56:49,901	INFO wandb.py:307 -- Already logged into W&B.
-[36m(pid=91577)[0m 2023-11-23 19:56:35,947	WARNING __init__.py:10 -- PG has/have been moved to `rllib_contrib` and will no longer be maintained by the RLlib team. You can still use it/them normally inside RLlib util Ray 2.8, but from Ray 2.9 on, all `rllib_contrib` algorithms will no longer be part of the core repo, and will therefore have to be installed separately with pinned dependencies for e.g. ray[rllib] and other packages! See https://github.com/ray-project/ray/tree/master/rllib_contrib#rllib-contrib for more information on the RLlib contrib effort.[32m [repeated 4x across cluster] (Ray deduplicates logs by default. Set RAY_DEDUP_LOGS=0 to disable log deduplication, or see https://docs.ray.io/en/master/ray-observability/ray-logging.html#log-deduplication for more options.)[0m
-[36m(train_algo pid=91578)[0m /data/gpfs/projects/punim1355/dalmiapriyam/predator-prey/.venv/lib/python3.10/site-packages/ray/tune/logger/unified.py:53: RayDeprecationWarning: This API is deprecated and may be removed in future Ray releases. You could suppress this warning by setting env variable PYTHONWARNINGS="ignore::DeprecationWarning"[32m [repeated 4x across cluster][0m
-[36m(train_algo pid=91578)[0m `UnifiedLogger` will be removed in Ray 2.7.
-[36m(train_algo pid=91578)[0m   return UnifiedLogger(config, logdir, loggers=None)
-[36m(train_algo pid=91578)[0m The `JsonLogger interface is deprecated in favor of the `ray.tune.json.JsonLoggerCallback` interface and will be removed in Ray 2.7.
-[36m(train_algo pid=91578)[0m   self._loggers.append(cls(self.config, self.logdir, self.trial))[32m [repeated 3x across cluster][0m
-[36m(train_algo pid=91578)[0m The `CSVLogger interface is deprecated in favor of the `ray.tune.csv.CSVLoggerCallback` interface and will be removed in Ray 2.7.
-[36m(train_algo pid=91578)[0m The `TBXLogger interface is deprecated in favor of the `ray.tune.tensorboardx.TBXLoggerCallback` interface and will be removed in Ray 2.7.
-[36m(train_algo pid=91578)[0m Install gputil for GPU system monitoring.
-wandb: WARNING No requirements.txt found, not creating job artifact. See https://docs.wandb.ai/guides/launch/create-job
-wandb: - 0.000 MB of 0.000 MB uploadedwandb: \ 0.000 MB of 0.005 MB uploadedwandb: | 0.000 MB of 0.005 MB uploadedwandb: / 0.005 MB of 0.005 MB uploadedwandb:                                                                                
-wandb: 🚀 View run fresh-meadow-19 at: https://wandb.ai/tpn/rllib3/runs/ozql0w22
-wandb: Synced 3 W&B file(s), 0 media file(s), 0 artifact file(s) and 0 other file(s)
-wandb: Find logs at: ./wandb/run-20231123_195638-ozql0w22/logs
-wandb: - Waiting for wandb.init()...wandb: \ Waiting for wandb.init()...wandb: Tracking run with wandb version 0.16.0
-wandb: Run data is saved locally in /data/gpfs/projects/punim1355/dalmiapriyam/predator-prey/wandb/run-20231123_195649-cn8mdtlj
-wandb: Run `wandb offline` to turn off syncing.
-wandb: Syncing run bumbling-butterfly-20
-wandb: ⭐️ View project at https://wandb.ai/tpn/rllib3
-wandb: 🚀 View run at https://wandb.ai/tpn/rllib3/runs/cn8mdtlj
-2023-11-23 19:56:59,718	INFO wandb.py:307 -- Already logged into W&B.
-[36m(train_algo pid=91576)[0m `UnifiedLogger` will be removed in Ray 2.7.
-[36m(train_algo pid=91576)[0m   return UnifiedLogger(config, logdir, loggers=None)
-[36m(train_algo pid=91576)[0m The `JsonLogger interface is deprecated in favor of the `ray.tune.json.JsonLoggerCallback` interface and will be removed in Ray 2.7.
-[36m(train_algo pid=91576)[0m The `CSVLogger interface is deprecated in favor of the `ray.tune.csv.CSVLoggerCallback` interface and will be removed in Ray 2.7.
-[36m(train_algo pid=91576)[0m The `TBXLogger interface is deprecated in favor of the `ray.tune.tensorboardx.TBXLoggerCallback` interface and will be removed in Ray 2.7.
-[36m(train_algo pid=91576)[0m /data/gpfs/projects/punim1355/dalmiapriyam/predator-prey/.venv/lib/python3.10/site-packages/ray/tune/logger/unified.py:53: RayDeprecationWarning: This API is deprecated and may be removed in future Ray releases. You could suppress this warning by setting env variable PYTHONWARNINGS="ignore::DeprecationWarning"[32m [repeated 4x across cluster][0m
-[36m(train_algo pid=91576)[0m   self._loggers.append(cls(self.config, self.logdir, self.trial))[32m [repeated 3x across cluster][0m
-[36m(train_algo pid=91576)[0m Install gputil for GPU system monitoring.
-wandb: - 0.005 MB of 0.005 MB uploadedwandb: \ 0.005 MB of 0.005 MB uploadedwandb: | 0.005 MB of 0.005 MB uploadedwandb: / 0.005 MB of 0.005 MB uploadedwandb: - 0.015 MB of 0.022 MB uploaded (0.001 MB deduped)wandb: \ 0.015 MB of 0.022 MB uploaded (0.001 MB deduped)wandb: | 0.015 MB of 0.022 MB uploaded (0.001 MB deduped)wandb: / 0.022 MB of 0.022 MB uploaded (0.001 MB deduped)wandb:                                                                                
-wandb: W&B sync reduced upload amount by 6.7%             
-wandb: 
-wandb: Run history:
-wandb:      episode_len_mean ▁▁
-wandb:   episode_reward_mean █▁
-wandb:        episodes_total ▁▁
-wandb: num_env_steps_sampled ▁▁
-wandb: num_env_steps_trained ▁▁
-wandb:          time_total_s ▁█
-wandb:    training_iteration ▁▁
-wandb: 
-wandb: Run summary:
-wandb:      episode_len_mean 101.0
-wandb:   episode_reward_mean 1.0
-wandb:        episodes_total 1
-wandb: num_env_steps_sampled 200
-wandb: num_env_steps_trained 0
-wandb:          time_total_s 0.92921
-wandb:    training_iteration 1
-wandb: 
-wandb: 🚀 View run bumbling-butterfly-20 at: https://wandb.ai/tpn/rllib3/runs/cn8mdtlj
-wandb: ️⚡ View job at https://wandb.ai/tpn/rllib3/jobs/QXJ0aWZhY3RDb2xsZWN0aW9uOjExODA1Nzg0NQ==/version_details/v2
-wandb: Synced 5 W&B file(s), 0 media file(s), 2 artifact file(s) and 0 other file(s)
-wandb: Find logs at: ./wandb/run-20231123_195649-cn8mdtlj/logs
-wandb: - Waiting for wandb.init()...wandb: \ Waiting for wandb.init()...wandb: Tracking run with wandb version 0.16.0
-wandb: Run data is saved locally in /data/gpfs/projects/punim1355/dalmiapriyam/predator-prey/wandb/run-20231123_195659-jh4sqii0
-wandb: Run `wandb offline` to turn off syncing.
-wandb: Syncing run sunny-night-21
-wandb: ⭐️ View project at https://wandb.ai/tpn/rllib3
-wandb: 🚀 View run at https://wandb.ai/tpn/rllib3/runs/jh4sqii0
-[36m(train_algo pid=91577)[0m `UnifiedLogger` will be removed in Ray 2.7.
-[36m(train_algo pid=91577)[0m   return UnifiedLogger(config, logdir, loggers=None)
-[36m(train_algo pid=91577)[0m The `JsonLogger interface is deprecated in favor of the `ray.tune.json.JsonLoggerCallback` interface and will be removed in Ray 2.7.
-[36m(train_algo pid=91577)[0m The `CSVLogger interface is deprecated in favor of the `ray.tune.csv.CSVLoggerCallback` interface and will be removed in Ray 2.7.
-[36m(train_algo pid=91577)[0m The `TBXLogger interface is deprecated in favor of the `ray.tune.tensorboardx.TBXLoggerCallback` interface and will be removed in Ray 2.7.
-[36m(train_algo pid=91577)[0m /data/gpfs/projects/punim1355/dalmiapriyam/predator-prey/.venv/lib/python3.10/site-packages/ray/tune/logger/unified.py:53: RayDeprecationWarning: This API is deprecated and may be removed in future Ray releases. You could suppress this warning by setting env variable PYTHONWARNINGS="ignore::DeprecationWarning"[32m [repeated 4x across cluster][0m
-[36m(train_algo pid=91577)[0m   self._loggers.append(cls(self.config, self.logdir, self.trial))[32m [repeated 3x across cluster][0m
-2023-11-23 19:57:12,983	INFO wandb.py:307 -- Already logged into W&B.
-[36m(train_algo pid=91577)[0m Install gputil for GPU system monitoring.
-wandb: - 0.005 MB of 0.005 MB uploadedwandb: \ 0.005 MB of 0.005 MB uploadedwandb: | 0.005 MB of 0.005 MB uploadedwandb: / 0.005 MB of 0.005 MB uploadedwandb: - 0.015 MB of 0.028 MB uploaded (0.001 MB deduped)wandb: \ 0.015 MB of 0.028 MB uploaded (0.001 MB deduped)wandb: | 0.015 MB of 0.028 MB uploaded (0.001 MB deduped)wandb: / 0.028 MB of 0.028 MB uploaded (0.001 MB deduped)wandb:                                                                                
-wandb: W&B sync reduced upload amount by 5.4%             
-wandb: 
-wandb: Run history:
-wandb:      episode_len_mean ▁
-wandb:   episode_reward_mean ▁
-wandb:        episodes_total ▁
-wandb: num_env_steps_sampled ▁
-wandb: num_env_steps_trained ▁
-wandb:          time_total_s ▁
-wandb:    training_iteration ▁
-wandb: 
-wandb: Run summary:
-wandb:      episode_len_mean 101.0
-wandb:   episode_reward_mean 3.0
-wandb:        episodes_total 1
-wandb: num_env_steps_sampled 200
-wandb: num_env_steps_trained 0
-wandb:          time_total_s 0.91507
-wandb:    training_iteration 1
-wandb: 
-wandb: 🚀 View run sunny-night-21 at: https://wandb.ai/tpn/rllib3/runs/jh4sqii0
-wandb: ️⚡ View job at https://wandb.ai/tpn/rllib3/jobs/QXJ0aWZhY3RDb2xsZWN0aW9uOjExODA1Nzg0NQ==/version_details/v3
-wandb: Synced 5 W&B file(s), 0 media file(s), 2 artifact file(s) and 0 other file(s)
-wandb: Find logs at: ./wandb/run-20231123_195659-jh4sqii0/logs
-wandb: - Waiting for wandb.init()...wandb: \ Waiting for wandb.init()...wandb: Tracking run with wandb version 0.16.0
-wandb: Run data is saved locally in /data/gpfs/projects/punim1355/dalmiapriyam/predator-prey/wandb/run-20231123_195712-u4tij8vp
-wandb: Run `wandb offline` to turn off syncing.
-wandb: Syncing run faithful-paper-22
-wandb: ⭐️ View project at https://wandb.ai/tpn/rllib3
-wandb: 🚀 View run at https://wandb.ai/tpn/rllib3/runs/u4tij8vp
-[36m(train_algo pid=91575)[0m `UnifiedLogger` will be removed in Ray 2.7.
-[36m(train_algo pid=91575)[0m   return UnifiedLogger(config, logdir, loggers=None)
-[36m(train_algo pid=91575)[0m The `JsonLogger interface is deprecated in favor of the `ray.tune.json.JsonLoggerCallback` interface and will be removed in Ray 2.7.
-[36m(train_algo pid=91575)[0m The `CSVLogger interface is deprecated in favor of the `ray.tune.csv.CSVLoggerCallback` interface and will be removed in Ray 2.7.
-[36m(train_algo pid=91575)[0m The `TBXLogger interface is deprecated in favor of the `ray.tune.tensorboardx.TBXLoggerCallback` interface and will be removed in Ray 2.7.
-[36m(train_algo pid=91575)[0m /data/gpfs/projects/punim1355/dalmiapriyam/predator-prey/.venv/lib/python3.10/site-packages/ray/tune/logger/unified.py:53: RayDeprecationWarning: This API is deprecated and may be removed in future Ray releases. You could suppress this warning by setting env variable PYTHONWARNINGS="ignore::DeprecationWarning"[32m [repeated 4x across cluster][0m
-[36m(train_algo pid=91575)[0m   self._loggers.append(cls(self.config, self.logdir, self.trial))[32m [repeated 3x across cluster][0m
-[36m(train_algo pid=91575)[0m Install gputil for GPU system monitoring.
-2023-11-23 20:37:06,023	INFO wandb.py:307 -- Already logged into W&B.
-wandb: - 0.005 MB of 0.005 MB uploadedwandb: \ 0.005 MB of 0.008 MB uploadedwandb: | 0.005 MB of 0.449 MB uploadedwandb: / 0.449 MB of 0.449 MB uploadedwandb: - 0.449 MB of 0.449 MB uploadedwandb: \ 0.449 MB of 0.449 MB uploadedwandb:                                                                                
-wandb: 
-wandb: Run history:
-wandb:      episode_len_mean ██████▄█▄███▁▇▃▅▅▂▁▂▇▄▂▁▃▃▂▂▁▄▃▃▁▃▁▁▁▂▂▃
-wandb:   episode_reward_mean ▂▁▂▄▂▂▇▄█▄▄▅█▅█▇▇███▆▇████▇▇███████████▇
-wandb:        episodes_total ▁▁▁▁▁▁▂▂▂▂▂▂▃▂▃▂▂▄▄▄▃▃▅▅▃▄▅▆▆▄▄▆▅▅▅▅▇█▅█
-wandb: num_env_steps_sampled ▁▁▁▂▂▂▂▂▂▂▂▂▃▃▃▃▃▄▄▄▄▄▅▅▄▄▆▆▆▅▅▇▅▅▅▆▇█▆█
-wandb: num_env_steps_trained ▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁
-wandb:          time_total_s ▁▁▁▁▂▂▂▂▂▃▃▃▃▃▃▄▄▄▄▄▅▅▅▅▅▆▆▆▆▆▆▇▇▇▇▇▇███
-wandb:    training_iteration ▁▁▁▂▂▂▂▂▂▂▂▂▃▃▃▃▃▄▄▄▄▄▅▅▄▄▆▆▆▅▅▇▅▅▅▆▇█▆█
-wandb: 
-wandb: Run summary:
-wandb:      episode_len_mean 54.46
-wandb:   episode_reward_mean 5.92
-wandb:        episodes_total 6739
-wandb: num_env_steps_sampled 499600
-wandb: num_env_steps_trained 0
-wandb:          time_total_s 2270.61206
-wandb:    training_iteration 2498
-wandb: 
-wandb: 🚀 View run faithful-paper-22 at: https://wandb.ai/tpn/rllib3/runs/u4tij8vp
-wandb: ️⚡ View job at https://wandb.ai/tpn/rllib3/jobs/QXJ0aWZhY3RDb2xsZWN0aW9uOjExODA1Nzg0NQ==/version_details/v3
-wandb: Synced 5 W&B file(s), 0 media file(s), 0 artifact file(s) and 0 other file(s)
-wandb: Find logs at: ./wandb/run-20231123_195712-u4tij8vp/logs
-wandb: - Waiting for wandb.init()...wandb: \ Waiting for wandb.init()...wandb: Tracking run with wandb version 0.16.0
-wandb: Run data is saved locally in /data/gpfs/projects/punim1355/dalmiapriyam/predator-prey/wandb/run-20231123_203706-m8v0haw2
-wandb: Run `wandb offline` to turn off syncing.
-wandb: Syncing run generous-dragon-23
-wandb: ⭐️ View project at https://wandb.ai/tpn/rllib3
-wandb: 🚀 View run at https://wandb.ai/tpn/rllib3/runs/m8v0haw2
-[36m(train_algo pid=91577)[0m `UnifiedLogger` will be removed in Ray 2.7.
-[36m(train_algo pid=91577)[0m   return UnifiedLogger(config, logdir, loggers=None)
-[36m(train_algo pid=91577)[0m The `JsonLogger interface is deprecated in favor of the `ray.tune.json.JsonLoggerCallback` interface and will be removed in Ray 2.7.
-[36m(train_algo pid=91577)[0m The `CSVLogger interface is deprecated in favor of the `ray.tune.csv.CSVLoggerCallback` interface and will be removed in Ray 2.7.
-[36m(train_algo pid=91577)[0m The `TBXLogger interface is deprecated in favor of the `ray.tune.tensorboardx.TBXLoggerCallback` interface and will be removed in Ray 2.7.
-[36m(train_algo pid=91577)[0m /data/gpfs/projects/punim1355/dalmiapriyam/predator-prey/.venv/lib/python3.10/site-packages/ray/tune/logger/unified.py:53: RayDeprecationWarning: This API is deprecated and may be removed in future Ray releases. You could suppress this warning by setting env variable PYTHONWARNINGS="ignore::DeprecationWarning"[32m [repeated 4x across cluster][0m
-[36m(train_algo pid=91577)[0m   self._loggers.append(cls(self.config, self.logdir, self.trial))[32m [repeated 3x across cluster][0m
-[36m(train_algo pid=91577)[0m Install gputil for GPU system monitoring.
-2023-11-23 20:38:52,591	INFO wandb.py:307 -- Already logged into W&B.
-wandb: - 0.005 MB of 0.005 MB uploadedwandb: \ 0.005 MB of 0.008 MB uploadedwandb: | 0.005 MB of 0.008 MB uploadedwandb: / 0.048 MB of 0.048 MB uploadedwandb:                                                                                
-wandb: 
-wandb: Run history:
-wandb:      episode_len_mean ▂▄▁▄▄█▂█▄▁▄▄███▄▁▄█▁▂▂▄▄▂█▁▃▃▁▂▁█▄▁▄▁██▂
-wandb:   episode_reward_mean █▇█▇▇▁█▁▇█▇▇▁▁▁▇█▇▁███▇▇█▁██▇███▁▇█▇█▁▁█
-wandb:        episodes_total ▅█▆██▁▆▁█▆██▁▁▁█▆█▁▆▅▆██▆▁▆▅█▆▅▆▁█▆█▆▁▁▆
-wandb: num_env_steps_sampled ▆█▆██▁▆▁█▆██▁▁▁█▆█▁▆▆▆██▆▁▆▆█▆▆▆▁█▆█▆▁▁▆
-wandb: num_env_steps_trained ▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁
-wandb:          time_total_s █████▁█▁████▁▁▁███▁██████▁██████▁████▁▁█
-wandb:    training_iteration ▆█▆██▁▆▁█▆██▁▁▁█▆█▁▆▆▆██▆▁▆▆█▆▆▆▁█▆█▆▁▁▆
-wandb: 
-wandb: Run summary:
-wandb:      episode_len_mean 58.82
-wandb:   episode_reward_mean 5.88
-wandb:        episodes_total 6715
-wandb: num_env_steps_sampled 521800
-wandb: num_env_steps_trained 0
-wandb:          time_total_s 2360.32198
-wandb:    training_iteration 2609
-wandb: 
-wandb: 🚀 View run generous-dragon-23 at: https://wandb.ai/tpn/rllib3/runs/m8v0haw2
-wandb: ️⚡ View job at https://wandb.ai/tpn/rllib3/jobs/QXJ0aWZhY3RDb2xsZWN0aW9uOjExODA1Nzg0NQ==/version_details/v4
-wandb: Synced 5 W&B file(s), 0 media file(s), 0 artifact file(s) and 0 other file(s)
-wandb: Find logs at: ./wandb/run-20231123_203706-m8v0haw2/logs
-wandb: - Waiting for wandb.init()...wandb: \ Waiting for wandb.init()...wandb: Tracking run with wandb version 0.16.0
-wandb: Run data is saved locally in /data/gpfs/projects/punim1355/dalmiapriyam/predator-prey/wandb/run-20231123_203852-piazilp6
-wandb: Run `wandb offline` to turn off syncing.
-wandb: Syncing run usual-yogurt-24
-wandb: ⭐️ View project at https://wandb.ai/tpn/rllib3
-wandb: 🚀 View run at https://wandb.ai/tpn/rllib3/runs/piazilp6
-[36m(train_algo pid=91575)[0m `UnifiedLogger` will be removed in Ray 2.7.
-[36m(train_algo pid=91575)[0m   return UnifiedLogger(config, logdir, loggers=None)
-[36m(train_algo pid=91575)[0m The `JsonLogger interface is deprecated in favor of the `ray.tune.json.JsonLoggerCallback` interface and will be removed in Ray 2.7.
-[36m(train_algo pid=91575)[0m The `CSVLogger interface is deprecated in favor of the `ray.tune.csv.CSVLoggerCallback` interface and will be removed in Ray 2.7.
-[36m(train_algo pid=91575)[0m The `TBXLogger interface is deprecated in favor of the `ray.tune.tensorboardx.TBXLoggerCallback` interface and will be removed in Ray 2.7.
-[36m(train_algo pid=91575)[0m Install gputil for GPU system monitoring.
-[36m(train_algo pid=91575)[0m /data/gpfs/projects/punim1355/dalmiapriyam/predator-prey/.venv/lib/python3.10/site-packages/ray/tune/logger/unified.py:53: RayDeprecationWarning: This API is deprecated and may be removed in future Ray releases. You could suppress this warning by setting env variable PYTHONWARNINGS="ignore::DeprecationWarning"[32m [repeated 4x across cluster][0m
-[36m(train_algo pid=91575)[0m   self._loggers.append(cls(self.config, self.logdir, self.trial))[32m [repeated 3x across cluster][0m
-2023-11-23 20:50:58,126	INFO wandb.py:307 -- Already logged into W&B.
-wandb: - 0.005 MB of 0.005 MB uploadedwandb: \ 0.005 MB of 0.005 MB uploadedwandb: | 0.005 MB of 0.005 MB uploadedwandb: / 0.005 MB of 0.005 MB uploadedwandb: - 0.014 MB of 0.181 MB uploaded (0.001 MB deduped)wandb: \ 0.181 MB of 0.181 MB uploaded (0.001 MB deduped)wandb: | 0.181 MB of 0.181 MB uploaded (0.001 MB deduped)wandb: / 0.181 MB of 0.181 MB uploaded (0.001 MB deduped)wandb:                                                                                
-wandb: 
-wandb: Run history:
-wandb:      episode_len_mean ██▃▃▂████▂▂▁█▇▂▃▂█▇▂▂▂▂▂▁▆▂█▅▂▁▁▂▄▂▂▄▅▇▂
-wandb:   episode_reward_mean ▁▁███▁▂▁▃███▁▅███▂▆██████▇█▄▇████▇███▇▄█
-wandb:        episodes_total ▁▁▅▆▆▁▁▁▁▆▇▇▁▂▇▆▇▁▂▇▇▇▇▆▇▂▇▂▂▇▇▇▇▇██▃▃▂█
-wandb: num_env_steps_sampled ▁▁▇▇▇▁▁▁▂▇▇▇▁▂▇▇▇▁▂▇▇▇▇▇▇▃▇▂▃███████▃▃▂█
-wandb: num_env_steps_trained ▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁
-wandb:          time_total_s ▁▁▆▇▇▁▁▁▁▇▇▇▁▂▇▇▇▁▂▇▇▇▇▇▇▂▇▂▂███████▂▃▂█
-wandb:    training_iteration ▁▁▇▇▇▁▁▁▂▇▇▇▁▂▇▇▇▁▂▇▇▇▇▇▇▃▇▂▃███████▃▃▂█
-wandb: 
-wandb: Run summary:
-wandb:      episode_len_mean 67.99
-wandb:   episode_reward_mean 5.71
-wandb:        episodes_total 2737
-wandb: num_env_steps_sampled 234400
-wandb: num_env_steps_trained 0
-wandb:          time_total_s 766.74649
-wandb:    training_iteration 1172
-wandb: 
-wandb: 🚀 View run usual-yogurt-24 at: https://wandb.ai/tpn/rllib3/runs/piazilp6
-wandb: ️⚡ View job at https://wandb.ai/tpn/rllib3/jobs/QXJ0aWZhY3RDb2xsZWN0aW9uOjExODA1Nzg0NQ==/version_details/v4
-wandb: Synced 5 W&B file(s), 0 media file(s), 2 artifact file(s) and 0 other file(s)
-wandb: Find logs at: ./wandb/run-20231123_203852-piazilp6/logs
-wandb: - Waiting for wandb.init()...wandb: \ Waiting for wandb.init()...wandb: Tracking run with wandb version 0.16.0
-wandb: Run data is saved locally in /data/gpfs/projects/punim1355/dalmiapriyam/predator-prey/wandb/run-20231123_205058-obzyg561
-wandb: Run `wandb offline` to turn off syncing.
-wandb: Syncing run different-donkey-25
-wandb: ⭐️ View project at https://wandb.ai/tpn/rllib3
-wandb: 🚀 View run at https://wandb.ai/tpn/rllib3/runs/obzyg561
-[36m(train_algo pid=91576)[0m `UnifiedLogger` will be removed in Ray 2.7.
-[36m(train_algo pid=91576)[0m   return UnifiedLogger(config, logdir, loggers=None)
-[36m(train_algo pid=91576)[0m The `JsonLogger interface is deprecated in favor of the `ray.tune.json.JsonLoggerCallback` interface and will be removed in Ray 2.7.
-[36m(train_algo pid=91576)[0m The `CSVLogger interface is deprecated in favor of the `ray.tune.csv.CSVLoggerCallback` interface and will be removed in Ray 2.7.
-[36m(train_algo pid=91576)[0m The `TBXLogger interface is deprecated in favor of the `ray.tune.tensorboardx.TBXLoggerCallback` interface and will be removed in Ray 2.7.
-[36m(train_algo pid=91576)[0m Install gputil for GPU system monitoring.
-[36m(train_algo pid=91576)[0m /data/gpfs/projects/punim1355/dalmiapriyam/predator-prey/.venv/lib/python3.10/site-packages/ray/tune/logger/unified.py:53: RayDeprecationWarning: This API is deprecated and may be removed in future Ray releases. You could suppress this warning by setting env variable PYTHONWARNINGS="ignore::DeprecationWarning"[32m [repeated 4x across cluster][0m
-[36m(train_algo pid=91576)[0m   self._loggers.append(cls(self.config, self.logdir, self.trial))[32m [repeated 3x across cluster][0m
-2023-11-23 20:53:30,991	INFO wandb.py:307 -- Already logged into W&B.
-wandb: - 0.005 MB of 0.005 MB uploadedwandb: \ 0.005 MB of 0.008 MB uploadedwandb: | 0.005 MB of 0.058 MB uploadedwandb: / 0.005 MB of 0.058 MB uploadedwandb: - 0.058 MB of 0.058 MB uploadedwandb:                                                                                
-wandb: 
-wandb: Run history:
-wandb:      episode_len_mean ▁▁▁█▂▂▃▄█▇█▇▄▇██▄▂▁█▁▁▁█▂▄▂█▂▄▇█▇▇▃▇▂▇█▃
-wandb:   episode_reward_mean ███▅██▇▇▅▅▁▅▇▅▅▁▇██▁███▁█▇█▂█▇▆▂▅▅█▅█▅▃█
-wandb:        episodes_total ▇█▇▂▇▇▃▃▂▂▁▂▃▂▂▁▃██▁█▇█▁▇▃▇▁▇▃▂▁▂▂▃▂█▂▁▃
-wandb: num_env_steps_sampled ███▂██▃▃▂▂▁▂▃▃▃▁▃██▁███▁█▄█▁█▄▃▁▃▃▄▃█▃▁▄
-wandb: num_env_steps_trained ▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁
-wandb:          time_total_s ███▂██▃▃▃▃▁▃▃▃▃▁▃██▁███▁█▃█▁█▃▃▁▃▃▃▃█▃▁▃
-wandb:    training_iteration ███▂██▃▃▂▂▁▂▃▃▃▁▃██▁███▁█▄█▁█▄▃▁▃▃▄▃█▃▁▄
-wandb: 
-wandb: Run summary:
-wandb:      episode_len_mean 64.93
-wandb:   episode_reward_mean 5.73
-wandb:        episodes_total 3311
-wandb: num_env_steps_sampled 275000
-wandb: num_env_steps_trained 0
-wandb:          time_total_s 899.54147
-wandb:    training_iteration 1375
-wandb: 
-wandb: 🚀 View run different-donkey-25 at: https://wandb.ai/tpn/rllib3/runs/obzyg561
-wandb: ️⚡ View job at https://wandb.ai/tpn/rllib3/jobs/QXJ0aWZhY3RDb2xsZWN0aW9uOjExODA1Nzg0NQ==/version_details/v4
-wandb: Synced 5 W&B file(s), 0 media file(s), 0 artifact file(s) and 0 other file(s)
-wandb: Find logs at: ./wandb/run-20231123_205058-obzyg561/logs
-wandb: - Waiting for wandb.init()...wandb: \ Waiting for wandb.init()...wandb: Tracking run with wandb version 0.16.0
-wandb: Run data is saved locally in /data/gpfs/projects/punim1355/dalmiapriyam/predator-prey/wandb/run-20231123_205330-yh3blfhd
-wandb: Run `wandb offline` to turn off syncing.
-wandb: Syncing run logical-firebrand-26
-wandb: ⭐️ View project at https://wandb.ai/tpn/rllib3
-wandb: 🚀 View run at https://wandb.ai/tpn/rllib3/runs/yh3blfhd
-[36m(train_algo pid=91574)[0m `UnifiedLogger` will be removed in Ray 2.7.
-[36m(train_algo pid=91574)[0m   return UnifiedLogger(config, logdir, loggers=None)
-[36m(train_algo pid=91574)[0m The `JsonLogger interface is deprecated in favor of the `ray.tune.json.JsonLoggerCallback` interface and will be removed in Ray 2.7.
-[36m(train_algo pid=91574)[0m The `CSVLogger interface is deprecated in favor of the `ray.tune.csv.CSVLoggerCallback` interface and will be removed in Ray 2.7.
-[36m(train_algo pid=91574)[0m The `TBXLogger interface is deprecated in favor of the `ray.tune.tensorboardx.TBXLoggerCallback` interface and will be removed in Ray 2.7.
-[36m(train_algo pid=91574)[0m Install gputil for GPU system monitoring.
-[36m(train_algo pid=91574)[0m /data/gpfs/projects/punim1355/dalmiapriyam/predator-prey/.venv/lib/python3.10/site-packages/ray/tune/logger/unified.py:53: RayDeprecationWarning: This API is deprecated and may be removed in future Ray releases. You could suppress this warning by setting env variable PYTHONWARNINGS="ignore::DeprecationWarning"[32m [repeated 4x across cluster][0m
-[36m(train_algo pid=91574)[0m   self._loggers.append(cls(self.config, self.logdir, self.trial))[32m [repeated 3x across cluster][0m
-2023-11-23 20:56:24,666	INFO wandb.py:307 -- Already logged into W&B.
-wandb: - 0.005 MB of 0.005 MB uploadedwandb: \ 0.005 MB of 0.005 MB uploadedwandb: | 0.005 MB of 0.005 MB uploadedwandb: / 0.005 MB of 0.005 MB uploadedwandb: - 0.005 MB of 0.005 MB uploadedwandb: \ 0.015 MB of 0.018 MB uploaded (0.001 MB deduped)wandb: | 0.015 MB of 0.018 MB uploaded (0.001 MB deduped)wandb: / 0.077 MB of 0.077 MB uploaded (0.001 MB deduped)wandb:                                                                                
-wandb: W&B sync reduced upload amount by 2.0%             
-wandb: 
-wandb: Run history:
-wandb:      episode_len_mean █▂█▇█▁█▁█▁▇▃██▇▄███▇▃█▃█▃█▇▁█▂▂▇▂▇▃▇█▂██
-wandb:   episode_reward_mean ▃█▃▅▃█▃█▄█▅▇▅▁▅█▁▄▁▄▇▁▇▁█▁▄█▁██▅█▆█▆▅█▅▂
-wandb:        episodes_total ▁▃▁▂▁█▁█▁█▂▃▂▁▂▃▁▁▁▁▄▁▄▁▄▁▁█▁█▄▂▄▂▄▂▂▄▂▁
-wandb: num_env_steps_sampled ▁▄▁▃▁█▁█▁█▃▄▃▁▃▄▁▁▁▁▄▁▄▁▄▁▂█▁█▄▃▄▃▄▃▂▄▂▁
-wandb: num_env_steps_trained ▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁
-wandb:          time_total_s ▁▃▁▃▁█▁█▁█▃▃▃▁▃▃▁▁▁▁▃▁▃▁▃▁▁█▁█▃▃▃▃▃▃▁▃▁▁
-wandb:    training_iteration ▁▄▁▃▁█▁█▁█▃▄▃▁▃▄▁▁▁▁▄▁▄▁▄▁▂█▁█▄▃▄▃▄▃▂▄▂▁
-wandb: 
-wandb: Run summary:
-wandb:      episode_len_mean 94.81
-wandb:   episode_reward_mean 4.28
-wandb:        episodes_total 2156
-wandb: num_env_steps_sampled 212800
-wandb: num_env_steps_trained 0
-wandb:          time_total_s 969.93203
-wandb:    training_iteration 1064
-wandb: 
-wandb: 🚀 View run logical-firebrand-26 at: https://wandb.ai/tpn/rllib3/runs/yh3blfhd
-wandb: ️⚡ View job at https://wandb.ai/tpn/rllib3/jobs/QXJ0aWZhY3RDb2xsZWN0aW9uOjExODA1Nzg0NQ==/version_details/v5
-wandb: Synced 5 W&B file(s), 0 media file(s), 2 artifact file(s) and 0 other file(s)
-wandb: Find logs at: ./wandb/run-20231123_205330-yh3blfhd/logs
-wandb: - Waiting for wandb.init()...wandb: \ Waiting for wandb.init()...wandb: Tracking run with wandb version 0.16.0
-wandb: Run data is saved locally in /data/gpfs/projects/punim1355/dalmiapriyam/predator-prey/wandb/run-20231123_205624-12erbawe
-wandb: Run `wandb offline` to turn off syncing.
-wandb: Syncing run golden-puddle-27
-wandb: ⭐️ View project at https://wandb.ai/tpn/rllib3
-wandb: 🚀 View run at https://wandb.ai/tpn/rllib3/runs/12erbawe
-[36m(train_algo pid=91578)[0m `UnifiedLogger` will be removed in Ray 2.7.
-[36m(train_algo pid=91578)[0m   return UnifiedLogger(config, logdir, loggers=None)
-[36m(train_algo pid=91578)[0m The `JsonLogger interface is deprecated in favor of the `ray.tune.json.JsonLoggerCallback` interface and will be removed in Ray 2.7.
-[36m(train_algo pid=91578)[0m The `CSVLogger interface is deprecated in favor of the `ray.tune.csv.CSVLoggerCallback` interface and will be removed in Ray 2.7.
-[36m(train_algo pid=91578)[0m The `TBXLogger interface is deprecated in favor of the `ray.tune.tensorboardx.TBXLoggerCallback` interface and will be removed in Ray 2.7.
-[36m(train_algo pid=91578)[0m Install gputil for GPU system monitoring.
-[36m(train_algo pid=91578)[0m /data/gpfs/projects/punim1355/dalmiapriyam/predator-prey/.venv/lib/python3.10/site-packages/ray/tune/logger/unified.py:53: RayDeprecationWarning: This API is deprecated and may be removed in future Ray releases. You could suppress this warning by setting env variable PYTHONWARNINGS="ignore::DeprecationWarning"[32m [repeated 4x across cluster][0m
-[36m(train_algo pid=91578)[0m   self._loggers.append(cls(self.config, self.logdir, self.trial))[32m [repeated 3x across cluster][0m
-2023-11-23 21:19:33,759	INFO wandb.py:307 -- Already logged into W&B.
-wandb: - 0.005 MB of 0.005 MB uploadedwandb: \ 0.005 MB of 0.005 MB uploadedwandb: | 0.005 MB of 0.005 MB uploadedwandb: / 0.005 MB of 0.005 MB uploadedwandb: - 0.015 MB of 0.018 MB uploaded (0.001 MB deduped)wandb: \ 0.015 MB of 0.351 MB uploaded (0.001 MB deduped)wandb: | 0.351 MB of 0.351 MB uploaded (0.001 MB deduped)wandb: / 0.351 MB of 0.351 MB uploaded (0.001 MB deduped)wandb: - 0.351 MB of 0.351 MB uploaded (0.001 MB deduped)wandb:                                                                                
-wandb: 
-wandb: Run history:
-wandb:      episode_len_mean ▂███████▆█▁▄▃█▃▆▂▅▆█▁▁▄▂▄▂▃▇▇▇▃▂▁▂▂▂▆▂▂▂
-wandb:   episode_reward_mean █▁▁▃▂▂▄▅▇▂█▇█▄█▆█▇▇▅███████▅▅▅██████▆███
-wandb:        episodes_total ▄▁▁▂▁▂▁▂▃▂▅▃▃▂▃▂▃▂▃▂▆▄▃▆▃▄▄▃▃▃▄▄▅▅▅▅▄█▅▆
-wandb: num_env_steps_sampled ▄▁▁▂▂▂▂▂▄▂▅▄▃▃▃▃▃▃▃▃▆▄▄▇▄▄▅▄▄▄▅▅▅▅▆▅▅█▆▆
-wandb: num_env_steps_trained ▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁
-wandb:          time_total_s ▄▁▁▂▂▂▂▂▅▂▅▅▃▃▃▂▃▃▃▃▆▄▃▇▃▄▇▄▄▄▄▄▅▅▇▄▅█▅▆
-wandb:    training_iteration ▄▁▁▂▂▂▂▂▄▂▅▄▃▃▃▃▃▃▃▃▆▄▄▇▄▄▅▄▄▄▅▅▅▅▆▅▅█▆▆
-wandb: 
-wandb: Run summary:
-wandb:      episode_len_mean 66.78
-wandb:   episode_reward_mean 5.39
-wandb:        episodes_total 6413
-wandb: num_env_steps_sampled 483800
-wandb: num_env_steps_trained 0
-wandb:          time_total_s 1588.62746
-wandb:    training_iteration 2419
-wandb: 
-wandb: 🚀 View run golden-puddle-27 at: https://wandb.ai/tpn/rllib3/runs/12erbawe
-wandb: ️⚡ View job at https://wandb.ai/tpn/rllib3/jobs/QXJ0aWZhY3RDb2xsZWN0aW9uOjExODA1Nzg0NQ==/version_details/v6
-wandb: Synced 5 W&B file(s), 0 media file(s), 2 artifact file(s) and 0 other file(s)
-wandb: Find logs at: ./wandb/run-20231123_205624-12erbawe/logs
-wandb: - Waiting for wandb.init()...wandb: \ Waiting for wandb.init()...wandb: Tracking run with wandb version 0.16.0
-wandb: Run data is saved locally in /data/gpfs/projects/punim1355/dalmiapriyam/predator-prey/wandb/run-20231123_211933-bhs8ux22
-wandb: Run `wandb offline` to turn off syncing.
-wandb: Syncing run classic-energy-28
-wandb: ⭐️ View project at https://wandb.ai/tpn/rllib3
-wandb: 🚀 View run at https://wandb.ai/tpn/rllib3/runs/bhs8ux22
-[36m(train_algo pid=91577)[0m Install gputil for GPU system monitoring.
-2023-11-23 21:31:59,969	INFO wandb.py:307 -- Already logged into W&B.
-wandb: - 0.005 MB of 0.005 MB uploadedwandb: \ 0.005 MB of 0.005 MB uploadedwandb: | 0.005 MB of 0.202 MB uploadedwandb: / 0.202 MB of 0.202 MB uploadedwandb: - 0.202 MB of 0.202 MB uploadedwandb: \ 0.202 MB of 0.202 MB uploadedwandb:                                                                                
-wandb: 
-wandb: Run history:
-wandb:      episode_len_mean ██▆█▃▃▂▆▅▆▁▃▃▃▂▂▃▃▂▂▃██▂▃▂▂▃▃▅▂▃▅█▁▁▂▃▂▂
-wandb:   episode_reward_mean ▁▁▆▁▇██▆▇▇██▇███▇▇██▇▂▂████▇█▇█▇▇▄██████
-wandb:        episodes_total ▁▁▄▁▆▆▆▄▄▄▆▆▆▆▆▆▇▇▇▆▇▂▂▇▇▇▇▇█▅██▅▂▇▇██▇▇
-wandb: num_env_steps_sampled ▁▁▅▁▆▆▆▅▅▅▇▇▇▇▇▇▇▇▇▇▇▂▂▇▇██▇█▆██▇▃▇█████
-wandb: num_env_steps_trained ▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁
-wandb:          time_total_s ▁▁▄▁▅▅▇▅▅▅▇▅▅▅▇▇▅▅▅▇▅▂▂▅▆▅▅▆▅▆▅▆▆▂██▆▆██
-wandb:    training_iteration ▁▁▅▁▆▆▆▅▅▅▇▇▇▇▇▇▇▇▇▇▇▂▂▇▇██▇█▆██▇▃▇█████
-wandb: 
-wandb: Run summary:
-wandb:      episode_len_mean 61.83
-wandb:   episode_reward_mean 5.72
-wandb:        episodes_total 9621
-wandb: num_env_steps_sampled 695000
-wandb: num_env_steps_trained 0
-wandb:          time_total_s 2282.3837
-wandb:    training_iteration 3475
-wandb: 
-wandb: 🚀 View run classic-energy-28 at: https://wandb.ai/tpn/rllib3/runs/bhs8ux22
-wandb: ️⚡ View job at https://wandb.ai/tpn/rllib3/jobs/QXJ0aWZhY3RDb2xsZWN0aW9uOjExODA1Nzg0NQ==/version_details/v6
-wandb: Synced 5 W&B file(s), 0 media file(s), 0 artifact file(s) and 0 other file(s)
-wandb: Find logs at: ./wandb/run-20231123_211933-bhs8ux22/logs
-wandb: - Waiting for wandb.init()...wandb: \ Waiting for wandb.init()...wandb: | Waiting for wandb.init()...wandb: / Waiting for wandb.init()...wandb: Tracking run with wandb version 0.16.0
-wandb: Run data is saved locally in /data/gpfs/projects/punim1355/dalmiapriyam/predator-prey/wandb/run-20231123_213159-qkq8kz8o
-wandb: Run `wandb offline` to turn off syncing.
-wandb: Syncing run lively-darkness-29
-wandb: ⭐️ View project at https://wandb.ai/tpn/rllib3
-wandb: 🚀 View run at https://wandb.ai/tpn/rllib3/runs/qkq8kz8o
-[36m(train_algo pid=91578)[0m Install gputil for GPU system monitoring.
-2023-11-23 21:33:34,901	INFO wandb.py:307 -- Already logged into W&B.
-wandb: - 0.005 MB of 0.005 MB uploadedwandb: \ 0.005 MB of 0.005 MB uploadedwandb: | 0.005 MB of 0.008 MB uploadedwandb: / 0.046 MB of 0.046 MB uploadedwandb: - 0.046 MB of 0.046 MB uploadedwandb: \ 0.046 MB of 0.046 MB uploadedwandb:                                                                                
-wandb: 
-wandb: Run history:
-wandb:      episode_len_mean ▄▁████▁██▄▁▄▄▄▂▁█▁▄▄▄▄▁▁▁▂▁█▄▁▃▃██▁███▂█
-wandb:   episode_reward_mean ██▁▁▁▄█▄▄▇█▇████▁█▇▇▇▇█████▅▇█▇▇▅▂█▁▂▂█▂
-wandb:        episodes_total ▅█▁▁▁▂█▂▂▅▇▅▅▅█▇▁▇▅▅▅▅▇█▇█▇▂▆▇██▂▁▇▁▁▁█▁
-wandb: num_env_steps_sampled ▇█▁▁▁▃█▃▃▇▇▇▇▇█▇▁▇▇▇▇▇▇█▇█▇▃▇▇██▃▁█▁▁▁█▁
-wandb: num_env_steps_trained ▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁
-wandb:          time_total_s ▆▆▁▁▁▃▆▃▃▆█▆▆▆▆█▁█▆▆▆▆█▆█▆█▃▆█▆▆▃▁█▁▁▁▆▁
-wandb:    training_iteration ▇█▁▁▁▃█▃▃▇▇▇▇▇█▇▁▇▇▇▇▇▇█▇█▇▃▇▇██▃▁█▁▁▁█▁
-wandb: 
-wandb: Run summary:
-wandb:      episode_len_mean 101.0
-wandb:   episode_reward_mean 1.65
-wandb:        episodes_total 285
-wandb: num_env_steps_sampled 28800
-wandb: num_env_steps_trained 0
-wandb:          time_total_s 77.66645
-wandb:    training_iteration 144
-wandb: 
-wandb: 🚀 View run lively-darkness-29 at: https://wandb.ai/tpn/rllib3/runs/qkq8kz8o
-wandb: ️⚡ View job at https://wandb.ai/tpn/rllib3/jobs/QXJ0aWZhY3RDb2xsZWN0aW9uOjExODA1Nzg0NQ==/version_details/v6
-wandb: Synced 5 W&B file(s), 0 media file(s), 0 artifact file(s) and 0 other file(s)
-wandb: Find logs at: ./wandb/run-20231123_213159-qkq8kz8o/logs
-wandb: - Waiting for wandb.init()...wandb: \ Waiting for wandb.init()...wandb: Tracking run with wandb version 0.16.0
-wandb: Run data is saved locally in /data/gpfs/projects/punim1355/dalmiapriyam/predator-prey/wandb/run-20231123_213334-s713gglo
-wandb: Run `wandb offline` to turn off syncing.
-wandb: Syncing run rich-galaxy-30
-wandb: ⭐️ View project at https://wandb.ai/tpn/rllib3
-wandb: 🚀 View run at https://wandb.ai/tpn/rllib3/runs/s713gglo
-[36m(train_algo pid=91576)[0m Install gputil for GPU system monitoring.
-2023-11-23 21:38:11,802	INFO wandb.py:307 -- Already logged into W&B.
-wandb: - 0.005 MB of 0.005 MB uploadedwandb: \ 0.005 MB of 0.005 MB uploadedwandb: | 0.005 MB of 0.005 MB uploadedwandb: / 0.005 MB of 0.005 MB uploadedwandb: - 0.015 MB of 0.106 MB uploaded (0.001 MB deduped)wandb: \ 0.016 MB of 0.106 MB uploaded (0.001 MB deduped)wandb: | 0.016 MB of 0.106 MB uploaded (0.001 MB deduped)wandb: / 0.106 MB of 0.106 MB uploaded (0.001 MB deduped)wandb:                                                                                
-wandb: W&B sync reduced upload amount by 1.4%             
-wandb: 
-wandb: Run history:
-wandb:      episode_len_mean ▅███▅██▅▃██▄██▃▃█▄▁██▄██▂███▄▇██▇▇▂▁█▄▁█
-wandb:   episode_reward_mean ▇▁▄▁▇▁▁▇▇▁▁▇▁▂▇▇▂██▁▂█▃▁█▅▄▄█▅▄▄▅▅██▁██▅
-wandb:        episodes_total ▆▁▂▁▆▁▁▆▇▁▁█▁▁██▁▆█▁▁▆▂▁█▃▂▂▆▃▂▂▃▃██▁▆█▂
-wandb: num_env_steps_sampled ▇▁▃▁▇▁▁▇█▁▁█▁▁██▂▇█▁▂▇▂▁█▃▂▂▇▃▂▂▄▄██▂▇█▂
-wandb: num_env_steps_trained ▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁
-wandb:          time_total_s ▆▁▃▁▆▁▁▆█▁▁█▁▁██▁▆█▁▁▆▁▁█▃▁▁▆▃▂▂▃▃██▁▆█▂
-wandb:    training_iteration ▇▁▃▁▇▁▁▇█▁▁█▁▁██▂▇█▁▂▇▂▁█▃▂▂▇▃▂▂▄▄██▂▇█▂
-wandb: 
-wandb: Run summary:
-wandb:      episode_len_mean 101.0
-wandb:   episode_reward_mean 1.91
-wandb:        episodes_total 671
-wandb: num_env_steps_sampled 67800
-wandb: num_env_steps_trained 0
-wandb:          time_total_s 250.77038
-wandb:    training_iteration 339
-wandb: 
-wandb: 🚀 View run rich-galaxy-30 at: https://wandb.ai/tpn/rllib3/runs/s713gglo
-wandb: ️⚡ View job at https://wandb.ai/tpn/rllib3/jobs/QXJ0aWZhY3RDb2xsZWN0aW9uOjExODA1Nzg0NQ==/version_details/v7
-wandb: Synced 5 W&B file(s), 0 media file(s), 2 artifact file(s) and 0 other file(s)
-wandb: Find logs at: ./wandb/run-20231123_213334-s713gglo/logs
-wandb: - Waiting for wandb.init()...wandb: \ Waiting for wandb.init()...wandb: Tracking run with wandb version 0.16.0
-wandb: Run data is saved locally in /data/gpfs/projects/punim1355/dalmiapriyam/predator-prey/wandb/run-20231123_213811-h3xdekpk
-wandb: Run `wandb offline` to turn off syncing.
-wandb: Syncing run prime-water-31
-wandb: ⭐️ View project at https://wandb.ai/tpn/rllib3
-wandb: 🚀 View run at https://wandb.ai/tpn/rllib3/runs/h3xdekpk
-[36m(train_algo pid=91575)[0m Install gputil for GPU system monitoring.
-2023-11-23 21:49:51,619	INFO wandb.py:307 -- Already logged into W&B.
-wandb: - 0.005 MB of 0.005 MB uploadedwandb: \ 0.005 MB of 0.005 MB uploadedwandb: | 0.005 MB of 0.008 MB uploadedwandb: / 0.210 MB of 0.210 MB uploadedwandb: - 0.210 MB of 0.210 MB uploadedwandb: \ 0.210 MB of 0.210 MB uploadedwandb:                                                                                
-wandb: 
-wandb: Run history:
-wandb:      episode_len_mean ▇▆█▇█▂▇▁████▅▅████▁█▇▃▇▇▂█▂▇█▇▂▇▆▁▇▆▆▁▅▅
-wandb:   episode_reward_mean ▅▅▁▅▁█▆█▁▂▃▂▇▇▃▃▄▃█▄▅▇▅▅█▃█▆▃▄█▄▆█▅▆▆█▇▇
-wandb:        episodes_total ▂▃▁▃▁▇▂▇▂▂▁▁▂▂▁▁▂▂▇▂▄▃▄▂▃▂█▄▂▂▃▂▂█▂▄▂▄▃▃
-wandb: num_env_steps_sampled ▂▃▁▃▁▇▂▇▂▂▁▁▂▃▂▂▂▂▇▂▄▃▄▂▃▂█▄▂▂▃▃▂█▃▅▃▄▃▃
-wandb: num_env_steps_trained ▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁
-wandb:          time_total_s ▂▃▂▃▁▇▂▇▂▂▁▁▂▂▁▁▁▂▇▂▄▂▄▂▃▂█▄▃▂▃▃▂█▂▅▂▃▂▂
-wandb:    training_iteration ▂▃▁▃▁▇▂▇▂▂▁▁▂▃▂▂▂▂▇▂▄▃▄▂▃▂█▄▂▂▃▃▂█▃▅▃▄▃▃
-wandb: 
-wandb: Run summary:
-wandb:      episode_len_mean 85.3
-wandb:   episode_reward_mean 5.25
-wandb:        episodes_total 2452
-wandb: num_env_steps_sampled 236400
-wandb: num_env_steps_trained 0
-wandb:          time_total_s 640.53382
-wandb:    training_iteration 1182
-wandb: 
-wandb: 🚀 View run prime-water-31 at: https://wandb.ai/tpn/rllib3/runs/h3xdekpk
-wandb: ️⚡ View job at https://wandb.ai/tpn/rllib3/jobs/QXJ0aWZhY3RDb2xsZWN0aW9uOjExODA1Nzg0NQ==/version_details/v8
-wandb: Synced 5 W&B file(s), 0 media file(s), 0 artifact file(s) and 0 other file(s)
-wandb: Find logs at: ./wandb/run-20231123_213811-h3xdekpk/logs
-wandb: - Waiting for wandb.init()...wandb: \ Waiting for wandb.init()...wandb: Tracking run with wandb version 0.16.0
-wandb: Run data is saved locally in /data/gpfs/projects/punim1355/dalmiapriyam/predator-prey/wandb/run-20231123_214951-er8ozuks
-wandb: Run `wandb offline` to turn off syncing.
-wandb: Syncing run gallant-feather-32
-wandb: ⭐️ View project at https://wandb.ai/tpn/rllib3
-wandb: 🚀 View run at https://wandb.ai/tpn/rllib3/runs/er8ozuks
-[36m(train_algo pid=91574)[0m Install gputil for GPU system monitoring.
-2023-11-23 22:07:38,044	INFO wandb.py:307 -- Already logged into W&B.
-wandb: - 0.005 MB of 0.005 MB uploadedwandb: \ 0.005 MB of 0.005 MB uploadedwandb: | 0.005 MB of 0.322 MB uploadedwandb: / 0.322 MB of 0.322 MB uploadedwandb: - 0.322 MB of 0.322 MB uploadedwandb: \ 0.322 MB of 0.322 MB uploadedwandb:                                                                                
-wandb: 
-wandb: Run history:
-wandb:      episode_len_mean ▇▄█▂▃▅▄█▇▃█▃▇▆▂▇▃▆█▃▂▇▇▁█▂█▂▃▅▂▇█▁█▂▆▅▇▇
-wandb:   episode_reward_mean ▅▇▄██▇▇▁▅█▅█▅▆█▅█▆▂██▆▆█▃█▄██▇█▅▄█▅█▇▇▅▅
-wandb:        episodes_total ▄▄▃▄▅▃▃▁▃▃▃▄▃▅▆▃▆▅▂▅▆▆▄▇▂▇▂▅▆▆▆▄▂█▂▆▇▇▃▃
-wandb: num_env_steps_sampled ▅▄▃▅▅▄▄▁▄▄▄▄▄▆▆▄▆▇▂▅▆▇▅▇▂▇▂▆▆▇▆▅▃█▃▆██▃▃
-wandb: num_env_steps_trained ▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁
-wandb:          time_total_s ▅▃▃▄▄▃▃▁▄▃▄▃▄▆▄▄▄▇▂▄▅▇▅▅▂▅▂▄▄▇▅▅▃▆▃▅██▃▃
-wandb:    training_iteration ▅▄▃▅▅▄▄▁▄▄▄▄▄▆▆▄▆▇▂▅▆▇▅▇▂▇▂▆▆▇▆▅▃█▃▆██▃▃
-wandb: 
-wandb: Run summary:
-wandb:      episode_len_mean 59.57
-wandb:   episode_reward_mean 5.77
-wandb:        episodes_total 7720
-wandb: num_env_steps_sampled 599600
-wandb: num_env_steps_trained 0
-wandb:          time_total_s 1626.95102
-wandb:    training_iteration 2998
-wandb: 
-wandb: 🚀 View run gallant-feather-32 at: https://wandb.ai/tpn/rllib3/runs/er8ozuks
-wandb: ️⚡ View job at https://wandb.ai/tpn/rllib3/jobs/QXJ0aWZhY3RDb2xsZWN0aW9uOjExODA1Nzg0NQ==/version_details/v8
-wandb: Synced 5 W&B file(s), 0 media file(s), 0 artifact file(s) and 0 other file(s)
-wandb: Find logs at: ./wandb/run-20231123_214951-er8ozuks/logs
-wandb: - Waiting for wandb.init()...wandb: \ Waiting for wandb.init()...wandb: Tracking run with wandb version 0.16.0
-wandb: Run data is saved locally in /data/gpfs/projects/punim1355/dalmiapriyam/predator-prey/wandb/run-20231123_220738-6ms7fj11
-wandb: Run `wandb offline` to turn off syncing.
-wandb: Syncing run swift-rain-33
-wandb: ⭐️ View project at https://wandb.ai/tpn/rllib3
-wandb: 🚀 View run at https://wandb.ai/tpn/rllib3/runs/6ms7fj11
-[36m(train_algo pid=91578)[0m Install gputil for GPU system monitoring.
-2023-11-23 22:14:43,677	INFO wandb.py:307 -- Already logged into W&B.
-wandb: - 0.005 MB of 0.005 MB uploadedwandb: \ 0.005 MB of 0.005 MB uploadedwandb: | 0.005 MB of 0.144 MB uploadedwandb: / 0.144 MB of 0.144 MB uploadedwandb: - 0.144 MB of 0.144 MB uploadedwandb: \ 0.144 MB of 0.144 MB uploadedwandb:                                                                                
-wandb: 
-wandb: Run history:
-wandb:      episode_len_mean ▇▂█▂▄▄▃▅▅▁█▁▁▇█▂█▂▄▁▂▃▇▇▇▇█▃▆█▆▇▇▇▃▇▇▂▇▂
-wandb:   episode_reward_mean ▆█▁█▇▇█▇▇█▁██▅▁█▂█████▅▆▆▆▄█▆▅▆▅▆▆█▆▅█▅█
-wandb:        episodes_total ▅▆▁▇▇▇▇▇▇▇▁▇▇▃▁▇▁▇▇▇▇▇▃▅▃▅▂▇▅▂▅▃▅▃▇▄▂█▂█
-wandb: num_env_steps_sampled ▅▆▁▆▇▇▆▇▇▆▁▆▇▄▁▇▁▇█▇▇█▄▆▄▆▂█▆▂▆▄▆▄█▄▂▇▂▇
-wandb: num_env_steps_trained ▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁
-wandb:          time_total_s ▅▅▁▅▇▇▅▇▇▅▁▅▅▄▁▅▁▅█▅▅█▄▆▄▆▂█▆▂▆▄▆▄█▄▂▆▂▆
-wandb:    training_iteration ▅▆▁▆▇▇▆▇▇▆▁▆▇▄▁▇▁▇█▇▇█▄▆▄▆▂█▆▂▆▄▆▄█▄▂▇▂▇
-wandb: 
-wandb: Run summary:
-wandb:      episode_len_mean 96.93
-wandb:   episode_reward_mean 3.94
-wandb:        episodes_total 1433
-wandb: num_env_steps_sampled 142800
-wandb: num_env_steps_trained 0
-wandb:          time_total_s 385.34975
-wandb:    training_iteration 714
-wandb: 
-wandb: 🚀 View run swift-rain-33 at: https://wandb.ai/tpn/rllib3/runs/6ms7fj11
-wandb: ️⚡ View job at https://wandb.ai/tpn/rllib3/jobs/QXJ0aWZhY3RDb2xsZWN0aW9uOjExODA1Nzg0NQ==/version_details/v8
-wandb: Synced 5 W&B file(s), 0 media file(s), 0 artifact file(s) and 0 other file(s)
-wandb: Find logs at: ./wandb/run-20231123_220738-6ms7fj11/logs
-wandb: - Waiting for wandb.init()...wandb: \ Waiting for wandb.init()...wandb: Tracking run with wandb version 0.16.0
-wandb: Run data is saved locally in /data/gpfs/projects/punim1355/dalmiapriyam/predator-prey/wandb/run-20231123_221443-d5sjizj3
-wandb: Run `wandb offline` to turn off syncing.
-wandb: Syncing run fanciful-brook-34
-wandb: ⭐️ View project at https://wandb.ai/tpn/rllib3
-wandb: 🚀 View run at https://wandb.ai/tpn/rllib3/runs/d5sjizj3
-[36m(train_algo pid=91575)[0m Install gputil for GPU system monitoring.
-2023-11-23 22:18:11,647	INFO wandb.py:307 -- Already logged into W&B.
-wandb: - 0.005 MB of 0.005 MB uploadedwandb: \ 0.005 MB of 0.005 MB uploadedwandb: | 0.005 MB of 0.008 MB uploadedwandb: / 0.005 MB of 0.008 MB uploadedwandb: - 0.088 MB of 0.088 MB uploadedwandb:                                                                                
-wandb: 
-wandb: Run history:
-wandb:      episode_len_mean ▇▇▆▂▇█▇▂█▆▆▇▂▇▇▇▆▂▇█▂▇▇▇▇▁███▇██▇▇▁▁▆▇▇▁
-wandb:   episode_reward_mean ▅▆▆█▅▁▆█▁▆▆▆█▅▅▆▆█▅▁█▅▅▆▅█▁▁▁▆▁▁▅▆██▆▅▆█
-wandb:        episodes_total ▂▄▅▇▂▁▄█▁▆▆▄█▂▂▆▄█▂▁█▄▂▆▂█▁▁▁▆▁▁▂▄██▆▂▄█
-wandb: num_env_steps_sampled ▂▄▆█▂▁▄█▁▆▆▄█▂▂▆▄█▂▁█▄▂▆▂█▁▁▁▆▁▁▃▄██▆▃▄█
-wandb: num_env_steps_trained ▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁
-wandb:          time_total_s ▂▄▆█▂▁▄█▁▆▆▄█▂▂▆▄█▂▁█▄▂▆▂█▁▁▁▆▁▁▂▄██▆▂▄█
-wandb:    training_iteration ▂▄▆█▂▁▄█▁▆▆▄█▂▂▆▄█▂▁█▄▂▆▂█▁▁▁▆▁▁▃▄██▆▃▄█
-wandb: 
-wandb: Run summary:
-wandb:      episode_len_mean 92.25
-wandb:   episode_reward_mean 4.46
-wandb:        episodes_total 4344
-wandb: num_env_steps_sampled 426200
-wandb: num_env_steps_trained 0
-wandb:          time_total_s 1564.35474
-wandb:    training_iteration 2131
-wandb: 
-wandb: 🚀 View run fanciful-brook-34 at: https://wandb.ai/tpn/rllib3/runs/d5sjizj3
-wandb: ️⚡ View job at https://wandb.ai/tpn/rllib3/jobs/QXJ0aWZhY3RDb2xsZWN0aW9uOjExODA1Nzg0NQ==/version_details/v8
-wandb: Synced 5 W&B file(s), 0 media file(s), 0 artifact file(s) and 0 other file(s)
-wandb: Find logs at: ./wandb/run-20231123_221443-d5sjizj3/logs
-wandb: - Waiting for wandb.init()...wandb: \ Waiting for wandb.init()...wandb: Tracking run with wandb version 0.16.0
-wandb: Run data is saved locally in /data/gpfs/projects/punim1355/dalmiapriyam/predator-prey/wandb/run-20231123_221811-iir2ttkx
-wandb: Run `wandb offline` to turn off syncing.
-wandb: Syncing run stellar-dream-35
-wandb: ⭐️ View project at https://wandb.ai/tpn/rllib3
-wandb: 🚀 View run at https://wandb.ai/tpn/rllib3/runs/iir2ttkx
-[36m(train_algo pid=91577)[0m Install gputil for GPU system monitoring.
-2023-11-23 22:36:31,404	INFO wandb.py:307 -- Already logged into W&B.
-wandb: - 0.005 MB of 0.005 MB uploadedwandb: \ 0.005 MB of 0.005 MB uploadedwandb: | 0.005 MB of 0.355 MB uploadedwandb: / 0.355 MB of 0.355 MB uploadedwandb: - 0.355 MB of 0.355 MB uploadedwandb: \ 0.355 MB of 0.355 MB uploadedwandb:                                                                                
-wandb: 
-wandb: Run history:
-wandb:      episode_len_mean ▇▇█▆▇▇▇▇▆▆▆▄▇▆▇▆▇▇▇▇▆▄▂▃▄▇▆▂▅▇▄▅▅▆▂▅▂▂▁▂
-wandb:   episode_reward_mean ▅▆▁▆▅▅▅▅▆▆▆█▅▆▆▆▅▆▆▆▆▇█▇█▆▆█▇▆█▇▇▆██████
-wandb:        episodes_total ▂▄▁▆▃▃▃▆▄▅▁▁▁▅▃▃▂▇▅▇▇▄▂▂▄▂█▃▆█▅▂▆█▄▆▄▃▄▄
-wandb: num_env_steps_sampled ▂▄▁▆▃▃▃▆▅▅▁▁▁▅▃▃▂▇▅▇▇▄▂▂▄▂█▂▆█▅▂▆█▃▆▃▃▃▃
-wandb: num_env_steps_trained ▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁
-wandb:          time_total_s ▂▄▁▆▂▂▂▆▄▅▁▁▂▅▃▃▂▇▅▇▇▃▂▂▃▂█▂▆█▄▃▆█▂▆▃▃▃▃
-wandb:    training_iteration ▂▄▁▆▃▃▃▆▅▅▁▁▁▅▃▃▂▇▅▇▇▄▂▂▄▂█▂▆█▅▂▆█▃▆▃▃▃▃
-wandb: 
-wandb: Run summary:
-wandb:      episode_len_mean 78.62
-wandb:   episode_reward_mean 5.46
-wandb:        episodes_total 7557
-wandb: num_env_steps_sampled 704800
-wandb: num_env_steps_trained 0
-wandb:          time_total_s 2589.34079
-wandb:    training_iteration 3524
-wandb: 
-wandb: 🚀 View run stellar-dream-35 at: https://wandb.ai/tpn/rllib3/runs/iir2ttkx
-wandb: ️⚡ View job at https://wandb.ai/tpn/rllib3/jobs/QXJ0aWZhY3RDb2xsZWN0aW9uOjExODA1Nzg0NQ==/version_details/v8
-wandb: Synced 5 W&B file(s), 0 media file(s), 0 artifact file(s) and 0 other file(s)
-wandb: Find logs at: ./wandb/run-20231123_221811-iir2ttkx/logs
-wandb: - Waiting for wandb.init()...wandb: \ Waiting for wandb.init()...wandb: Tracking run with wandb version 0.16.0
-wandb: Run data is saved locally in /data/gpfs/projects/punim1355/dalmiapriyam/predator-prey/wandb/run-20231123_223631-ofehlrus
-wandb: Run `wandb offline` to turn off syncing.
-wandb: Syncing run sandy-wood-36
-wandb: ⭐️ View project at https://wandb.ai/tpn/rllib3
-wandb: 🚀 View run at https://wandb.ai/tpn/rllib3/runs/ofehlrus
-[36m(train_algo pid=91576)[0m Install gputil for GPU system monitoring.
-2023-11-23 22:46:14,272	INFO wandb.py:307 -- Already logged into W&B.
-wandb: - 0.005 MB of 0.005 MB uploadedwandb: \ 0.005 MB of 0.213 MB uploadedwandb: | 0.005 MB of 0.213 MB uploadedwandb: / 0.213 MB of 0.213 MB uploadedwandb: - 0.213 MB of 0.213 MB uploadedwandb: \ 0.213 MB of 0.213 MB uploadedwandb:                                                                                
-wandb: 
-wandb: Run history:
-wandb:      episode_len_mean ▂▃▆█▂▃█▄▅▃▃▃█▄▂▅█▂▃▃▂▂▃▃▃▃█▁▃▃▂▃█▁▃▅▁▄▃▂
-wandb:   episode_reward_mean ██▇▁██▁█▇███▁██▇▂███████▇█▃█████▄█▇▇█▇██
-wandb:        episodes_total ▆▃▇▁▄▆▁▇▇▅▇▇▁▇▄▇▁▄▇▇▇▄▇█▅█▂▄█▆▄█▂▅▆█▅█▆▅
-wandb: num_env_steps_sampled ▆▃▇▁▄▆▁▆▇▄▆▆▁▆▄▇▁▄▇▇▇▄▇▇▄▇▂▄▇▅▄▇▂▄▅█▄█▅▄
-wandb: num_env_steps_trained ▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁
-wandb:          time_total_s ▅▄▇▁▃▅▁▅▇▄▅▅▁▅▄▇▁▄▅▅▅▄▅▅▄▅▂▅▅▄▅▆▂▅▄█▅█▄▅
-wandb:    training_iteration ▆▃▇▁▄▆▁▆▇▄▆▆▁▆▄▇▁▄▇▇▇▄▇▇▄▇▂▄▇▅▄▇▂▄▅█▄█▅▄
-wandb: 
-wandb: Run summary:
-wandb:      episode_len_mean 76.47
-wandb:   episode_reward_mean 5.58
-wandb:        episodes_total 9399
-wandb: num_env_steps_sampled 851600
-wandb: num_env_steps_trained 0
-wandb:          time_total_s 3130.1999
-wandb:    training_iteration 4258
-wandb: 
-wandb: 🚀 View run sandy-wood-36 at: https://wandb.ai/tpn/rllib3/runs/ofehlrus
-wandb: ️⚡ View job at https://wandb.ai/tpn/rllib3/jobs/QXJ0aWZhY3RDb2xsZWN0aW9uOjExODA1Nzg0NQ==/version_details/v8
-wandb: Synced 5 W&B file(s), 0 media file(s), 0 artifact file(s) and 0 other file(s)
-wandb: Find logs at: ./wandb/run-20231123_223631-ofehlrus/logs
-wandb: - Waiting for wandb.init()...wandb: \ Waiting for wandb.init()...wandb: Tracking run with wandb version 0.16.0
-wandb: Run data is saved locally in /data/gpfs/projects/punim1355/dalmiapriyam/predator-prey/wandb/run-20231123_224614-hbadnf9q
-wandb: Run `wandb offline` to turn off syncing.
-wandb: Syncing run treasured-leaf-37
-wandb: ⭐️ View project at https://wandb.ai/tpn/rllib3
-wandb: 🚀 View run at https://wandb.ai/tpn/rllib3/runs/hbadnf9q
-[36m(train_algo pid=91578)[0m Install gputil for GPU system monitoring.
-2023-11-23 22:49:18,461	INFO wandb.py:307 -- Already logged into W&B.
-wandb: - 0.005 MB of 0.005 MB uploadedwandb: \ 0.005 MB of 0.005 MB uploadedwandb: | 0.005 MB of 0.008 MB uploadedwandb: / 0.005 MB of 0.008 MB uploadedwandb: - 0.084 MB of 0.084 MB uploadedwandb:                                                                                
-wandb: 
-wandb: Run history:
-wandb:      episode_len_mean ▃█▂█▁█▇▄▇▄▇█▄▇▃▃█▂█▃▂▂▃▃█▂▃▁▃▇█▇▅▇▃█▃▄▂▃
-wandb:   episode_reward_mean ▇▅█▁█▁▅▇▆▇▆▁▇▆▇█▁█▁██▇▇▇▂█▇█▇▆▂▆▇▆▇▃▇▇█▇
-wandb:        episodes_total ▆▂▆▁▅▁▂█▂█▂▁▆▂▆█▁▅▁█▆▆▆▆▁▅▆▅▆▂▁▂█▂▆▁▆█▅▆
-wandb: num_env_steps_sampled ▅▂▅▁▄▁▂█▂█▂▁▅▂▅█▁▄▁█▅▅▅▅▁▄▅▄▅▂▁▂█▂▅▁▅█▄▅
-wandb: num_env_steps_trained ▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁
-wandb:          time_total_s ▄▂▄▁▅▁▂█▂█▂▁▄▂▄█▁▅▁█▅▅▅▅▁▅▅▅▅▂▁▂█▂▅▁▅█▅▅
-wandb:    training_iteration ▅▂▅▁▄▁▂█▂█▂▁▅▂▅█▁▄▁█▅▅▅▅▁▄▅▄▅▂▁▂█▂▅▁▅█▄▅
-wandb: 
-wandb: Run summary:
-wandb:      episode_len_mean 100.73
-wandb:   episode_reward_mean 3.12
-wandb:        episodes_total 495
-wandb: num_env_steps_sampled 50000
-wandb: num_env_steps_trained 0
-wandb:          time_total_s 163.91057
-wandb:    training_iteration 250
-wandb: 
-wandb: 🚀 View run treasured-leaf-37 at: https://wandb.ai/tpn/rllib3/runs/hbadnf9q
-wandb: ️⚡ View job at https://wandb.ai/tpn/rllib3/jobs/QXJ0aWZhY3RDb2xsZWN0aW9uOjExODA1Nzg0NQ==/version_details/v8
-wandb: Synced 5 W&B file(s), 0 media file(s), 0 artifact file(s) and 0 other file(s)
-wandb: Find logs at: ./wandb/run-20231123_224614-hbadnf9q/logs
-wandb: - Waiting for wandb.init()...wandb: \ Waiting for wandb.init()...wandb: Tracking run with wandb version 0.16.0
-wandb: Run data is saved locally in /data/gpfs/projects/punim1355/dalmiapriyam/predator-prey/wandb/run-20231123_224918-auaipea5
-wandb: Run `wandb offline` to turn off syncing.
-wandb: Syncing run misunderstood-cherry-38
-wandb: ⭐️ View project at https://wandb.ai/tpn/rllib3
-wandb: 🚀 View run at https://wandb.ai/tpn/rllib3/runs/auaipea5
-[36m(train_algo pid=91574)[0m Install gputil for GPU system monitoring.
-2023-11-23 22:58:05,516	INFO wandb.py:307 -- Already logged into W&B.
-wandb: - 0.005 MB of 0.005 MB uploadedwandb: \ 0.005 MB of 0.005 MB uploadedwandb: | 0.005 MB of 0.008 MB uploadedwandb: / 0.141 MB of 0.141 MB uploadedwandb: - 0.141 MB of 0.141 MB uploadedwandb: \ 0.141 MB of 0.141 MB uploadedwandb:                                                                                
-wandb: 
-wandb: Run history:
-wandb:      episode_len_mean ▁▇██▆█▂▂▇█▇██▂▆▁▄▆▄▅▃█▂█▂▄▃▅▃▅▅▃█▂▂▄▃▄▄▅
-wandb:   episode_reward_mean █▆▄▄▇▄██▅▁▆▁▁█▇█▇▆▇▇▇▂█▂███▇█▇▇█▃██▇█▇▇▇
-wandb:        episodes_total ▅▂▁▁▂▁▅▇▁▁▁▁▁▆▂▆▇▂▂▂▇▁▆▁█▂▂▃█▃▃▂▁█▆█▂▃▃▃
-wandb: num_env_steps_sampled ▅▂▁▁▃▁▆▇▂▁▂▁▁▆▂▆▇▂▂▃▇▁▆▁█▂▂▃█▃▃▃▂█▆█▃▄▄▄
-wandb: num_env_steps_trained ▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁
-wandb:          time_total_s ▇▃▁▁▃▁▇▆▁▁▂▁▁▇▂▇▇▂▂▄▇▁█▂▇▂▂▄▇▄▄▂▂▇█▇▃▄▄▄
-wandb:    training_iteration ▅▂▁▁▃▁▆▇▂▁▂▁▁▆▂▆▇▂▂▃▇▁▆▁█▂▂▃█▃▃▃▂█▆█▃▄▄▄
-wandb: 
-wandb: Run summary:
-wandb:      episode_len_mean 61.1
-wandb:   episode_reward_mean 5.8
-wandb:        episodes_total 2400
-wandb: num_env_steps_sampled 199000
-wandb: num_env_steps_trained 0
-wandb:          time_total_s 653.89157
-wandb:    training_iteration 995
-wandb: 
-wandb: 🚀 View run misunderstood-cherry-38 at: https://wandb.ai/tpn/rllib3/runs/auaipea5
-wandb: ️⚡ View job at https://wandb.ai/tpn/rllib3/jobs/QXJ0aWZhY3RDb2xsZWN0aW9uOjExODA1Nzg0NQ==/version_details/v8
-wandb: Synced 5 W&B file(s), 0 media file(s), 0 artifact file(s) and 0 other file(s)
-wandb: Find logs at: ./wandb/run-20231123_224918-auaipea5/logs
-wandb: - Waiting for wandb.init()...wandb: \ Waiting for wandb.init()...wandb: Tracking run with wandb version 0.16.0
-wandb: Run data is saved locally in /data/gpfs/projects/punim1355/dalmiapriyam/predator-prey/wandb/run-20231123_225805-6r0bohdy
-wandb: Run `wandb offline` to turn off syncing.
-wandb: Syncing run ancient-dream-39
-wandb: ⭐️ View project at https://wandb.ai/tpn/rllib3
-wandb: 🚀 View run at https://wandb.ai/tpn/rllib3/runs/6r0bohdy
-[36m(train_algo pid=91577)[0m Install gputil for GPU system monitoring.
-2023-11-23 23:07:40,979	INFO wandb.py:307 -- Already logged into W&B.
-wandb: - 0.005 MB of 0.005 MB uploadedwandb: \ 0.005 MB of 0.005 MB uploadedwandb: | 0.005 MB of 0.156 MB uploadedwandb: / 0.156 MB of 0.156 MB uploadedwandb: - 0.156 MB of 0.156 MB uploadedwandb: \ 0.156 MB of 0.156 MB uploadedwandb:                                                                                
-wandb: 
-wandb: Run history:
-wandb:      episode_len_mean ▂▂▅████▂█▃▇▃▅████▁▃█▃▇▄█▇▇▇▇▅▁▇▁▇▄▄▃▆▇▃▅
-wandb:   episode_reward_mean ██▇▁▄▁▁█▅▇▅█▇▅▄▄▄█▇▅█▅▇▅▅▅▅▅▇█▅█▅▇▇▇▆▅█▇
-wandb:        episodes_total ▇▇▃▁▂▁▁▃▂▃▂▇▃▂▁▁▁▇▄▂▄▂▄▂▂▂▂▂▄█▂█▂▄▄▄▂▃▄▂
-wandb: num_env_steps_sampled ▇▇▄▁▂▁▁▃▂▄▂▇▄▃▂▂▂█▄▃▄▃▅▂▂▃▂▃▅█▂█▂▅▅▅▃▃▅▃
-wandb: num_env_steps_trained ▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁
-wandb:          time_total_s ▇▇▄▁▂▁▁▃▂▃▂▇▄▃▁▁▁█▃▃▃▃▅▂▂▃▂▃▅█▂█▂▄▄▄▂▃▅▂
-wandb:    training_iteration ▇▇▄▁▂▁▁▃▂▄▂▇▄▃▂▂▂█▄▃▄▃▅▂▂▃▂▃▅█▂█▂▅▅▅▃▃▅▃
-wandb: 
-wandb: Run summary:
-wandb:      episode_len_mean 80.76
-wandb:   episode_reward_mean 5.37
-wandb:        episodes_total 1713
-wandb: num_env_steps_sampled 162600
-wandb: num_env_steps_trained 0
-wandb:          time_total_s 532.99395
-wandb:    training_iteration 813
-wandb: 
-wandb: 🚀 View run ancient-dream-39 at: https://wandb.ai/tpn/rllib3/runs/6r0bohdy
-wandb: ️⚡ View job at https://wandb.ai/tpn/rllib3/jobs/QXJ0aWZhY3RDb2xsZWN0aW9uOjExODA1Nzg0NQ==/version_details/v8
-wandb: Synced 5 W&B file(s), 0 media file(s), 0 artifact file(s) and 0 other file(s)
-wandb: Find logs at: ./wandb/run-20231123_225805-6r0bohdy/logs
-wandb: - Waiting for wandb.init()...wandb: \ Waiting for wandb.init()...wandb: Tracking run with wandb version 0.16.0
-wandb: Run data is saved locally in /data/gpfs/projects/punim1355/dalmiapriyam/predator-prey/wandb/run-20231123_230740-gmdr2vqr
-wandb: Run `wandb offline` to turn off syncing.
-wandb: Syncing run pleasant-morning-40
-wandb: ⭐️ View project at https://wandb.ai/tpn/rllib3
-wandb: 🚀 View run at https://wandb.ai/tpn/rllib3/runs/gmdr2vqr
-[36m(train_algo pid=91575)[0m Install gputil for GPU system monitoring.
-2023-11-23 23:27:49,299	INFO wandb.py:307 -- Already logged into W&B.
-wandb: - 0.005 MB of 0.005 MB uploadedwandb: \ 0.005 MB of 0.005 MB uploadedwandb: | 0.005 MB of 0.299 MB uploadedwandb: / 0.299 MB of 0.299 MB uploadedwandb: - 0.299 MB of 0.299 MB uploadedwandb: \ 0.299 MB of 0.299 MB uploadedwandb: | 0.299 MB of 0.299 MB uploadedwandb:                                                                                
-wandb: 
-wandb: Run history:
-wandb:      episode_len_mean █▇█▃▄▇▄▃▇▄▂▃▃▄▄▄▇▄▃▇▇▄▄▄▄▇▆▂▃▆▇▄▁▃▄▇▄▃▃▇
-wandb:   episode_reward_mean ▁▅▁██▅▇█▅▇███▇▇█▅▇▇▅▅██▇▇▆▆█▇▆▅▇██▇▅█▇█▆
-wandb:        episodes_total ▁▃▁▄▃▃▅▃▃▃▃▆▅▆▆▅▃▄▆▄▂▄▄▄▇▂▄▆▇▄▂▅▆█▄▃▄█▆▃
-wandb: num_env_steps_sampled ▁▃▁▅▃▄▅▃▄▃▄▆▆▆▆▆▄▄▆▅▂▅▅▅▇▃▅▇▇▅▃▅▇█▅▃▆█▆▄
-wandb: num_env_steps_trained ▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁
-wandb:          time_total_s ▁▄▁▆▃▄▆▃▄▃▃▅▆▅▅▇▅▄▅▅▂▄▄▄▆▃▆█▆▆▃▅█▇▆▄▆▇▅▄
-wandb:    training_iteration ▁▃▁▅▃▄▅▃▄▃▄▆▆▆▆▆▄▄▆▅▂▅▅▅▇▃▅▇▇▅▃▅▇█▅▃▆█▆▄
-wandb: 
-wandb: Run summary:
-wandb:      episode_len_mean 55.49
-wandb:   episode_reward_mean 5.92
-wandb:        episodes_total 8331
-wandb: num_env_steps_sampled 630400
-wandb: num_env_steps_trained 0
-wandb:          time_total_s 2886.18467
-wandb:    training_iteration 3152
-wandb: 
-wandb: 🚀 View run pleasant-morning-40 at: https://wandb.ai/tpn/rllib3/runs/gmdr2vqr
-wandb: ️⚡ View job at https://wandb.ai/tpn/rllib3/jobs/QXJ0aWZhY3RDb2xsZWN0aW9uOjExODA1Nzg0NQ==/version_details/v8
-wandb: Synced 5 W&B file(s), 0 media file(s), 0 artifact file(s) and 0 other file(s)
-wandb: Find logs at: ./wandb/run-20231123_230740-gmdr2vqr/logs
-wandb: - Waiting for wandb.init()...wandb: \ Waiting for wandb.init()...wandb: Tracking run with wandb version 0.16.0
-wandb: Run data is saved locally in /data/gpfs/projects/punim1355/dalmiapriyam/predator-prey/wandb/run-20231123_232749-kzu4kimj
-wandb: Run `wandb offline` to turn off syncing.
-wandb: Syncing run gentle-dust-41
-wandb: ⭐️ View project at https://wandb.ai/tpn/rllib3
-wandb: 🚀 View run at https://wandb.ai/tpn/rllib3/runs/kzu4kimj
-[36m(train_algo pid=91578)[0m Install gputil for GPU system monitoring.
-2023-11-23 23:34:57,318	INFO wandb.py:307 -- Already logged into W&B.
-wandb: - 0.005 MB of 0.005 MB uploadedwandb: \ 0.005 MB of 0.005 MB uploadedwandb: | 0.005 MB of 0.122 MB uploadedwandb: / 0.008 MB of 0.122 MB uploadedwandb: - 0.008 MB of 0.122 MB uploadedwandb: \ 0.122 MB of 0.122 MB uploadedwandb:                                                                                
-wandb: 
-wandb: Run history:
-wandb:      episode_len_mean ▂▄▇▆▆▅▁█▄██▄▅▄█▁▄▄▄▃█▄▇▃▇▄▂▄▂█▄▃▇▃▆▇▇▁▁▁
-wandb:   episode_reward_mean █▇▆▆▆▇█▁▇▁▁▇▇▇▂█▇█▇▇▄▇▆█▆▇█▇█▃▇█▄█▆▅▅███
-wandb:        episodes_total ▇▆▃▃▃▅▇▁▆▁▁▅▆▆▁▇▆▅▅▆▁▆▃▅▃▅█▆█▁▇▅▂▇▃▂▂███
-wandb: num_env_steps_sampled ▇▆▃▃▃▆▇▁▆▁▁▆▆▆▁▇▆▆▆▆▁▇▄▆▄▆█▇█▂▇▆▂▇▄▂▂███
-wandb: num_env_steps_trained ▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁
-wandb:          time_total_s ▇▅▃▃▃▆▇▁▅▁▁▆▅▅▁▇▅▆▆▅▁▅▄▆▄▆█▅█▁▅▆▂▅▄▂▂███
-wandb:    training_iteration ▇▆▃▃▃▆▇▁▆▁▁▆▆▆▁▇▆▆▆▆▁▇▄▆▄▆█▇█▂▇▆▂▇▄▂▂███
-wandb: 
-wandb: Run summary:
-wandb:      episode_len_mean 98.05
-wandb:   episode_reward_mean 3.87
-wandb:        episodes_total 1204
-wandb: num_env_steps_sampled 119600
-wandb: num_env_steps_trained 0
-wandb:          time_total_s 392.36216
-wandb:    training_iteration 598
-wandb: 
-wandb: 🚀 View run gentle-dust-41 at: https://wandb.ai/tpn/rllib3/runs/kzu4kimj
-wandb: ️⚡ View job at https://wandb.ai/tpn/rllib3/jobs/QXJ0aWZhY3RDb2xsZWN0aW9uOjExODA1Nzg0NQ==/version_details/v8
-wandb: Synced 5 W&B file(s), 0 media file(s), 0 artifact file(s) and 0 other file(s)
-wandb: Find logs at: ./wandb/run-20231123_232749-kzu4kimj/logs
-wandb: - Waiting for wandb.init()...wandb: \ Waiting for wandb.init()...wandb: Tracking run with wandb version 0.16.0
-wandb: Run data is saved locally in /data/gpfs/projects/punim1355/dalmiapriyam/predator-prey/wandb/run-20231123_233457-4hazigzv
-wandb: Run `wandb offline` to turn off syncing.
-wandb: Syncing run wandering-glitter-42
-wandb: ⭐️ View project at https://wandb.ai/tpn/rllib3
-wandb: 🚀 View run at https://wandb.ai/tpn/rllib3/runs/4hazigzv
-[36m(train_algo pid=91576)[0m Install gputil for GPU system monitoring.
-2023-11-23 23:41:53,488	INFO wandb.py:307 -- Already logged into W&B.
-wandb: - 0.005 MB of 0.005 MB uploadedwandb: \ 0.005 MB of 0.008 MB uploadedwandb: | 0.120 MB of 0.120 MB uploadedwandb: / 0.120 MB of 0.120 MB uploadedwandb: - 0.120 MB of 0.120 MB uploadedwandb:                                                                                
-wandb: 
-wandb: Run history:
-wandb:      episode_len_mean ▂▇█████▄█████▄▇▄█▄▁▄▇▇▂▄▃▇▇▃▃▂▆▄▄▂▃▃▁█▄▃
-wandb:   episode_reward_mean █▅▁▁▁▁▁▇▁▁▄▄▁▇▅▇▁▇█▇▅▅█▇█▅▅▇██▆▇▇████▂▇█
-wandb:        episodes_total ▆▂▁▁▁▁▁▇▁▁▂▂▁▇▂▄▁▄▆▇▂▂▆█▄▂▂██▆▂▄█▆▃▃▆▂█▃
-wandb: num_env_steps_sampled ▆▂▁▁▁▁▁▇▁▁▂▂▁▇▂▄▁▄▇▇▃▃▇█▅▃▃██▇▃▅█▇▃▃▇▂█▃
-wandb: num_env_steps_trained ▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁
-wandb:          time_total_s ▇▂▁▁▁▁▁▆▁▁▂▂▁▆▂▅▁▅█▆▂▂█▆▅▂▃▇▇█▃▅▇█▃▃█▂▇▃
-wandb:    training_iteration ▆▂▁▁▁▁▁▇▁▁▂▂▁▇▂▄▁▄▇▇▃▃▇█▅▃▃██▇▃▅█▇▃▃▇▂█▃
-wandb: 
-wandb: Run summary:
-wandb:      episode_len_mean 63.96
-wandb:   episode_reward_mean 5.64
-wandb:        episodes_total 2565
-wandb: num_env_steps_sampled 236200
-wandb: num_env_steps_trained 0
-wandb:          time_total_s 774.63199
-wandb:    training_iteration 1181
-wandb: 
-wandb: 🚀 View run wandering-glitter-42 at: https://wandb.ai/tpn/rllib3/runs/4hazigzv
-wandb: ️⚡ View job at https://wandb.ai/tpn/rllib3/jobs/QXJ0aWZhY3RDb2xsZWN0aW9uOjExODA1Nzg0NQ==/version_details/v8
-wandb: Synced 5 W&B file(s), 0 media file(s), 0 artifact file(s) and 0 other file(s)
-wandb: Find logs at: ./wandb/run-20231123_233457-4hazigzv/logs
-wandb: - Waiting for wandb.init()...wandb: \ Waiting for wandb.init()...wandb: Tracking run with wandb version 0.16.0
-wandb: Run data is saved locally in /data/gpfs/projects/punim1355/dalmiapriyam/predator-prey/wandb/run-20231123_234153-il3k27eo
-wandb: Run `wandb offline` to turn off syncing.
-wandb: Syncing run bright-surf-43
-wandb: ⭐️ View project at https://wandb.ai/tpn/rllib3
-wandb: 🚀 View run at https://wandb.ai/tpn/rllib3/runs/il3k27eo
-[36m(train_algo pid=91577)[0m Install gputil for GPU system monitoring.
-2023-11-23 23:50:55,096	INFO wandb.py:307 -- Already logged into W&B.
-wandb: - 0.005 MB of 0.005 MB uploadedwandb: \ 0.005 MB of 0.005 MB uploadedwandb: | 0.005 MB of 0.008 MB uploadedwandb: / 0.005 MB of 0.149 MB uploadedwandb: - 0.005 MB of 0.149 MB uploadedwandb: \ 0.149 MB of 0.149 MB uploadedwandb:                                                                                
-wandb: 
-wandb: Run history:
-wandb:      episode_len_mean █▄█▃█▂█▅█▃█▅█▁▅██▄▂▄█▂████▄▂█▄██▂▃▇█▄▇▄▃
-wandb:   episode_reward_mean ▂█▁█▂█▁▇▂█▂▇▃█▇▄▄▇█▇▄█▄▄▄▄██▄█▄▅██▅▅▇▅▇▇
-wandb:        episodes_total ▂▄▁▃▂▇▁▅▁▃▁▅▂▇▅▂▁▅▇▄▂█▂▂▂▂▅█▂▅▂▂█▄▂▃▅▂▄▅
-wandb: num_env_steps_sampled ▂▅▁▃▂▇▁▅▁▄▁▅▂▇▅▂▂▅█▄▃█▂▃▂▃▆█▃▆▃▃█▄▂▃▆▃▅▅
-wandb: num_env_steps_trained ▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁
-wandb:          time_total_s ▂▅▁▃▂▇▁▅▁▃▁▅▂▇▅▂▁▅█▃▂█▂▂▂▂▆█▂▆▃▃█▃▂▃▆▂▄▄
-wandb:    training_iteration ▂▅▁▃▂▇▁▅▁▄▁▅▂▇▅▂▂▅█▄▃█▂▃▂▃▆█▃▆▃▃█▄▂▃▆▃▅▅
-wandb: 
-wandb: Run summary:
-wandb:      episode_len_mean 97.65
-wandb:   episode_reward_mean 4.02
-wandb:        episodes_total 2370
-wandb: num_env_steps_sampled 237000
-wandb: num_env_steps_trained 0
-wandb:          time_total_s 879.33083
-wandb:    training_iteration 1185
-wandb: 
-wandb: 🚀 View run bright-surf-43 at: https://wandb.ai/tpn/rllib3/runs/il3k27eo
-wandb: ️⚡ View job at https://wandb.ai/tpn/rllib3/jobs/QXJ0aWZhY3RDb2xsZWN0aW9uOjExODA1Nzg0NQ==/version_details/v7
-wandb: Synced 5 W&B file(s), 0 media file(s), 0 artifact file(s) and 0 other file(s)
-wandb: Find logs at: ./wandb/run-20231123_234153-il3k27eo/logs
-wandb: - Waiting for wandb.init()...wandb: \ Waiting for wandb.init()...wandb: Tracking run with wandb version 0.16.0
-wandb: Run data is saved locally in /data/gpfs/projects/punim1355/dalmiapriyam/predator-prey/wandb/run-20231123_235055-l5ilfj3b
-wandb: Run `wandb offline` to turn off syncing.
-wandb: Syncing run woven-wind-44
-wandb: ⭐️ View project at https://wandb.ai/tpn/rllib3
-wandb: 🚀 View run at https://wandb.ai/tpn/rllib3/runs/l5ilfj3b
-[36m(train_algo pid=91574)[0m Install gputil for GPU system monitoring.
-2023-11-24 00:08:30,111	INFO wandb.py:307 -- Already logged into W&B.
-wandb: - 0.005 MB of 0.005 MB uploadedwandb: \ 0.005 MB of 0.005 MB uploadedwandb: | 0.005 MB of 0.266 MB uploadedwandb: / 0.266 MB of 0.266 MB uploadedwandb: - 0.266 MB of 0.266 MB uploadedwandb: \ 0.266 MB of 0.266 MB uploadedwandb:                                                                                
-wandb: 
-wandb: Run history:
-wandb:      episode_len_mean ██▃▇▇██▇▃█▃▇▇▂██▅▅▂▇▄▄▇▂█▁▇▇██▄▂▄▁▇▇▇▇▇▄
-wandb:   episode_reward_mean ▁▁█▅▆▁▂▅█▂▇▆▆█▂▃▇▇█▆█▇▅█▄█▆▆▄▄████▅▅▆▅▆▇
-wandb:        episodes_total ▁▁▆▃▃▁▁▃▅▁▆▃▃▆▂▂▄▄▇▄▄▆▄▇▂▇▄▄▂▂▅█▅█▅▅▅▃▅█
-wandb: num_env_steps_sampled ▁▁▆▃▃▁▁▄▅▂▆▄▄▇▂▂▄▄▇▅▅▆▅▇▃█▅▅▃▃▅█▆█▆▆▆▃▆█
-wandb: num_env_steps_trained ▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁
-wandb:          time_total_s ▁▁▆▂▂▁▁▃▄▁▄▃▃▇▂▂▃▃▇▄▃▅▄▇▂█▄▄▂▃▄█▄█▅▅▅▃▅▆
-wandb:    training_iteration ▁▁▆▃▃▁▁▄▅▂▆▄▄▇▂▂▄▄▇▅▅▆▅▇▃█▅▅▃▃▅█▆█▆▆▆▃▆█
-wandb: 
-wandb: Run summary:
-wandb:      episode_len_mean 73.36
-wandb:   episode_reward_mean 5.34
-wandb:        episodes_total 9371
-wandb: num_env_steps_sampled 690600
-wandb: num_env_steps_trained 0
-wandb:          time_total_s 2264.39648
-wandb:    training_iteration 3453
-wandb: 
-wandb: 🚀 View run woven-wind-44 at: https://wandb.ai/tpn/rllib3/runs/l5ilfj3b
-wandb: ️⚡ View job at https://wandb.ai/tpn/rllib3/jobs/QXJ0aWZhY3RDb2xsZWN0aW9uOjExODA1Nzg0NQ==/version_details/v8
-wandb: Synced 5 W&B file(s), 0 media file(s), 0 artifact file(s) and 0 other file(s)
-wandb: Find logs at: ./wandb/run-20231123_235055-l5ilfj3b/logs
-wandb: - Waiting for wandb.init()...wandb: \ Waiting for wandb.init()...wandb: Tracking run with wandb version 0.16.0
-wandb: Run data is saved locally in /data/gpfs/projects/punim1355/dalmiapriyam/predator-prey/wandb/run-20231124_000830-vy111hyb
-wandb: Run `wandb offline` to turn off syncing.
-wandb: Syncing run vivid-silence-45
-wandb: ⭐️ View project at https://wandb.ai/tpn/rllib3
-wandb: 🚀 View run at https://wandb.ai/tpn/rllib3/runs/vy111hyb
-[36m(train_algo pid=91575)[0m Install gputil for GPU system monitoring.
-2023-11-24 00:11:09,461	INFO wandb.py:307 -- Already logged into W&B.
-wandb: - 0.005 MB of 0.005 MB uploadedwandb: \ 0.005 MB of 0.058 MB uploadedwandb: | 0.005 MB of 0.058 MB uploadedwandb: / 0.005 MB of 0.058 MB uploadedwandb: - 0.058 MB of 0.058 MB uploadedwandb:                                                                                
-wandb: 
-wandb: Run history:
-wandb:      episode_len_mean ▂▆▃▆▇█▇▂▂█▂▂▆▇█▇▆▃▆█▇▂▇█▃█▂▇▃▇█▇▇▂▇▆█▇▁▇
-wandb:   episode_reward_mean █▆▇▆▅▁▅▇▇▁██▆▅▁▆▆▇▆▁▆█▆▂▇▂█▅▇▆▂▆▅▇▅▆▂▆█▆
-wandb:        episodes_total ▆▅█▅▃▁▃██▁▆█▅▃▁▃▅█▅▁▃▆▃▁█▁▆▃█▅▁▅▃█▃▅▁▅▆▅
-wandb: num_env_steps_sampled ▆▆█▆▄▁▄██▁▆█▆▄▁▄▆█▆▁▄▆▄▁█▁▇▄█▆▁▆▄█▄▆▁▆▇▆
-wandb: num_env_steps_trained ▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁
-wandb:          time_total_s ▅▆█▆▄▁▄██▁▅█▇▄▁▄▇█▇▁▄▆▄▁█▁▆▄█▇▁▇▄█▄▇▁▇▆▇
-wandb:    training_iteration ▆▆█▆▄▁▄██▁▆█▆▄▁▄▆█▆▁▄▆▄▁█▁▇▄█▆▁▆▄█▄▆▁▆▇▆
-wandb: 
-wandb: Run summary:
-wandb:      episode_len_mean 101.0
-wandb:   episode_reward_mean 2.13
-wandb:        episodes_total 506
-wandb: num_env_steps_sampled 51200
-wandb: num_env_steps_trained 0
-wandb:          time_total_s 139.18987
-wandb:    training_iteration 256
-wandb: 
-wandb: 🚀 View run vivid-silence-45 at: https://wandb.ai/tpn/rllib3/runs/vy111hyb
-wandb: ️⚡ View job at https://wandb.ai/tpn/rllib3/jobs/QXJ0aWZhY3RDb2xsZWN0aW9uOjExODA1Nzg0NQ==/version_details/v8
-wandb: Synced 5 W&B file(s), 0 media file(s), 0 artifact file(s) and 0 other file(s)
-wandb: Find logs at: ./wandb/run-20231124_000830-vy111hyb/logs
-wandb: - Waiting for wandb.init()...wandb: \ Waiting for wandb.init()...wandb: Tracking run with wandb version 0.16.0
-wandb: Run data is saved locally in /data/gpfs/projects/punim1355/dalmiapriyam/predator-prey/wandb/run-20231124_001109-gv4ro5f8
-wandb: Run `wandb offline` to turn off syncing.
-wandb: Syncing run effortless-sea-46
-wandb: ⭐️ View project at https://wandb.ai/tpn/rllib3
-wandb: 🚀 View run at https://wandb.ai/tpn/rllib3/runs/gv4ro5f8
-[36m(train_algo pid=91578)[0m Install gputil for GPU system monitoring.
-2023-11-24 00:19:29,653	INFO wandb.py:307 -- Already logged into W&B.
-wandb: - 0.005 MB of 0.005 MB uploadedwandb: \ 0.005 MB of 0.005 MB uploadedwandb: | 0.005 MB of 0.008 MB uploadedwandb: / 0.008 MB of 0.140 MB uploadedwandb: - 0.008 MB of 0.140 MB uploadedwandb: \ 0.140 MB of 0.140 MB uploadedwandb:                                                                                
-wandb: 
-wandb: Run history:
-wandb:      episode_len_mean ▂█▂█▇▇▁██▇▇▆▇█▂██▂█▆█▂▇▁▇▇▇▆▆▂█▂▆▇▅▆▁▂▂▆
-wandb:   episode_reward_mean █▁█▂▅▅█▂▁▅▅▆▆▁█▅▁█▅▆▁█▅█▆▅▅▆▇█▂█▇▆▇▆███▆
-wandb:        episodes_total ▆▁▆▁▅▃▆▂▁▃▃▅▃▁▇▂▁▇▂▅▁▇▄▇▂▄▄▄▂█▂█▂▆▂▆███▄
-wandb: num_env_steps_sampled ▆▁▇▂▆▄▇▂▁▄▄▆▄▁▇▂▁▇▂▇▂▇▄▇▂▅▅▅▃█▂█▃▇▃▇███▅
-wandb: num_env_steps_trained ▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁
-wandb:          time_total_s ▆▁▆▁▇▄▆▂▁▅▅▇▅▁▆▂▂▆▂▇▂▆▅▆▂▅▅▅▂▇▂▇▂█▃█▇▇▇▆
-wandb:    training_iteration ▆▁▇▂▆▄▇▂▁▄▄▆▄▁▇▂▁▇▂▇▂▇▄▇▂▅▅▅▃█▂█▃▇▃▇███▅
-wandb: 
-wandb: Run summary:
-wandb:      episode_len_mean 81.91
-wandb:   episode_reward_mean 5.32
-wandb:        episodes_total 2301
-wandb: num_env_steps_sampled 219800
-wandb: num_env_steps_trained 0
-wandb:          time_total_s 597.10629
-wandb:    training_iteration 1099
-wandb: 
-wandb: 🚀 View run effortless-sea-46 at: https://wandb.ai/tpn/rllib3/runs/gv4ro5f8
-wandb: ️⚡ View job at https://wandb.ai/tpn/rllib3/jobs/QXJ0aWZhY3RDb2xsZWN0aW9uOjExODA1Nzg0NQ==/version_details/v8
-wandb: Synced 5 W&B file(s), 0 media file(s), 0 artifact file(s) and 0 other file(s)
-wandb: Find logs at: ./wandb/run-20231124_001109-gv4ro5f8/logs
-wandb: - Waiting for wandb.init()...wandb: \ Waiting for wandb.init()...wandb: Tracking run with wandb version 0.16.0
-wandb: Run data is saved locally in /data/gpfs/projects/punim1355/dalmiapriyam/predator-prey/wandb/run-20231124_001929-erboxc3m
-wandb: Run `wandb offline` to turn off syncing.
-wandb: Syncing run stilted-monkey-47
-wandb: ⭐️ View project at https://wandb.ai/tpn/rllib3
-wandb: 🚀 View run at https://wandb.ai/tpn/rllib3/runs/erboxc3m
-[36m(train_algo pid=91577)[0m Install gputil for GPU system monitoring.
-2023-11-24 00:36:35,766	INFO wandb.py:307 -- Already logged into W&B.
-wandb: - 0.005 MB of 0.005 MB uploadedwandb: \ 0.005 MB of 0.005 MB uploadedwandb: | 0.005 MB of 0.008 MB uploadedwandb: / 0.259 MB of 0.259 MB uploadedwandb: - 0.259 MB of 0.259 MB uploadedwandb: \ 0.259 MB of 0.259 MB uploadedwandb:                                                                                
-wandb: 
-wandb: Run history:
-wandb:      episode_len_mean ▆▆█▇▅███▇▇▃▇▅▇▇█▂▆▃▆▆▂▅█▅▄▇▁▅▆▇▄▁▇▁▅▃▁▂▆
-wandb:   episode_reward_mean ▆▆▁▆▆▄▂▄▆▆█▅▇▆▅▅█▆█▆▆█▇▅▇▇▅█▇▆▅██▅█▇███▆
-wandb:        episodes_total ▄▆▁▄▆▂▁▂▅▅▃▂▇▅▂▃▄▂▄▂▅▄▂▃▇▃▃▅█▆▃▃▆▃▆█▄▆▄▄
-wandb: num_env_steps_sampled ▄▆▁▄▆▂▁▂▅▅▃▂▇▅▃▃▄▂▄▂▅▄▂▃▇▃▃▅█▆▃▃▅▄▅█▃▅▄▄
-wandb: num_env_steps_trained ▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁
-wandb:          time_total_s ▄▆▁▄▆▂▁▂▅▅▃▂▇▅▃▃▃▂▃▂▅▃▂▃▇▂▃▄█▆▃▂▄▄▄█▃▄▃▄
-wandb:    training_iteration ▄▆▁▄▆▂▁▂▅▅▃▂▇▅▃▃▄▂▄▂▅▄▂▃▇▃▃▅█▆▃▃▅▄▅█▃▅▄▄
-wandb: 
-wandb: Run summary:
-wandb:      episode_len_mean 68.46
-wandb:   episode_reward_mean 5.63
-wandb:        episodes_total 4116
-wandb: num_env_steps_sampled 349800
-wandb: num_env_steps_trained 0
-wandb:          time_total_s 943.64326
-wandb:    training_iteration 1749
-wandb: 
-wandb: 🚀 View run stilted-monkey-47 at: https://wandb.ai/tpn/rllib3/runs/erboxc3m
-wandb: ️⚡ View job at https://wandb.ai/tpn/rllib3/jobs/QXJ0aWZhY3RDb2xsZWN0aW9uOjExODA1Nzg0NQ==/version_details/v8
-wandb: Synced 5 W&B file(s), 0 media file(s), 0 artifact file(s) and 0 other file(s)
-wandb: Find logs at: ./wandb/run-20231124_001929-erboxc3m/logs
-wandb: - Waiting for wandb.init()...wandb: \ Waiting for wandb.init()...wandb: Tracking run with wandb version 0.16.0
-wandb: Run data is saved locally in /data/gpfs/projects/punim1355/dalmiapriyam/predator-prey/wandb/run-20231124_003635-6l4qfz2l
-wandb: Run `wandb offline` to turn off syncing.
-wandb: Syncing run misty-tree-48
-wandb: ⭐️ View project at https://wandb.ai/tpn/rllib3
-wandb: 🚀 View run at https://wandb.ai/tpn/rllib3/runs/6l4qfz2l
-[36m(train_algo pid=91576)[0m Install gputil for GPU system monitoring.
-2023-11-24 00:44:23,097	INFO wandb.py:307 -- Already logged into W&B.
-wandb: - 0.005 MB of 0.005 MB uploadedwandb: \ 0.005 MB of 0.005 MB uploadedwandb: | 0.005 MB of 0.008 MB uploadedwandb: / 0.005 MB of 0.134 MB uploadedwandb: - 0.134 MB of 0.134 MB uploadedwandb: \ 0.134 MB of 0.134 MB uploadedwandb: | 0.134 MB of 0.134 MB uploadedwandb:                                                                                
-wandb: 
-wandb: Run history:
-wandb:      episode_len_mean ▃▁▂▁▃▅▃▅▁▅▇▅▅▅▇▂▇▂▄▂▄▇█▁▂▁▂▇▇▂█▇█▁▄▃█▃▄▄
-wandb:   episode_reward_mean █████▇█▇█▇▅▇▇▇▅█▅█▇█▇▅▁████▅▅█▂▅▂█▇▇▂▇▇▇
-wandb:        episodes_total ▄▆▄▆▄▆▄▆▇▆▄▆▇▇▄▇▄▇▇▇▇▄▁█▅▅█▄▄█▁▄▁█▇▇▁▇▇▇
-wandb: num_env_steps_sampled ▄▆▄▆▄▇▄▇▆▇▄▇▇▇▄▆▄▆▇▆▇▅▁▇▅▅▇▅▅▇▁▅▁▇██▁███
-wandb: num_env_steps_trained ▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁
-wandb:          time_total_s ▃▄▃▄▃▇▃▇▅▇▄▇▇▇▄▅▄▅▇▅▇▅▁▅▃▄▅▅▅▅▁▅▁▅██▁███
-wandb:    training_iteration ▄▆▄▆▄▇▄▇▆▇▄▇▇▇▄▆▄▆▇▆▇▅▁▇▅▅▇▅▅▇▁▅▁▇██▁███
-wandb: 
-wandb: Run summary:
-wandb:      episode_len_mean 100.01
-wandb:   episode_reward_mean 2.81
-wandb:        episodes_total 1148
-wandb: num_env_steps_sampled 115800
-wandb: num_env_steps_trained 0
-wandb:          time_total_s 429.49492
-wandb:    training_iteration 579
-wandb: 
-wandb: 🚀 View run misty-tree-48 at: https://wandb.ai/tpn/rllib3/runs/6l4qfz2l
-wandb: ️⚡ View job at https://wandb.ai/tpn/rllib3/jobs/QXJ0aWZhY3RDb2xsZWN0aW9uOjExODA1Nzg0NQ==/version_details/v7
-wandb: Synced 5 W&B file(s), 0 media file(s), 0 artifact file(s) and 0 other file(s)
-wandb: Find logs at: ./wandb/run-20231124_003635-6l4qfz2l/logs
-wandb: - Waiting for wandb.init()...wandb: \ Waiting for wandb.init()...wandb: Tracking run with wandb version 0.16.0
-wandb: Run data is saved locally in /data/gpfs/projects/punim1355/dalmiapriyam/predator-prey/wandb/run-20231124_004423-weau8pib
-wandb: Run `wandb offline` to turn off syncing.
-wandb: Syncing run devout-aardvark-49
-wandb: ⭐️ View project at https://wandb.ai/tpn/rllib3
-wandb: 🚀 View run at https://wandb.ai/tpn/rllib3/runs/weau8pib
-[36m(train_algo pid=91575)[0m Install gputil for GPU system monitoring.
-2023-11-24 00:50:33,178	INFO wandb.py:307 -- Already logged into W&B.
-wandb: - 0.005 MB of 0.005 MB uploadedwandb: \ 0.005 MB of 0.005 MB uploadedwandb: | 0.005 MB of 0.108 MB uploadedwandb: / 0.108 MB of 0.108 MB uploadedwandb: - 0.108 MB of 0.108 MB uploadedwandb: \ 0.108 MB of 0.108 MB uploadedwandb:                                                                                
-wandb: 
-wandb: Run history:
-wandb:      episode_len_mean ▇▃█▂█▇█▄▇▂█▄▆██▆▁▃█▇▇█▃▂▆▄███▆█▂████▁▄█▂
-wandb:   episode_reward_mean ▆█▁█▃▆▃█▆█▄█▆▂▂▆██▄▆▆▄██▆█▄▄▄▆▅█▄▄▄▄█▇▅█
-wandb:        episodes_total ▅▆▁▆▂▅▂▇▅▆▂▇▅▁▁▅▆█▂▅▅▂█▆▅█▂▂▂▅▂▇▂▂▂▂▇█▂▇
-wandb: num_env_steps_sampled ▅▅▁▅▂▅▂▇▅▅▂█▅▁▁▅▅█▂▅▅▂█▆▅█▂▂▂▅▂▆▂▂▂▂▆█▂▆
-wandb: num_env_steps_trained ▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁
-wandb:          time_total_s ▅▄▁▄▂▅▂▇▅▄▂█▅▁▁▅▄█▂▅▅▂█▄▅█▁▂▁▅▂▄▂▂▂▂▅█▂▅
-wandb:    training_iteration ▅▅▁▅▂▅▂▇▅▅▂█▅▁▁▅▅█▂▅▅▂█▆▅█▂▂▂▅▂▆▂▂▂▂▆█▂▆
-wandb: 
-wandb: Run summary:
-wandb:      episode_len_mean 89.0
-wandb:   episode_reward_mean 4.68
-wandb:        episodes_total 6153
-wandb: num_env_steps_sampled 592000
-wandb: num_env_steps_trained 0
-wandb:          time_total_s 2182.32849
-wandb:    training_iteration 2960
-wandb: 
-wandb: 🚀 View run devout-aardvark-49 at: https://wandb.ai/tpn/rllib3/runs/weau8pib
-wandb: ️⚡ View job at https://wandb.ai/tpn/rllib3/jobs/QXJ0aWZhY3RDb2xsZWN0aW9uOjExODA1Nzg0NQ==/version_details/v8
-wandb: Synced 5 W&B file(s), 0 media file(s), 0 artifact file(s) and 0 other file(s)
-wandb: Find logs at: ./wandb/run-20231124_004423-weau8pib/logs
-wandb: - Waiting for wandb.init()...wandb: \ Waiting for wandb.init()...wandb: Tracking run with wandb version 0.16.0
-wandb: Run data is saved locally in /data/gpfs/projects/punim1355/dalmiapriyam/predator-prey/wandb/run-20231124_005033-oo9x3frc
-wandb: Run `wandb offline` to turn off syncing.
-wandb: Syncing run polished-plant-50
-wandb: ⭐️ View project at https://wandb.ai/tpn/rllib3
-wandb: 🚀 View run at https://wandb.ai/tpn/rllib3/runs/oo9x3frc
-[36m(train_algo pid=91574)[0m Install gputil for GPU system monitoring.
-2023-11-24 00:55:19,774	INFO wandb.py:307 -- Already logged into W&B.
-wandb: - 0.005 MB of 0.005 MB uploadedwandb: \ 0.005 MB of 0.005 MB uploadedwandb: | 0.005 MB of 0.005 MB uploadedwandb: / 0.005 MB of 0.005 MB uploadedwandb: - 0.014 MB of 0.096 MB uploaded (0.001 MB deduped)wandb: \ 0.016 MB of 0.096 MB uploaded (0.001 MB deduped)wandb: | 0.016 MB of 0.096 MB uploaded (0.001 MB deduped)wandb: / 0.096 MB of 0.096 MB uploaded (0.001 MB deduped)wandb:                                                                                
-wandb: W&B sync reduced upload amount by 1.6%             
-wandb: 
-wandb: Run history:
-wandb:      episode_len_mean ██▃█▇█▂▆██▆▇▂██▂▇▆▇▂▇▆█▇▆▇▂█▆▂▂▁▁▇█▁▁▇▅█
-wandb:   episode_reward_mean ▂▅▇▄▅▅█▆▅▁▆▅█▁▁█▆▇▅█▅▇▂▅▇▅█▅▆████▅▂██▅▇▂
-wandb:        episodes_total ▁▂▇▂▂▃▇▅▃▁▆▂▇▁▁▇▂▆▃█▂▆▁▂▆▃█▃▆████▂▁██▃▆▁
-wandb: num_env_steps_sampled ▁▂▇▂▂▃▇▇▃▁▇▂▇▁▁█▃▇▃█▃▇▁▃▇▃█▃▇████▃▁██▃▇▂
-wandb: num_env_steps_trained ▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁
-wandb:          time_total_s ▁▂▆▂▂▃▆▇▃▁▇▂▆▁▁▆▂█▄▆▂█▁▂█▄▆▄█▆▆▆▇▃▂▇▇▃█▂
-wandb:    training_iteration ▁▂▇▂▂▃▇▇▃▁▇▂▇▁▁█▃▇▃█▃▇▁▃▇▃█▃▇████▃▁██▃▇▂
-wandb: 
-wandb: Run summary:
-wandb:      episode_len_mean 95.26
-wandb:   episode_reward_mean 4.22
-wandb:        episodes_total 2219
-wandb: num_env_steps_sampled 218000
-wandb: num_env_steps_trained 0
-wandb:          time_total_s 592.50573
-wandb:    training_iteration 1090
-wandb: 
-wandb: 🚀 View run polished-plant-50 at: https://wandb.ai/tpn/rllib3/runs/oo9x3frc
-wandb: ️⚡ View job at https://wandb.ai/tpn/rllib3/jobs/QXJ0aWZhY3RDb2xsZWN0aW9uOjExODA1Nzg0NQ==/version_details/v8
-wandb: Synced 5 W&B file(s), 0 media file(s), 2 artifact file(s) and 0 other file(s)
-wandb: Find logs at: ./wandb/run-20231124_005033-oo9x3frc/logs
-wandb: - Waiting for wandb.init()...wandb: \ Waiting for wandb.init()...wandb: Tracking run with wandb version 0.16.0
-wandb: Run data is saved locally in /data/gpfs/projects/punim1355/dalmiapriyam/predator-prey/wandb/run-20231124_005519-9mouh35f
-wandb: Run `wandb offline` to turn off syncing.
-wandb: Syncing run upbeat-dust-51
-wandb: ⭐️ View project at https://wandb.ai/tpn/rllib3
-wandb: 🚀 View run at https://wandb.ai/tpn/rllib3/runs/9mouh35f
-[36m(train_algo pid=91577)[0m Install gputil for GPU system monitoring.

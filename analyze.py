@@ -41,6 +41,7 @@ def get_ccm_score(X, Y, tau=4, E=1) -> list[tuple[str, float]]:
     if pd.isna(corr):
         corr = 0.0
         pval = -1.0
+
     return [("ccm", corr), ("ccm_pval", pval)]
 
 def get_granger_score(X, Y, maxlag=1) -> tuple[str, float]:
@@ -49,11 +50,48 @@ def get_granger_score(X, Y, maxlag=1) -> tuple[str, float]:
     """
     import statsmodels as sm
     from statsmodels.tsa.stattools import grangercausalitytests
-    data = np.array([X, Y]).T
+    data = np.array([X, Y]).T.astype(np.float64)
     results = grangercausalitytests(data, maxlag=5)
+
+    #%% Data generation Y->X
+        # np.random.seed(10)
+        # y = (
+        # np.cos(np.linspace(0, 20, 10_100))
+        # + np.sin(np.linspace(0, 3, 10_100))
+        # - 0.2 * np.random.random(10_100)
+        # )
+        # np.random.seed(20)
+        # x = 2 * y ** 3 - 5 * y ** 2 + 0.3 * y + 2 - 0.05 * np.random.random(10_100)
+        # data = np.vstack([x[:-100], y[100:]]).T
+        # #%% Test in case of presence of the causality
+        # lags = [50, 150]
+        # data_train = data[:7000, :]
+        # data_test = data[7000:, :]
+        # import copy
+        # data_test_measure = copy.copy(data_test)
+        # np.random.seed(30)
+        # data_test_measure[:1500, 1] = np.random.random(1500)
+
+        # import nonlincausality as nlc
+        # results_NN = nlc.nonlincausalityNN(
+        #     x=data_train,
+        #     maxlag=lags,
+        #     NN_config=["l", "dr", "g", "dr", "d", "dr"],
+        #     NN_neurons=[5, 0.1, 5, 0.1, 5, 0.1],
+        #     x_test=data_test,
+        #     run=3,
+        #     epochs_num=[50, 100],
+        #     learning_rate=[0.001, 0.0001],
+        #     batch_size_num=128,
+        #     verbose=False,
+        #     plot=True,
+        # )
+
+        # # ARIMA/ARIMAX models
+        # results_ARIMA = nlc.nonlincausalityARIMA(x=data_train, maxlag=lags, x_test=data_train)
+        # breakpoint()
     print(results[5][0])
-
-
+    breakpoint()
     return ("granger", 0.0)
 
 # Given an algorithm do
