@@ -1,4 +1,4 @@
-algorithm_type: "centralized"
+algorithm_type: "shared"
 algorithm_class: "ppo"
 framework: "torch"
 tune:
@@ -30,7 +30,7 @@ rollouts:
    batch_mode: "complete_episodes"
 wandb: 
    wandb_init: true 
-   wandb_project: "rllib1"
+   wandb_project: "rllib2"
    wandb_entity: "tpn"
    wandb_notes: "testing setup"
    wandb_log_freq: 10

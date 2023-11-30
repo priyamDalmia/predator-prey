@@ -18,8 +18,8 @@ EMULATION_MODES = ["original", "modified"]
 CAUSAL_PAIRS = [("predator_0", "predator_1"), ("predator_1", "predator_0")]
 CAUSAL_TESTS = ["ccm", "granger"]#  "spatial_ccm", "ccm_pval"]
 DIMENSIONS = ["x", "y"] # "dx", "dy", "reward", "PCA"]
-TRAJ_LENGTH = [str(i) for i in range(1000, 10001, 1000)]
-_traj_data = [0 for i in range(1000, 10001, 1000)]
+TRAJ_LENGTH = [str(i) for i in range(100, 1001, 100)]
+_traj_data = [0 for i in range(100, 1001, 100)]
 _df_data = [
     [mode, *pair, test, dim]
     for mode in EMULATION_MODES
@@ -159,11 +159,12 @@ class maPolicy:
         elif self.algorithm_type == "centralized":
             return self.algorithm.get_policy(agent_id)\
                 .compute_single_action(obs, explore=False)[0]
-        elif self.algorithm_type == "indepedent":
+        elif self.algorithm_type == "independent":
             return self.algorithm.get_policy(agent_id)\
                 .compute_single_action(obs, explore=False)[0]
         elif self.algorithm_type == "shared":
-            raise NotImplementedError("Shared Actions Not implemented yet")
+            return self.algorithm.get_policy('shared_policy')\
+                .compute_single_action(obs, explore=False)[0]
             # return self.algorithm.get_policy(agent_id)\
                 # .compute_single_action(obs, explore=False)[0]
         raise NotImplementedError("Not implemented yet")
