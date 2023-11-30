@@ -7,7 +7,7 @@ tune:
    max_episodes: 25000
    max_concurrent_trials: 6
 analysis:
-   pref_ccm_analysis: false
+   pref_ccm_analysis: true
    pref_granger_analysis: false
    pref_graph_analysis: false
    pref_spatial_ccm_analysis: false
@@ -30,7 +30,7 @@ rollouts:
    batch_mode: "complete_episodes"
 wandb: 
    wandb_init: true 
-   wandb_project: "rllib1"
+   wandb_project: "rllib2"
    wandb_entity: "tpn"
    wandb_notes: "testing setup"
    wandb_log_freq: 10

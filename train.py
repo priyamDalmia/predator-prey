@@ -64,9 +64,10 @@ def create_algo(config):
             )
             .rl_module(_enable_rl_module_api=True)
         )
+        algo = algo_config.build()
     elif config["algorithm_type"] == "centralized":
         ModelCatalog.register_custom_model("cc_model", TorchCentralizedCriticModel)
-        config = (
+        algo_config = (
             PPOConfig()
             .environment(
                 config["env_name"],
@@ -105,8 +106,7 @@ def create_algo(config):
             )
             .rl_module(_enable_rl_module_api=False)
         )
-        algo = CentralizedCritic(config=config)
-        return algo
+        algo = CentralizedCritic(config=algo_config)
     elif config["algorithm_type"] == "shared":
         algo_config = (
             PPOConfig()
@@ -126,10 +126,11 @@ def create_algo(config):
             )
             .rl_module(_enable_rl_module_api=True)
         )
+        algo = algo_config.build()
     else:
         raise ValueError(f"algorithm_type {config['algorithm_type']} not supported")
 
-    algo = algo_config.build()
+    algo.build_config_dict = config
     return algo
 
 class episodeMetrics(DefaultCallbacks):
@@ -244,9 +245,21 @@ def train_algo(config):
 
         if config["stop_fn"](None, results):
             print("STOPPING TRAINING. Performing analysis")
-            analysis_df = analyze(algo, config)
+            analysis_df, eval_df = analyze(algo, config)
 
             if config["wandb"]["wandb_init"]:
+                wandb.run.summary.update(
+                    dict(
+                        eval_df=eval_df.describe().to_dict(),
+                    )
+                )
+                # create the two tables and store 
+                wandb.log(
+                    dict(
+                        analysis_table=wandb.Table(dataframe=analysis_df),
+                        eval_table=wandb.Table(dataframe=eval_df),
+                    )
+                )
                 wandb.finish()
 
         train.report(results)
@@ -296,7 +309,7 @@ def main():
 
 if __name__ == "__main__":
     main()
-    # load the yaml fiw we
+    # # # load the yaml fiw we
     # with open("config.yaml", "r") as f:
     #     config = yaml.load(f, Loader=yaml.FullLoader)
     # register_env(config["env_name"], lambda config: env_creator(config))
@@ -309,7 +322,13 @@ if __name__ == "__main__":
     #     return stop
     # config["stop_fn"] = stop_fn
     # config["wandb"]["wandb_dir_path"] = str(Path("./wandb").absolute())
+    
+    # ## test analyze 
+    # algo = create_algo(config)
+    # analysis_df, eval_df = analyze(algo, config)
+    # print(analysis_df)
 
+   ## test tune fit 
     # config["algorithm_type"] = tune.grid_search(["centralized"])
     # config["env_config"]["reward_type"] = tune.grid_search(["type_1", "type_2"])
     # tuner = tune.Tuner(
@@ -329,5 +348,5 @@ if __name__ == "__main__":
     # results = tuner.fit()
     # for res in results:
     #     print(res.metrics_dataframe)
-
-    # # sys.exit(0)
+ 
+    sys.exit(0)
