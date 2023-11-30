@@ -18,8 +18,8 @@ EMULATION_MODES = ["original", "modified"]
 CAUSAL_PAIRS = [("predator_0", "predator_1"), ("predator_1", "predator_0")]
 CAUSAL_TESTS = ["ccm", "granger"]#  "spatial_ccm", "ccm_pval"]
 DIMENSIONS = ["x", "y"] # "dx", "dy", "reward", "PCA"]
-TRAJ_LENGTH = [str(i) for i in range(100, 1001, 100)]
-_traj_data = [0 for i in range(100, 1001, 100)]
+TRAJ_LENGTH = [str(i) for i in range(1000, 10001, 1000)]
+_traj_data = [0 for i in range(1000, 10001, 1000)]
 _df_data = [
     [mode, *pair, test, dim]
     for mode in EMULATION_MODES
