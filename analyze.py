@@ -92,7 +92,6 @@ def get_granger_score(X, Y, maxlag=1) -> tuple[str, float]:
     # # ARIMA/ARIMAX models
     # results_ARIMA = nlc.nonlincausalityARIMA(x=data_train, maxlag=lags, x_test=data_train)
     # breakpoint()
-    print(results[5][0])
     return ("granger", 0.0)
 
 
@@ -225,7 +224,7 @@ def analyze_step(algo, config):
 
                     # CCM analysis
                     print(
-                        f"CCM analysis for {pair[0]} and {pair[1]} in {dim} dimension"
+                        f"{i}-{pair}: CCM analysis for {pair[0]} and {pair[1]} in {dim} dimension"
                     )
                     if config['analysis']["pref_ccm_analysis"]:
                         results = get_ccm_score(X, Y, tau=1, E=1)

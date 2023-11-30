@@ -256,7 +256,7 @@ def train_algo(config):
                 wandb.log(
                     dict(
                         analysis_table=wandb.Table(dataframe=analysis_df.reset_index()),
-                        eval_table=wandb.Table(dataframe=eval_df.reset_index()),
+                        eval_table=wandb.Table(dataframe=eval_df),
                     )
                 )
                 wandb.finish()
@@ -307,47 +307,47 @@ def main():
 
 
 if __name__ == "__main__":
-    main()
-    # # # load the yaml fiw we
-#     with open("config.yaml", "r") as f:
-#         config = yaml.load(f, Loader=yaml.FullLoader)
-#     register_env(config["env_name"], lambda config: env_creator(config))
+    # main()
+    # # load the yaml fiw we
+    with open("config.yaml", "r") as f:
+        config = yaml.load(f, Loader=yaml.FullLoader)
+    register_env(config["env_name"], lambda config: env_creator(config))
 
-#     # # for config define param space
-#     ray.init(num_cpus=1)
-#     def stop_fn(trial_id, result):
-#         # Stop training if episode total
-#         stop = result["episodes_total"] > 500
-#         return stop
-#     config["stop_fn"] = stop_fn
-#     config["wandb"]["wandb_dir_path"] = str(Path("./wandb").absolute())
+    # # for config define param space
+    ray.init(num_cpus=2)
+    def stop_fn(trial_id, result):
+        # Stop training if episode total
+        stop = result["episodes_total"] > 500
+        return stop
+    config["stop_fn"] = stop_fn
+    config["wandb"]["wandb_dir_path"] = str(Path("./wandb").absolute())
     
 #     ## test analyze 
-#     algo = create_algo(config)
-#     analysis_df, eval_df = analyze(algo, config)
+#     # algo = create_algo(config)
+#     # analysis_df, eval_df = analyze(algo, config)
 #     # print(analysis_df)
-#     breakpoint()
-#     sys.exit()
+#     # breakpoint()
+#     # sys.exit()
 
-#    # test tune fit 
-#     config["algorithm_type"] = tune.grid_search(["centralized", "independent"])
-#     config["env_config"]["reward_type"] = tune.grid_search(["type_1", "type_2"])
-#     tuner = tune.Tuner(
-#         tune.with_resources(train_algo, {"cpu": 1}),
-#         param_space=config,
-#         tune_config=tune.TuneConfig(
-#             metric="episode_len_mean",
-#             mode="min",
-#             num_samples=1,
-#             max_concurrent_trials=1,
-#         ),
-#         run_config=train.RunConfig(
-#             stop=stop_fn,
-#             storage_path=str(Path("./experiments").absolute()),
-#         ),
-#     )
-#     results = tuner.fit()
-#     for res in results:
-#         print(res.metrics_dataframe)
+   # test tune fit 
+    config["algorithm_type"] = tune.grid_search(["centralized", "independent"])
+    config["env_config"]["reward_type"] = tune.grid_search(["type_1", "type_2"])
+    tuner = tune.Tuner(
+        tune.with_resources(train_algo, {"cpu": 1}),
+        param_space=config,
+        tune_config=tune.TuneConfig(
+            metric="episode_len_mean",
+            mode="min",
+            num_samples=1,
+            max_concurrent_trials=1,
+        ),
+        run_config=train.RunConfig(
+            stop=stop_fn,
+            storage_path=str(Path("./experiments").absolute()),
+        ),
+    )
+    results = tuner.fit()
+    for res in results:
+        print(res.metrics_dataframe)
  
-#     sys.exit(0)
+    sys.exit(0)
