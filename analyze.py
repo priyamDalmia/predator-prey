@@ -4,6 +4,7 @@ from logging import config
 from math import inf
 import re
 from typing import Any
+from cycler import L
 from matplotlib.pylab import f
 import pandas as pd
 import numpy as np
@@ -18,8 +19,9 @@ EMULATION_MODES = ["original", "modified"]
 CAUSAL_PAIRS = [("predator_0", "predator_1"), ("predator_1", "predator_0")]
 CAUSAL_TESTS = ["ccm", "granger"]#  "spatial_ccm", "ccm_pval"]
 DIMENSIONS = ["x", "y"] # "dx", "dy", "reward", "PCA"]
-TRAJ_LENGTH = [str(i) for i in range(1000, 10001, 1000)]
-_traj_data = [0 for i in range(1000, 10001, 1000)]
+LENGTH = 100
+TRAJ_LENGTH = [str(i) for i in range(LENGTH, (10*LENGTH)+1, LENGTH)]
+_traj_data = [0 for i in range(LENGTH, (LENGTH*10)+1, LENGTH)]
 _df_data = [
     [mode, *pair, test, dim]
     for mode in EMULATION_MODES
@@ -55,7 +57,6 @@ def get_granger_score(X, Y, maxlag=1) -> tuple[str, float]:
     data = np.array([X, Y]).T.astype(np.float64)
     results = grangercausalitytests(data, maxlag=5)
 
-    # %% Data generation Y->X
     # np.random.seed(10)
     # y = (
     # np.cos(np.linspace(0, 20, 10_100))
@@ -223,9 +224,9 @@ def analyze_step(algo, config):
                     Y: pd.Series = rollout_env_steps.loc[:, (pair[1], dim)]
 
                     # CCM analysis
-                    print(
-                        f"{i}-{pair}: CCM analysis for {pair[0]} and {pair[1]} in {dim} dimension"
-                    )
+                    # print(
+                    #     f"{i}-{pair}: CCM analysis for {pair[0]} and {pair[1]} in {dim} dimension"
+                    # )
                     if config['analysis']["pref_ccm_analysis"]:
                         results = get_ccm_score(X, Y, tau=1, E=1)
                         for result in results:
@@ -316,3 +317,5 @@ if __name__ == "__main__":
     algo = None
     results = analyze(algo, config)
     print(results)
+
+# %%

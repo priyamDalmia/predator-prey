@@ -11,6 +11,7 @@ from typing import Dict, List
 from numpy import tril
 from ray.tune.experiment import Trial
 import wandb
+import random
 import yaml
 import ray
 from ray import tune, train
@@ -63,6 +64,7 @@ def create_algo(config):
                 policies_to_train=list(env.par_env.possible_agents),
             )
             .rl_module(_enable_rl_module_api=True)
+            .offline_data(output=None)
         )
         algo = algo_config.build()
     elif config["algorithm_type"] == "centralized":
@@ -105,6 +107,7 @@ def create_algo(config):
                 policies_to_train=list(env.par_env.possible_agents),
             )
             .rl_module(_enable_rl_module_api=False)
+            .offline_data(output=None)
         )
         algo = CentralizedCritic(config=algo_config)
     elif config["algorithm_type"] == "shared":
@@ -125,6 +128,7 @@ def create_algo(config):
                 policy_mapping_fn=(lambda agent_id, *args, **kwargs: "shared_policy"),
             )
             .rl_module(_enable_rl_module_api=True)
+            .offline_data(output=None)
         )
         algo = algo_config.build()
     else:
@@ -195,7 +199,6 @@ class episodeMetrics(DefaultCallbacks):
 # define the Trainable
 def train_algo(config):
     algo = create_algo(config)
-    import random
 
     if config["wandb"]["wandb_init"]:
         wandb.init(
@@ -226,8 +229,8 @@ def train_algo(config):
             episodes_total=results["episodes_total"],
             time_total_s=results["time_total_s"],
             policy_reward_mean=results["policy_reward_mean"],
-            assists=results["custom_metrics"]["assists_mean"],
-            kills=results["custom_metrics"]["kills_mean"],
+            episode_assists_mean=results["custom_metrics"]["assists_mean"],
+            episode_kills_mean=results["custom_metrics"]["kills_mean"],
             predator_0_assists=results["custom_metrics"]["predator_0_assists_mean"],
             predator_0_kills=results["custom_metrics"]["predator_0_kills_mean"],
             predator_1_assists=results["custom_metrics"]["predator_1_assists_mean"],
@@ -244,19 +247,26 @@ def train_algo(config):
             wandb.log(log_dict)
 
         if config["stop_fn"](None, results):
-            print("STOPPING TRAINING. Performing analysis")
             analysis_df, eval_df = analyze(algo, config)
+            print(eval_df)
 
             if config["wandb"]["wandb_init"]:
-                wandb.log(dict(
-                        eval_df=eval_df.describe().to_dict(),
-                    )
-                )
+                eval_results = algo.evaluate()['evaluation']
+                wandb.summary.update(
+                    dict(
+                        eval_reward = eval_results['episode_reward_mean'],
+                        eval_episode_len = eval_results['episode_len_mean'],
+                        eval_assists = eval_results['custom_metrics']['assists_mean'],
+                        eval_policy_reward_mean = eval_results['policy_reward_mean'],
+                        eval_predator_0_assists = eval_results['custom_metrics']['predator_0_assists_mean'],
+                        eval_predator_1_assists = eval_results['custom_metrics']['predator_1_assists_mean'],
+                    ))
                 # create the two tables and store 
+                print(wandb.summary)
                 wandb.log(
                     dict(
                         analysis_table=wandb.Table(dataframe=analysis_df.reset_index()),
-                        eval_table=wandb.Table(dataframe=eval_df),
+                        # eval_table=wandb.Table(dataframe=eval_df),
                     )
                 )
                 wandb.finish()
@@ -295,9 +305,14 @@ def main():
             max_concurrent_trials=config["tune"]["max_concurrent_trials"],
         ),
         run_config=train.RunConfig(
+            verbose=1,
             stop=stop_fn,
             storage_path=storage_path,
-            log_to_file=True,
+            log_to_file=False,
+            checkpoint_config=train.CheckpointConfig(
+                checkpoint_frequency=0,
+                checkpoint_at_end=False,
+            ),
         ),
     )
     results = tuner.fit()
@@ -314,7 +329,7 @@ if __name__ == "__main__":
     register_env(config["env_name"], lambda config: env_creator(config))
 
     # # for config define param space
-    ray.init(num_cpus=2)
+    ray.init(num_cpus=6)
     def stop_fn(trial_id, result):
         # Stop training if episode total
         stop = result["episodes_total"] > 500
@@ -322,15 +337,18 @@ if __name__ == "__main__":
     config["stop_fn"] = stop_fn
     config["wandb"]["wandb_dir_path"] = str(Path("./wandb").absolute())
     
-#     ## test analyze 
-#     # algo = create_algo(config)
-#     # analysis_df, eval_df = analyze(algo, config)
-#     # print(analysis_df)
-#     # breakpoint()
-#     # sys.exit()
+    # test analyze 
+    # algo = create_algo(config)
+    # print(algo.train())
+    # print(f"EVALUATING {algo} \n\n")
+    # results = algo.evaluate()
+    # analysis_df, eval_df = analyze(algo, config)
+    # print(analysis_df)
+    # breakpoint()
+    # sys.exit()
 
    # test tune fit 
-    config["algorithm_type"] = tune.grid_search(["centralized", "independent"])
+    config["algorithm_type"] = tune.grid_search(["centralized", "shared", "independent"])
     config["env_config"]["reward_type"] = tune.grid_search(["type_1", "type_2"])
     tuner = tune.Tuner(
         tune.with_resources(train_algo, {"cpu": 1}),
@@ -339,11 +357,15 @@ if __name__ == "__main__":
             metric="episode_len_mean",
             mode="min",
             num_samples=1,
-            max_concurrent_trials=1,
+            max_concurrent_trials=6,
         ),
         run_config=train.RunConfig(
             stop=stop_fn,
             storage_path=str(Path("./experiments").absolute()),
+            checkpoint_config=train.CheckpointConfig(
+                checkpoint_frequency=0,
+                checkpoint_at_end=False,
+            ),
         ),
     )
     results = tuner.fit()
