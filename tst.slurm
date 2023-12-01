@@ -2,16 +2,16 @@
 #SBATCH --nodes=1
 #SBTACH --ntasks=1
 #SBATCH --ntasks-per-node=1
-#SBATCH --cpus-per-task=6
+#SBATCH --cpus-per-task=12
 
 #SBATCH --gres=gpu:1
 #SBATCH --qos=gpgpudeeplearn
 #SBATCH --partition=deeplearn
 
-# SBATCH --mem 8G
+# SBATCH --mem-per-cpu=4G
 # SBATCH --partition=cascade
 
-#SBATCH --time=20:00:00
+#SBATCH --time=01-00:00:00
 #SBATCH -o ./slurmoutput/train-%j.out
 #SBATCH --mail-type=fail         # send email if job fails
 #SBATCH --mail-user=p.dalmia@unimelb.edu.au
@@ -53,6 +53,7 @@ source ./.venv/bin/activate
 
 echo -e "\n\n\n PYTHON SCRIPT OUTPUT: \n"
 
+rm -rf ~/ray_results/*
 python3 ./train.py
 
 my-job-stats -a -n -s
