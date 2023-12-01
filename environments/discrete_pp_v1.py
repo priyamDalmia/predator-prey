@@ -123,6 +123,16 @@ class discrete_pp_v1(ParallelEnv):
             raise NotImplementedError("Only 2 predators supported for now. Redo Reward func2 for compatibility")
     
     def reward_dist_1(self, rewards, agent_id, agent_position, kill_position):
+        kill_area = self._global_state[
+            kill_position[0] - 2: kill_position[0] + 3,
+            kill_position[1] - 2: kill_position[1] + 3,
+            self.PREDATOR_CHANNEL].copy()
+        if kill_area.sum() > 1:
+            self._assists += 1
+            for _id in self._possible_agents:
+                rewards[_id] = 0.75 + rewards.get(_id, 0)
+                if agent_id != _id:
+                    self._assists_by_id[_id] = 1 + self._assists_by_id.get(_id, 0)
         rewards[agent_id] = 1 + rewards.get(agent_id, 0)
         return rewards
 
@@ -134,7 +144,7 @@ class discrete_pp_v1(ParallelEnv):
         if kill_area.sum() > 1:
             self._assists += 1
             for _id in self._possible_agents:
-                rewards[_id] = 0.75 + rewards.get(_id, 0)
+                rewards[_id] = 0.80 + rewards.get(_id, 0)
                 if agent_id != _id:
                     self._assists_by_id[_id] = 1 + self._assists_by_id.get(_id, 0)
             return rewards
