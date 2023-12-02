@@ -1,4 +1,5 @@
 from curses import meta
+from logging import warning
 import os 
 import sys
 import time
@@ -190,16 +191,34 @@ class discrete_pp_v1(ParallelEnv):
         self._predators = {}
         self._step_count = 0
         self._global_state = self._base_state.copy()
-        # build the game state here
-        # picks 8 positions from 9 quadrants 
-        # or x random positions tuples; no duplicates
         start_positions = set()
+        k = self._pred_vision * 2 + 1
+        # TODO warning that that quad spawn only works for map size 15 or 20
+        for x_lim, y_lim in list(
+            (i, j) for i in range(k, self._map_size+k, k) for j in range(k, self._map_size+k, k)):
+            x_lim += self._pred_vision
+            y_lim += self._pred_vision
+            # sample x, y positions from the quadrant
+            while True:
+                x = np.random.randint(x_lim - k, x_lim)
+                y = np.random.randint(y_lim - k, y_lim)
+                if (x, y) not in start_positions:
+                    start_positions.add((x, y))
+                    break
+
         num_pred_prey = self._npred + self._nprey
         while len(list(start_positions)) < num_pred_prey:
-            start_positions.add(
-                    (np.random.randint(self._pred_vision, self._pred_vision+self._map_size),
-                     (np.random.randint(self._pred_vision, self._pred_vision+self._map_size)))
-                )
+            x = np.random.randint(self._pred_vision, self._pred_vision+self._map_size)
+            y = np.random.randint(self._pred_vision, self._pred_vision+self._map_size)
+            if (x, y) not in start_positions:
+                start_positions.add((x, y))
+
+        # add sanity check to ensure that all start positions are in the 
+        # playable are of the global state, that is accounting for the padding.
+        assert all([0+self._pred_vision<=x<self._pred_vision+self._map_size+1 and 
+                    0+self._pred_vision<=y<self._pred_vision+self._map_size+1 
+                        for x, y in start_positions]),\
+                         "Start positions are not in the playable area of the global state."
         
         for agent_id in self._agents:
             agent = Agent(agent_id)
@@ -210,6 +229,7 @@ class discrete_pp_v1(ParallelEnv):
             self._observations[agent_id] = self.get_observation(agent_id) 
             if self._observations[agent_id].shape != self._observation_spaces[agent_id].shape:
                 print(f"Agent {agent_id} has no observation space")
+                self.get_observation(agent_id)
                 pass
             self._rewards[agent_id]= float(0)
             self._terminated[agent_id] = False
@@ -218,7 +238,7 @@ class discrete_pp_v1(ParallelEnv):
             self._assists_by_id[agent_id] = 0
             self._infos[agent_id] = dict()
 
-        for _ in range(len(start_positions)):
+        for _ in range(self._nprey):
             position = start_positions.pop()
             self._global_state[position[0], position[1], self.PREY_CHANNEL] = 1
             
@@ -451,7 +471,7 @@ class FixedSwing:
 
 if __name__ == "__main__":
     config = dict(
-        map_size = 15,
+        map_size = 20,
         reward_type = "type_2",
         max_cycles = 10000,
         npred = 2,
