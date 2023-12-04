@@ -186,7 +186,10 @@ def analyze(algo, config):
     # eval_stats_df = pd.DataFrame(eval_stats_dfs)
     # eval_stats_df = pd.DataFrame(eval_stats_df.mean())
     print(f"Time taken: {(time.time() - time_start) / 60:.2f} mins")
-    analysis_df.to_csv("analysis_2.csv")
+    # analysis_df.to_csv("analysis_2.csv")
+
+    analysis_df = analysis_df.groupby(level=[1,2,3,4,5]).mean()
+    # analysis_df.to_csv("analysis_2_mean.csv")
     return analysis_df
 
 

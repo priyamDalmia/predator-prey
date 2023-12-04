@@ -26,7 +26,7 @@ from ray.rllib.algorithms.callbacks import DefaultCallbacks
 from ray.rllib.env import BaseEnv
 from ray.rllib.evaluation import RolloutWorker, Episode
 from ray.rllib.policy import Policy
-from analyze import maPolicy, analyze
+from analyze_ray import maPolicy, analyze
 from algorithms.centralized_ppo import TorchCentralizedCriticModel, CentralizedCritic
 from ray.rllib.models import ModelCatalog
 
@@ -247,8 +247,7 @@ def train_algo(config):
             wandb.log(log_dict)
 
         if config["stop_fn"](None, results):
-            analysis_df, eval_df = analyze(algo, config)
-            print(eval_df)
+            analysis_df = analyze(algo, config)
 
             if config["wandb"]["wandb_init"]:
                 eval_results = algo.evaluate()['evaluation']
