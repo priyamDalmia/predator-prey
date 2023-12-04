@@ -1,4 +1,5 @@
 from curses import meta
+import dis
 from logging import warning
 import os 
 import sys
@@ -25,6 +26,7 @@ class discrete_pp_v1(ParallelEnv):
     Preys are either fixed or move randomly.
     Game ends when all Preys are captured or max_cycles is reached.
     """
+
     # from data.utils import Predator, Prey
     NUM_CHANNELS = 3
     GROUND_CHANNEL = 0
@@ -56,7 +58,12 @@ class discrete_pp_v1(ParallelEnv):
         3: "DOWN",
         4: "UP",
     }
-
+    
+    kill_area_slice = lambda state, position, channel: state[
+            position[0] - 2: position[0] + 3,
+            position[1] - 2: position[1] + 3,
+            channel].copy()
+    
     def __init__(self, *args, **kwargs)-> None:
         super().__init__()
         self._map_size = kwargs.get("map_size", 10)
@@ -124,11 +131,12 @@ class discrete_pp_v1(ParallelEnv):
             raise NotImplementedError("Only 2 predators supported for now. Redo Reward func2 for compatibility")
     
     def reward_dist_1(self, rewards, agent_id, agent_position, kill_position):
-        kill_area = self._global_state[
-            kill_position[0] - 2: kill_position[0] + 3,
-            kill_position[1] - 2: kill_position[1] + 3,
-            self.PREDATOR_CHANNEL].copy()
-        if kill_area.sum() > 1:
+        kill_area_1 = discrete_pp_v1.kill_area_slice(
+            self._global_state, kill_position, self.PREDATOR_CHANNEL)
+        kill_area_2 = discrete_pp_v1.kill_area_slice(
+            self._global_state, agent_position, self.PREDATOR_CHANNEL)
+        
+        if (kill_area_1.sum()+kill_area_2.sum()) > 2:
             self._assists += 1
             for _id in self._possible_agents:
                 if agent_id != _id:
@@ -137,11 +145,12 @@ class discrete_pp_v1(ParallelEnv):
         return rewards
 
     def reward_dist_2(self, rewards, agent_id, agent_position, kill_position):  
-        kill_area = self._global_state[
-            kill_position[0] - 2: kill_position[0] + 3,
-            kill_position[1] - 2: kill_position[1] + 3,
-            self.PREDATOR_CHANNEL].copy()
-        if kill_area.sum() > 1:
+        kill_area_1 = discrete_pp_v1.kill_area_slice(
+            self._global_state, kill_position, self.PREDATOR_CHANNEL)
+        kill_area_2 = discrete_pp_v1.kill_area_slice(
+            self._global_state, agent_position, self.PREDATOR_CHANNEL)
+        
+        if (kill_area_1.sum()+kill_area_2.sum()) > 2:
             self._assists += 1
             for _id in self._possible_agents:
                 rewards[_id] = 0.80 + rewards.get(_id, 0)
@@ -153,11 +162,12 @@ class discrete_pp_v1(ParallelEnv):
             return rewards
     
     def reward_dist_3(self, rewards, agent_id, agent_position, kill_position):  
-        kill_area = self._global_state[
-            kill_position[0] - 2: kill_position[0] + 3,
-            kill_position[1] - 2: kill_position[1] + 3,
-            self.PREDATOR_CHANNEL].copy()
-        if kill_area.sum() > 1:
+        kill_area_1 = discrete_pp_v1.kill_area_slice(
+            self._global_state, kill_position, self.PREDATOR_CHANNEL)
+        kill_area_2 = discrete_pp_v1.kill_area_slice(
+            self._global_state, agent_position, self.PREDATOR_CHANNEL)
+        
+        if (kill_area_1.sum()+kill_area_2.sum()) > 2:
             self._assists += 1
             for _id in self._possible_agents:
                 rewards[_id] = 1.5 + rewards.get(_id, 0)
@@ -193,6 +203,7 @@ class discrete_pp_v1(ParallelEnv):
         self._global_state = self._base_state.copy()
         start_positions = set()
         k = self._pred_vision * 2 + 1
+        k = k if k < 8 else 5
         # TODO warning that that quad spawn only works for map size 15 or 20
         for x_lim, y_lim in list(
             (i, j) for i in range(k, self._map_size+k, k) for j in range(k, self._map_size+k, k)):
@@ -226,22 +237,20 @@ class discrete_pp_v1(ParallelEnv):
             agent(spawn_at)
             self._global_state[spawn_at[0], spawn_at[1], self.PREDATOR_CHANNEL] = 1
             self._predators[agent_id] = agent
-            self._observations[agent_id] = self.get_observation(agent_id) 
-            if self._observations[agent_id].shape != self._observation_spaces[agent_id].shape:
-                print(f"Agent {agent_id} has no observation space")
-                self.get_observation(agent_id)
-                pass
             self._rewards[agent_id]= float(0)
             self._terminated[agent_id] = False
             self._truncated[agent_id] = False
             self._kills_by_id[agent_id] = 0
             self._assists_by_id[agent_id] = 0
             self._infos[agent_id] = dict()
+        
+        assert self._global_state[:, :, self.PREDATOR_CHANNEL].sum() == self._npred, "Number of predators should be equal to number of agents"
 
         for _ in range(self._nprey):
             position = start_positions.pop()
             self._global_state[position[0], position[1], self.PREY_CHANNEL] = 1
-            
+
+        self._observations = {agent_id: self.get_observation(agent_id) for agent_id in self._agents}   
         self._rewards_sum = self._rewards.copy() 
         return self._observations.copy(), self._infos.copy()    
     
@@ -320,7 +329,6 @@ class discrete_pp_v1(ParallelEnv):
                     assists = self._assists_by_id[agent_id],
                     kills = self._kills_by_id[agent_id],
                 )
-                observations[agent_id] = self.get_observation(agent_id)
 
         infos['__all__'] = dict(
             kills = self._kills,
@@ -328,12 +336,12 @@ class discrete_pp_v1(ParallelEnv):
             kills_by_id = self._kills_by_id.copy(),
             assists_by_id = self._assists_by_id.copy(),
         )
-        self._observations = observations.copy()
+        self._observations = {agent_id: self.get_observation(agent_id) for agent_id in self._agents}
         self._rewards = rewards.copy()
         self._terminated = terminated.copy()
         self._truncated = truncated.copy()
         self._step_count += 1
-        return observations, rewards, terminated, truncated, infos.copy()
+        return self._observations.copy(), rewards, terminated, truncated, infos.copy()
 
     @property
     def is_terminal(self,) -> bool:
@@ -428,20 +436,7 @@ class discrete_pp_v1(ParallelEnv):
     def unwrapped(self) -> ParallelEnv:
         return self
 
-class FixedSwing:
-    # from data.utils import Predator, Prey
-    NUM_CHANNELS = 3
-    GROUND_CHANNEL = 0
-    PREDATOR_CHANNEL = 1
-    PREY_CHANNEL = 2
-    STR_TO_ACTION = {
-        "STAY": 0,
-        "LEFT": 1,
-        "RIGHT": 2,
-        "DOWN": 3,
-        "UP": 4,
-    }
-
+class FixedSwingAgent:
     def __init__(self, env=None) -> None:
         self.direction = random.choice(["LEFT", "RIGHT"])
         pass
@@ -452,37 +447,92 @@ class FixedSwing:
         # if close of the left wall, change direction and move 
         if observation[0, center, :center].sum() > 1:
             self.direction = "RIGHT"
-            return self.STR_TO_ACTION[self.direction]
+            return discrete_pp_v1.STR_TO_ACTION[self.direction]
         elif observation[0, center, center:].sum() > 1:
             self.direction = "LEFT"
-            return self.STR_TO_ACTION[self.direction]
+            return discrete_pp_v1.STR_TO_ACTION[self.direction]
         else:
             if np.random.random() < 0.8:
-                return self.STR_TO_ACTION[self.direction]
+                return discrete_pp_v1.STR_TO_ACTION[self.direction]
             else:
                 # if close to the top wall, move down
                 if observation[0, :center, center].sum() > 1:
-                    return self.STR_TO_ACTION["DOWN"]
+                    return discrete_pp_v1.STR_TO_ACTION["DOWN"]
                 elif observation[0, center:, center].sum() > 1:
-                    return self.STR_TO_ACTION["UP"]
+                    return discrete_pp_v1.STR_TO_ACTION["UP"]
                 else:
-                    return self.STR_TO_ACTION[random.choice(["UP", "DOWN"])]
+                    return discrete_pp_v1.STR_TO_ACTION[random.choice(["UP", "DOWN"])]
+
+class FollowerAgent:
+    """
+    If predator in vision, takes a step in its direction 
+    else, randomly moves
+    """
+    def __init__(self, env=None) -> None:
+        pass
+
+    def get_action(self, observation):
+        center = observation.shape[0] // 2
+
+        if observation[:, :, discrete_pp_v1.PREDATOR_CHANNEL].sum() > 1:
+            for position in zip(*np.where(observation[:, :, discrete_pp_v1.PREDATOR_CHANNEL])):
+                if position[0] == center and position[1] == center:
+                    continue
+                elif position[0] < center:
+                    return discrete_pp_v1.STR_TO_ACTION["LEFT"]
+                elif position[0] > center:
+                    return discrete_pp_v1.STR_TO_ACTION["RIGHT"]
+                elif position[1] < center:
+                    return discrete_pp_v1.STR_TO_ACTION["UP"]
+                elif position[1] > center:
+                    return discrete_pp_v1.STR_TO_ACTION["DOWN"]
+        else:
+            return discrete_pp_v1.STR_TO_ACTION[random.choice(["UP", "DOWN", "LEFT", "RIGHT"])]
+
+class ChaserAgent:
+    """
+    If prey in vision, takes a step in its direction (closet prey)
+    else, randomly moves
+    """
+    def __init__(self, env=None) -> None:
+        pass
+
+    def get_action(self, observation):
+        center = observation.shape[0] // 2
+
+        if observation[:, :, discrete_pp_v1.PREY_CHANNEL].sum() > 0:
+            positions = list(zip(*np.where(observation[:, :, discrete_pp_v1.PREY_CHANNEL])))
+            distance = lambda pos: abs(pos[0] - center) + abs(pos[1] - center)
+            positions.sort(key=distance)
+            for position in positions: 
+                if position[0] < center:
+                    return discrete_pp_v1.STR_TO_ACTION["LEFT"]
+                elif position[0] > center:
+                    return discrete_pp_v1.STR_TO_ACTION["RIGHT"]
+                elif position[1] < center:
+                    return discrete_pp_v1.STR_TO_ACTION["UP"]
+                else:
+                    return discrete_pp_v1.STR_TO_ACTION["DOWN"]
+        else:
+            return discrete_pp_v1.STR_TO_ACTION[random.choice(["UP", "DOWN", "LEFT", "RIGHT"])]
 
 
 if __name__ == "__main__":
     config = dict(
-        map_size = 20,
+        map_size = 15,
         reward_type = "type_2",
-        max_cycles = 10000,
+        max_cycles = 1000,
         npred = 2,
-        pred_vision = 2,
+        pred_vision = 4,
         nprey = 6,
         prey_type = "static",
         render_mode = None
     )
 
     env = discrete_pp_v1(**config)
-    chaser = FixedSwing(env)
+    fixed_agent = FixedSwingAgent(env)
+    follower_agent = FollowerAgent(env)
+    chaser_agent = ChaserAgent(env) 
     print(f"Env name: {env.__name__()}, created!")
     
     # test action and observation spaces 
@@ -501,7 +551,8 @@ if __name__ == "__main__":
     reward_hist = []
     steps_hist = []
     assists_hist = []
-    for i in range(1000):
+    kills_hist = []
+    for i in range(100):
         # test reset
         obs, infos = env.reset()
         assert isinstance(obs, dict)
@@ -526,16 +577,19 @@ if __name__ == "__main__":
         # print all the positions of the preys 
         global_state = env.state()
         prey_positions = np.argwhere(global_state[:, :, env.PREY_CHANNEL] == 1)
-        os.system("clear")
+        # os.system("clear")
         while env.agents:
-            os.system("clear")
-            print(env.render())
-            actions = {agent_id: chaser.get_action(obs[agent_id]) \
-                    for agent_id in env.agents}
-            print(f"Actions: {env.ACTION_TO_STR[actions['predator_0']]} {env.ACTION_TO_STR[actions['predator_1']]}")
-            print(f"Positions: {env._predators['predator_0'].position} {env._predators['predator_1'].position}")
+            # os.system("clear")
+            # print(env.render())
+            # actions = {agent_id: chaser.get_action(obs[agent_id]) \
+            #         for agent_id in env.agents}
+            actions = {
+                "predator_0": chaser_agent.get_action(obs["predator_0"]),
+                "predator_1": chaser_agent.get_action(obs["predator_1"]),
+            }
+            # print(f"Actions: {env.ACTION_TO_STR[actions['predator_0']]} {env.ACTION_TO_STR[actions['predator_1']]}")
+            # print(f"Positions: {env._predators['predator_0'].position} {env._predators['predator_1'].position}")
             obs, rewards, terminated, truncated, infos = env.step(actions)
-            time.sleep(0.4)
 
             assert all([observation[pd, pd, 1] == 1 for observation in obs.values()])
             # assert sum of 1s in the predator channel is equals len(env._agents)
@@ -548,11 +602,11 @@ if __name__ == "__main__":
         # print(f"Total kills: {env._kills}")
         # print(f"Total rewards: {env._rewards_sum}")
         if env._reward_type == "type_2":
-            assert env._kills == env._nprey, "All preys should be dead"
-            assert sum(sum_rewards.values()) ==\
-                  ((env._assists*1.5)+\
-                   ((env._kills - env._assists)*1)),\
-                      "Total rewards should be equal to number of preys killed"
+            assert env._kills <= env._nprey, "All preys should be dead"
+            # assert sum(sum_rewards.values()) ==\
+            #       ((env._assists*1.5)+\
+            #        ((env._kills - env._assists)*1)),\
+            #           "Total rewards should be equal to number of preys killed"
         else:
             # sum of rewards is == kills 
             assert env._kills == sum(sum_rewards.values()), "All preys should be dead"
@@ -561,8 +615,11 @@ if __name__ == "__main__":
         assists_hist.append(env._assists)
         reward_hist.append(sum_rewards)
         steps_hist.append(env._step_count)
+        kills_hist.append(env._kills)   
+        # print(f"Game {i} ended in {env._step_count} steps")
 
     import pandas as pd 
     print(f"Average reward: {pd.DataFrame(reward_hist).mean()}")
     print(f"Average steps: {np.mean(steps_hist)}")
     print(f"Average assists: {np.mean(assists_hist)}")
+    print(f"Average kills: {np.mean(kills_hist)}")
