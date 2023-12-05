@@ -66,7 +66,6 @@ def create_algo(config):
             )
             .rl_module(_enable_rl_module_api=False)
             .offline_data(output=None)
-            .experimental(_enable_new_api_stack=False)
         )
         algo = algo_config.build()
     elif config["algorithm_type"] == "centralized":
@@ -243,7 +242,7 @@ def train_algo(config):
         #      or results['training_iteration'] == 1):
         if (
             config["wandb"]["wandb_init"]
-            and results["training_iteration"] % config["wandb"]["wandb_log_freq"] == 0
+            and (results["training_iteration"] % config["wandb"]["wandb_log_freq"] == 0 or results["training_iteration"] == 1)
         ):
             wandb.log(log_dict)
 
@@ -294,7 +293,7 @@ def main():
         # config["env_config"]["reward_type"] = tune.grid_search(
         #     ["type_1", "type_2", "type_3"]
         # )
-        config['model']['use_lstm'] = tune.grid_search([True, False])
+        config['training']['model']['use_lstm'] = tune.grid_search([True, False])
     storage_path = str(Path("./experiments").absolute())
     tuner = tune.Tuner(
         tune.with_resources(train_algo, {"cpu": 1}),
