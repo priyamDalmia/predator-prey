@@ -18,6 +18,7 @@ from ray import tune, train
 from ray.tune.registry import register_env
 from ray.rllib.env import ParallelPettingZooEnv
 from environments.discrete_pp_v1 import discrete_pp_v1
+from environments.discrete_pp_v2 import discrete_pp_v2
 from ray.rllib.algorithms.ppo import PPOConfig
 from ray.rllib.algorithms import Algorithm
 from ray.air.integrations.wandb import setup_wandb
@@ -31,8 +32,7 @@ from algorithms.centralized_ppo import TorchCentralizedCriticModel, CentralizedC
 from ray.rllib.models import ModelCatalog
 
 warnings.filterwarnings("ignore")
-env_creator = lambda config: ParallelPettingZooEnv(discrete_pp_v1(**config))
-
+env_creator = lambda config: ParallelPettingZooEnv(discrete_pp_v2(**config))
 
 # init the env and the algo
 def create_algo(config):
@@ -44,6 +44,7 @@ def create_algo(config):
             .callbacks(episodeMetrics)
             .training(
                 **config["training"],
+                _enable_learner_api=False,
             )
             .environment(
                 config["env_name"],
@@ -63,8 +64,9 @@ def create_algo(config):
                 policy_mapping_fn=(lambda agent_id, *args, **kwargs: agent_id),
                 policies_to_train=list(env.par_env.possible_agents),
             )
-            .rl_module(_enable_rl_module_api=True)
+            .rl_module(_enable_rl_module_api=False)
             .offline_data(output=None)
+            .experimental(_enable_new_api_stack=False)
         )
         algo = algo_config.build()
     elif config["algorithm_type"] == "centralized":
@@ -83,8 +85,7 @@ def create_algo(config):
             .training(
                 model={"custom_model": "cc_model",
                    "conv_filters": [[16, [3, 3], 2]],
-                   "fcnet_hiddens": [256, 256],
-                   "use_lstm": False,
+                   "use_lstm": True,
                    "fcnet_activation": "relu",
                    "conv_activation": "relu",},
                 lr = config["training"]["lr"],
@@ -247,7 +248,7 @@ def train_algo(config):
             wandb.log(log_dict)
 
         if config["stop_fn"](None, results):
-            analysis_df = analyze(algo, config)
+            # analysis_df = analyze(algo, config)
 
             if config["wandb"]["wandb_init"]:
                 eval_results = algo.evaluate()['evaluation']
@@ -289,10 +290,11 @@ def main():
 
     if config["tune"]["tune"]:
         # SET HYPERPARAMETERS for TUNING
-        config["algorithm_type"] = tune.grid_search(["independent", "shared", "centralized"])
-        config["env_config"]["reward_type"] = tune.grid_search(
-            ["type_1", "type_2", "type_3"]
-        )
+        # config["algorithm_type"] = tune.grid_search(["independent", "shared", "centralized"])
+        # config["env_config"]["reward_type"] = tune.grid_search(
+        #     ["type_1", "type_2", "type_3"]
+        # )
+        config['model']['use_lstm'] = tune.grid_search([True, False])
     storage_path = str(Path("./experiments").absolute())
     tuner = tune.Tuner(
         tune.with_resources(train_algo, {"cpu": 1}),
@@ -347,16 +349,19 @@ if __name__ == "__main__":
 #     # sys.exit()
 
 #    # test tune fit 
-#     config["algorithm_type"] = tune.grid_search(["centralized", "shared", "independent"])
+#     # config["algorithm_type"] = tune.grid_search(["centralized", "shared", "independent"])
 #     config["env_config"]["reward_type"] = tune.grid_search(["type_1", "type_2"])
+#     resource_group = tune.PlacementGroupFactory(
+#         [{'CPU': 1.0}] + [{'CPU': 1.0}] * 1,
+#     )
 #     tuner = tune.Tuner(
-#         tune.with_resources(train_algo, {"cpu": 1}),
+#         tune.with_resources(train_algo, resource_group),
 #         param_space=config,
 #         tune_config=tune.TuneConfig(
 #             metric="episode_len_mean",
 #             mode="min",
 #             num_samples=1,
-#             max_concurrent_trials=6,
+#             max_concurrent_trials=2,
 #         ),
 #         run_config=train.RunConfig(
 #             stop=stop_fn,

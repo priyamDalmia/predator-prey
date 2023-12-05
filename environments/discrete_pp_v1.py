@@ -1,10 +1,11 @@
 from curses import meta
 import dis
 from logging import warning
+from math import sqrt
 import os 
 import sys
 import time
-
+import math
 from torch import rand
 sys.path.append(os.getcwd())
 sys.path.append(os.path.join(os.getcwd(), "environments"))
@@ -442,6 +443,10 @@ class FixedSwingAgent:
         pass
 
     def get_action(self, observation):
+        if len(observation.shape) != 3:
+            # reshape 1D observation back into 3D 
+            a = int(math.sqrt(observation.shape[0]/3))
+            observation = observation.reshape(a,a,3)
         center = observation.shape[0] // 2
         observation = observation.T
         # if close of the left wall, change direction and move 
@@ -472,6 +477,10 @@ class FollowerAgent:
         pass
 
     def get_action(self, observation):
+        if len(observation.shape) != 3:
+            # reshape 1D observation back into 3D 
+            a = int(math.sqrt(observation.shape[0]/3))
+            observation = observation.reshape(a,a,3)
         center = observation.shape[0] // 2
 
         if observation[:, :, discrete_pp_v1.PREDATOR_CHANNEL].sum() > 1:
@@ -498,6 +507,11 @@ class ChaserAgent:
         pass
 
     def get_action(self, observation):
+        if len(observation.shape) != 3:
+            # reshape 1D observation back into 3D 
+            a = int(math.sqrt(observation.shape[0]/3))
+            observation = observation.reshape(a,a,3)
+
         center = observation.shape[0] // 2
 
         if observation[:, :, discrete_pp_v1.PREY_CHANNEL].sum() > 0:

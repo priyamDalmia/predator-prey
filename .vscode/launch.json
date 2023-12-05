@@ -5,12 +5,14 @@
     "version": "0.2.0",
     "configurations": [
         {
-            "name": "Python: Current File",
+            "name": "discrete_pp_env_v2",
             "type": "python",
             "request": "launch",
-            "program": "${file}",
+            "program": "environments/discrete_pp_v2.py",
             "console": "integratedTerminal",
             "justMyCode": false,
+            "cwd": "/home/priyam/projects/predator-prey"
+            "pat"
         }
     ]
 }
