@@ -20,9 +20,10 @@ training:
    train_batch_size: 500
    model: 
       use_lstm: false
-   #    conv_filters: [[16, [3, 3], 1], [16, [1,1], 1]]
-   #    fcnet_hiddens: [256, 256]
-   #    fcnet_activation: "relu"
+      fcnet_hiddens: [256, 256]
+      fcnet_activation: "relu"
+      lstm_use_prev_reward: true
+      last_use_prev_action: true
    #    conv_activation: "relu"
 evaluate:
    eval_episodes: 500
@@ -31,7 +32,7 @@ rollouts:
    batch_mode: "complete_episodes"
 wandb: 
    wandb_init: true 
-   wandb_project: "rllib3"
+   wandb_project: "rllib4"
    wandb_entity: "tpn"
    wandb_notes: "testing setup"
    wandb_log_freq: 50
