@@ -23,7 +23,7 @@ training:
       fcnet_hiddens: [256, 256]
       fcnet_activation: "relu"
       lstm_use_prev_reward: true
-      last_use_prev_action: true
+      lstm_use_prev_action: true
    #    conv_activation: "relu"
 evaluate:
    eval_episodes: 500
