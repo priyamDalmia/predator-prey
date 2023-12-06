@@ -49,7 +49,7 @@ CONFIG = dict(
         prey_type="static",),
     ccm_tau = 1,
     ccm_E = 4,
-    perf_ccm_analysis=True,
+    pref_ccm_analysis=True,
     pref_granger_analysis=False,
     pref_spatial_ccm_analysis=False,
     pref_graph_analysis=False, 
@@ -80,7 +80,7 @@ def get_granger_score(X, Y, maxlag=1) -> tuple[str, float]:
     results = grangercausalitytests(data, maxlag=5)
     return [("granger", 0.0)]
 
-def get_episode_record(policy_mapping_fn, env, is_recurrent):
+def get_episode_record(env, policy_mapping_fn, is_recurrent):
     # create a data frame to store the data for
     # agents A and agent B
     col_names = [
@@ -95,11 +95,12 @@ def get_episode_record(policy_mapping_fn, env, is_recurrent):
     center = env.state().shape[0] // 2
     done = False
     while env.agents:
+        actions = dict()
         for agent_id in env.agents:
             if is_recurrent:
                 raise NotImplementedError("Not implemented yet")
             else:
-                actions = policy_mapping_fn(agent_id).compute_single_action(obs[agent_id], explore=False)[0]
+                actions[agent_id] = policy_mapping_fn[agent_id].compute_single_action(obs[agent_id], explore=False)[0]
 
         obs, rewards, terminated, truncated, infos = env.step(actions)
         for agent_id in env.agents:
@@ -185,7 +186,7 @@ def analyze_task(
     analysis_results = []
     rolled_out_env_steps = pd.DataFrame([])
     eval_stats = None
-    for i in range(length_fac, (10*length_fac)+1, length_fac)):
+    for i in range(length_fac, (10*length_fac)+1, length_fac):
         # 1. Generate epsiode data 
         while len(rolled_out_env_steps) <= int(i):
             episode_record, metadata = get_episode_record(env, policy_mapping_fn, is_recurrent)
@@ -211,7 +212,7 @@ def analyze_task(
                     results = get_ccm_score(X, Y, tau=ccm_tau, E=ccm_E)
                     for result in results:
                         analysis_results.append(
-                            (trial_id, policy_name, *pair, result[0], dim, i, result[1])
+                            [(trial_id, policy_name, *pair, result[0], dim), i, result[1]]
                         )
 
                 # Granger analysis
@@ -219,9 +220,8 @@ def analyze_task(
                     results = get_granger_score(X, Y, maxlag=1)
                     for result in results:
                         analysis_results.append(
-                            (trial_id, policy_name, *pair, result[0], dim, i, result[1])
+                            [(trial_id, policy_name, *pair, result[0], dim), i, result[1]]
                         )
-
                 # Spatial CCM analysis
                 if pref_spatial_ccm_analysis:
                     raise NotImplementedError("Not implemented yet")
@@ -243,16 +243,16 @@ def get_analysis_df(
         length_fac: int = 100
 ):
     _df_data = [
-        [policy, *pair, test, dim]
+        [0, policy, *pair, test, dim]
         for policy in policy_sets
         for pair in CAUSAL_PAIRS
         for test in CAUSAL_TESTS
         for dim in dimensions
     ]
     _df_index = pd.MultiIndex.from_tuples(
-        _df_data, names=["mode", "agent_a", "agent_b", "test", "dimension"]
+        _df_data, names=["run_id", "mode", "agent_a", "agent_b", "test", "dimension"]
     )
-    traj_length = [str(i) for i in range(length_fac, (10*length_fac)+1, length_fac)]
+    traj_length = [i for i in range(length_fac, (10*length_fac)+1, length_fac)]
     analysis_df = pd.DataFrame(index=_df_index, columns=traj_length).fillna(0.0)
     return analysis_df
 
@@ -265,6 +265,7 @@ def perform_causal_analysis(
     ):
 
     results = []
+    eval_scores = None
     if use_ray:
         ray_tasks = [remote_analyze_task.remote(
             i,
@@ -284,26 +285,29 @@ def perform_causal_analysis(
     for analysis_results, eval_df in results:
         for result in analysis_results:
             analysis_df.loc[result[0], result[1]] = result[2]
-    # TODO eval_df computation
-    eval_df = None 
+        eval_scores = eval_df if eval_scores is None else pd.concat([eval_scores, eval_df], axis=0)
+    if isinstance(eval_scores, pd.DataFrame):
+        eval_df = eval_scores.mean()
+    else:
+        eval_df = eval_scores
     return analysis_df, eval_df
 
 if __name__ == "__main__":
     config_dict = CONFIG.copy()
     env = discrete_pp_v1(**config_dict["env_config"])
     for policy_name in POLICY_SETS:
-        
+        start_time = time.time()
         policy_mapping_fn = {
-            f'predator_{i}': _agent_type_dict(agent_class) for i, agent_class in enumerate(policy_name.split("_"))}
-        results = perform_causal_analysis(
-            2,
-            False,
-            get_analysis_df(
+            f'predator_{i}': _agent_type_dict[agent_class]() for i, agent_class in enumerate(policy_name.split("_"))}
+        analysis_df, eval_df = perform_causal_analysis(
+            num_trials = 2,
+            use_ray = True,
+            analysis_df = get_analysis_df(
                 [policy_name],
                 config_dict["dimensions"],
                 config_dict["length_fac"]
             ),
-            env,
+            env = env,
             policy_name=policy_name,
             policy_mapping_fn=policy_mapping_fn,
             is_recurrent=config_dict["is_recurrent"],
@@ -316,4 +320,5 @@ if __name__ == "__main__":
             pref_spatial_ccm_analysis=config_dict["pref_spatial_ccm_analysis"],
             pref_graph_analysis=config_dict["pref_graph_analysis"],
         )
-        print(results)
+        print(f"Time taken for {policy_name}: {(time.time() - start_time)/60:.2f} minutes")
+        analysis_df.to_csv(f"./experiments/{policy_name}_analysis.csv")

@@ -5,14 +5,13 @@
     "version": "0.2.0",
     "configurations": [
         {
-            "name": "discrete_pp_env_v2",
+            "name": "analyze_test",
             "type": "python",
             "request": "launch",
-            "program": "environments/discrete_pp_v2.py",
+            "program": "analyze.py",
             "console": "integratedTerminal",
             "justMyCode": false,
             "cwd": "/home/priyam/projects/predator-prey"
-            "pat"
         }
     ]
 }

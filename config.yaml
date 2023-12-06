@@ -5,8 +5,15 @@ tune:
    tune: true # if true, tune hyperparameters in main!
    num_samples: 5
    max_episodes: 25000
-   max_concurrent_trials: 12
+   max_concurrent_trials: 32
 analysis:
+   num_trials: 5
+   analysis: false
+   policy_set: ['original', '_fixed']
+   dimensions: ['dx', 'dy', 'PCA_1', 'PCA_2']
+   length_fac: 500
+   ccm_tau: 1
+   ccm_E: 4
    pref_ccm_analysis: true
    pref_granger_analysis: false
    pref_graph_analysis: false
