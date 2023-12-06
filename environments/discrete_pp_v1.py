@@ -12,7 +12,7 @@ sys.path.append(os.path.join(os.getcwd(), "environments"))
 import random
     # TODO move and build tests s 
 import numpy as np 
-from environments.common import Agent
+from common import Agent
 from typing import Any, Dict
 import gymnasium 
 from gymnasium import spaces

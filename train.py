@@ -32,7 +32,7 @@ from algorithms.centralized_ppo import TorchCentralizedCriticModel, CentralizedC
 from ray.rllib.models import ModelCatalog
 
 warnings.filterwarnings("ignore")
-env_creator = lambda config: ParallelPettingZooEnv(discrete_pp_v2(**config))
+env_creator = lambda config: ParallelPettingZooEnv(discrete_pp_v1(**config))
 
 # init the env and the algo
 def create_algo(config):
@@ -43,7 +43,10 @@ def create_algo(config):
             .framework(framework=config["framework"])
             .callbacks(episodeMetrics)
             .training(
-                **config["training"],
+                model ={
+                    "use_lstm": True,
+                    "conv_filters": [[16, [3, 3], 1]],
+                },
                 _enable_learner_api=False,
             )
             .environment(
@@ -322,57 +325,57 @@ def main():
 
 
 if __name__ == "__main__":
-    main()
-    # # load the yaml fiw we
-#     with open("config.yaml", "r") as f:
-#         config = yaml.load(f, Loader=yaml.FullLoader)
-#     register_env(config["env_name"], lambda config: env_creator(config))
+    # main()
+    # load the yaml fiw we
+    with open("config.yaml", "r") as f:
+        config = yaml.load(f, Loader=yaml.FullLoader)
+    register_env(config["env_name"], lambda config: env_creator(config))
 
-#     # # for config define param space
-#     ray.init(num_cpus=6)
-#     def stop_fn(trial_id, result):
-#         # Stop training if episode total
-#         stop = result["episodes_total"] > 500
-#         return stop
-#     config["stop_fn"] = stop_fn
-#     config["wandb"]["wandb_dir_path"] = str(Path("./wandb").absolute())
+    # # for config define param space
+    ray.init(num_cpus=6)
+    def stop_fn(trial_id, result):
+        # Stop training if episode total
+        stop = result["episodes_total"] > 500
+        return stop
+    config["stop_fn"] = stop_fn
+    config["wandb"]["wandb_dir_path"] = str(Path("./wandb").absolute())
     
-#     # test analyze 
-#     # algo = create_algo(config)
-#     # print(algo.train())
-#     # print(f"EVALUATING {algo} \n\n")
-#     # results = algo.evaluate()
-#     # analysis_df, eval_df = analyze(algo, config)
-#     # print(analysis_df)
-#     # breakpoint()
-#     # sys.exit()
+    # test analyze 
+    # algo = create_algo(config)
+    # print(algo.train())
+    # print(f"EVALUATING {algo} \n\n")
+    # results = algo.evaluate()
+    # analysis_df, eval_df = analyze(algo, config)
+    # print(analysis_df)
+    # breakpoint()
+    # sys.exit()
 
-#    # test tune fit 
-#     # config["algorithm_type"] = tune.grid_search(["centralized", "shared", "independent"])
-#     config["env_config"]["reward_type"] = tune.grid_search(["type_1", "type_2"])
-#     resource_group = tune.PlacementGroupFactory(
-#         [{'CPU': 1.0}] + [{'CPU': 1.0}] * 1,
-#     )
-#     tuner = tune.Tuner(
-#         tune.with_resources(train_algo, resource_group),
-#         param_space=config,
-#         tune_config=tune.TuneConfig(
-#             metric="episode_len_mean",
-#             mode="min",
-#             num_samples=1,
-#             max_concurrent_trials=2,
-#         ),
-#         run_config=train.RunConfig(
-#             stop=stop_fn,
-#             storage_path=str(Path("./experiments").absolute()),
-#             checkpoint_config=train.CheckpointConfig(
-#                 checkpoint_frequency=0,
-#                 checkpoint_at_end=False,
-#             ),
-#         ),
-#     )
-#     results = tuner.fit()
-#     for res in results:
-#         print(res.metrics_dataframe)
+   # test tune fit 
+    # config["algorithm_type"] = tune.grid_search(["centralized", "shared", "independent"])
+    # config["env_config"]["reward_type"] = tune.grid_search(["type_1", "type_2"])
+    resource_group = tune.PlacementGroupFactory(
+        [{'CPU': 1.0}] + [{'CPU': 1.0}] * 1,
+    )
+    tuner = tune.Tuner(
+        tune.with_resources(train_algo, {"cpu": 1}),
+        param_space=config,
+        tune_config=tune.TuneConfig(
+            metric="episode_len_mean",
+            mode="min",
+            num_samples=1,
+            max_concurrent_trials=2,
+        ),
+        run_config=train.RunConfig(
+            stop=stop_fn,
+            storage_path=str(Path("./experiments").absolute()),
+            checkpoint_config=train.CheckpointConfig(
+                checkpoint_frequency=0,
+                checkpoint_at_end=False,
+            ),
+        ),
+    )
+    results = tuner.fit()
+    for res in results:
+        print(res.metrics_dataframe)
  
-#     sys.exit(0)
+    sys.exit(0)

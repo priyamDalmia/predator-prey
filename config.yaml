@@ -32,7 +32,7 @@ rollouts:
    batch_mode: "complete_episodes"
 wandb: 
    wandb_init: true 
-   wandb_project: "rllib4"
+   wandb_project: "rllib5"
    wandb_entity: "tpn"
    wandb_notes: "testing setup"
    wandb_log_freq: 50
