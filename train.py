@@ -46,10 +46,6 @@ def create_algo(config):
             .framework(framework=config["framework"])
             .callbacks(episodeMetrics)
             .training(
-                # model ={
-                #     "use_lstm": True,
-                #     "conv_filters": [[16, [3, 3], 1]],
-                # },
                 **config["training"],
                 _enable_learner_api=False,
             )
@@ -72,6 +68,7 @@ def create_algo(config):
                 policies_to_train=list(env.par_env.possible_agents),
             )
             .rl_module(_enable_rl_module_api=False)
+            .reporting(keep_per_episode_custom_metrics=True)
             .offline_data(output=None)
         )
         algo = algo_config.build()
@@ -299,10 +296,7 @@ def train_algo(config):
                         }
                         )
                         # TODO maybe concat all and save a global with mean done
-
-
                 wandb.finish()
-
         train.report(results)
 
 # define the main function
@@ -327,19 +321,12 @@ def main():
         #     ["type_1", "type_2", "type_3"]
         # )
         config['training']['model']['use_lstm'] = tune.grid_search([True])
-        config['training']['model']['conv_filters'] = tune.grid_search([[[16, [3, 3], 1]], [[16, [2, 2], 1]]])
-        config['training']['model']['fcnet_activation'] = tune.grid_search(["relu", "tanh"])
-        config['training']['model']['conv_activation'] = tune.grid_search(["relu", "tanh"])
-        config['training']['train_batch_size'] = tune.grid_search([256, 512])
-        config['training']['sgd_minibatch_size'] = tune.grid_search([64, 128])
-        config['training']['use_kl_loss'] = tune.grid_search([True, False])
-        config['training']['num_sgd_iter'] = tune.grid_search([5, 10, 20])
-        config['training']['model']['fcnet_hiddens'] = tune.grid_search([[256, 256], [512, 512]])
-        # config['training']['model']['post_fcnet_hiddens'] = tune.grid_search([None, [256, 256], [512, 512]])
-        config['training']['model']['lstm_cell_size'] = tune.grid_search([32, 64, 128, 256])
-        config['training']['model']['max_seq_len'] = tune.grid_search([10, 15, 20])
-        config['training']['model']['lstm_use_prev_action'] = tune.grid_search([True, False])
-        config['training']['model']['lstm_use_prev_reward'] = tune.grid_search([True, False])
+        config['training']['train_batch_size'] = tune.grid_search([128, 256, 512])
+        config['training']['sgd_minibatch_size'] = tune.grid_search([32, 64, 128])
+        config['training']['num_sgd_iter'] = tune.grid_search([2, 5])
+        config['training']['model']['post_fcnet_hiddens'] = tune.grid_search([None, [256], [512]])
+        config['training']['model']['lstm_cell_size'] = tune.grid_search([16, 32, 64, 128])
+
     storage_path = str(Path("./experiments").absolute())
     tuner = tune.Tuner(
         tune.with_resources(train_algo, {"cpu": 1}),
@@ -394,83 +381,84 @@ def get_policy_mapping_fn(policy_name, algo):
     return policy_maps
 
 if __name__ == "__main__":
-    main()
-    # load the yaml fiw we
-    # with open("config.yaml", "r") as f:
-    #     config = yaml.load(f, Loader=yaml.FullLoader)
-    # register_env(config["env_name"], lambda config: env_creator(config))
+    # main()
+    # load the yaml file
+    with open("config.yaml", "r") as f:
+        config = yaml.load(f, Loader=yaml.FullLoader)
+    register_env(config["env_name"], lambda config: env_creator(config))
 
-    # # # for config define param space
-    # ray.init(num_cpus=6)
-    # def stop_fn(trial_id, result):
-    #     # Stop training if episode total
-    #     stop = result["episodes_total"] > 500
-    #     return stop
-    # config["stop_fn"] = stop_fn
-    # config["wandb"]["wandb_dir_path"] = str(Path("./wandb").absolute())
+    # # for config define param space
+    ray.init(num_cpus=1)
+    def stop_fn(trial_id, result):
+        # Stop training if episode total
+        stop = result["episodes_total"] > 500
+        return stop
+    config["stop_fn"] = stop_fn
+    config["wandb"]["wandb_dir_path"] = str(Path("./wandb").absolute())
     
-    # algo = create_algo(config)
-    # print(algo.train())
-    # # print(f"EVALUATING {algo} \n\n")
-    # # results = algo.evaluate()
-    # # create the two tables and store 
-    # if config['analysis']['analysis']:
-    #     analysis_df = get_analysis_df(
-    #         config['analysis']['policy_set'],
-    #         config['analysis']['dimensions'],
-    #         config['analysis']['length_fac']
-    #     )
-    #     for policy_i in config['analysis']['policy_set']:
-    #         policy_name = config['algorithm_type'] if policy_i == 'original'\
-    #               else f"{config['algorithm_type']}_{policy_i}"
-    #         # build the policy mapping fn 
-    #         policy_mapping_fn = get_policy_mapping_fn(policy_name, algo)
-    #         env = env_creator(config["env_config"]).par_env
-    #         analysis_df, eval_df = perform_causal_analysis(
-    #             num_trials=config["analysis"]["num_trials"],
-    #             use_ray = True,
-    #             analysis_df=analysis_df,
-    #             env = env,
-    #             policy_name = policy_name,
-    #             policy_mapping_fn = policy_mapping_fn,
-    #             is_recurrent = config['training']['model']['use_lstm'],
-    #             dimensions = config['analysis']['dimensions'],
-    #             length_fac = config['analysis']['length_fac'],
-    #             ccm_tau = config['analysis']['ccm_tau'],
-    #             ccm_E = config['analysis']['ccm_E'],
-    #             pref_ccm_analysis = config['analysis']['pref_ccm_analysis'],
-    #             pref_granger_analysis = config['analysis']['pref_granger_analysis'],
-    #             pref_spatial_ccm_analysis = config['analysis']['pref_spatial_ccm_analysis'],
-    #             pref_graph_analysis = config['analysis']['pref_graph_analysis'],
-    #         )
-    # sys.exit()
+    algo = create_algo(config)
+    print(algo.train())
+    breakpoint()
+    # print(f"EVALUATING {algo} \n\n")
+    # results = algo.evaluate()
+    # create the two tables and store 
+    if config['analysis']['analysis']:
+        analysis_df = get_analysis_df(
+            config['analysis']['policy_set'],
+            config['analysis']['dimensions'],
+            config['analysis']['length_fac']
+        )
+        for policy_i in config['analysis']['policy_set']:
+            policy_name = config['algorithm_type'] if policy_i == 'original'\
+                  else f"{config['algorithm_type']}_{policy_i}"
+            # build the policy mapping fn 
+            policy_mapping_fn = get_policy_mapping_fn(policy_name, algo)
+            env = env_creator(config["env_config"]).par_env
+            analysis_df, eval_df = perform_causal_analysis(
+                num_trials=config["analysis"]["num_trials"],
+                use_ray = True,
+                analysis_df=analysis_df,
+                env = env,
+                policy_name = policy_name,
+                policy_mapping_fn = policy_mapping_fn,
+                is_recurrent = config['training']['model']['use_lstm'],
+                dimensions = config['analysis']['dimensions'],
+                length_fac = config['analysis']['length_fac'],
+                ccm_tau = config['analysis']['ccm_tau'],
+                ccm_E = config['analysis']['ccm_E'],
+                pref_ccm_analysis = config['analysis']['pref_ccm_analysis'],
+                pref_granger_analysis = config['analysis']['pref_granger_analysis'],
+                pref_spatial_ccm_analysis = config['analysis']['pref_spatial_ccm_analysis'],
+                pref_graph_analysis = config['analysis']['pref_graph_analysis'],
+            )
+    sys.exit()
 
-#    # test tune fit 
-#     # config["algorithm_type"] = tune.grid_search(["centralized", "shared", "independent"])
-#     # config["env_config"]["reward_type"] = tune.grid_search(["type_1", "type_2"])
-#     resource_group = tune.PlacementGroupFactory(
-#         [{'CPU': 1.0}] + [{'CPU': 1.0}] * 1,
-#     )
-#     tuner = tune.Tuner(
-#         tune.with_resources(train_algo, {"cpu": 1}),
-#         param_space=config,
-#         tune_config=tune.TuneConfig(
-#             metric="episode_len_mean",
-#             mode="min",
-#             num_samples=1,
-#             max_concurrent_trials=2,
-#         ),
-#         run_config=train.RunConfig(
-#             stop=stop_fn,
-#             storage_path=str(Path("./experiments").absolute()),
-#             checkpoint_config=train.CheckpointConfig(
-#                 checkpoint_frequency=0,
-#                 checkpoint_at_end=False,
-#             ),
-#         ),
-#     )
-#     results = tuner.fit()
-#     for res in results:
-#         print(res.metrics_dataframe)
+   # test tune fit 
+    # config["algorithm_type"] = tune.grid_search(["centralized", "shared", "independent"])
+    # config["env_config"]["reward_type"] = tune.grid_search(["type_1", "type_2"])
+    resource_group = tune.PlacementGroupFactory(
+        [{'CPU': 1.0}] + [{'CPU': 1.0}] * 1,
+    )
+    tuner = tune.Tuner(
+        tune.with_resources(train_algo, {"cpu": 1}),
+        param_space=config,
+        tune_config=tune.TuneConfig(
+            metric="episode_len_mean",
+            mode="min",
+            num_samples=1,
+            max_concurrent_trials=2,
+        ),
+        run_config=train.RunConfig(
+            stop=stop_fn,
+            storage_path=str(Path("./experiments").absolute()),
+            checkpoint_config=train.CheckpointConfig(
+                checkpoint_frequency=0,
+                checkpoint_at_end=False,
+            ),
+        ),
+    )
+    results = tuner.fit()
+    for res in results:
+        print(res.metrics_dataframe)
  
-#     sys.exit(0)
+    sys.exit(0)

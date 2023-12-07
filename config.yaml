@@ -5,7 +5,7 @@ tune:
    tune: true # if true, tune hyperparameters in main!
    num_samples: 5
    max_episodes: 25000
-   max_concurrent_trials: 32
+   max_concurrent_trials: 16
 analysis:
    num_trials: 5
    analysis: false
@@ -26,20 +26,22 @@ training:
    num_sgd_iter: 10
    train_batch_size: 500
    model: 
-      use_lstm: true
       fcnet_hiddens: [256, 256]
       fcnet_activation: "relu"
-      conv_filters: [[16, [3, 3], 1]]
+      conv_activation: "relu"
+      conv_filters: [[16, [2, 2], 1], [16, [2, 2], 1]]
+      use_lstm: false
+      lstm_cell_size: 32
+      max_seq_len: 10
       lstm_use_prev_reward: true
       lstm_use_prev_action: true
-   #    conv_activation: "relu"
 evaluate:
    eval_episodes: 500
 rollouts:
    num_rollout_workers: 0
    batch_mode: "complete_episodes"
 wandb: 
-   wandb_init: true 
+   wandb_init: false 
    wandb_project: "rllib5"
    wandb_entity: "tpn"
    wandb_notes: "testing setup"
