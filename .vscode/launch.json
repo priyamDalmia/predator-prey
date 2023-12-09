@@ -5,10 +5,10 @@
     "version": "0.2.0",
     "configurations": [
         {
-            "name": "analyze_test",
+            "name": "train.py",
             "type": "python",
             "request": "launch",
-            "program": "analyze.py",
+            "program": "train.py",
             "console": "integratedTerminal",
             "justMyCode": false,
             "cwd": "/home/priyam/projects/predator-prey"
