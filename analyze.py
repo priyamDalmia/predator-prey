@@ -7,8 +7,6 @@ import os
 import re
 import time
 from typing import Any
-import skccm
-from skccm.utilities import train_test_split
 from cycler import L
 from matplotlib.pylab import f
 import pandas as pd

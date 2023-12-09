@@ -1,4 +1,5 @@
 from email import policy
+from ipaddress import _BaseNetwork
 from math import log
 from re import I
 import re
@@ -18,6 +19,7 @@ import ray
 from ray import tune, train
 from ray.tune.registry import register_env
 from ray.rllib.env import ParallelPettingZooEnv
+from algorithms.base_model import PPOModel
 from analyze import get_analysis_df, perform_causal_analysis
 from environments.discrete_pp_v1 import discrete_pp_v1
 from environments.discrete_pp_v2 import discrete_pp_v2
@@ -41,12 +43,14 @@ env_creator = lambda config: ParallelPettingZooEnv(discrete_pp_v1(**config))
 def create_algo(config):
     env = env_creator(config["env_config"])
     if config["algorithm_type"] == "independent":
+        ModelCatalog.register_custom_model("cc_model", PPOModel)
         algo_config = (
             PPOConfig()
             .framework(framework=config["framework"])
             .callbacks(episodeMetrics)
             .training(
-                **config["training"],
+                model = {"custom_model": "cc_model",
+                         **config["training"]["model"]},
                 _enable_learner_api=False,
             )
             .environment(
@@ -321,12 +325,9 @@ def main():
         #     ["type_1", "type_2", "type_3"]
         # )
         # config['training']['model']['use_lstm'] = tune.grid_search([True])
-        config['training']['model']['conv_filters'] = tune.grid_search([[[16, [3, 3], 2]], [[32, [3, 3], 2]], [[16, [5, 5], 1]]])
-        config['training']['train_batch_size'] = tune.grid_search([128, 256, 512])
-        config['training']['sgd_minibatch_size'] = tune.grid_search([32, 64, 128])
-        config['training']['num_sgd_iter'] = tune.grid_search([2, 5])
+        config['training']['model']['conv_filters'] = tune.grid_search([[[16, [3, 3], 2]], [[16, [2,2], 1], [16, [2,2], 1]]])
         # config['training']['model']['post_fcnet_hiddens'] = tune.grid_search([None, [256], [512]])
-        config['training']['model']['lstm_cell_size'] = tune.grid_search([16, 32, 64, 128])
+        config['training']['model']['lstm_cell_size'] = tune.grid_search([128, 256])
 
     storage_path = str(Path("./experiments").absolute())
     tuner = tune.Tuner(
@@ -382,24 +383,24 @@ def get_policy_mapping_fn(policy_name, algo):
     return policy_maps
 
 if __name__ == "__main__":
-    main()
-#     # load the yaml file
-#     with open("config.yaml", "r") as f:
-#         config = yaml.load(f, Loader=yaml.FullLoader)
-#     register_env(config["env_name"], lambda config: env_creator(config))
+    # main()
+    # load the yaml file
+    with open("config.yaml", "r") as f:
+        config = yaml.load(f, Loader=yaml.FullLoader)
+    register_env(config["env_name"], lambda config: env_creator(config))
 
-#     # # for config define param space
-#     ray.init(num_cpus=1)
-#     def stop_fn(trial_id, result):
-#         # Stop training if episode total
-#         stop = result["episodes_total"] > 500
-#         return stop
-#     config["stop_fn"] = stop_fn
-#     config["wandb"]["wandb_dir_path"] = str(Path("./wandb").absolute())
+    # # for config define param space
+    ray.init(num_cpus=1)
+    def stop_fn(trial_id, result):
+        # Stop training if episode total
+        stop = result["episodes_total"] > 500
+        return stop
+    config["stop_fn"] = stop_fn
+    config["wandb"]["wandb_dir_path"] = str(Path("./wandb").absolute())
     
-#     algo = create_algo(config)
-#     print(algo.train())
-#     breakpoint()
+    algo = create_algo(config)
+    results = algo.train()
+    print(results)
 #     # print(f"EVALUATING {algo} \n\n")
 #     # results = algo.evaluate()
 #     # create the two tables and store 

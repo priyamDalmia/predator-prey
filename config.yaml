@@ -4,7 +4,7 @@ framework: "torch"
 tune:
    tune: true # if true, tune hyperparameters in main!
    num_samples: 5
-   max_episodes: 25000
+   max_episodes: 50000
    max_concurrent_trials: 24
 analysis:
    num_trials: 5
@@ -22,16 +22,16 @@ training:
    lr: 0.0001
    use_critic: true
    use_kl_loss: true
-   sgd_minibatch_size: 128
-   num_sgd_iter: 10
-   train_batch_size: 500
+   sgd_minibatch_size: 32
+   num_sgd_iter: 2
+   train_batch_size: 128
    model: 
       fcnet_hiddens: [256, 256]
       fcnet_activation: "relu"
       conv_activation: "relu"
-      conv_filters: [[16, [2, 2], 1], [16, [2, 2], 1]]
-      use_lstm: true
-      lstm_cell_size: 32
+      conv_filters: [[16,[3,3],2]]
+      use_lstm: false 
+      lstm_cell_size: 128
       max_seq_len: 10
       lstm_use_prev_reward: true
       lstm_use_prev_action: true
@@ -41,7 +41,7 @@ rollouts:
    num_rollout_workers: 0
    batch_mode: "complete_episodes"
 wandb: 
-   wandb_init: true 
+   wandb_init: false 
    wandb_project: "rllib5"
    wandb_entity: "tpn"
    wandb_notes: "testing setup"
