@@ -1,0 +1,881 @@
+
+Name of the cluster on which the job is executing:	 spartan
+Number of CPUs on the allocated node: 	 12
+Number of CPUs requested per task: 	 12
+Numer of GPUs requested: 	 
+Requested GPU count per allocated node: 	 
+Requested GPU count per allocated task:	  
+The ID of the job allocation:	  54116805
+Count of processors available to the job on this node:	  12
+Name of the job:	  tst.slurm
+List of nodes allocated to the job:	  spartan-gpgpu079
+Total number of nodes in the job’s resource allocation:	  1
+Name of the partition in which the job is running:	  deeplearn
+Minimum memory required per allocated CPU:	  4000
+Requested memory per allocated GPU:	  
+Total amount of memory per node that the job needs:	  
+List of nodes allocated to the job:	  spartan-gpgpu079
+Total number of CPUs allocated:	  1
+Maximum number of MPI tasks (that’s processes): 	 1
+Number of tasks requested per core: 	 
+Number of tasks requested per GPU: 	 
+Number of tasks requested per node:	  1
+The scheduling priority (nice value) at the time of job submission. This value is propagated to the spawned processes: 	 0
+The MPI rank (or relative process ID) of the current process: 	 0
+
+The directory from which SBATCH was invoked: 	 /data/gpfs/projects/punim1355/dalmiapriyam/predator-prey
+The Hostname of the computer from which SBATCH was invoked: 	 spartan-login3.hpc.unimelb.edu.au
+The process ID of the corresponding task: 	 141223
+
+
+
+ LOADING MODULES: 
+
+
+
+
+ PYTHON SCRIPT OUTPUT: 
+
+2023-12-05 14:27:56,643	WARNING __init__.py:10 -- PG has/have been moved to `rllib_contrib` and will no longer be maintained by the RLlib team. You can still use it/them normally inside RLlib util Ray 2.8, but from Ray 2.9 on, all `rllib_contrib` algorithms will no longer be part of the core repo, and will therefore have to be installed separately with pinned dependencies for e.g. ray[rllib] and other packages! See https://github.com/ray-project/ray/tree/master/rllib_contrib#rllib-contrib for more information on the RLlib contrib effort.
+2023-12-05 14:28:00,305	INFO worker.py:1673 -- Started a local Ray instance.
+2023-12-05 14:28:01,664	INFO tune.py:220 -- Initializing Ray automatically. For cluster usage or custom Ray initialization, call `ray.init(...)` before `Tuner(...)`.
+2023-12-05 14:28:01,668	INFO tune.py:595 -- [output] This will use the new output engine with verbosity 1. To disable the new output and use the legacy output engine, set the environment variable RAY_AIR_NEW_OUTPUT=0. For more information, please see https://github.com/ray-project/ray/issues/36949
+[36m(pid=142678)[0m 2023-12-05 14:28:08,231	WARNING __init__.py:10 -- PG has/have been moved to `rllib_contrib` and will no longer be maintained by the RLlib team. You can still use it/them normally inside RLlib util Ray 2.8, but from Ray 2.9 on, all `rllib_contrib` algorithms will no longer be part of the core repo, and will therefore have to be installed separately with pinned dependencies for e.g. ray[rllib] and other packages! See https://github.com/ray-project/ray/tree/master/rllib_contrib#rllib-contrib for more information on the RLlib contrib effort.
+2023-12-05 14:28:08,730	ERROR tune_controller.py:1383 -- Trial task failed for trial train_algo_4b4ec_00000
+Traceback (most recent call last):
+  File "/data/gpfs/projects/punim1355/dalmiapriyam/predator-prey/.venv/lib/python3.10/site-packages/ray/air/execution/_internal/event_manager.py", line 110, in resolve_future
+    result = ray.get(future)
+  File "/data/gpfs/projects/punim1355/dalmiapriyam/predator-prey/.venv/lib/python3.10/site-packages/ray/_private/auto_init_hook.py", line 24, in auto_init_wrapper
+    return fn(*args, **kwargs)
+  File "/data/gpfs/projects/punim1355/dalmiapriyam/predator-prey/.venv/lib/python3.10/site-packages/ray/_private/client_mode_hook.py", line 103, in wrapper
+    return func(*args, **kwargs)
+  File "/data/gpfs/projects/punim1355/dalmiapriyam/predator-prey/.venv/lib/python3.10/site-packages/ray/_private/worker.py", line 2563, in get
+    raise value.as_instanceof_cause()
+ray.exceptions.RayTaskError(TypeError): [36mray::ImplicitFunc.train()[39m (pid=142678, ip=172.26.92.206, actor_id=7f5e1d5d3279c550a4ba2aaa01000000, repr=train_algo)
+  File "/data/gpfs/projects/punim1355/dalmiapriyam/predator-prey/.venv/lib/python3.10/site-packages/ray/tune/trainable/trainable.py", line 342, in train
+    raise skipped from exception_cause(skipped)
+  File "/data/gpfs/projects/punim1355/dalmiapriyam/predator-prey/.venv/lib/python3.10/site-packages/ray/air/_internal/util.py", line 91, in run
+    self._ret = self._target(*self._args, **self._kwargs)
+  File "/data/gpfs/projects/punim1355/dalmiapriyam/predator-prey/.venv/lib/python3.10/site-packages/ray/tune/trainable/function_trainable.py", line 115, in <lambda>
+    training_func=lambda: self._trainable_func(self.config),
+  File "/data/gpfs/projects/punim1355/dalmiapriyam/predator-prey/.venv/lib/python3.10/site-packages/ray/tune/trainable/function_trainable.py", line 332, in _trainable_func
+    output = fn()
+  File "/data/gpfs/projects/punim1355/dalmiapriyam/predator-prey/./train.py", line 202, in train_algo
+    algo = create_algo(config)
+  File "/data/gpfs/projects/punim1355/dalmiapriyam/predator-prey/./train.py", line 42, in create_algo
+    PPOConfig()
+TypeError: AlgorithmConfig.experimental() got an unexpected keyword argument '_enable_new_api_stack'
+2023-12-05 14:28:08,781	ERROR tune_controller.py:1383 -- Trial task failed for trial train_algo_4b4ec_00008
+Traceback (most recent call last):
+  File "/data/gpfs/projects/punim1355/dalmiapriyam/predator-prey/.venv/lib/python3.10/site-packages/ray/air/execution/_internal/event_manager.py", line 110, in resolve_future
+    result = ray.get(future)
+  File "/data/gpfs/projects/punim1355/dalmiapriyam/predator-prey/.venv/lib/python3.10/site-packages/ray/_private/auto_init_hook.py", line 24, in auto_init_wrapper
+    return fn(*args, **kwargs)
+  File "/data/gpfs/projects/punim1355/dalmiapriyam/predator-prey/.venv/lib/python3.10/site-packages/ray/_private/client_mode_hook.py", line 103, in wrapper
+    return func(*args, **kwargs)
+  File "/data/gpfs/projects/punim1355/dalmiapriyam/predator-prey/.venv/lib/python3.10/site-packages/ray/_private/worker.py", line 2563, in get
+    raise value.as_instanceof_cause()
+ray.exceptions.RayTaskError(TypeError): [36mray::ImplicitFunc.train()[39m (pid=142697, ip=172.26.92.206, actor_id=bb5a6d352af4bca8f9aabcd101000000, repr=train_algo)
+  File "/data/gpfs/projects/punim1355/dalmiapriyam/predator-prey/.venv/lib/python3.10/site-packages/ray/tune/trainable/trainable.py", line 342, in train
+    raise skipped from exception_cause(skipped)
+  File "/data/gpfs/projects/punim1355/dalmiapriyam/predator-prey/.venv/lib/python3.10/site-packages/ray/air/_internal/util.py", line 91, in run
+    self._ret = self._target(*self._args, **self._kwargs)
+  File "/data/gpfs/projects/punim1355/dalmiapriyam/predator-prey/.venv/lib/python3.10/site-packages/ray/tune/trainable/function_trainable.py", line 115, in <lambda>
+    training_func=lambda: self._trainable_func(self.config),
+  File "/data/gpfs/projects/punim1355/dalmiapriyam/predator-prey/.venv/lib/python3.10/site-packages/ray/tune/trainable/function_trainable.py", line 332, in _trainable_func
+    output = fn()
+  File "/data/gpfs/projects/punim1355/dalmiapriyam/predator-prey/./train.py", line 202, in train_algo
+    algo = create_algo(config)
+  File "/data/gpfs/projects/punim1355/dalmiapriyam/predator-prey/./train.py", line 42, in create_algo
+    PPOConfig()
+TypeError: AlgorithmConfig.experimental() got an unexpected keyword argument '_enable_new_api_stack'
+2023-12-05 14:28:08,796	ERROR tune_controller.py:1383 -- Trial task failed for trial train_algo_4b4ec_00003
+Traceback (most recent call last):
+  File "/data/gpfs/projects/punim1355/dalmiapriyam/predator-prey/.venv/lib/python3.10/site-packages/ray/air/execution/_internal/event_manager.py", line 110, in resolve_future
+    result = ray.get(future)
+  File "/data/gpfs/projects/punim1355/dalmiapriyam/predator-prey/.venv/lib/python3.10/site-packages/ray/_private/auto_init_hook.py", line 24, in auto_init_wrapper
+    return fn(*args, **kwargs)
+  File "/data/gpfs/projects/punim1355/dalmiapriyam/predator-prey/.venv/lib/python3.10/site-packages/ray/_private/client_mode_hook.py", line 103, in wrapper
+    return func(*args, **kwargs)
+  File "/data/gpfs/projects/punim1355/dalmiapriyam/predator-prey/.venv/lib/python3.10/site-packages/ray/_private/worker.py", line 2563, in get
+    raise value.as_instanceof_cause()
+ray.exceptions.RayTaskError(TypeError): [36mray::ImplicitFunc.train()[39m (pid=142681, ip=172.26.92.206, actor_id=b3193be53332c8fb44b1a83601000000, repr=train_algo)
+  File "/data/gpfs/projects/punim1355/dalmiapriyam/predator-prey/.venv/lib/python3.10/site-packages/ray/tune/trainable/trainable.py", line 342, in train
+    raise skipped from exception_cause(skipped)
+  File "/data/gpfs/projects/punim1355/dalmiapriyam/predator-prey/.venv/lib/python3.10/site-packages/ray/air/_internal/util.py", line 91, in run
+    self._ret = self._target(*self._args, **self._kwargs)
+  File "/data/gpfs/projects/punim1355/dalmiapriyam/predator-prey/.venv/lib/python3.10/site-packages/ray/tune/trainable/function_trainable.py", line 115, in <lambda>
+    training_func=lambda: self._trainable_func(self.config),
+  File "/data/gpfs/projects/punim1355/dalmiapriyam/predator-prey/.venv/lib/python3.10/site-packages/ray/tune/trainable/function_trainable.py", line 332, in _trainable_func
+    output = fn()
+  File "/data/gpfs/projects/punim1355/dalmiapriyam/predator-prey/./train.py", line 202, in train_algo
+    algo = create_algo(config)
+  File "/data/gpfs/projects/punim1355/dalmiapriyam/predator-prey/./train.py", line 42, in create_algo
+    PPOConfig()
+TypeError: AlgorithmConfig.experimental() got an unexpected keyword argument '_enable_new_api_stack'
+2023-12-05 14:28:08,821	ERROR tune_controller.py:1383 -- Trial task failed for trial train_algo_4b4ec_00009
+Traceback (most recent call last):
+  File "/data/gpfs/projects/punim1355/dalmiapriyam/predator-prey/.venv/lib/python3.10/site-packages/ray/air/execution/_internal/event_manager.py", line 110, in resolve_future
+    result = ray.get(future)
+  File "/data/gpfs/projects/punim1355/dalmiapriyam/predator-prey/.venv/lib/python3.10/site-packages/ray/_private/auto_init_hook.py", line 24, in auto_init_wrapper
+    return fn(*args, **kwargs)
+  File "/data/gpfs/projects/punim1355/dalmiapriyam/predator-prey/.venv/lib/python3.10/site-packages/ray/_private/client_mode_hook.py", line 103, in wrapper
+    return func(*args, **kwargs)
+  File "/data/gpfs/projects/punim1355/dalmiapriyam/predator-prey/.venv/lib/python3.10/site-packages/ray/_private/worker.py", line 2563, in get
+    raise value.as_instanceof_cause()
+ray.exceptions.RayTaskError(TypeError): [36mray::ImplicitFunc.train()[39m (pid=142698, ip=172.26.92.206, actor_id=b552ff8c76c95527492c13c901000000, repr=train_algo)
+  File "/data/gpfs/projects/punim1355/dalmiapriyam/predator-prey/.venv/lib/python3.10/site-packages/ray/tune/trainable/trainable.py", line 342, in train
+    raise skipped from exception_cause(skipped)
+  File "/data/gpfs/projects/punim1355/dalmiapriyam/predator-prey/.venv/lib/python3.10/site-packages/ray/air/_internal/util.py", line 91, in run
+    self._ret = self._target(*self._args, **self._kwargs)
+  File "/data/gpfs/projects/punim1355/dalmiapriyam/predator-prey/.venv/lib/python3.10/site-packages/ray/tune/trainable/function_trainable.py", line 115, in <lambda>
+    training_func=lambda: self._trainable_func(self.config),
+  File "/data/gpfs/projects/punim1355/dalmiapriyam/predator-prey/.venv/lib/python3.10/site-packages/ray/tune/trainable/function_trainable.py", line 332, in _trainable_func
+    output = fn()
+  File "/data/gpfs/projects/punim1355/dalmiapriyam/predator-prey/./train.py", line 202, in train_algo
+    algo = create_algo(config)
+  File "/data/gpfs/projects/punim1355/dalmiapriyam/predator-prey/./train.py", line 42, in create_algo
+    PPOConfig()
+TypeError: AlgorithmConfig.experimental() got an unexpected keyword argument '_enable_new_api_stack'
+2023-12-05 14:28:08,833	ERROR tune_controller.py:1383 -- Trial task failed for trial train_algo_4b4ec_00005
+Traceback (most recent call last):
+  File "/data/gpfs/projects/punim1355/dalmiapriyam/predator-prey/.venv/lib/python3.10/site-packages/ray/air/execution/_internal/event_manager.py", line 110, in resolve_future
+    result = ray.get(future)
+  File "/data/gpfs/projects/punim1355/dalmiapriyam/predator-prey/.venv/lib/python3.10/site-packages/ray/_private/auto_init_hook.py", line 24, in auto_init_wrapper
+    return fn(*args, **kwargs)
+  File "/data/gpfs/projects/punim1355/dalmiapriyam/predator-prey/.venv/lib/python3.10/site-packages/ray/_private/client_mode_hook.py", line 103, in wrapper
+    return func(*args, **kwargs)
+  File "/data/gpfs/projects/punim1355/dalmiapriyam/predator-prey/.venv/lib/python3.10/site-packages/ray/_private/worker.py", line 2563, in get
+    raise value.as_instanceof_cause()
+ray.exceptions.RayTaskError(TypeError): [36mray::ImplicitFunc.train()[39m (pid=142693, ip=172.26.92.206, actor_id=bebef6ccab91ebbffd8369dc01000000, repr=train_algo)
+  File "/data/gpfs/projects/punim1355/dalmiapriyam/predator-prey/.venv/lib/python3.10/site-packages/ray/tune/trainable/trainable.py", line 342, in train
+    raise skipped from exception_cause(skipped)
+  File "/data/gpfs/projects/punim1355/dalmiapriyam/predator-prey/.venv/lib/python3.10/site-packages/ray/air/_internal/util.py", line 91, in run
+    self._ret = self._target(*self._args, **self._kwargs)
+  File "/data/gpfs/projects/punim1355/dalmiapriyam/predator-prey/.venv/lib/python3.10/site-packages/ray/tune/trainable/function_trainable.py", line 115, in <lambda>
+    training_func=lambda: self._trainable_func(self.config),
+  File "/data/gpfs/projects/punim1355/dalmiapriyam/predator-prey/.venv/lib/python3.10/site-packages/ray/tune/trainable/function_trainable.py", line 332, in _trainable_func
+    output = fn()
+  File "/data/gpfs/projects/punim1355/dalmiapriyam/predator-prey/./train.py", line 202, in train_algo
+    algo = create_algo(config)
+  File "/data/gpfs/projects/punim1355/dalmiapriyam/predator-prey/./train.py", line 42, in create_algo
+    PPOConfig()
+TypeError: AlgorithmConfig.experimental() got an unexpected keyword argument '_enable_new_api_stack'
+2023-12-05 14:28:08,844	ERROR tune_controller.py:1383 -- Trial task failed for trial train_algo_4b4ec_00004
+Traceback (most recent call last):
+  File "/data/gpfs/projects/punim1355/dalmiapriyam/predator-prey/.venv/lib/python3.10/site-packages/ray/air/execution/_internal/event_manager.py", line 110, in resolve_future
+    result = ray.get(future)
+  File "/data/gpfs/projects/punim1355/dalmiapriyam/predator-prey/.venv/lib/python3.10/site-packages/ray/_private/auto_init_hook.py", line 24, in auto_init_wrapper
+    return fn(*args, **kwargs)
+  File "/data/gpfs/projects/punim1355/dalmiapriyam/predator-prey/.venv/lib/python3.10/site-packages/ray/_private/client_mode_hook.py", line 103, in wrapper
+    return func(*args, **kwargs)
+  File "/data/gpfs/projects/punim1355/dalmiapriyam/predator-prey/.venv/lib/python3.10/site-packages/ray/_private/worker.py", line 2563, in get
+    raise value.as_instanceof_cause()
+ray.exceptions.RayTaskError(TypeError): [36mray::ImplicitFunc.train()[39m (pid=142694, ip=172.26.92.206, actor_id=d09c2e8bcd97929fc0e25da501000000, repr=train_algo)
+  File "/data/gpfs/projects/punim1355/dalmiapriyam/predator-prey/.venv/lib/python3.10/site-packages/ray/tune/trainable/trainable.py", line 342, in train
+    raise skipped from exception_cause(skipped)
+  File "/data/gpfs/projects/punim1355/dalmiapriyam/predator-prey/.venv/lib/python3.10/site-packages/ray/air/_internal/util.py", line 91, in run
+    self._ret = self._target(*self._args, **self._kwargs)
+  File "/data/gpfs/projects/punim1355/dalmiapriyam/predator-prey/.venv/lib/python3.10/site-packages/ray/tune/trainable/function_trainable.py", line 115, in <lambda>
+    training_func=lambda: self._trainable_func(self.config),
+  File "/data/gpfs/projects/punim1355/dalmiapriyam/predator-prey/.venv/lib/python3.10/site-packages/ray/tune/trainable/function_trainable.py", line 332, in _trainable_func
+    output = fn()
+  File "/data/gpfs/projects/punim1355/dalmiapriyam/predator-prey/./train.py", line 202, in train_algo
+    algo = create_algo(config)
+  File "/data/gpfs/projects/punim1355/dalmiapriyam/predator-prey/./train.py", line 42, in create_algo
+    PPOConfig()
+TypeError: AlgorithmConfig.experimental() got an unexpected keyword argument '_enable_new_api_stack'
+2023-12-05 14:28:08,855	ERROR tune_controller.py:1383 -- Trial task failed for trial train_algo_4b4ec_00007
+Traceback (most recent call last):
+  File "/data/gpfs/projects/punim1355/dalmiapriyam/predator-prey/.venv/lib/python3.10/site-packages/ray/air/execution/_internal/event_manager.py", line 110, in resolve_future
+    result = ray.get(future)
+  File "/data/gpfs/projects/punim1355/dalmiapriyam/predator-prey/.venv/lib/python3.10/site-packages/ray/_private/auto_init_hook.py", line 24, in auto_init_wrapper
+    return fn(*args, **kwargs)
+  File "/data/gpfs/projects/punim1355/dalmiapriyam/predator-prey/.venv/lib/python3.10/site-packages/ray/_private/client_mode_hook.py", line 103, in wrapper
+    return func(*args, **kwargs)
+  File "/data/gpfs/projects/punim1355/dalmiapriyam/predator-prey/.venv/lib/python3.10/site-packages/ray/_private/worker.py", line 2563, in get
+    raise value.as_instanceof_cause()
+ray.exceptions.RayTaskError(TypeError): [36mray::ImplicitFunc.train()[39m (pid=142683, ip=172.26.92.206, actor_id=f97fdc35feefcdc2f69a828101000000, repr=train_algo)
+  File "/data/gpfs/projects/punim1355/dalmiapriyam/predator-prey/.venv/lib/python3.10/site-packages/ray/tune/trainable/trainable.py", line 342, in train
+    raise skipped from exception_cause(skipped)
+  File "/data/gpfs/projects/punim1355/dalmiapriyam/predator-prey/.venv/lib/python3.10/site-packages/ray/air/_internal/util.py", line 91, in run
+    self._ret = self._target(*self._args, **self._kwargs)
+  File "/data/gpfs/projects/punim1355/dalmiapriyam/predator-prey/.venv/lib/python3.10/site-packages/ray/tune/trainable/function_trainable.py", line 115, in <lambda>
+    training_func=lambda: self._trainable_func(self.config),
+  File "/data/gpfs/projects/punim1355/dalmiapriyam/predator-prey/.venv/lib/python3.10/site-packages/ray/tune/trainable/function_trainable.py", line 332, in _trainable_func
+    output = fn()
+  File "/data/gpfs/projects/punim1355/dalmiapriyam/predator-prey/./train.py", line 202, in train_algo
+    algo = create_algo(config)
+  File "/data/gpfs/projects/punim1355/dalmiapriyam/predator-prey/./train.py", line 42, in create_algo
+    PPOConfig()
+TypeError: AlgorithmConfig.experimental() got an unexpected keyword argument '_enable_new_api_stack'
+2023-12-05 14:28:08,866	ERROR tune_controller.py:1383 -- Trial task failed for trial train_algo_4b4ec_00001
+Traceback (most recent call last):
+  File "/data/gpfs/projects/punim1355/dalmiapriyam/predator-prey/.venv/lib/python3.10/site-packages/ray/air/execution/_internal/event_manager.py", line 110, in resolve_future
+    result = ray.get(future)
+  File "/data/gpfs/projects/punim1355/dalmiapriyam/predator-prey/.venv/lib/python3.10/site-packages/ray/_private/auto_init_hook.py", line 24, in auto_init_wrapper
+    return fn(*args, **kwargs)
+  File "/data/gpfs/projects/punim1355/dalmiapriyam/predator-prey/.venv/lib/python3.10/site-packages/ray/_private/client_mode_hook.py", line 103, in wrapper
+    return func(*args, **kwargs)
+  File "/data/gpfs/projects/punim1355/dalmiapriyam/predator-prey/.venv/lib/python3.10/site-packages/ray/_private/worker.py", line 2563, in get
+    raise value.as_instanceof_cause()
+ray.exceptions.RayTaskError(TypeError): [36mray::ImplicitFunc.train()[39m (pid=142679, ip=172.26.92.206, actor_id=a659b852e34836a3d19e348d01000000, repr=train_algo)
+  File "/data/gpfs/projects/punim1355/dalmiapriyam/predator-prey/.venv/lib/python3.10/site-packages/ray/tune/trainable/trainable.py", line 342, in train
+    raise skipped from exception_cause(skipped)
+  File "/data/gpfs/projects/punim1355/dalmiapriyam/predator-prey/.venv/lib/python3.10/site-packages/ray/air/_internal/util.py", line 91, in run
+    self._ret = self._target(*self._args, **self._kwargs)
+  File "/data/gpfs/projects/punim1355/dalmiapriyam/predator-prey/.venv/lib/python3.10/site-packages/ray/tune/trainable/function_trainable.py", line 115, in <lambda>
+    training_func=lambda: self._trainable_func(self.config),
+  File "/data/gpfs/projects/punim1355/dalmiapriyam/predator-prey/.venv/lib/python3.10/site-packages/ray/tune/trainable/function_trainable.py", line 332, in _trainable_func
+    output = fn()
+  File "/data/gpfs/projects/punim1355/dalmiapriyam/predator-prey/./train.py", line 202, in train_algo
+    algo = create_algo(config)
+  File "/data/gpfs/projects/punim1355/dalmiapriyam/predator-prey/./train.py", line 42, in create_algo
+    PPOConfig()
+TypeError: AlgorithmConfig.experimental() got an unexpected keyword argument '_enable_new_api_stack'
+2023-12-05 14:28:08,869	ERROR tune_controller.py:1383 -- Trial task failed for trial train_algo_4b4ec_00002
+Traceback (most recent call last):
+  File "/data/gpfs/projects/punim1355/dalmiapriyam/predator-prey/.venv/lib/python3.10/site-packages/ray/air/execution/_internal/event_manager.py", line 110, in resolve_future
+    result = ray.get(future)
+  File "/data/gpfs/projects/punim1355/dalmiapriyam/predator-prey/.venv/lib/python3.10/site-packages/ray/_private/auto_init_hook.py", line 24, in auto_init_wrapper
+    return fn(*args, **kwargs)
+  File "/data/gpfs/projects/punim1355/dalmiapriyam/predator-prey/.venv/lib/python3.10/site-packages/ray/_private/client_mode_hook.py", line 103, in wrapper
+    return func(*args, **kwargs)
+  File "/data/gpfs/projects/punim1355/dalmiapriyam/predator-prey/.venv/lib/python3.10/site-packages/ray/_private/worker.py", line 2563, in get
+    raise value.as_instanceof_cause()
+ray.exceptions.RayTaskError(TypeError): [36mray::ImplicitFunc.train()[39m (pid=142680, ip=172.26.92.206, actor_id=2e4f6ce50e8709bc28f8125c01000000, repr=train_algo)
+  File "/data/gpfs/projects/punim1355/dalmiapriyam/predator-prey/.venv/lib/python3.10/site-packages/ray/tune/trainable/trainable.py", line 342, in train
+    raise skipped from exception_cause(skipped)
+  File "/data/gpfs/projects/punim1355/dalmiapriyam/predator-prey/.venv/lib/python3.10/site-packages/ray/air/_internal/util.py", line 91, in run
+    self._ret = self._target(*self._args, **self._kwargs)
+  File "/data/gpfs/projects/punim1355/dalmiapriyam/predator-prey/.venv/lib/python3.10/site-packages/ray/tune/trainable/function_trainable.py", line 115, in <lambda>
+    training_func=lambda: self._trainable_func(self.config),
+  File "/data/gpfs/projects/punim1355/dalmiapriyam/predator-prey/.venv/lib/python3.10/site-packages/ray/tune/trainable/function_trainable.py", line 332, in _trainable_func
+    output = fn()
+  File "/data/gpfs/projects/punim1355/dalmiapriyam/predator-prey/./train.py", line 202, in train_algo
+    algo = create_algo(config)
+  File "/data/gpfs/projects/punim1355/dalmiapriyam/predator-prey/./train.py", line 42, in create_algo
+    PPOConfig()
+TypeError: AlgorithmConfig.experimental() got an unexpected keyword argument '_enable_new_api_stack'
+2023-12-05 14:28:08,875	ERROR tune_controller.py:1383 -- Trial task failed for trial train_algo_4b4ec_00006
+Traceback (most recent call last):
+  File "/data/gpfs/projects/punim1355/dalmiapriyam/predator-prey/.venv/lib/python3.10/site-packages/ray/air/execution/_internal/event_manager.py", line 110, in resolve_future
+    result = ray.get(future)
+  File "/data/gpfs/projects/punim1355/dalmiapriyam/predator-prey/.venv/lib/python3.10/site-packages/ray/_private/auto_init_hook.py", line 24, in auto_init_wrapper
+    return fn(*args, **kwargs)
+  File "/data/gpfs/projects/punim1355/dalmiapriyam/predator-prey/.venv/lib/python3.10/site-packages/ray/_private/client_mode_hook.py", line 103, in wrapper
+    return func(*args, **kwargs)
+  File "/data/gpfs/projects/punim1355/dalmiapriyam/predator-prey/.venv/lib/python3.10/site-packages/ray/_private/worker.py", line 2563, in get
+    raise value.as_instanceof_cause()
+ray.exceptions.RayTaskError(TypeError): [36mray::ImplicitFunc.train()[39m (pid=142684, ip=172.26.92.206, actor_id=91a81961bb4f7b0f5da5f16b01000000, repr=train_algo)
+  File "/data/gpfs/projects/punim1355/dalmiapriyam/predator-prey/.venv/lib/python3.10/site-packages/ray/tune/trainable/trainable.py", line 342, in train
+    raise skipped from exception_cause(skipped)
+  File "/data/gpfs/projects/punim1355/dalmiapriyam/predator-prey/.venv/lib/python3.10/site-packages/ray/air/_internal/util.py", line 91, in run
+    self._ret = self._target(*self._args, **self._kwargs)
+  File "/data/gpfs/projects/punim1355/dalmiapriyam/predator-prey/.venv/lib/python3.10/site-packages/ray/tune/trainable/function_trainable.py", line 115, in <lambda>
+    training_func=lambda: self._trainable_func(self.config),
+  File "/data/gpfs/projects/punim1355/dalmiapriyam/predator-prey/.venv/lib/python3.10/site-packages/ray/tune/trainable/function_trainable.py", line 332, in _trainable_func
+    output = fn()
+  File "/data/gpfs/projects/punim1355/dalmiapriyam/predator-prey/./train.py", line 202, in train_algo
+    algo = create_algo(config)
+  File "/data/gpfs/projects/punim1355/dalmiapriyam/predator-prey/./train.py", line 42, in create_algo
+    PPOConfig()
+TypeError: AlgorithmConfig.experimental() got an unexpected keyword argument '_enable_new_api_stack'
+2023-12-05 14:28:08,940	WARNING experiment_state.py:327 -- Experiment checkpoint syncing has been triggered multiple times in the last 30.0 seconds. A sync will be triggered whenever a trial has checkpointed more than `num_to_keep` times since last sync or if 300 seconds have passed since last sync. If you have set `num_to_keep` in your `CheckpointConfig`, consider increasing the checkpoint frequency or keeping more checkpoints. You can supress this warning by changing the `TUNE_WARN_EXCESSIVE_EXPERIMENT_CHECKPOINT_SYNC_THRESHOLD_S` environment variable.
+2023-12-05 14:28:08,943	ERROR tune.py:1043 -- Trials did not complete: [train_algo_4b4ec_00000, train_algo_4b4ec_00001, train_algo_4b4ec_00002, train_algo_4b4ec_00003, train_algo_4b4ec_00004, train_algo_4b4ec_00005, train_algo_4b4ec_00006, train_algo_4b4ec_00007, train_algo_4b4ec_00008, train_algo_4b4ec_00009]
+╭───────────────────────────────────────────────────────────────────╮
+│ Configuration for experiment     train_algo_2023-12-05_14-27-57   │
+├───────────────────────────────────────────────────────────────────┤
+│ Search algorithm                 BasicVariantGenerator            │
+│ Scheduler                        FIFOScheduler                    │
+│ Number of trials                 10                               │
+╰───────────────────────────────────────────────────────────────────╯
+
+View detailed results here: /data/gpfs/projects/punim1355/dalmiapriyam/predator-prey/experiments/train_algo_2023-12-05_14-27-57
+To visualize your results with TensorBoard, run: `tensorboard --logdir /home/dalmiapriyam/ray_results/train_algo_2023-12-05_14-27-57`
+
+Trial status: 10 PENDING
+Current time: 2023-12-05 14:28:01. Total running time: 0s
+Logical resource usage: 10.0/28 CPUs, 0/1 GPUs (0.0/1.0 accelerator_type:V100)
+╭────────────────────────────────────────────────────────────╮
+│ Trial name               status     ...ng/model/use_lstm   │
+├────────────────────────────────────────────────────────────┤
+│ train_algo_4b4ec_00000   PENDING    True                   │
+│ train_algo_4b4ec_00001   PENDING    False                  │
+│ train_algo_4b4ec_00002   PENDING    True                   │
+│ train_algo_4b4ec_00003   PENDING    False                  │
+│ train_algo_4b4ec_00004   PENDING    True                   │
+│ train_algo_4b4ec_00005   PENDING    False                  │
+│ train_algo_4b4ec_00006   PENDING    True                   │
+│ train_algo_4b4ec_00007   PENDING    False                  │
+│ train_algo_4b4ec_00008   PENDING    True                   │
+│ train_algo_4b4ec_00009   PENDING    False                  │
+╰────────────────────────────────────────────────────────────╯
+
+Trial train_algo_4b4ec_00000 started with configuration:
+╭──────────────────────────────────────────────────────────────╮
+│ Trial train_algo_4b4ec_00000 config                          │
+├──────────────────────────────────────────────────────────────┤
+│ algorithm_class                                          ppo │
+│ algorithm_type                                   independent │
+│ analysis/pref_ccm_analysis                              True │
+│ analysis/pref_granger_analysis                         False │
+│ analysis/pref_graph_analysis                           False │
+│ analysis/pref_spatial_ccm_analysis                     False │
+│ env_config/map_size                                       15 │
+│ env_config/max_cycles                                    100 │
+│ env_config/npred                                           2 │
+│ env_config/nprey                                           6 │
+│ env_config/pred_vision                                     2 │
+│ env_config/prey_type                                  static │
+│ env_config/reward_type                                type_1 │
+│ env_name                                      discrete_pp_v1 │
+│ evaluate/eval_episodes                                   500 │
+│ framework                                              torch │
+│ ray/init_dashboard                                     False │
+│ rollouts/batch_mode                        complete_episodes │
+│ rollouts/num_rollout_workers                               0 │
+│ stop_fn                                 ...t 0x147b18860b80> │
+│ training/lr                                           0.0001 │
+│ training/model/use_lstm                                 True │
+│ training/num_sgd_iter                                     10 │
+│ training/sgd_minibatch_size                              128 │
+│ training/train_batch_size                                500 │
+│ training/use_critic                                     True │
+│ training/use_kl_loss                                    True │
+│ tune/max_concurrent_trials                                12 │
+│ tune/max_episodes                                      25000 │
+│ tune/num_samples                                           5 │
+│ tune/tune                                               True │
+│ wandb/wandb_dir_path                    ...edator-prey/wandb │
+│ wandb/wandb_entity                                       tpn │
+│ wandb/wandb_init                                        True │
+│ wandb/wandb_log_freq                                      50 │
+│ wandb/wandb_notes                              testing setup │
+│ wandb/wandb_project                                   rllib3 │
+╰──────────────────────────────────────────────────────────────╯
+
+Trial train_algo_4b4ec_00000 errored after 0 iterations at 2023-12-05 14:28:08. Total running time: 7s
+Error file: /home/dalmiapriyam/ray_results/train_algo_2023-12-05_14-27-57/train_algo_4b4ec_00000_0_use_lstm=True_2023-12-05_14-28-01/error.txt
+
+Trial train_algo_4b4ec_00008 started with configuration:
+╭──────────────────────────────────────────────────────────────╮
+│ Trial train_algo_4b4ec_00008 config                          │
+├──────────────────────────────────────────────────────────────┤
+│ algorithm_class                                          ppo │
+│ algorithm_type                                   independent │
+│ analysis/pref_ccm_analysis                              True │
+│ analysis/pref_granger_analysis                         False │
+│ analysis/pref_graph_analysis                           False │
+│ analysis/pref_spatial_ccm_analysis                     False │
+│ env_config/map_size                                       15 │
+│ env_config/max_cycles                                    100 │
+│ env_config/npred                                           2 │
+│ env_config/nprey                                           6 │
+│ env_config/pred_vision                                     2 │
+│ env_config/prey_type                                  static │
+│ env_config/reward_type                                type_1 │
+│ env_name                                      discrete_pp_v1 │
+│ evaluate/eval_episodes                                   500 │
+│ framework                                              torch │
+│ ray/init_dashboard                                     False │
+│ rollouts/batch_mode                        complete_episodes │
+│ rollouts/num_rollout_workers                               0 │
+│ stop_fn                                 ...t 0x147b18860b80> │
+│ training/lr                                           0.0001 │
+│ training/model/use_lstm                                 True │
+│ training/num_sgd_iter                                     10 │
+│ training/sgd_minibatch_size                              128 │
+│ training/train_batch_size                                500 │
+│ training/use_critic                                     True │
+│ training/use_kl_loss                                    True │
+│ tune/max_concurrent_trials                                12 │
+│ tune/max_episodes                                      25000 │
+│ tune/num_samples                                           5 │
+│ tune/tune                                               True │
+│ wandb/wandb_dir_path                    ...edator-prey/wandb │
+│ wandb/wandb_entity                                       tpn │
+│ wandb/wandb_init                                        True │
+│ wandb/wandb_log_freq                                      50 │
+│ wandb/wandb_notes                              testing setup │
+│ wandb/wandb_project                                   rllib3 │
+╰──────────────────────────────────────────────────────────────╯
+
+Trial train_algo_4b4ec_00008 errored after 0 iterations at 2023-12-05 14:28:08. Total running time: 7s
+Error file: /home/dalmiapriyam/ray_results/train_algo_2023-12-05_14-27-57/train_algo_4b4ec_00008_8_use_lstm=True_2023-12-05_14-28-01/error.txt
+
+Trial train_algo_4b4ec_00003 started with configuration:
+╭──────────────────────────────────────────────────────────────╮
+│ Trial train_algo_4b4ec_00003 config                          │
+├──────────────────────────────────────────────────────────────┤
+│ algorithm_class                                          ppo │
+│ algorithm_type                                   independent │
+│ analysis/pref_ccm_analysis                              True │
+│ analysis/pref_granger_analysis                         False │
+│ analysis/pref_graph_analysis                           False │
+│ analysis/pref_spatial_ccm_analysis                     False │
+│ env_config/map_size                                       15 │
+│ env_config/max_cycles                                    100 │
+│ env_config/npred                                           2 │
+│ env_config/nprey                                           6 │
+│ env_config/pred_vision                                     2 │
+│ env_config/prey_type                                  static │
+│ env_config/reward_type                                type_1 │
+│ env_name                                      discrete_pp_v1 │
+│ evaluate/eval_episodes                                   500 │
+│ framework                                              torch │
+│ ray/init_dashboard                                     False │
+│ rollouts/batch_mode                        complete_episodes │
+│ rollouts/num_rollout_workers                               0 │
+│ stop_fn                                 ...t 0x147b18860b80> │
+│ training/lr                                           0.0001 │
+│ training/model/use_lstm                                False │
+│ training/num_sgd_iter                                     10 │
+│ training/sgd_minibatch_size                              128 │
+│ training/train_batch_size                                500 │
+│ training/use_critic                                     True │
+│ training/use_kl_loss                                    True │
+│ tune/max_concurrent_trials                                12 │
+│ tune/max_episodes                                      25000 │
+│ tune/num_samples                                           5 │
+│ tune/tune                                               True │
+│ wandb/wandb_dir_path                    ...edator-prey/wandb │
+│ wandb/wandb_entity                                       tpn │
+│ wandb/wandb_init                                        True │
+│ wandb/wandb_log_freq                                      50 │
+│ wandb/wandb_notes                              testing setup │
+│ wandb/wandb_project                                   rllib3 │
+╰──────────────────────────────────────────────────────────────╯
+
+Trial train_algo_4b4ec_00003 errored after 0 iterations at 2023-12-05 14:28:08. Total running time: 7s
+Error file: /home/dalmiapriyam/ray_results/train_algo_2023-12-05_14-27-57/train_algo_4b4ec_00003_3_use_lstm=False_2023-12-05_14-28-01/error.txt
+
+Trial train_algo_4b4ec_00009 started with configuration:
+╭──────────────────────────────────────────────────────────────╮
+│ Trial train_algo_4b4ec_00009 config                          │
+├──────────────────────────────────────────────────────────────┤
+│ algorithm_class                                          ppo │
+│ algorithm_type                                   independent │
+│ analysis/pref_ccm_analysis                              True │
+│ analysis/pref_granger_analysis                         False │
+│ analysis/pref_graph_analysis                           False │
+│ analysis/pref_spatial_ccm_analysis                     False │
+│ env_config/map_size                                       15 │
+│ env_config/max_cycles                                    100 │
+│ env_config/npred                                           2 │
+│ env_config/nprey                                           6 │
+│ env_config/pred_vision                                     2 │
+│ env_config/prey_type                                  static │
+│ env_config/reward_type                                type_1 │
+│ env_name                                      discrete_pp_v1 │
+│ evaluate/eval_episodes                                   500 │
+│ framework                                              torch │
+│ ray/init_dashboard                                     False │
+│ rollouts/batch_mode                        complete_episodes │
+│ rollouts/num_rollout_workers                               0 │
+│ stop_fn                                 ...t 0x147b18860b80> │
+│ training/lr                                           0.0001 │
+│ training/model/use_lstm                                False │
+│ training/num_sgd_iter                                     10 │
+│ training/sgd_minibatch_size                              128 │
+│ training/train_batch_size                                500 │
+│ training/use_critic                                     True │
+│ training/use_kl_loss                                    True │
+│ tune/max_concurrent_trials                                12 │
+│ tune/max_episodes                                      25000 │
+│ tune/num_samples                                           5 │
+│ tune/tune                                               True │
+│ wandb/wandb_dir_path                    ...edator-prey/wandb │
+│ wandb/wandb_entity                                       tpn │
+│ wandb/wandb_init                                        True │
+│ wandb/wandb_log_freq                                      50 │
+│ wandb/wandb_notes                              testing setup │
+│ wandb/wandb_project                                   rllib3 │
+╰──────────────────────────────────────────────────────────────╯
+
+Trial train_algo_4b4ec_00005 started with configuration:
+╭──────────────────────────────────────────────────────────────╮
+│ Trial train_algo_4b4ec_00005 config                          │
+├──────────────────────────────────────────────────────────────┤
+│ algorithm_class                                          ppo │
+│ algorithm_type                                   independent │
+│ analysis/pref_ccm_analysis                              True │
+│ analysis/pref_granger_analysis                         False │
+│ analysis/pref_graph_analysis                           False │
+│ analysis/pref_spatial_ccm_analysis                     False │
+│ env_config/map_size                                       15 │
+│ env_config/max_cycles                                    100 │
+│ env_config/npred                                           2 │
+│ env_config/nprey                                           6 │
+│ env_config/pred_vision                                     2 │
+│ env_config/prey_type                                  static │
+│ env_config/reward_type                                type_1 │
+│ env_name                                      discrete_pp_v1 │
+│ evaluate/eval_episodes                                   500 │
+│ framework                                              torch │
+│ ray/init_dashboard                                     False │
+│ rollouts/batch_mode                        complete_episodes │
+│ rollouts/num_rollout_workers                               0 │
+│ stop_fn                                 ...t 0x147b18860b80> │
+│ training/lr                                           0.0001 │
+│ training/model/use_lstm                                False │
+│ training/num_sgd_iter                                     10 │
+│ training/sgd_minibatch_size                              128 │
+│ training/train_batch_size                                500 │
+│ training/use_critic                                     True │
+│ training/use_kl_loss                                    True │
+│ tune/max_concurrent_trials                                12 │
+│ tune/max_episodes                                      25000 │
+│ tune/num_samples                                           5 │
+│ tune/tune                                               True │
+│ wandb/wandb_dir_path                    ...edator-prey/wandb │
+│ wandb/wandb_entity                                       tpn │
+│ wandb/wandb_init                                        True │
+│ wandb/wandb_log_freq                                      50 │
+│ wandb/wandb_notes                              testing setup │
+│ wandb/wandb_project                                   rllib3 │
+╰──────────────────────────────────────────────────────────────╯
+
+Trial train_algo_4b4ec_00002 started with configuration:
+╭──────────────────────────────────────────────────────────────╮
+│ Trial train_algo_4b4ec_00002 config                          │
+├──────────────────────────────────────────────────────────────┤
+│ algorithm_class                                          ppo │
+│ algorithm_type                                   independent │
+│ analysis/pref_ccm_analysis                              True │
+│ analysis/pref_granger_analysis                         False │
+│ analysis/pref_graph_analysis                           False │
+│ analysis/pref_spatial_ccm_analysis                     False │
+│ env_config/map_size                                       15 │
+│ env_config/max_cycles                                    100 │
+│ env_config/npred                                           2 │
+│ env_config/nprey                                           6 │
+│ env_config/pred_vision                                     2 │
+│ env_config/prey_type                                  static │
+│ env_config/reward_type                                type_1 │
+│ env_name                                      discrete_pp_v1 │
+│ evaluate/eval_episodes                                   500 │
+│ framework                                              torch │
+│ ray/init_dashboard                                     False │
+│ rollouts/batch_mode                        complete_episodes │
+│ rollouts/num_rollout_workers                               0 │
+│ stop_fn                                 ...t 0x147b18860b80> │
+│ training/lr                                           0.0001 │
+│ training/model/use_lstm                                 True │
+│ training/num_sgd_iter                                     10 │
+│ training/sgd_minibatch_size                              128 │
+│ training/train_batch_size                                500 │
+│ training/use_critic                                     True │
+│ training/use_kl_loss                                    True │
+│ tune/max_concurrent_trials                                12 │
+│ tune/max_episodes                                      25000 │
+│ tune/num_samples                                           5 │
+│ tune/tune                                               True │
+│ wandb/wandb_dir_path                    ...edator-prey/wandb │
+│ wandb/wandb_entity                                       tpn │
+│ wandb/wandb_init                                        True │
+│ wandb/wandb_log_freq                                      50 │
+│ wandb/wandb_notes                              testing setup │
+│ wandb/wandb_project                                   rllib3 │
+╰──────────────────────────────────────────────────────────────╯
+
+Trial train_algo_4b4ec_00009 errored after 0 iterations at 2023-12-05 14:28:08. Total running time: 7s
+Error file: /home/dalmiapriyam/ray_results/train_algo_2023-12-05_14-27-57/train_algo_4b4ec_00009_9_use_lstm=False_2023-12-05_14-28-01/error.txt
+
+Trial train_algo_4b4ec_00004 started with configuration:
+╭──────────────────────────────────────────────────────────────╮
+│ Trial train_algo_4b4ec_00004 config                          │
+├──────────────────────────────────────────────────────────────┤
+│ algorithm_class                                          ppo │
+│ algorithm_type                                   independent │
+│ analysis/pref_ccm_analysis                              True │
+│ analysis/pref_granger_analysis                         False │
+│ analysis/pref_graph_analysis                           False │
+│ analysis/pref_spatial_ccm_analysis                     False │
+│ env_config/map_size                                       15 │
+│ env_config/max_cycles                                    100 │
+│ env_config/npred                                           2 │
+│ env_config/nprey                                           6 │
+│ env_config/pred_vision                                     2 │
+│ env_config/prey_type                                  static │
+│ env_config/reward_type                                type_1 │
+│ env_name                                      discrete_pp_v1 │
+│ evaluate/eval_episodes                                   500 │
+│ framework                                              torch │
+│ ray/init_dashboard                                     False │
+│ rollouts/batch_mode                        complete_episodes │
+│ rollouts/num_rollout_workers                               0 │
+│ stop_fn                                 ...t 0x147b18860b80> │
+│ training/lr                                           0.0001 │
+│ training/model/use_lstm                                 True │
+│ training/num_sgd_iter                                     10 │
+│ training/sgd_minibatch_size                              128 │
+│ training/train_batch_size                                500 │
+│ training/use_critic                                     True │
+│ training/use_kl_loss                                    True │
+│ tune/max_concurrent_trials                                12 │
+│ tune/max_episodes                                      25000 │
+│ tune/num_samples                                           5 │
+│ tune/tune                                               True │
+│ wandb/wandb_dir_path                    ...edator-prey/wandb │
+│ wandb/wandb_entity                                       tpn │
+│ wandb/wandb_init                                        True │
+│ wandb/wandb_log_freq                                      50 │
+│ wandb/wandb_notes                              testing setup │
+│ wandb/wandb_project                                   rllib3 │
+╰──────────────────────────────────────────────────────────────╯
+
+Trial train_algo_4b4ec_00005 errored after 0 iterations at 2023-12-05 14:28:08. Total running time: 7s
+Error file: /home/dalmiapriyam/ray_results/train_algo_2023-12-05_14-27-57/train_algo_4b4ec_00005_5_use_lstm=False_2023-12-05_14-28-01/error.txt
+
+Trial train_algo_4b4ec_00007 started with configuration:
+╭──────────────────────────────────────────────────────────────╮
+│ Trial train_algo_4b4ec_00007 config                          │
+├──────────────────────────────────────────────────────────────┤
+│ algorithm_class                                          ppo │
+│ algorithm_type                                   independent │
+│ analysis/pref_ccm_analysis                              True │
+│ analysis/pref_granger_analysis                         False │
+│ analysis/pref_graph_analysis                           False │
+│ analysis/pref_spatial_ccm_analysis                     False │
+│ env_config/map_size                                       15 │
+│ env_config/max_cycles                                    100 │
+│ env_config/npred                                           2 │
+│ env_config/nprey                                           6 │
+│ env_config/pred_vision                                     2 │
+│ env_config/prey_type                                  static │
+│ env_config/reward_type                                type_1 │
+│ env_name                                      discrete_pp_v1 │
+│ evaluate/eval_episodes                                   500 │
+│ framework                                              torch │
+│ ray/init_dashboard                                     False │
+│ rollouts/batch_mode                        complete_episodes │
+│ rollouts/num_rollout_workers                               0 │
+│ stop_fn                                 ...t 0x147b18860b80> │
+│ training/lr                                           0.0001 │
+│ training/model/use_lstm                                False │
+│ training/num_sgd_iter                                     10 │
+│ training/sgd_minibatch_size                              128 │
+│ training/train_batch_size                                500 │
+│ training/use_critic                                     True │
+│ training/use_kl_loss                                    True │
+│ tune/max_concurrent_trials                                12 │
+│ tune/max_episodes                                      25000 │
+│ tune/num_samples                                           5 │
+│ tune/tune                                               True │
+│ wandb/wandb_dir_path                    ...edator-prey/wandb │
+│ wandb/wandb_entity                                       tpn │
+│ wandb/wandb_init                                        True │
+│ wandb/wandb_log_freq                                      50 │
+│ wandb/wandb_notes                              testing setup │
+│ wandb/wandb_project                                   rllib3 │
+╰──────────────────────────────────────────────────────────────╯
+
+Trial train_algo_4b4ec_00004 errored after 0 iterations at 2023-12-05 14:28:08. Total running time: 7s
+Error file: /home/dalmiapriyam/ray_results/train_algo_2023-12-05_14-27-57/train_algo_4b4ec_00004_4_use_lstm=True_2023-12-05_14-28-01/error.txt
+
+Trial train_algo_4b4ec_00001 started with configuration:
+╭──────────────────────────────────────────────────────────────╮
+│ Trial train_algo_4b4ec_00001 config                          │
+├──────────────────────────────────────────────────────────────┤
+│ algorithm_class                                          ppo │
+│ algorithm_type                                   independent │
+│ analysis/pref_ccm_analysis                              True │
+│ analysis/pref_granger_analysis                         False │
+│ analysis/pref_graph_analysis                           False │
+│ analysis/pref_spatial_ccm_analysis                     False │
+│ env_config/map_size                                       15 │
+│ env_config/max_cycles                                    100 │
+│ env_config/npred                                           2 │
+│ env_config/nprey                                           6 │
+│ env_config/pred_vision                                     2 │
+│ env_config/prey_type                                  static │
+│ env_config/reward_type                                type_1 │
+│ env_name                                      discrete_pp_v1 │
+│ evaluate/eval_episodes                                   500 │
+│ framework                                              torch │
+│ ray/init_dashboard                                     False │
+│ rollouts/batch_mode                        complete_episodes │
+│ rollouts/num_rollout_workers                               0 │
+│ stop_fn                                 ...t 0x147b18860b80> │
+│ training/lr                                           0.0001 │
+│ training/model/use_lstm                                False │
+│ training/num_sgd_iter                                     10 │
+│ training/sgd_minibatch_size                              128 │
+│ training/train_batch_size                                500 │
+│ training/use_critic                                     True │
+│ training/use_kl_loss                                    True │
+│ tune/max_concurrent_trials                                12 │
+│ tune/max_episodes                                      25000 │
+│ tune/num_samples                                           5 │
+│ tune/tune                                               True │
+│ wandb/wandb_dir_path                    ...edator-prey/wandb │
+│ wandb/wandb_entity                                       tpn │
+│ wandb/wandb_init                                        True │
+│ wandb/wandb_log_freq                                      50 │
+│ wandb/wandb_notes                              testing setup │
+│ wandb/wandb_project                                   rllib3 │
+╰──────────────────────────────────────────────────────────────╯
+
+Trial train_algo_4b4ec_00007 errored after 0 iterations at 2023-12-05 14:28:08. Total running time: 7s
+Error file: /home/dalmiapriyam/ray_results/train_algo_2023-12-05_14-27-57/train_algo_4b4ec_00007_7_use_lstm=False_2023-12-05_14-28-01/error.txt
+
+Trial train_algo_4b4ec_00006 started with configuration:
+╭──────────────────────────────────────────────────────────────╮
+│ Trial train_algo_4b4ec_00006 config                          │
+├──────────────────────────────────────────────────────────────┤
+│ algorithm_class                                          ppo │
+│ algorithm_type                                   independent │
+│ analysis/pref_ccm_analysis                              True │
+│ analysis/pref_granger_analysis                         False │
+│ analysis/pref_graph_analysis                           False │
+│ analysis/pref_spatial_ccm_analysis                     False │
+│ env_config/map_size                                       15 │
+│ env_config/max_cycles                                    100 │
+│ env_config/npred                                           2 │
+│ env_config/nprey                                           6 │
+│ env_config/pred_vision                                     2 │
+│ env_config/prey_type                                  static │
+│ env_config/reward_type                                type_1 │
+│ env_name                                      discrete_pp_v1 │
+│ evaluate/eval_episodes                                   500 │
+│ framework                                              torch │
+│ ray/init_dashboard                                     False │
+│ rollouts/batch_mode                        complete_episodes │
+│ rollouts/num_rollout_workers                               0 │
+│ stop_fn                                 ...t 0x147b18860b80> │
+│ training/lr                                           0.0001 │
+│ training/model/use_lstm                                 True │
+│ training/num_sgd_iter                                     10 │
+│ training/sgd_minibatch_size                              128 │
+│ training/train_batch_size                                500 │
+│ training/use_critic                                     True │
+│ training/use_kl_loss                                    True │
+│ tune/max_concurrent_trials                                12 │
+│ tune/max_episodes                                      25000 │
+│ tune/num_samples                                           5 │
+│ tune/tune                                               True │
+│ wandb/wandb_dir_path                    ...edator-prey/wandb │
+│ wandb/wandb_entity                                       tpn │
+│ wandb/wandb_init                                        True │
+│ wandb/wandb_log_freq                                      50 │
+│ wandb/wandb_notes                              testing setup │
+│ wandb/wandb_project                                   rllib3 │
+╰──────────────────────────────────────────────────────────────╯
+
+Trial train_algo_4b4ec_00001 errored after 0 iterations at 2023-12-05 14:28:08. Total running time: 7s
+Error file: /home/dalmiapriyam/ray_results/train_algo_2023-12-05_14-27-57/train_algo_4b4ec_00001_1_use_lstm=False_2023-12-05_14-28-01/error.txt
+
+Trial train_algo_4b4ec_00002 errored after 0 iterations at 2023-12-05 14:28:08. Total running time: 7s
+Error file: /home/dalmiapriyam/ray_results/train_algo_2023-12-05_14-27-57/train_algo_4b4ec_00002_2_use_lstm=True_2023-12-05_14-28-01/error.txt
+
+Trial train_algo_4b4ec_00006 errored after 0 iterations at 2023-12-05 14:28:08. Total running time: 7s
+Error file: /home/dalmiapriyam/ray_results/train_algo_2023-12-05_14-27-57/train_algo_4b4ec_00006_6_use_lstm=True_2023-12-05_14-28-01/error.txt
+
+Trial status: 10 ERROR
+Current time: 2023-12-05 14:28:08. Total running time: 7s
+Logical resource usage: 1.0/28 CPUs, 0/1 GPUs (0.0/1.0 accelerator_type:V100)
+╭────────────────────────────────────────────────────────────╮
+│ Trial name               status     ...ng/model/use_lstm   │
+├────────────────────────────────────────────────────────────┤
+│ train_algo_4b4ec_00000   ERROR      True                   │
+│ train_algo_4b4ec_00001   ERROR      False                  │
+│ train_algo_4b4ec_00002   ERROR      True                   │
+│ train_algo_4b4ec_00003   ERROR      False                  │
+│ train_algo_4b4ec_00004   ERROR      True                   │
+│ train_algo_4b4ec_00005   ERROR      False                  │
+│ train_algo_4b4ec_00006   ERROR      True                   │
+│ train_algo_4b4ec_00007   ERROR      False                  │
+│ train_algo_4b4ec_00008   ERROR      True                   │
+│ train_algo_4b4ec_00009   ERROR      False                  │
+╰────────────────────────────────────────────────────────────╯
+
+Number of errored trials: 10
+╭─────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────╮
+│ Trial name                 # failures   error file                                                                                                                          │
+├─────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┤
+│ train_algo_4b4ec_00000              1   /home/dalmiapriyam/ray_results/train_algo_2023-12-05_14-27-57/train_algo_4b4ec_00000_0_use_lstm=True_2023-12-05_14-28-01/error.txt  │
+│ train_algo_4b4ec_00001              1   /home/dalmiapriyam/ray_results/train_algo_2023-12-05_14-27-57/train_algo_4b4ec_00001_1_use_lstm=False_2023-12-05_14-28-01/error.txt │
+│ train_algo_4b4ec_00002              1   /home/dalmiapriyam/ray_results/train_algo_2023-12-05_14-27-57/train_algo_4b4ec_00002_2_use_lstm=True_2023-12-05_14-28-01/error.txt  │
+│ train_algo_4b4ec_00003              1   /home/dalmiapriyam/ray_results/train_algo_2023-12-05_14-27-57/train_algo_4b4ec_00003_3_use_lstm=False_2023-12-05_14-28-01/error.txt │
+│ train_algo_4b4ec_00004              1   /home/dalmiapriyam/ray_results/train_algo_2023-12-05_14-27-57/train_algo_4b4ec_00004_4_use_lstm=True_2023-12-05_14-28-01/error.txt  │
+│ train_algo_4b4ec_00005              1   /home/dalmiapriyam/ray_results/train_algo_2023-12-05_14-27-57/train_algo_4b4ec_00005_5_use_lstm=False_2023-12-05_14-28-01/error.txt │
+│ train_algo_4b4ec_00006              1   /home/dalmiapriyam/ray_results/train_algo_2023-12-05_14-27-57/train_algo_4b4ec_00006_6_use_lstm=True_2023-12-05_14-28-01/error.txt  │
+│ train_algo_4b4ec_00007              1   /home/dalmiapriyam/ray_results/train_algo_2023-12-05_14-27-57/train_algo_4b4ec_00007_7_use_lstm=False_2023-12-05_14-28-01/error.txt │
+│ train_algo_4b4ec_00008              1   /home/dalmiapriyam/ray_results/train_algo_2023-12-05_14-27-57/train_algo_4b4ec_00008_8_use_lstm=True_2023-12-05_14-28-01/error.txt  │
+│ train_algo_4b4ec_00009              1   /home/dalmiapriyam/ray_results/train_algo_2023-12-05_14-27-57/train_algo_4b4ec_00009_9_use_lstm=False_2023-12-05_14-28-01/error.txt │
+╰─────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────╯
+
+Empty DataFrame
+Columns: []
+Index: []
+Empty DataFrame
+Columns: []
+Index: []
+Empty DataFrame
+Columns: []
+Index: []
+Empty DataFrame
+Columns: []
+Index: []
+Empty DataFrame
+Columns: []
+Index: []
+Empty DataFrame
+Columns: []
+Index: []
+Empty DataFrame
+Columns: []
+Index: []
+Empty DataFrame
+Columns: []
+Index: []
+Empty DataFrame
+Columns: []
+Index: []
+Empty DataFrame
+Columns: []
+Index: []
+[36m(pid=142684)[0m 2023-12-05 14:28:08,345	WARNING __init__.py:10 -- PG has/have been moved to `rllib_contrib` and will no longer be maintained by the RLlib team. You can still use it/them normally inside RLlib util Ray 2.8, but from Ray 2.9 on, all `rllib_contrib` algorithms will no longer be part of the core repo, and will therefore have to be installed separately with pinned dependencies for e.g. ray[rllib] and other packages! See https://github.com/ray-project/ray/tree/master/rllib_contrib#rllib-contrib for more information on the RLlib contrib effort.[32m [repeated 9x across cluster] (Ray deduplicates logs by default. Set RAY_DEDUP_LOGS=0 to disable log deduplication, or see https://docs.ray.io/en/master/ray-observability/ray-logging.html#log-deduplication for more options.)[0m
+Job ID           : 54116805
+Cluster          : spartan
+User/Project     : dalmiapriyam/punim1355
+Nodes            : 1
+Wall-clock time  : 00:00:30 / 1-00:00:00
+
+Displaying overall resources usage from 2023-12-05 14:27:48 to 2023-12-05 14:28:18:
+
+NODE            CPU#        TOT%   ( USR   / SYS   / WIO   / IDLE  ) 
+
+spartan-gpgpu079 : 
+                CPU# 1    : 1.8    (   0.7 /   1.1 /   0.0 /  98.2 ) 
+                CPU# 2    : 1.9    (   1.0 /   0.9 /   0.0 /  98.1 ) 
+                CPU# 3    : 2.6    (   1.3 /   1.2 /   0.0 /  97.4 ) 
+                CPU# 4    : 19.6   (  16.1 /   3.4 /   0.0 /  80.4 ) 
+                CPU# 5    : 1.8    (   0.6 /   1.2 /   0.0 /  98.2 ) 
+                CPU# 6    : 2.5    (   1.3 /   1.3 /   0.0 /  97.5 ) 
+                CPU# 7    : 2.6    (   1.0 /   1.6 /   0.0 /  97.4 ) 
+                CPU# 8    : 1.6    (   0.7 /   0.8 /   0.0 /  98.4 ) 
+                CPU# 9    : 1.7    (   0.5 /   1.2 /   0.0 /  98.3 ) 
+                CPU# 10   : 1.6    (   0.6 /   1.0 /   0.0 /  98.4 ) 
+                CPU# 11   : 7.4    (   5.4 /   2.0 /   0.0 /  92.6 ) 
+                CPU# 12   : 9.5    (   6.4 /   3.1 /   0.0 /  90.5 ) 
+
+                GPU# 1    : 0.0   
+
+
+Allocated CPUs            : 12   
+  CPUs with usage <25%    : 12   
+  CPUs with usage <50%    : 0    
+  CPUs with usage >50%    : 0    
+
+
+Allocated GPUs            : 1    
+  GPUs with usage <25%    : 1    
+  GPUs with usage <50%    : 0    
+  GPUs with usage >50%    : 0    
+
+Memory used (RAM)         : 0.0%  [4MB of 50332MB]
+
+--------------------------------------------
+

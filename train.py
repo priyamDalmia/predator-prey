@@ -398,40 +398,40 @@ if __name__ == "__main__":
     
     algo = create_algo(config)
     print(algo.train())
-    breakpoint()
-    # print(f"EVALUATING {algo} \n\n")
-    # results = algo.evaluate()
-    # create the two tables and store 
-    if config['analysis']['analysis']:
-        analysis_df = get_analysis_df(
-            config['analysis']['policy_set'],
-            config['analysis']['dimensions'],
-            config['analysis']['length_fac']
-        )
-        for policy_i in config['analysis']['policy_set']:
-            policy_name = config['algorithm_type'] if policy_i == 'original'\
-                  else f"{config['algorithm_type']}_{policy_i}"
-            # build the policy mapping fn 
-            policy_mapping_fn = get_policy_mapping_fn(policy_name, algo)
-            env = env_creator(config["env_config"]).par_env
-            analysis_df, eval_df = perform_causal_analysis(
-                num_trials=config["analysis"]["num_trials"],
-                use_ray = True,
-                analysis_df=analysis_df,
-                env = env,
-                policy_name = policy_name,
-                policy_mapping_fn = policy_mapping_fn,
-                is_recurrent = config['training']['model']['use_lstm'],
-                dimensions = config['analysis']['dimensions'],
-                length_fac = config['analysis']['length_fac'],
-                ccm_tau = config['analysis']['ccm_tau'],
-                ccm_E = config['analysis']['ccm_E'],
-                pref_ccm_analysis = config['analysis']['pref_ccm_analysis'],
-                pref_granger_analysis = config['analysis']['pref_granger_analysis'],
-                pref_spatial_ccm_analysis = config['analysis']['pref_spatial_ccm_analysis'],
-                pref_graph_analysis = config['analysis']['pref_graph_analysis'],
-            )
-    sys.exit()
+    # breakpoint()
+    # # print(f"EVALUATING {algo} \n\n")
+    # # results = algo.evaluate()
+    # # create the two tables and store 
+    # if config['analysis']['analysis']:
+    #     analysis_df = get_analysis_df(
+    #         config['analysis']['policy_set'],
+    #         config['analysis']['dimensions'],
+    #         config['analysis']['length_fac']
+    #     )
+    #     for policy_i in config['analysis']['policy_set']:
+    #         policy_name = config['algorithm_type'] if policy_i == 'original'\
+    #               else f"{config['algorithm_type']}_{policy_i}"
+    #         # build the policy mapping fn 
+    #         policy_mapping_fn = get_policy_mapping_fn(policy_name, algo)
+    #         env = env_creator(config["env_config"]).par_env
+    #         analysis_df, eval_df = perform_causal_analysis(
+    #             num_trials=config["analysis"]["num_trials"],
+    #             use_ray = True,
+    #             analysis_df=analysis_df,
+    #             env = env,
+    #             policy_name = policy_name,
+    #             policy_mapping_fn = policy_mapping_fn,
+    #             is_recurrent = config['training']['model']['use_lstm'],
+    #             dimensions = config['analysis']['dimensions'],
+    #             length_fac = config['analysis']['length_fac'],
+    #             ccm_tau = config['analysis']['ccm_tau'],
+    #             ccm_E = config['analysis']['ccm_E'],
+    #             pref_ccm_analysis = config['analysis']['pref_ccm_analysis'],
+    #             pref_granger_analysis = config['analysis']['pref_granger_analysis'],
+    #             pref_spatial_ccm_analysis = config['analysis']['pref_spatial_ccm_analysis'],
+    #             pref_graph_analysis = config['analysis']['pref_graph_analysis'],
+    #         )
+    # sys.exit()
 
    # test tune fit 
     # config["algorithm_type"] = tune.grid_search(["centralized", "shared", "independent"])

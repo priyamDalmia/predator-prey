@@ -1,0 +1,1173 @@
+
+Name of the cluster on which the job is executing:	 spartan
+Number of CPUs on the allocated node: 	 12
+Number of CPUs requested per task: 	 12
+Numer of GPUs requested: 	 
+Requested GPU count per allocated node: 	 
+Requested GPU count per allocated task:	  
+The ID of the job allocation:	  54124984
+Count of processors available to the job on this node:	  12
+Name of the job:	  tst.slurm
+List of nodes allocated to the job:	  spartan-gpgpu081
+Total number of nodes in the job’s resource allocation:	  1
+Name of the partition in which the job is running:	  deeplearn
+Minimum memory required per allocated CPU:	  4000
+Requested memory per allocated GPU:	  
+Total amount of memory per node that the job needs:	  
+List of nodes allocated to the job:	  spartan-gpgpu081
+Total number of CPUs allocated:	  1
+Maximum number of MPI tasks (that’s processes): 	 1
+Number of tasks requested per core: 	 
+Number of tasks requested per GPU: 	 
+Number of tasks requested per node:	  1
+The scheduling priority (nice value) at the time of job submission. This value is propagated to the spawned processes: 	 0
+The MPI rank (or relative process ID) of the current process: 	 0
+
+The directory from which SBATCH was invoked: 	 /data/gpfs/projects/punim1355/dalmiapriyam/predator-prey
+The Hostname of the computer from which SBATCH was invoked: 	 spartan-login3.hpc.unimelb.edu.au
+The process ID of the corresponding task: 	 18455
+
+
+
+ LOADING MODULES: 
+
+
+
+
+ PYTHON SCRIPT OUTPUT: 
+
+rm: cannot remove '/home/dalmiapriyam/ray_results/train_algo_2023-12-05_14-29-57/train_algo_92dd0_00003_3_use_lstm=False_2023-12-05_14-30-01/events.out.tfevents.1701747008.spartan-gpgpu079.hpc.unimelb.edu.au': Stale file handle
+rm: cannot remove '/home/dalmiapriyam/ray_results/train_algo_2023-12-05_14-29-57/train_algo_92dd0_00003_3_use_lstm=False_2023-12-05_14-30-01/progress.csv': Stale file handle
+rm: cannot remove '/home/dalmiapriyam/ray_results/train_algo_2023-12-05_14-29-57/train_algo_92dd0_00003_3_use_lstm=False_2023-12-05_14-30-01/error.pkl': Stale file handle
+rm: cannot remove '/home/dalmiapriyam/ray_results/train_algo_2023-12-05_14-29-57/train_algo_92dd0_00003_3_use_lstm=False_2023-12-05_14-30-01/error.txt': Stale file handle
+rm: cannot remove '/home/dalmiapriyam/ray_results/train_algo_2023-12-05_14-29-57/train_algo_92dd0_00005_5_use_lstm=False_2023-12-05_14-30-01/error.txt': Stale file handle
+rm: cannot remove '/home/dalmiapriyam/ray_results/train_algo_2023-12-05_14-29-57/train_algo_92dd0_00009_9_use_lstm=False_2023-12-05_14-30-01/params.pkl': Stale file handle
+rm: cannot remove '/home/dalmiapriyam/ray_results/train_algo_2023-12-05_14-29-57/train_algo_92dd0_00009_9_use_lstm=False_2023-12-05_14-30-01/result.json': Stale file handle
+rm: cannot remove '/home/dalmiapriyam/ray_results/train_algo_2023-12-05_14-29-57/train_algo_92dd0_00009_9_use_lstm=False_2023-12-05_14-30-01/events.out.tfevents.1701747008.spartan-gpgpu079.hpc.unimelb.edu.au': Stale file handle
+rm: cannot remove '/home/dalmiapriyam/ray_results/train_algo_2023-12-05_14-29-57/train_algo_92dd0_00009_9_use_lstm=False_2023-12-05_14-30-01/progress.csv': Stale file handle
+rm: cannot remove '/home/dalmiapriyam/ray_results/train_algo_2023-12-05_14-29-57/train_algo_92dd0_00009_9_use_lstm=False_2023-12-05_14-30-01/error.pkl': Stale file handle
+rm: cannot remove '/home/dalmiapriyam/ray_results/train_algo_2023-12-05_14-29-57/train_algo_92dd0_00009_9_use_lstm=False_2023-12-05_14-30-01/error.txt': Stale file handle
+rm: cannot remove '/home/dalmiapriyam/ray_results/train_algo_2023-12-05_14-29-57/experiment_state-2023-12-05_14-30-01.json': Stale file handle
+rm: cannot remove '/home/dalmiapriyam/ray_results/train_algo_2023-12-05_14-29-57/basic-variant-state-2023-12-05_14-30-01.json': Stale file handle
+2023-12-05 19:17:19,610	WARNING __init__.py:10 -- PG has/have been moved to `rllib_contrib` and will no longer be maintained by the RLlib team. You can still use it/them normally inside RLlib util Ray 2.8, but from Ray 2.9 on, all `rllib_contrib` algorithms will no longer be part of the core repo, and will therefore have to be installed separately with pinned dependencies for e.g. ray[rllib] and other packages! See https://github.com/ray-project/ray/tree/master/rllib_contrib#rllib-contrib for more information on the RLlib contrib effort.
+2023-12-05 19:17:22,755	INFO worker.py:1673 -- Started a local Ray instance.
+2023-12-05 19:17:24,218	INFO tune.py:220 -- Initializing Ray automatically. For cluster usage or custom Ray initialization, call `ray.init(...)` before `Tuner(...)`.
+2023-12-05 19:17:24,224	INFO tune.py:595 -- [output] This will use the new output engine with verbosity 1. To disable the new output and use the legacy output engine, set the environment variable RAY_AIR_NEW_OUTPUT=0. For more information, please see https://github.com/ray-project/ray/issues/36949
+[36m(pid=20116)[0m 2023-12-05 19:17:31,664	WARNING __init__.py:10 -- PG has/have been moved to `rllib_contrib` and will no longer be maintained by the RLlib team. You can still use it/them normally inside RLlib util Ray 2.8, but from Ray 2.9 on, all `rllib_contrib` algorithms will no longer be part of the core repo, and will therefore have to be installed separately with pinned dependencies for e.g. ray[rllib] and other packages! See https://github.com/ray-project/ray/tree/master/rllib_contrib#rllib-contrib for more information on the RLlib contrib effort.
+[36m(train_algo pid=20112)[0m /data/gpfs/projects/punim1355/dalmiapriyam/predator-prey/.venv/lib/python3.10/site-packages/ray/rllib/algorithms/algorithm.py:484: RayDeprecationWarning: This API is deprecated and may be removed in future Ray releases. You could suppress this warning by setting env variable PYTHONWARNINGS="ignore::DeprecationWarning"
+[36m(train_algo pid=20112)[0m `UnifiedLogger` will be removed in Ray 2.7.
+[36m(train_algo pid=20112)[0m   return UnifiedLogger(config, logdir, loggers=None)
+[36m(train_algo pid=20112)[0m /data/gpfs/projects/punim1355/dalmiapriyam/predator-prey/.venv/lib/python3.10/site-packages/ray/tune/logger/unified.py:53: RayDeprecationWarning: This API is deprecated and may be removed in future Ray releases. You could suppress this warning by setting env variable PYTHONWARNINGS="ignore::DeprecationWarning"
+[36m(train_algo pid=20112)[0m The `JsonLogger interface is deprecated in favor of the `ray.tune.json.JsonLoggerCallback` interface and will be removed in Ray 2.7.
+[36m(train_algo pid=20112)[0m   self._loggers.append(cls(self.config, self.logdir, self.trial))
+[36m(train_algo pid=20112)[0m /data/gpfs/projects/punim1355/dalmiapriyam/predator-prey/.venv/lib/python3.10/site-packages/ray/tune/logger/unified.py:53: RayDeprecationWarning: This API is deprecated and may be removed in future Ray releases. You could suppress this warning by setting env variable PYTHONWARNINGS="ignore::DeprecationWarning"
+[36m(train_algo pid=20112)[0m The `CSVLogger interface is deprecated in favor of the `ray.tune.csv.CSVLoggerCallback` interface and will be removed in Ray 2.7.
+[36m(train_algo pid=20112)[0m   self._loggers.append(cls(self.config, self.logdir, self.trial))
+[36m(train_algo pid=20112)[0m /data/gpfs/projects/punim1355/dalmiapriyam/predator-prey/.venv/lib/python3.10/site-packages/ray/tune/logger/unified.py:53: RayDeprecationWarning: This API is deprecated and may be removed in future Ray releases. You could suppress this warning by setting env variable PYTHONWARNINGS="ignore::DeprecationWarning"
+[36m(train_algo pid=20112)[0m The `TBXLogger interface is deprecated in favor of the `ray.tune.tensorboardx.TBXLoggerCallback` interface and will be removed in Ray 2.7.
+[36m(train_algo pid=20112)[0m   self._loggers.append(cls(self.config, self.logdir, self.trial))
+2023-12-05 19:17:32,514	ERROR tune_controller.py:1383 -- Trial task failed for trial train_algo_b8329_00000
+Traceback (most recent call last):
+  File "/data/gpfs/projects/punim1355/dalmiapriyam/predator-prey/.venv/lib/python3.10/site-packages/ray/air/execution/_internal/event_manager.py", line 110, in resolve_future
+    result = ray.get(future)
+  File "/data/gpfs/projects/punim1355/dalmiapriyam/predator-prey/.venv/lib/python3.10/site-packages/ray/_private/auto_init_hook.py", line 24, in auto_init_wrapper
+    return fn(*args, **kwargs)
+  File "/data/gpfs/projects/punim1355/dalmiapriyam/predator-prey/.venv/lib/python3.10/site-packages/ray/_private/client_mode_hook.py", line 103, in wrapper
+    return func(*args, **kwargs)
+  File "/data/gpfs/projects/punim1355/dalmiapriyam/predator-prey/.venv/lib/python3.10/site-packages/ray/_private/worker.py", line 2563, in get
+    raise value.as_instanceof_cause()
+ray.exceptions.RayTaskError: [36mray::ImplicitFunc.train()[39m (pid=20112, ip=172.26.92.208, actor_id=f494f6354c67becb2323959b01000000, repr=train_algo)
+  File "/data/gpfs/projects/punim1355/dalmiapriyam/predator-prey/.venv/lib/python3.10/site-packages/ray/tune/trainable/trainable.py", line 342, in train
+    raise skipped from exception_cause(skipped)
+  File "/data/gpfs/projects/punim1355/dalmiapriyam/predator-prey/.venv/lib/python3.10/site-packages/ray/air/_internal/util.py", line 91, in run
+    self._ret = self._target(*self._args, **self._kwargs)
+  File "/data/gpfs/projects/punim1355/dalmiapriyam/predator-prey/.venv/lib/python3.10/site-packages/ray/tune/trainable/function_trainable.py", line 115, in <lambda>
+    training_func=lambda: self._trainable_func(self.config),
+  File "/data/gpfs/projects/punim1355/dalmiapriyam/predator-prey/.venv/lib/python3.10/site-packages/ray/tune/trainable/function_trainable.py", line 332, in _trainable_func
+    output = fn()
+  File "/data/gpfs/projects/punim1355/dalmiapriyam/predator-prey/./train.py", line 201, in train_algo
+    algo = create_algo(config)
+  File "/data/gpfs/projects/punim1355/dalmiapriyam/predator-prey/./train.py", line 70, in create_algo
+    algo = algo_config.build()
+  File "/data/gpfs/projects/punim1355/dalmiapriyam/predator-prey/.venv/lib/python3.10/site-packages/ray/rllib/algorithms/algorithm_config.py", line 1100, in build
+    return algo_class(
+  File "/data/gpfs/projects/punim1355/dalmiapriyam/predator-prey/.venv/lib/python3.10/site-packages/ray/rllib/algorithms/algorithm.py", line 517, in __init__
+    super().__init__(
+  File "/data/gpfs/projects/punim1355/dalmiapriyam/predator-prey/.venv/lib/python3.10/site-packages/ray/tune/trainable/trainable.py", line 161, in __init__
+    self.setup(copy.deepcopy(self.config))
+  File "/data/gpfs/projects/punim1355/dalmiapriyam/predator-prey/.venv/lib/python3.10/site-packages/ray/rllib/algorithms/algorithm.py", line 639, in setup
+    self.workers = WorkerSet(
+  File "/data/gpfs/projects/punim1355/dalmiapriyam/predator-prey/.venv/lib/python3.10/site-packages/ray/rllib/evaluation/worker_set.py", line 157, in __init__
+    self._setup(
+  File "/data/gpfs/projects/punim1355/dalmiapriyam/predator-prey/.venv/lib/python3.10/site-packages/ray/rllib/evaluation/worker_set.py", line 247, in _setup
+    self._local_worker = self._make_worker(
+  File "/data/gpfs/projects/punim1355/dalmiapriyam/predator-prey/.venv/lib/python3.10/site-packages/ray/rllib/evaluation/worker_set.py", line 925, in _make_worker
+    worker = cls(
+  File "/data/gpfs/projects/punim1355/dalmiapriyam/predator-prey/.venv/lib/python3.10/site-packages/ray/rllib/evaluation/rollout_worker.py", line 525, in __init__
+    self._update_policy_map(policy_dict=self.policy_dict)
+  File "/data/gpfs/projects/punim1355/dalmiapriyam/predator-prey/.venv/lib/python3.10/site-packages/ray/rllib/evaluation/rollout_worker.py", line 1704, in _update_policy_map
+    updated_policy_dict = self._get_complete_policy_specs_dict(policy_dict)
+  File "/data/gpfs/projects/punim1355/dalmiapriyam/predator-prey/.venv/lib/python3.10/site-packages/ray/rllib/evaluation/rollout_worker.py", line 1782, in _get_complete_policy_specs_dict
+    preprocessor = ModelCatalog.get_preprocessor_for_space(
+  File "/data/gpfs/projects/punim1355/dalmiapriyam/predator-prey/.venv/lib/python3.10/site-packages/ray/rllib/models/catalog.py", line 774, in get_preprocessor_for_space
+    raise Exception(
+Exception: Unknown config key `last_use_prev_action`, all keys: ['_disable_preprocessor_api', '_disable_action_flattening', 'fcnet_hiddens', 'fcnet_activation', 'conv_filters', 'conv_activation', 'post_fcnet_hiddens', 'post_fcnet_activation', 'free_log_std', 'no_final_linear', 'vf_share_layers', 'use_lstm', 'max_seq_len', 'lstm_cell_size', 'lstm_use_prev_action', 'lstm_use_prev_reward', '_time_major', 'use_attention', 'attention_num_transformer_units', 'attention_dim', 'attention_num_heads', 'attention_head_dim', 'attention_memory_inference', 'attention_memory_training', 'attention_position_wise_mlp_dim', 'attention_init_gru_gate_bias', 'attention_use_n_prev_actions', 'attention_use_n_prev_rewards', 'framestack', 'dim', 'grayscale', 'zero_mean', 'custom_model', 'custom_model_config', 'custom_action_dist', 'custom_preprocessor', 'encoder_latent_dim', 'always_check_shapes', 'lstm_use_prev_action_reward', '_use_default_native_models']
+2023-12-05 19:17:32,522	ERROR tune_controller.py:1383 -- Trial task failed for trial train_algo_b8329_00001
+Traceback (most recent call last):
+  File "/data/gpfs/projects/punim1355/dalmiapriyam/predator-prey/.venv/lib/python3.10/site-packages/ray/air/execution/_internal/event_manager.py", line 110, in resolve_future
+    result = ray.get(future)
+  File "/data/gpfs/projects/punim1355/dalmiapriyam/predator-prey/.venv/lib/python3.10/site-packages/ray/_private/auto_init_hook.py", line 24, in auto_init_wrapper
+    return fn(*args, **kwargs)
+  File "/data/gpfs/projects/punim1355/dalmiapriyam/predator-prey/.venv/lib/python3.10/site-packages/ray/_private/client_mode_hook.py", line 103, in wrapper
+    return func(*args, **kwargs)
+  File "/data/gpfs/projects/punim1355/dalmiapriyam/predator-prey/.venv/lib/python3.10/site-packages/ray/_private/worker.py", line 2563, in get
+    raise value.as_instanceof_cause()
+ray.exceptions.RayTaskError: [36mray::ImplicitFunc.train()[39m (pid=20113, ip=172.26.92.208, actor_id=0d9b5515eb4c1fd3d7d2558f01000000, repr=train_algo)
+  File "/data/gpfs/projects/punim1355/dalmiapriyam/predator-prey/.venv/lib/python3.10/site-packages/ray/tune/trainable/trainable.py", line 342, in train
+    raise skipped from exception_cause(skipped)
+  File "/data/gpfs/projects/punim1355/dalmiapriyam/predator-prey/.venv/lib/python3.10/site-packages/ray/air/_internal/util.py", line 91, in run
+    self._ret = self._target(*self._args, **self._kwargs)
+  File "/data/gpfs/projects/punim1355/dalmiapriyam/predator-prey/.venv/lib/python3.10/site-packages/ray/tune/trainable/function_trainable.py", line 115, in <lambda>
+    training_func=lambda: self._trainable_func(self.config),
+  File "/data/gpfs/projects/punim1355/dalmiapriyam/predator-prey/.venv/lib/python3.10/site-packages/ray/tune/trainable/function_trainable.py", line 332, in _trainable_func
+    output = fn()
+  File "/data/gpfs/projects/punim1355/dalmiapriyam/predator-prey/./train.py", line 201, in train_algo
+    algo = create_algo(config)
+  File "/data/gpfs/projects/punim1355/dalmiapriyam/predator-prey/./train.py", line 70, in create_algo
+    algo = algo_config.build()
+  File "/data/gpfs/projects/punim1355/dalmiapriyam/predator-prey/.venv/lib/python3.10/site-packages/ray/rllib/algorithms/algorithm_config.py", line 1100, in build
+    return algo_class(
+  File "/data/gpfs/projects/punim1355/dalmiapriyam/predator-prey/.venv/lib/python3.10/site-packages/ray/rllib/algorithms/algorithm.py", line 517, in __init__
+    super().__init__(
+  File "/data/gpfs/projects/punim1355/dalmiapriyam/predator-prey/.venv/lib/python3.10/site-packages/ray/tune/trainable/trainable.py", line 161, in __init__
+    self.setup(copy.deepcopy(self.config))
+  File "/data/gpfs/projects/punim1355/dalmiapriyam/predator-prey/.venv/lib/python3.10/site-packages/ray/rllib/algorithms/algorithm.py", line 639, in setup
+    self.workers = WorkerSet(
+  File "/data/gpfs/projects/punim1355/dalmiapriyam/predator-prey/.venv/lib/python3.10/site-packages/ray/rllib/evaluation/worker_set.py", line 157, in __init__
+    self._setup(
+  File "/data/gpfs/projects/punim1355/dalmiapriyam/predator-prey/.venv/lib/python3.10/site-packages/ray/rllib/evaluation/worker_set.py", line 247, in _setup
+    self._local_worker = self._make_worker(
+  File "/data/gpfs/projects/punim1355/dalmiapriyam/predator-prey/.venv/lib/python3.10/site-packages/ray/rllib/evaluation/worker_set.py", line 925, in _make_worker
+    worker = cls(
+  File "/data/gpfs/projects/punim1355/dalmiapriyam/predator-prey/.venv/lib/python3.10/site-packages/ray/rllib/evaluation/rollout_worker.py", line 525, in __init__
+    self._update_policy_map(policy_dict=self.policy_dict)
+  File "/data/gpfs/projects/punim1355/dalmiapriyam/predator-prey/.venv/lib/python3.10/site-packages/ray/rllib/evaluation/rollout_worker.py", line 1704, in _update_policy_map
+    updated_policy_dict = self._get_complete_policy_specs_dict(policy_dict)
+  File "/data/gpfs/projects/punim1355/dalmiapriyam/predator-prey/.venv/lib/python3.10/site-packages/ray/rllib/evaluation/rollout_worker.py", line 1782, in _get_complete_policy_specs_dict
+    preprocessor = ModelCatalog.get_preprocessor_for_space(
+  File "/data/gpfs/projects/punim1355/dalmiapriyam/predator-prey/.venv/lib/python3.10/site-packages/ray/rllib/models/catalog.py", line 774, in get_preprocessor_for_space
+    raise Exception(
+Exception: Unknown config key `last_use_prev_action`, all keys: ['_disable_preprocessor_api', '_disable_action_flattening', 'fcnet_hiddens', 'fcnet_activation', 'conv_filters', 'conv_activation', 'post_fcnet_hiddens', 'post_fcnet_activation', 'free_log_std', 'no_final_linear', 'vf_share_layers', 'use_lstm', 'max_seq_len', 'lstm_cell_size', 'lstm_use_prev_action', 'lstm_use_prev_reward', '_time_major', 'use_attention', 'attention_num_transformer_units', 'attention_dim', 'attention_num_heads', 'attention_head_dim', 'attention_memory_inference', 'attention_memory_training', 'attention_position_wise_mlp_dim', 'attention_init_gru_gate_bias', 'attention_use_n_prev_actions', 'attention_use_n_prev_rewards', 'framestack', 'dim', 'grayscale', 'zero_mean', 'custom_model', 'custom_model_config', 'custom_action_dist', 'custom_preprocessor', 'encoder_latent_dim', 'always_check_shapes', 'lstm_use_prev_action_reward', '_use_default_native_models']
+2023-12-05 19:17:32,527	ERROR tune_controller.py:1383 -- Trial task failed for trial train_algo_b8329_00007
+Traceback (most recent call last):
+  File "/data/gpfs/projects/punim1355/dalmiapriyam/predator-prey/.venv/lib/python3.10/site-packages/ray/air/execution/_internal/event_manager.py", line 110, in resolve_future
+    result = ray.get(future)
+  File "/data/gpfs/projects/punim1355/dalmiapriyam/predator-prey/.venv/lib/python3.10/site-packages/ray/_private/auto_init_hook.py", line 24, in auto_init_wrapper
+    return fn(*args, **kwargs)
+  File "/data/gpfs/projects/punim1355/dalmiapriyam/predator-prey/.venv/lib/python3.10/site-packages/ray/_private/client_mode_hook.py", line 103, in wrapper
+    return func(*args, **kwargs)
+  File "/data/gpfs/projects/punim1355/dalmiapriyam/predator-prey/.venv/lib/python3.10/site-packages/ray/_private/worker.py", line 2563, in get
+    raise value.as_instanceof_cause()
+ray.exceptions.RayTaskError: [36mray::ImplicitFunc.train()[39m (pid=20116, ip=172.26.92.208, actor_id=bdf584f1bda2a7b1078aa75201000000, repr=train_algo)
+  File "/data/gpfs/projects/punim1355/dalmiapriyam/predator-prey/.venv/lib/python3.10/site-packages/ray/tune/trainable/trainable.py", line 342, in train
+    raise skipped from exception_cause(skipped)
+  File "/data/gpfs/projects/punim1355/dalmiapriyam/predator-prey/.venv/lib/python3.10/site-packages/ray/air/_internal/util.py", line 91, in run
+    self._ret = self._target(*self._args, **self._kwargs)
+  File "/data/gpfs/projects/punim1355/dalmiapriyam/predator-prey/.venv/lib/python3.10/site-packages/ray/tune/trainable/function_trainable.py", line 115, in <lambda>
+    training_func=lambda: self._trainable_func(self.config),
+  File "/data/gpfs/projects/punim1355/dalmiapriyam/predator-prey/.venv/lib/python3.10/site-packages/ray/tune/trainable/function_trainable.py", line 332, in _trainable_func
+    output = fn()
+  File "/data/gpfs/projects/punim1355/dalmiapriyam/predator-prey/./train.py", line 201, in train_algo
+    algo = create_algo(config)
+  File "/data/gpfs/projects/punim1355/dalmiapriyam/predator-prey/./train.py", line 70, in create_algo
+    algo = algo_config.build()
+  File "/data/gpfs/projects/punim1355/dalmiapriyam/predator-prey/.venv/lib/python3.10/site-packages/ray/rllib/algorithms/algorithm_config.py", line 1100, in build
+    return algo_class(
+  File "/data/gpfs/projects/punim1355/dalmiapriyam/predator-prey/.venv/lib/python3.10/site-packages/ray/rllib/algorithms/algorithm.py", line 517, in __init__
+    super().__init__(
+  File "/data/gpfs/projects/punim1355/dalmiapriyam/predator-prey/.venv/lib/python3.10/site-packages/ray/tune/trainable/trainable.py", line 161, in __init__
+    self.setup(copy.deepcopy(self.config))
+  File "/data/gpfs/projects/punim1355/dalmiapriyam/predator-prey/.venv/lib/python3.10/site-packages/ray/rllib/algorithms/algorithm.py", line 639, in setup
+    self.workers = WorkerSet(
+  File "/data/gpfs/projects/punim1355/dalmiapriyam/predator-prey/.venv/lib/python3.10/site-packages/ray/rllib/evaluation/worker_set.py", line 157, in __init__
+    self._setup(
+  File "/data/gpfs/projects/punim1355/dalmiapriyam/predator-prey/.venv/lib/python3.10/site-packages/ray/rllib/evaluation/worker_set.py", line 247, in _setup
+    self._local_worker = self._make_worker(
+  File "/data/gpfs/projects/punim1355/dalmiapriyam/predator-prey/.venv/lib/python3.10/site-packages/ray/rllib/evaluation/worker_set.py", line 925, in _make_worker
+    worker = cls(
+  File "/data/gpfs/projects/punim1355/dalmiapriyam/predator-prey/.venv/lib/python3.10/site-packages/ray/rllib/evaluation/rollout_worker.py", line 525, in __init__
+    self._update_policy_map(policy_dict=self.policy_dict)
+  File "/data/gpfs/projects/punim1355/dalmiapriyam/predator-prey/.venv/lib/python3.10/site-packages/ray/rllib/evaluation/rollout_worker.py", line 1704, in _update_policy_map
+    updated_policy_dict = self._get_complete_policy_specs_dict(policy_dict)
+  File "/data/gpfs/projects/punim1355/dalmiapriyam/predator-prey/.venv/lib/python3.10/site-packages/ray/rllib/evaluation/rollout_worker.py", line 1782, in _get_complete_policy_specs_dict
+    preprocessor = ModelCatalog.get_preprocessor_for_space(
+  File "/data/gpfs/projects/punim1355/dalmiapriyam/predator-prey/.venv/lib/python3.10/site-packages/ray/rllib/models/catalog.py", line 774, in get_preprocessor_for_space
+    raise Exception(
+Exception: Unknown config key `last_use_prev_action`, all keys: ['_disable_preprocessor_api', '_disable_action_flattening', 'fcnet_hiddens', 'fcnet_activation', 'conv_filters', 'conv_activation', 'post_fcnet_hiddens', 'post_fcnet_activation', 'free_log_std', 'no_final_linear', 'vf_share_layers', 'use_lstm', 'max_seq_len', 'lstm_cell_size', 'lstm_use_prev_action', 'lstm_use_prev_reward', '_time_major', 'use_attention', 'attention_num_transformer_units', 'attention_dim', 'attention_num_heads', 'attention_head_dim', 'attention_memory_inference', 'attention_memory_training', 'attention_position_wise_mlp_dim', 'attention_init_gru_gate_bias', 'attention_use_n_prev_actions', 'attention_use_n_prev_rewards', 'framestack', 'dim', 'grayscale', 'zero_mean', 'custom_model', 'custom_model_config', 'custom_action_dist', 'custom_preprocessor', 'encoder_latent_dim', 'always_check_shapes', 'lstm_use_prev_action_reward', '_use_default_native_models']
+2023-12-05 19:17:32,532	ERROR tune_controller.py:1383 -- Trial task failed for trial train_algo_b8329_00005
+Traceback (most recent call last):
+  File "/data/gpfs/projects/punim1355/dalmiapriyam/predator-prey/.venv/lib/python3.10/site-packages/ray/air/execution/_internal/event_manager.py", line 110, in resolve_future
+    result = ray.get(future)
+  File "/data/gpfs/projects/punim1355/dalmiapriyam/predator-prey/.venv/lib/python3.10/site-packages/ray/_private/auto_init_hook.py", line 24, in auto_init_wrapper
+    return fn(*args, **kwargs)
+  File "/data/gpfs/projects/punim1355/dalmiapriyam/predator-prey/.venv/lib/python3.10/site-packages/ray/_private/client_mode_hook.py", line 103, in wrapper
+    return func(*args, **kwargs)
+  File "/data/gpfs/projects/punim1355/dalmiapriyam/predator-prey/.venv/lib/python3.10/site-packages/ray/_private/worker.py", line 2563, in get
+    raise value.as_instanceof_cause()
+ray.exceptions.RayTaskError: [36mray::ImplicitFunc.train()[39m (pid=20118, ip=172.26.92.208, actor_id=d6cbce980a29f374a223460d01000000, repr=train_algo)
+  File "/data/gpfs/projects/punim1355/dalmiapriyam/predator-prey/.venv/lib/python3.10/site-packages/ray/tune/trainable/trainable.py", line 342, in train
+    raise skipped from exception_cause(skipped)
+  File "/data/gpfs/projects/punim1355/dalmiapriyam/predator-prey/.venv/lib/python3.10/site-packages/ray/air/_internal/util.py", line 91, in run
+    self._ret = self._target(*self._args, **self._kwargs)
+  File "/data/gpfs/projects/punim1355/dalmiapriyam/predator-prey/.venv/lib/python3.10/site-packages/ray/tune/trainable/function_trainable.py", line 115, in <lambda>
+    training_func=lambda: self._trainable_func(self.config),
+  File "/data/gpfs/projects/punim1355/dalmiapriyam/predator-prey/.venv/lib/python3.10/site-packages/ray/tune/trainable/function_trainable.py", line 332, in _trainable_func
+    output = fn()
+  File "/data/gpfs/projects/punim1355/dalmiapriyam/predator-prey/./train.py", line 201, in train_algo
+    algo = create_algo(config)
+  File "/data/gpfs/projects/punim1355/dalmiapriyam/predator-prey/./train.py", line 70, in create_algo
+    algo = algo_config.build()
+  File "/data/gpfs/projects/punim1355/dalmiapriyam/predator-prey/.venv/lib/python3.10/site-packages/ray/rllib/algorithms/algorithm_config.py", line 1100, in build
+    return algo_class(
+  File "/data/gpfs/projects/punim1355/dalmiapriyam/predator-prey/.venv/lib/python3.10/site-packages/ray/rllib/algorithms/algorithm.py", line 517, in __init__
+    super().__init__(
+  File "/data/gpfs/projects/punim1355/dalmiapriyam/predator-prey/.venv/lib/python3.10/site-packages/ray/tune/trainable/trainable.py", line 161, in __init__
+    self.setup(copy.deepcopy(self.config))
+  File "/data/gpfs/projects/punim1355/dalmiapriyam/predator-prey/.venv/lib/python3.10/site-packages/ray/rllib/algorithms/algorithm.py", line 639, in setup
+    self.workers = WorkerSet(
+  File "/data/gpfs/projects/punim1355/dalmiapriyam/predator-prey/.venv/lib/python3.10/site-packages/ray/rllib/evaluation/worker_set.py", line 157, in __init__
+    self._setup(
+  File "/data/gpfs/projects/punim1355/dalmiapriyam/predator-prey/.venv/lib/python3.10/site-packages/ray/rllib/evaluation/worker_set.py", line 247, in _setup
+    self._local_worker = self._make_worker(
+  File "/data/gpfs/projects/punim1355/dalmiapriyam/predator-prey/.venv/lib/python3.10/site-packages/ray/rllib/evaluation/worker_set.py", line 925, in _make_worker
+    worker = cls(
+  File "/data/gpfs/projects/punim1355/dalmiapriyam/predator-prey/.venv/lib/python3.10/site-packages/ray/rllib/evaluation/rollout_worker.py", line 525, in __init__
+    self._update_policy_map(policy_dict=self.policy_dict)
+  File "/data/gpfs/projects/punim1355/dalmiapriyam/predator-prey/.venv/lib/python3.10/site-packages/ray/rllib/evaluation/rollout_worker.py", line 1704, in _update_policy_map
+    updated_policy_dict = self._get_complete_policy_specs_dict(policy_dict)
+  File "/data/gpfs/projects/punim1355/dalmiapriyam/predator-prey/.venv/lib/python3.10/site-packages/ray/rllib/evaluation/rollout_worker.py", line 1782, in _get_complete_policy_specs_dict
+    preprocessor = ModelCatalog.get_preprocessor_for_space(
+  File "/data/gpfs/projects/punim1355/dalmiapriyam/predator-prey/.venv/lib/python3.10/site-packages/ray/rllib/models/catalog.py", line 774, in get_preprocessor_for_space
+    raise Exception(
+Exception: Unknown config key `last_use_prev_action`, all keys: ['_disable_preprocessor_api', '_disable_action_flattening', 'fcnet_hiddens', 'fcnet_activation', 'conv_filters', 'conv_activation', 'post_fcnet_hiddens', 'post_fcnet_activation', 'free_log_std', 'no_final_linear', 'vf_share_layers', 'use_lstm', 'max_seq_len', 'lstm_cell_size', 'lstm_use_prev_action', 'lstm_use_prev_reward', '_time_major', 'use_attention', 'attention_num_transformer_units', 'attention_dim', 'attention_num_heads', 'attention_head_dim', 'attention_memory_inference', 'attention_memory_training', 'attention_position_wise_mlp_dim', 'attention_init_gru_gate_bias', 'attention_use_n_prev_actions', 'attention_use_n_prev_rewards', 'framestack', 'dim', 'grayscale', 'zero_mean', 'custom_model', 'custom_model_config', 'custom_action_dist', 'custom_preprocessor', 'encoder_latent_dim', 'always_check_shapes', 'lstm_use_prev_action_reward', '_use_default_native_models']
+2023-12-05 19:17:32,535	ERROR tune_controller.py:1383 -- Trial task failed for trial train_algo_b8329_00008
+Traceback (most recent call last):
+  File "/data/gpfs/projects/punim1355/dalmiapriyam/predator-prey/.venv/lib/python3.10/site-packages/ray/air/execution/_internal/event_manager.py", line 110, in resolve_future
+    result = ray.get(future)
+  File "/data/gpfs/projects/punim1355/dalmiapriyam/predator-prey/.venv/lib/python3.10/site-packages/ray/_private/auto_init_hook.py", line 24, in auto_init_wrapper
+    return fn(*args, **kwargs)
+  File "/data/gpfs/projects/punim1355/dalmiapriyam/predator-prey/.venv/lib/python3.10/site-packages/ray/_private/client_mode_hook.py", line 103, in wrapper
+    return func(*args, **kwargs)
+  File "/data/gpfs/projects/punim1355/dalmiapriyam/predator-prey/.venv/lib/python3.10/site-packages/ray/_private/worker.py", line 2563, in get
+    raise value.as_instanceof_cause()
+ray.exceptions.RayTaskError: [36mray::ImplicitFunc.train()[39m (pid=20125, ip=172.26.92.208, actor_id=cb9d77447645813867e5a7c601000000, repr=train_algo)
+  File "/data/gpfs/projects/punim1355/dalmiapriyam/predator-prey/.venv/lib/python3.10/site-packages/ray/tune/trainable/trainable.py", line 342, in train
+    raise skipped from exception_cause(skipped)
+  File "/data/gpfs/projects/punim1355/dalmiapriyam/predator-prey/.venv/lib/python3.10/site-packages/ray/air/_internal/util.py", line 91, in run
+    self._ret = self._target(*self._args, **self._kwargs)
+  File "/data/gpfs/projects/punim1355/dalmiapriyam/predator-prey/.venv/lib/python3.10/site-packages/ray/tune/trainable/function_trainable.py", line 115, in <lambda>
+    training_func=lambda: self._trainable_func(self.config),
+  File "/data/gpfs/projects/punim1355/dalmiapriyam/predator-prey/.venv/lib/python3.10/site-packages/ray/tune/trainable/function_trainable.py", line 332, in _trainable_func
+    output = fn()
+  File "/data/gpfs/projects/punim1355/dalmiapriyam/predator-prey/./train.py", line 201, in train_algo
+    algo = create_algo(config)
+  File "/data/gpfs/projects/punim1355/dalmiapriyam/predator-prey/./train.py", line 70, in create_algo
+    algo = algo_config.build()
+  File "/data/gpfs/projects/punim1355/dalmiapriyam/predator-prey/.venv/lib/python3.10/site-packages/ray/rllib/algorithms/algorithm_config.py", line 1100, in build
+    return algo_class(
+  File "/data/gpfs/projects/punim1355/dalmiapriyam/predator-prey/.venv/lib/python3.10/site-packages/ray/rllib/algorithms/algorithm.py", line 517, in __init__
+    super().__init__(
+  File "/data/gpfs/projects/punim1355/dalmiapriyam/predator-prey/.venv/lib/python3.10/site-packages/ray/tune/trainable/trainable.py", line 161, in __init__
+    self.setup(copy.deepcopy(self.config))
+  File "/data/gpfs/projects/punim1355/dalmiapriyam/predator-prey/.venv/lib/python3.10/site-packages/ray/rllib/algorithms/algorithm.py", line 639, in setup
+    self.workers = WorkerSet(
+  File "/data/gpfs/projects/punim1355/dalmiapriyam/predator-prey/.venv/lib/python3.10/site-packages/ray/rllib/evaluation/worker_set.py", line 157, in __init__
+    self._setup(
+  File "/data/gpfs/projects/punim1355/dalmiapriyam/predator-prey/.venv/lib/python3.10/site-packages/ray/rllib/evaluation/worker_set.py", line 247, in _setup
+    self._local_worker = self._make_worker(
+  File "/data/gpfs/projects/punim1355/dalmiapriyam/predator-prey/.venv/lib/python3.10/site-packages/ray/rllib/evaluation/worker_set.py", line 925, in _make_worker
+    worker = cls(
+  File "/data/gpfs/projects/punim1355/dalmiapriyam/predator-prey/.venv/lib/python3.10/site-packages/ray/rllib/evaluation/rollout_worker.py", line 525, in __init__
+    self._update_policy_map(policy_dict=self.policy_dict)
+  File "/data/gpfs/projects/punim1355/dalmiapriyam/predator-prey/.venv/lib/python3.10/site-packages/ray/rllib/evaluation/rollout_worker.py", line 1704, in _update_policy_map
+    updated_policy_dict = self._get_complete_policy_specs_dict(policy_dict)
+  File "/data/gpfs/projects/punim1355/dalmiapriyam/predator-prey/.venv/lib/python3.10/site-packages/ray/rllib/evaluation/rollout_worker.py", line 1782, in _get_complete_policy_specs_dict
+    preprocessor = ModelCatalog.get_preprocessor_for_space(
+  File "/data/gpfs/projects/punim1355/dalmiapriyam/predator-prey/.venv/lib/python3.10/site-packages/ray/rllib/models/catalog.py", line 774, in get_preprocessor_for_space
+    raise Exception(
+Exception: Unknown config key `last_use_prev_action`, all keys: ['_disable_preprocessor_api', '_disable_action_flattening', 'fcnet_hiddens', 'fcnet_activation', 'conv_filters', 'conv_activation', 'post_fcnet_hiddens', 'post_fcnet_activation', 'free_log_std', 'no_final_linear', 'vf_share_layers', 'use_lstm', 'max_seq_len', 'lstm_cell_size', 'lstm_use_prev_action', 'lstm_use_prev_reward', '_time_major', 'use_attention', 'attention_num_transformer_units', 'attention_dim', 'attention_num_heads', 'attention_head_dim', 'attention_memory_inference', 'attention_memory_training', 'attention_position_wise_mlp_dim', 'attention_init_gru_gate_bias', 'attention_use_n_prev_actions', 'attention_use_n_prev_rewards', 'framestack', 'dim', 'grayscale', 'zero_mean', 'custom_model', 'custom_model_config', 'custom_action_dist', 'custom_preprocessor', 'encoder_latent_dim', 'always_check_shapes', 'lstm_use_prev_action_reward', '_use_default_native_models']
+2023-12-05 19:17:32,600	ERROR tune_controller.py:1383 -- Trial task failed for trial train_algo_b8329_00004
+Traceback (most recent call last):
+  File "/data/gpfs/projects/punim1355/dalmiapriyam/predator-prey/.venv/lib/python3.10/site-packages/ray/air/execution/_internal/event_manager.py", line 110, in resolve_future
+    result = ray.get(future)
+  File "/data/gpfs/projects/punim1355/dalmiapriyam/predator-prey/.venv/lib/python3.10/site-packages/ray/_private/auto_init_hook.py", line 24, in auto_init_wrapper
+    return fn(*args, **kwargs)
+  File "/data/gpfs/projects/punim1355/dalmiapriyam/predator-prey/.venv/lib/python3.10/site-packages/ray/_private/client_mode_hook.py", line 103, in wrapper
+    return func(*args, **kwargs)
+  File "/data/gpfs/projects/punim1355/dalmiapriyam/predator-prey/.venv/lib/python3.10/site-packages/ray/_private/worker.py", line 2563, in get
+    raise value.as_instanceof_cause()
+ray.exceptions.RayTaskError: [36mray::ImplicitFunc.train()[39m (pid=20120, ip=172.26.92.208, actor_id=ae30971e12f7207d4eeef0f401000000, repr=train_algo)
+  File "/data/gpfs/projects/punim1355/dalmiapriyam/predator-prey/.venv/lib/python3.10/site-packages/ray/tune/trainable/trainable.py", line 342, in train
+    raise skipped from exception_cause(skipped)
+  File "/data/gpfs/projects/punim1355/dalmiapriyam/predator-prey/.venv/lib/python3.10/site-packages/ray/air/_internal/util.py", line 91, in run
+    self._ret = self._target(*self._args, **self._kwargs)
+  File "/data/gpfs/projects/punim1355/dalmiapriyam/predator-prey/.venv/lib/python3.10/site-packages/ray/tune/trainable/function_trainable.py", line 115, in <lambda>
+    training_func=lambda: self._trainable_func(self.config),
+  File "/data/gpfs/projects/punim1355/dalmiapriyam/predator-prey/.venv/lib/python3.10/site-packages/ray/tune/trainable/function_trainable.py", line 332, in _trainable_func
+    output = fn()
+  File "/data/gpfs/projects/punim1355/dalmiapriyam/predator-prey/./train.py", line 201, in train_algo
+    algo = create_algo(config)
+  File "/data/gpfs/projects/punim1355/dalmiapriyam/predator-prey/./train.py", line 70, in create_algo
+    algo = algo_config.build()
+  File "/data/gpfs/projects/punim1355/dalmiapriyam/predator-prey/.venv/lib/python3.10/site-packages/ray/rllib/algorithms/algorithm_config.py", line 1100, in build
+    return algo_class(
+  File "/data/gpfs/projects/punim1355/dalmiapriyam/predator-prey/.venv/lib/python3.10/site-packages/ray/rllib/algorithms/algorithm.py", line 517, in __init__
+    super().__init__(
+  File "/data/gpfs/projects/punim1355/dalmiapriyam/predator-prey/.venv/lib/python3.10/site-packages/ray/tune/trainable/trainable.py", line 161, in __init__
+    self.setup(copy.deepcopy(self.config))
+  File "/data/gpfs/projects/punim1355/dalmiapriyam/predator-prey/.venv/lib/python3.10/site-packages/ray/rllib/algorithms/algorithm.py", line 639, in setup
+    self.workers = WorkerSet(
+  File "/data/gpfs/projects/punim1355/dalmiapriyam/predator-prey/.venv/lib/python3.10/site-packages/ray/rllib/evaluation/worker_set.py", line 157, in __init__
+    self._setup(
+  File "/data/gpfs/projects/punim1355/dalmiapriyam/predator-prey/.venv/lib/python3.10/site-packages/ray/rllib/evaluation/worker_set.py", line 247, in _setup
+    self._local_worker = self._make_worker(
+  File "/data/gpfs/projects/punim1355/dalmiapriyam/predator-prey/.venv/lib/python3.10/site-packages/ray/rllib/evaluation/worker_set.py", line 925, in _make_worker
+    worker = cls(
+  File "/data/gpfs/projects/punim1355/dalmiapriyam/predator-prey/.venv/lib/python3.10/site-packages/ray/rllib/evaluation/rollout_worker.py", line 525, in __init__
+    self._update_policy_map(policy_dict=self.policy_dict)
+  File "/data/gpfs/projects/punim1355/dalmiapriyam/predator-prey/.venv/lib/python3.10/site-packages/ray/rllib/evaluation/rollout_worker.py", line 1704, in _update_policy_map
+    updated_policy_dict = self._get_complete_policy_specs_dict(policy_dict)
+  File "/data/gpfs/projects/punim1355/dalmiapriyam/predator-prey/.venv/lib/python3.10/site-packages/ray/rllib/evaluation/rollout_worker.py", line 1782, in _get_complete_policy_specs_dict
+    preprocessor = ModelCatalog.get_preprocessor_for_space(
+  File "/data/gpfs/projects/punim1355/dalmiapriyam/predator-prey/.venv/lib/python3.10/site-packages/ray/rllib/models/catalog.py", line 774, in get_preprocessor_for_space
+    raise Exception(
+Exception: Unknown config key `last_use_prev_action`, all keys: ['_disable_preprocessor_api', '_disable_action_flattening', 'fcnet_hiddens', 'fcnet_activation', 'conv_filters', 'conv_activation', 'post_fcnet_hiddens', 'post_fcnet_activation', 'free_log_std', 'no_final_linear', 'vf_share_layers', 'use_lstm', 'max_seq_len', 'lstm_cell_size', 'lstm_use_prev_action', 'lstm_use_prev_reward', '_time_major', 'use_attention', 'attention_num_transformer_units', 'attention_dim', 'attention_num_heads', 'attention_head_dim', 'attention_memory_inference', 'attention_memory_training', 'attention_position_wise_mlp_dim', 'attention_init_gru_gate_bias', 'attention_use_n_prev_actions', 'attention_use_n_prev_rewards', 'framestack', 'dim', 'grayscale', 'zero_mean', 'custom_model', 'custom_model_config', 'custom_action_dist', 'custom_preprocessor', 'encoder_latent_dim', 'always_check_shapes', 'lstm_use_prev_action_reward', '_use_default_native_models']
+2023-12-05 19:17:32,606	ERROR tune_controller.py:1383 -- Trial task failed for trial train_algo_b8329_00009
+Traceback (most recent call last):
+  File "/data/gpfs/projects/punim1355/dalmiapriyam/predator-prey/.venv/lib/python3.10/site-packages/ray/air/execution/_internal/event_manager.py", line 110, in resolve_future
+    result = ray.get(future)
+  File "/data/gpfs/projects/punim1355/dalmiapriyam/predator-prey/.venv/lib/python3.10/site-packages/ray/_private/auto_init_hook.py", line 24, in auto_init_wrapper
+    return fn(*args, **kwargs)
+  File "/data/gpfs/projects/punim1355/dalmiapriyam/predator-prey/.venv/lib/python3.10/site-packages/ray/_private/client_mode_hook.py", line 103, in wrapper
+    return func(*args, **kwargs)
+  File "/data/gpfs/projects/punim1355/dalmiapriyam/predator-prey/.venv/lib/python3.10/site-packages/ray/_private/worker.py", line 2563, in get
+    raise value.as_instanceof_cause()
+ray.exceptions.RayTaskError: [36mray::ImplicitFunc.train()[39m (pid=20128, ip=172.26.92.208, actor_id=8f77c11ddce39727e5b5044701000000, repr=train_algo)
+  File "/data/gpfs/projects/punim1355/dalmiapriyam/predator-prey/.venv/lib/python3.10/site-packages/ray/tune/trainable/trainable.py", line 342, in train
+    raise skipped from exception_cause(skipped)
+  File "/data/gpfs/projects/punim1355/dalmiapriyam/predator-prey/.venv/lib/python3.10/site-packages/ray/air/_internal/util.py", line 91, in run
+    self._ret = self._target(*self._args, **self._kwargs)
+  File "/data/gpfs/projects/punim1355/dalmiapriyam/predator-prey/.venv/lib/python3.10/site-packages/ray/tune/trainable/function_trainable.py", line 115, in <lambda>
+    training_func=lambda: self._trainable_func(self.config),
+  File "/data/gpfs/projects/punim1355/dalmiapriyam/predator-prey/.venv/lib/python3.10/site-packages/ray/tune/trainable/function_trainable.py", line 332, in _trainable_func
+    output = fn()
+  File "/data/gpfs/projects/punim1355/dalmiapriyam/predator-prey/./train.py", line 201, in train_algo
+    algo = create_algo(config)
+  File "/data/gpfs/projects/punim1355/dalmiapriyam/predator-prey/./train.py", line 70, in create_algo
+    algo = algo_config.build()
+  File "/data/gpfs/projects/punim1355/dalmiapriyam/predator-prey/.venv/lib/python3.10/site-packages/ray/rllib/algorithms/algorithm_config.py", line 1100, in build
+    return algo_class(
+  File "/data/gpfs/projects/punim1355/dalmiapriyam/predator-prey/.venv/lib/python3.10/site-packages/ray/rllib/algorithms/algorithm.py", line 517, in __init__
+    super().__init__(
+  File "/data/gpfs/projects/punim1355/dalmiapriyam/predator-prey/.venv/lib/python3.10/site-packages/ray/tune/trainable/trainable.py", line 161, in __init__
+    self.setup(copy.deepcopy(self.config))
+  File "/data/gpfs/projects/punim1355/dalmiapriyam/predator-prey/.venv/lib/python3.10/site-packages/ray/rllib/algorithms/algorithm.py", line 639, in setup
+    self.workers = WorkerSet(
+  File "/data/gpfs/projects/punim1355/dalmiapriyam/predator-prey/.venv/lib/python3.10/site-packages/ray/rllib/evaluation/worker_set.py", line 157, in __init__
+    self._setup(
+  File "/data/gpfs/projects/punim1355/dalmiapriyam/predator-prey/.venv/lib/python3.10/site-packages/ray/rllib/evaluation/worker_set.py", line 247, in _setup
+    self._local_worker = self._make_worker(
+  File "/data/gpfs/projects/punim1355/dalmiapriyam/predator-prey/.venv/lib/python3.10/site-packages/ray/rllib/evaluation/worker_set.py", line 925, in _make_worker
+    worker = cls(
+  File "/data/gpfs/projects/punim1355/dalmiapriyam/predator-prey/.venv/lib/python3.10/site-packages/ray/rllib/evaluation/rollout_worker.py", line 525, in __init__
+    self._update_policy_map(policy_dict=self.policy_dict)
+  File "/data/gpfs/projects/punim1355/dalmiapriyam/predator-prey/.venv/lib/python3.10/site-packages/ray/rllib/evaluation/rollout_worker.py", line 1704, in _update_policy_map
+    updated_policy_dict = self._get_complete_policy_specs_dict(policy_dict)
+  File "/data/gpfs/projects/punim1355/dalmiapriyam/predator-prey/.venv/lib/python3.10/site-packages/ray/rllib/evaluation/rollout_worker.py", line 1782, in _get_complete_policy_specs_dict
+    preprocessor = ModelCatalog.get_preprocessor_for_space(
+  File "/data/gpfs/projects/punim1355/dalmiapriyam/predator-prey/.venv/lib/python3.10/site-packages/ray/rllib/models/catalog.py", line 774, in get_preprocessor_for_space
+    raise Exception(
+Exception: Unknown config key `last_use_prev_action`, all keys: ['_disable_preprocessor_api', '_disable_action_flattening', 'fcnet_hiddens', 'fcnet_activation', 'conv_filters', 'conv_activation', 'post_fcnet_hiddens', 'post_fcnet_activation', 'free_log_std', 'no_final_linear', 'vf_share_layers', 'use_lstm', 'max_seq_len', 'lstm_cell_size', 'lstm_use_prev_action', 'lstm_use_prev_reward', '_time_major', 'use_attention', 'attention_num_transformer_units', 'attention_dim', 'attention_num_heads', 'attention_head_dim', 'attention_memory_inference', 'attention_memory_training', 'attention_position_wise_mlp_dim', 'attention_init_gru_gate_bias', 'attention_use_n_prev_actions', 'attention_use_n_prev_rewards', 'framestack', 'dim', 'grayscale', 'zero_mean', 'custom_model', 'custom_model_config', 'custom_action_dist', 'custom_preprocessor', 'encoder_latent_dim', 'always_check_shapes', 'lstm_use_prev_action_reward', '_use_default_native_models']
+2023-12-05 19:17:32,694	ERROR tune_controller.py:1383 -- Trial task failed for trial train_algo_b8329_00006
+Traceback (most recent call last):
+  File "/data/gpfs/projects/punim1355/dalmiapriyam/predator-prey/.venv/lib/python3.10/site-packages/ray/air/execution/_internal/event_manager.py", line 110, in resolve_future
+    result = ray.get(future)
+  File "/data/gpfs/projects/punim1355/dalmiapriyam/predator-prey/.venv/lib/python3.10/site-packages/ray/_private/auto_init_hook.py", line 24, in auto_init_wrapper
+    return fn(*args, **kwargs)
+  File "/data/gpfs/projects/punim1355/dalmiapriyam/predator-prey/.venv/lib/python3.10/site-packages/ray/_private/client_mode_hook.py", line 103, in wrapper
+    return func(*args, **kwargs)
+  File "/data/gpfs/projects/punim1355/dalmiapriyam/predator-prey/.venv/lib/python3.10/site-packages/ray/_private/worker.py", line 2563, in get
+    raise value.as_instanceof_cause()
+ray.exceptions.RayTaskError: [36mray::ImplicitFunc.train()[39m (pid=20117, ip=172.26.92.208, actor_id=1d49452bfd08ad593abbd77e01000000, repr=train_algo)
+  File "/data/gpfs/projects/punim1355/dalmiapriyam/predator-prey/.venv/lib/python3.10/site-packages/ray/tune/trainable/trainable.py", line 342, in train
+    raise skipped from exception_cause(skipped)
+  File "/data/gpfs/projects/punim1355/dalmiapriyam/predator-prey/.venv/lib/python3.10/site-packages/ray/air/_internal/util.py", line 91, in run
+    self._ret = self._target(*self._args, **self._kwargs)
+  File "/data/gpfs/projects/punim1355/dalmiapriyam/predator-prey/.venv/lib/python3.10/site-packages/ray/tune/trainable/function_trainable.py", line 115, in <lambda>
+    training_func=lambda: self._trainable_func(self.config),
+  File "/data/gpfs/projects/punim1355/dalmiapriyam/predator-prey/.venv/lib/python3.10/site-packages/ray/tune/trainable/function_trainable.py", line 332, in _trainable_func
+    output = fn()
+  File "/data/gpfs/projects/punim1355/dalmiapriyam/predator-prey/./train.py", line 201, in train_algo
+    algo = create_algo(config)
+  File "/data/gpfs/projects/punim1355/dalmiapriyam/predator-prey/./train.py", line 70, in create_algo
+    algo = algo_config.build()
+  File "/data/gpfs/projects/punim1355/dalmiapriyam/predator-prey/.venv/lib/python3.10/site-packages/ray/rllib/algorithms/algorithm_config.py", line 1100, in build
+    return algo_class(
+  File "/data/gpfs/projects/punim1355/dalmiapriyam/predator-prey/.venv/lib/python3.10/site-packages/ray/rllib/algorithms/algorithm.py", line 517, in __init__
+    super().__init__(
+  File "/data/gpfs/projects/punim1355/dalmiapriyam/predator-prey/.venv/lib/python3.10/site-packages/ray/tune/trainable/trainable.py", line 161, in __init__
+    self.setup(copy.deepcopy(self.config))
+  File "/data/gpfs/projects/punim1355/dalmiapriyam/predator-prey/.venv/lib/python3.10/site-packages/ray/rllib/algorithms/algorithm.py", line 639, in setup
+    self.workers = WorkerSet(
+  File "/data/gpfs/projects/punim1355/dalmiapriyam/predator-prey/.venv/lib/python3.10/site-packages/ray/rllib/evaluation/worker_set.py", line 157, in __init__
+    self._setup(
+  File "/data/gpfs/projects/punim1355/dalmiapriyam/predator-prey/.venv/lib/python3.10/site-packages/ray/rllib/evaluation/worker_set.py", line 247, in _setup
+    self._local_worker = self._make_worker(
+  File "/data/gpfs/projects/punim1355/dalmiapriyam/predator-prey/.venv/lib/python3.10/site-packages/ray/rllib/evaluation/worker_set.py", line 925, in _make_worker
+    worker = cls(
+  File "/data/gpfs/projects/punim1355/dalmiapriyam/predator-prey/.venv/lib/python3.10/site-packages/ray/rllib/evaluation/rollout_worker.py", line 525, in __init__
+    self._update_policy_map(policy_dict=self.policy_dict)
+  File "/data/gpfs/projects/punim1355/dalmiapriyam/predator-prey/.venv/lib/python3.10/site-packages/ray/rllib/evaluation/rollout_worker.py", line 1704, in _update_policy_map
+    updated_policy_dict = self._get_complete_policy_specs_dict(policy_dict)
+  File "/data/gpfs/projects/punim1355/dalmiapriyam/predator-prey/.venv/lib/python3.10/site-packages/ray/rllib/evaluation/rollout_worker.py", line 1782, in _get_complete_policy_specs_dict
+    preprocessor = ModelCatalog.get_preprocessor_for_space(
+  File "/data/gpfs/projects/punim1355/dalmiapriyam/predator-prey/.venv/lib/python3.10/site-packages/ray/rllib/models/catalog.py", line 774, in get_preprocessor_for_space
+    raise Exception(
+Exception: Unknown config key `last_use_prev_action`, all keys: ['_disable_preprocessor_api', '_disable_action_flattening', 'fcnet_hiddens', 'fcnet_activation', 'conv_filters', 'conv_activation', 'post_fcnet_hiddens', 'post_fcnet_activation', 'free_log_std', 'no_final_linear', 'vf_share_layers', 'use_lstm', 'max_seq_len', 'lstm_cell_size', 'lstm_use_prev_action', 'lstm_use_prev_reward', '_time_major', 'use_attention', 'attention_num_transformer_units', 'attention_dim', 'attention_num_heads', 'attention_head_dim', 'attention_memory_inference', 'attention_memory_training', 'attention_position_wise_mlp_dim', 'attention_init_gru_gate_bias', 'attention_use_n_prev_actions', 'attention_use_n_prev_rewards', 'framestack', 'dim', 'grayscale', 'zero_mean', 'custom_model', 'custom_model_config', 'custom_action_dist', 'custom_preprocessor', 'encoder_latent_dim', 'always_check_shapes', 'lstm_use_prev_action_reward', '_use_default_native_models']
+2023-12-05 19:17:33,752	ERROR tune_controller.py:1383 -- Trial task failed for trial train_algo_b8329_00003
+Traceback (most recent call last):
+  File "/data/gpfs/projects/punim1355/dalmiapriyam/predator-prey/.venv/lib/python3.10/site-packages/ray/air/execution/_internal/event_manager.py", line 110, in resolve_future
+    result = ray.get(future)
+  File "/data/gpfs/projects/punim1355/dalmiapriyam/predator-prey/.venv/lib/python3.10/site-packages/ray/_private/auto_init_hook.py", line 24, in auto_init_wrapper
+    return fn(*args, **kwargs)
+  File "/data/gpfs/projects/punim1355/dalmiapriyam/predator-prey/.venv/lib/python3.10/site-packages/ray/_private/client_mode_hook.py", line 103, in wrapper
+    return func(*args, **kwargs)
+  File "/data/gpfs/projects/punim1355/dalmiapriyam/predator-prey/.venv/lib/python3.10/site-packages/ray/_private/worker.py", line 2563, in get
+    raise value.as_instanceof_cause()
+ray.exceptions.RayTaskError: [36mray::ImplicitFunc.train()[39m (pid=20115, ip=172.26.92.208, actor_id=34cc1861d5932880ac3494a201000000, repr=train_algo)
+  File "/data/gpfs/projects/punim1355/dalmiapriyam/predator-prey/.venv/lib/python3.10/site-packages/ray/tune/trainable/trainable.py", line 342, in train
+    raise skipped from exception_cause(skipped)
+  File "/data/gpfs/projects/punim1355/dalmiapriyam/predator-prey/.venv/lib/python3.10/site-packages/ray/air/_internal/util.py", line 91, in run
+    self._ret = self._target(*self._args, **self._kwargs)
+  File "/data/gpfs/projects/punim1355/dalmiapriyam/predator-prey/.venv/lib/python3.10/site-packages/ray/tune/trainable/function_trainable.py", line 115, in <lambda>
+    training_func=lambda: self._trainable_func(self.config),
+  File "/data/gpfs/projects/punim1355/dalmiapriyam/predator-prey/.venv/lib/python3.10/site-packages/ray/tune/trainable/function_trainable.py", line 332, in _trainable_func
+    output = fn()
+  File "/data/gpfs/projects/punim1355/dalmiapriyam/predator-prey/./train.py", line 201, in train_algo
+    algo = create_algo(config)
+  File "/data/gpfs/projects/punim1355/dalmiapriyam/predator-prey/./train.py", line 70, in create_algo
+    algo = algo_config.build()
+  File "/data/gpfs/projects/punim1355/dalmiapriyam/predator-prey/.venv/lib/python3.10/site-packages/ray/rllib/algorithms/algorithm_config.py", line 1100, in build
+    return algo_class(
+  File "/data/gpfs/projects/punim1355/dalmiapriyam/predator-prey/.venv/lib/python3.10/site-packages/ray/rllib/algorithms/algorithm.py", line 517, in __init__
+    super().__init__(
+  File "/data/gpfs/projects/punim1355/dalmiapriyam/predator-prey/.venv/lib/python3.10/site-packages/ray/tune/trainable/trainable.py", line 161, in __init__
+    self.setup(copy.deepcopy(self.config))
+  File "/data/gpfs/projects/punim1355/dalmiapriyam/predator-prey/.venv/lib/python3.10/site-packages/ray/rllib/algorithms/algorithm.py", line 639, in setup
+    self.workers = WorkerSet(
+  File "/data/gpfs/projects/punim1355/dalmiapriyam/predator-prey/.venv/lib/python3.10/site-packages/ray/rllib/evaluation/worker_set.py", line 157, in __init__
+    self._setup(
+  File "/data/gpfs/projects/punim1355/dalmiapriyam/predator-prey/.venv/lib/python3.10/site-packages/ray/rllib/evaluation/worker_set.py", line 247, in _setup
+    self._local_worker = self._make_worker(
+  File "/data/gpfs/projects/punim1355/dalmiapriyam/predator-prey/.venv/lib/python3.10/site-packages/ray/rllib/evaluation/worker_set.py", line 925, in _make_worker
+    worker = cls(
+  File "/data/gpfs/projects/punim1355/dalmiapriyam/predator-prey/.venv/lib/python3.10/site-packages/ray/rllib/evaluation/rollout_worker.py", line 525, in __init__
+    self._update_policy_map(policy_dict=self.policy_dict)
+  File "/data/gpfs/projects/punim1355/dalmiapriyam/predator-prey/.venv/lib/python3.10/site-packages/ray/rllib/evaluation/rollout_worker.py", line 1704, in _update_policy_map
+    updated_policy_dict = self._get_complete_policy_specs_dict(policy_dict)
+  File "/data/gpfs/projects/punim1355/dalmiapriyam/predator-prey/.venv/lib/python3.10/site-packages/ray/rllib/evaluation/rollout_worker.py", line 1782, in _get_complete_policy_specs_dict
+    preprocessor = ModelCatalog.get_preprocessor_for_space(
+  File "/data/gpfs/projects/punim1355/dalmiapriyam/predator-prey/.venv/lib/python3.10/site-packages/ray/rllib/models/catalog.py", line 774, in get_preprocessor_for_space
+    raise Exception(
+Exception: Unknown config key `last_use_prev_action`, all keys: ['_disable_preprocessor_api', '_disable_action_flattening', 'fcnet_hiddens', 'fcnet_activation', 'conv_filters', 'conv_activation', 'post_fcnet_hiddens', 'post_fcnet_activation', 'free_log_std', 'no_final_linear', 'vf_share_layers', 'use_lstm', 'max_seq_len', 'lstm_cell_size', 'lstm_use_prev_action', 'lstm_use_prev_reward', '_time_major', 'use_attention', 'attention_num_transformer_units', 'attention_dim', 'attention_num_heads', 'attention_head_dim', 'attention_memory_inference', 'attention_memory_training', 'attention_position_wise_mlp_dim', 'attention_init_gru_gate_bias', 'attention_use_n_prev_actions', 'attention_use_n_prev_rewards', 'framestack', 'dim', 'grayscale', 'zero_mean', 'custom_model', 'custom_model_config', 'custom_action_dist', 'custom_preprocessor', 'encoder_latent_dim', 'always_check_shapes', 'lstm_use_prev_action_reward', '_use_default_native_models']
+2023-12-05 19:17:33,871	ERROR tune_controller.py:1383 -- Trial task failed for trial train_algo_b8329_00002
+Traceback (most recent call last):
+  File "/data/gpfs/projects/punim1355/dalmiapriyam/predator-prey/.venv/lib/python3.10/site-packages/ray/air/execution/_internal/event_manager.py", line 110, in resolve_future
+    result = ray.get(future)
+  File "/data/gpfs/projects/punim1355/dalmiapriyam/predator-prey/.venv/lib/python3.10/site-packages/ray/_private/auto_init_hook.py", line 24, in auto_init_wrapper
+    return fn(*args, **kwargs)
+  File "/data/gpfs/projects/punim1355/dalmiapriyam/predator-prey/.venv/lib/python3.10/site-packages/ray/_private/client_mode_hook.py", line 103, in wrapper
+    return func(*args, **kwargs)
+  File "/data/gpfs/projects/punim1355/dalmiapriyam/predator-prey/.venv/lib/python3.10/site-packages/ray/_private/worker.py", line 2563, in get
+    raise value.as_instanceof_cause()
+ray.exceptions.RayTaskError: [36mray::ImplicitFunc.train()[39m (pid=20114, ip=172.26.92.208, actor_id=60bc26575f9faa84eae9e94a01000000, repr=train_algo)
+  File "/data/gpfs/projects/punim1355/dalmiapriyam/predator-prey/.venv/lib/python3.10/site-packages/ray/tune/trainable/trainable.py", line 342, in train
+    raise skipped from exception_cause(skipped)
+  File "/data/gpfs/projects/punim1355/dalmiapriyam/predator-prey/.venv/lib/python3.10/site-packages/ray/air/_internal/util.py", line 91, in run
+    self._ret = self._target(*self._args, **self._kwargs)
+  File "/data/gpfs/projects/punim1355/dalmiapriyam/predator-prey/.venv/lib/python3.10/site-packages/ray/tune/trainable/function_trainable.py", line 115, in <lambda>
+    training_func=lambda: self._trainable_func(self.config),
+  File "/data/gpfs/projects/punim1355/dalmiapriyam/predator-prey/.venv/lib/python3.10/site-packages/ray/tune/trainable/function_trainable.py", line 332, in _trainable_func
+    output = fn()
+  File "/data/gpfs/projects/punim1355/dalmiapriyam/predator-prey/./train.py", line 201, in train_algo
+    algo = create_algo(config)
+  File "/data/gpfs/projects/punim1355/dalmiapriyam/predator-prey/./train.py", line 70, in create_algo
+    algo = algo_config.build()
+  File "/data/gpfs/projects/punim1355/dalmiapriyam/predator-prey/.venv/lib/python3.10/site-packages/ray/rllib/algorithms/algorithm_config.py", line 1100, in build
+    return algo_class(
+  File "/data/gpfs/projects/punim1355/dalmiapriyam/predator-prey/.venv/lib/python3.10/site-packages/ray/rllib/algorithms/algorithm.py", line 517, in __init__
+    super().__init__(
+  File "/data/gpfs/projects/punim1355/dalmiapriyam/predator-prey/.venv/lib/python3.10/site-packages/ray/tune/trainable/trainable.py", line 161, in __init__
+    self.setup(copy.deepcopy(self.config))
+  File "/data/gpfs/projects/punim1355/dalmiapriyam/predator-prey/.venv/lib/python3.10/site-packages/ray/rllib/algorithms/algorithm.py", line 639, in setup
+    self.workers = WorkerSet(
+  File "/data/gpfs/projects/punim1355/dalmiapriyam/predator-prey/.venv/lib/python3.10/site-packages/ray/rllib/evaluation/worker_set.py", line 157, in __init__
+    self._setup(
+  File "/data/gpfs/projects/punim1355/dalmiapriyam/predator-prey/.venv/lib/python3.10/site-packages/ray/rllib/evaluation/worker_set.py", line 247, in _setup
+    self._local_worker = self._make_worker(
+  File "/data/gpfs/projects/punim1355/dalmiapriyam/predator-prey/.venv/lib/python3.10/site-packages/ray/rllib/evaluation/worker_set.py", line 925, in _make_worker
+    worker = cls(
+  File "/data/gpfs/projects/punim1355/dalmiapriyam/predator-prey/.venv/lib/python3.10/site-packages/ray/rllib/evaluation/rollout_worker.py", line 525, in __init__
+    self._update_policy_map(policy_dict=self.policy_dict)
+  File "/data/gpfs/projects/punim1355/dalmiapriyam/predator-prey/.venv/lib/python3.10/site-packages/ray/rllib/evaluation/rollout_worker.py", line 1704, in _update_policy_map
+    updated_policy_dict = self._get_complete_policy_specs_dict(policy_dict)
+  File "/data/gpfs/projects/punim1355/dalmiapriyam/predator-prey/.venv/lib/python3.10/site-packages/ray/rllib/evaluation/rollout_worker.py", line 1782, in _get_complete_policy_specs_dict
+    preprocessor = ModelCatalog.get_preprocessor_for_space(
+  File "/data/gpfs/projects/punim1355/dalmiapriyam/predator-prey/.venv/lib/python3.10/site-packages/ray/rllib/models/catalog.py", line 774, in get_preprocessor_for_space
+    raise Exception(
+Exception: Unknown config key `last_use_prev_action`, all keys: ['_disable_preprocessor_api', '_disable_action_flattening', 'fcnet_hiddens', 'fcnet_activation', 'conv_filters', 'conv_activation', 'post_fcnet_hiddens', 'post_fcnet_activation', 'free_log_std', 'no_final_linear', 'vf_share_layers', 'use_lstm', 'max_seq_len', 'lstm_cell_size', 'lstm_use_prev_action', 'lstm_use_prev_reward', '_time_major', 'use_attention', 'attention_num_transformer_units', 'attention_dim', 'attention_num_heads', 'attention_head_dim', 'attention_memory_inference', 'attention_memory_training', 'attention_position_wise_mlp_dim', 'attention_init_gru_gate_bias', 'attention_use_n_prev_actions', 'attention_use_n_prev_rewards', 'framestack', 'dim', 'grayscale', 'zero_mean', 'custom_model', 'custom_model_config', 'custom_action_dist', 'custom_preprocessor', 'encoder_latent_dim', 'always_check_shapes', 'lstm_use_prev_action_reward', '_use_default_native_models']
+2023-12-05 19:17:34,056	WARNING experiment_state.py:327 -- Experiment checkpoint syncing has been triggered multiple times in the last 30.0 seconds. A sync will be triggered whenever a trial has checkpointed more than `num_to_keep` times since last sync or if 300 seconds have passed since last sync. If you have set `num_to_keep` in your `CheckpointConfig`, consider increasing the checkpoint frequency or keeping more checkpoints. You can supress this warning by changing the `TUNE_WARN_EXCESSIVE_EXPERIMENT_CHECKPOINT_SYNC_THRESHOLD_S` environment variable.
+2023-12-05 19:17:34,060	ERROR tune.py:1043 -- Trials did not complete: [train_algo_b8329_00000, train_algo_b8329_00001, train_algo_b8329_00002, train_algo_b8329_00003, train_algo_b8329_00004, train_algo_b8329_00005, train_algo_b8329_00006, train_algo_b8329_00007, train_algo_b8329_00008, train_algo_b8329_00009]
+╭───────────────────────────────────────────────────────────────────╮
+│ Configuration for experiment     train_algo_2023-12-05_19-17-20   │
+├───────────────────────────────────────────────────────────────────┤
+│ Search algorithm                 BasicVariantGenerator            │
+│ Scheduler                        FIFOScheduler                    │
+│ Number of trials                 10                               │
+╰───────────────────────────────────────────────────────────────────╯
+
+View detailed results here: /data/gpfs/projects/punim1355/dalmiapriyam/predator-prey/experiments/train_algo_2023-12-05_19-17-20
+To visualize your results with TensorBoard, run: `tensorboard --logdir /home/dalmiapriyam/ray_results/train_algo_2023-12-05_19-17-20`
+
+Trial status: 10 PENDING
+Current time: 2023-12-05 19:17:24. Total running time: 0s
+Logical resource usage: 0/28 CPUs, 0/1 GPUs (0.0/1.0 accelerator_type:V100)
+╭────────────────────────────────────────────────────────────╮
+│ Trial name               status     ...ng/model/use_lstm   │
+├────────────────────────────────────────────────────────────┤
+│ train_algo_b8329_00000   PENDING    True                   │
+│ train_algo_b8329_00001   PENDING    False                  │
+│ train_algo_b8329_00002   PENDING    True                   │
+│ train_algo_b8329_00003   PENDING    False                  │
+│ train_algo_b8329_00004   PENDING    True                   │
+│ train_algo_b8329_00005   PENDING    False                  │
+│ train_algo_b8329_00006   PENDING    True                   │
+│ train_algo_b8329_00007   PENDING    False                  │
+│ train_algo_b8329_00008   PENDING    True                   │
+│ train_algo_b8329_00009   PENDING    False                  │
+╰────────────────────────────────────────────────────────────╯
+
+Trial train_algo_b8329_00007 started with configuration:
+╭──────────────────────────────────────────────────────────────╮
+│ Trial train_algo_b8329_00007 config                          │
+├──────────────────────────────────────────────────────────────┤
+│ algorithm_class                                          ppo │
+│ algorithm_type                                   independent │
+│ analysis/pref_ccm_analysis                              True │
+│ analysis/pref_granger_analysis                         False │
+│ analysis/pref_graph_analysis                           False │
+│ analysis/pref_spatial_ccm_analysis                     False │
+│ env_config/map_size                                       15 │
+│ env_config/max_cycles                                    100 │
+│ env_config/npred                                           2 │
+│ env_config/nprey                                           6 │
+│ env_config/pred_vision                                     2 │
+│ env_config/prey_type                                  static │
+│ env_config/reward_type                                type_1 │
+│ env_name                                      discrete_pp_v1 │
+│ evaluate/eval_episodes                                   500 │
+│ framework                                              torch │
+│ ray/init_dashboard                                     False │
+│ rollouts/batch_mode                        complete_episodes │
+│ rollouts/num_rollout_workers                               0 │
+│ stop_fn                                 ...t 0x14e6f417caf0> │
+│ training/lr                                           0.0001 │
+│ training/model/fcnet_activation                         relu │
+│ training/model/fcnet_hiddens                      [256, 256] │
+│ training/model/last_use_prev_action                     True │
+│ training/model/lstm_use_prev_reward                     True │
+│ training/model/use_lstm                                False │
+│ training/num_sgd_iter                                     10 │
+│ training/sgd_minibatch_size                              128 │
+│ training/train_batch_size                                500 │
+│ training/use_critic                                     True │
+│ training/use_kl_loss                                    True │
+│ tune/max_concurrent_trials                                12 │
+│ tune/max_episodes                                      25000 │
+│ tune/num_samples                                           5 │
+│ tune/tune                                               True │
+│ wandb/wandb_dir_path                    ...edator-prey/wandb │
+│ wandb/wandb_entity                                       tpn │
+│ wandb/wandb_init                                        True │
+│ wandb/wandb_log_freq                                      50 │
+│ wandb/wandb_notes                              testing setup │
+│ wandb/wandb_project                                   rllib4 │
+╰──────────────────────────────────────────────────────────────╯
+
+Trial train_algo_b8329_00000 started with configuration:
+╭──────────────────────────────────────────────────────────────╮
+│ Trial train_algo_b8329_00000 config                          │
+├──────────────────────────────────────────────────────────────┤
+│ algorithm_class                                          ppo │
+│ algorithm_type                                   independent │
+│ analysis/pref_ccm_analysis                              True │
+│ analysis/pref_granger_analysis                         False │
+│ analysis/pref_graph_analysis                           False │
+│ analysis/pref_spatial_ccm_analysis                     False │
+│ env_config/map_size                                       15 │
+│ env_config/max_cycles                                    100 │
+│ env_config/npred                                           2 │
+│ env_config/nprey                                           6 │
+│ env_config/pred_vision                                     2 │
+│ env_config/prey_type                                  static │
+│ env_config/reward_type                                type_1 │
+│ env_name                                      discrete_pp_v1 │
+│ evaluate/eval_episodes                                   500 │
+│ framework                                              torch │
+│ ray/init_dashboard                                     False │
+│ rollouts/batch_mode                        complete_episodes │
+│ rollouts/num_rollout_workers                               0 │
+│ stop_fn                                 ...t 0x14e6f417caf0> │
+│ training/lr                                           0.0001 │
+│ training/model/fcnet_activation                         relu │
+│ training/model/fcnet_hiddens                      [256, 256] │
+│ training/model/last_use_prev_action                     True │
+│ training/model/lstm_use_prev_reward                     True │
+│ training/model/use_lstm                                 True │
+│ training/num_sgd_iter                                     10 │
+│ training/sgd_minibatch_size                              128 │
+│ training/train_batch_size                                500 │
+│ training/use_critic                                     True │
+│ training/use_kl_loss                                    True │
+│ tune/max_concurrent_trials                                12 │
+│ tune/max_episodes                                      25000 │
+│ tune/num_samples                                           5 │
+│ tune/tune                                               True │
+│ wandb/wandb_dir_path                    ...edator-prey/wandb │
+│ wandb/wandb_entity                                       tpn │
+│ wandb/wandb_init                                        True │
+│ wandb/wandb_log_freq                                      50 │
+│ wandb/wandb_notes                              testing setup │
+│ wandb/wandb_project                                   rllib4 │
+╰──────────────────────────────────────────────────────────────╯
+
+Trial train_algo_b8329_00001 started with configuration:
+╭──────────────────────────────────────────────────────────────╮
+│ Trial train_algo_b8329_00001 config                          │
+├──────────────────────────────────────────────────────────────┤
+│ algorithm_class                                          ppo │
+│ algorithm_type                                   independent │
+│ analysis/pref_ccm_analysis                              True │
+│ analysis/pref_granger_analysis                         False │
+│ analysis/pref_graph_analysis                           False │
+│ analysis/pref_spatial_ccm_analysis                     False │
+│ env_config/map_size                                       15 │
+│ env_config/max_cycles                                    100 │
+│ env_config/npred                                           2 │
+│ env_config/nprey                                           6 │
+│ env_config/pred_vision                                     2 │
+│ env_config/prey_type                                  static │
+│ env_config/reward_type                                type_1 │
+│ env_name                                      discrete_pp_v1 │
+│ evaluate/eval_episodes                                   500 │
+│ framework                                              torch │
+│ ray/init_dashboard                                     False │
+│ rollouts/batch_mode                        complete_episodes │
+│ rollouts/num_rollout_workers                               0 │
+│ stop_fn                                 ...t 0x14e6f417caf0> │
+│ training/lr                                           0.0001 │
+│ training/model/fcnet_activation                         relu │
+│ training/model/fcnet_hiddens                      [256, 256] │
+│ training/model/last_use_prev_action                     True │
+│ training/model/lstm_use_prev_reward                     True │
+│ training/model/use_lstm                                False │
+│ training/num_sgd_iter                                     10 │
+│ training/sgd_minibatch_size                              128 │
+│ training/train_batch_size                                500 │
+│ training/use_critic                                     True │
+│ training/use_kl_loss                                    True │
+│ tune/max_concurrent_trials                                12 │
+│ tune/max_episodes                                      25000 │
+│ tune/num_samples                                           5 │
+│ tune/tune                                               True │
+│ wandb/wandb_dir_path                    ...edator-prey/wandb │
+│ wandb/wandb_entity                                       tpn │
+│ wandb/wandb_init                                        True │
+│ wandb/wandb_log_freq                                      50 │
+│ wandb/wandb_notes                              testing setup │
+│ wandb/wandb_project                                   rllib4 │
+╰──────────────────────────────────────────────────────────────╯
+
+Trial train_algo_b8329_00008 started with configuration:
+╭──────────────────────────────────────────────────────────────╮
+│ Trial train_algo_b8329_00008 config                          │
+├──────────────────────────────────────────────────────────────┤
+│ algorithm_class                                          ppo │
+│ algorithm_type                                   independent │
+│ analysis/pref_ccm_analysis                              True │
+│ analysis/pref_granger_analysis                         False │
+│ analysis/pref_graph_analysis                           False │
+│ analysis/pref_spatial_ccm_analysis                     False │
+│ env_config/map_size                                       15 │
+│ env_config/max_cycles                                    100 │
+│ env_config/npred                                           2 │
+│ env_config/nprey                                           6 │
+│ env_config/pred_vision                                     2 │
+│ env_config/prey_type                                  static │
+│ env_config/reward_type                                type_1 │
+│ env_name                                      discrete_pp_v1 │
+│ evaluate/eval_episodes                                   500 │
+│ framework                                              torch │
+│ ray/init_dashboard                                     False │
+│ rollouts/batch_mode                        complete_episodes │
+│ rollouts/num_rollout_workers                               0 │
+│ stop_fn                                 ...t 0x14e6f417caf0> │
+│ training/lr                                           0.0001 │
+│ training/model/fcnet_activation                         relu │
+│ training/model/fcnet_hiddens                      [256, 256] │
+│ training/model/last_use_prev_action                     True │
+│ training/model/lstm_use_prev_reward                     True │
+│ training/model/use_lstm                                 True │
+│ training/num_sgd_iter                                     10 │
+│ training/sgd_minibatch_size                              128 │
+│ training/train_batch_size                                500 │
+│ training/use_critic                                     True │
+│ training/use_kl_loss                                    True │
+│ tune/max_concurrent_trials                                12 │
+│ tune/max_episodes                                      25000 │
+│ tune/num_samples                                           5 │
+│ tune/tune                                               True │
+│ wandb/wandb_dir_path                    ...edator-prey/wandb │
+│ wandb/wandb_entity                                       tpn │
+│ wandb/wandb_init                                        True │
+│ wandb/wandb_log_freq                                      50 │
+│ wandb/wandb_notes                              testing setup │
+│ wandb/wandb_project                                   rllib4 │
+╰──────────────────────────────────────────────────────────────╯
+
+Trial train_algo_b8329_00005 started with configuration:
+╭──────────────────────────────────────────────────────────────╮
+│ Trial train_algo_b8329_00005 config                          │
+├──────────────────────────────────────────────────────────────┤
+│ algorithm_class                                          ppo │
+│ algorithm_type                                   independent │
+│ analysis/pref_ccm_analysis                              True │
+│ analysis/pref_granger_analysis                         False │
+│ analysis/pref_graph_analysis                           False │
+│ analysis/pref_spatial_ccm_analysis                     False │
+│ env_config/map_size                                       15 │
+│ env_config/max_cycles                                    100 │
+│ env_config/npred                                           2 │
+│ env_config/nprey                                           6 │
+│ env_config/pred_vision                                     2 │
+│ env_config/prey_type                                  static │
+│ env_config/reward_type                                type_1 │
+│ env_name                                      discrete_pp_v1 │
+│ evaluate/eval_episodes                                   500 │
+│ framework                                              torch │
+│ ray/init_dashboard                                     False │
+│ rollouts/batch_mode                        complete_episodes │
+│ rollouts/num_rollout_workers                               0 │
+│ stop_fn                                 ...t 0x14e6f417caf0> │
+│ training/lr                                           0.0001 │
+│ training/model/fcnet_activation                         relu │
+│ training/model/fcnet_hiddens                      [256, 256] │
+│ training/model/last_use_prev_action                     True │
+│ training/model/lstm_use_prev_reward                     True │
+│ training/model/use_lstm                                False │
+│ training/num_sgd_iter                                     10 │
+│ training/sgd_minibatch_size                              128 │
+│ training/train_batch_size                                500 │
+│ training/use_critic                                     True │
+│ training/use_kl_loss                                    True │
+│ tune/max_concurrent_trials                                12 │
+│ tune/max_episodes                                      25000 │
+│ tune/num_samples                                           5 │
+│ tune/tune                                               True │
+│ wandb/wandb_dir_path                    ...edator-prey/wandb │
+│ wandb/wandb_entity                                       tpn │
+│ wandb/wandb_init                                        True │
+│ wandb/wandb_log_freq                                      50 │
+│ wandb/wandb_notes                              testing setup │
+│ wandb/wandb_project                                   rllib4 │
+╰──────────────────────────────────────────────────────────────╯
+
+Trial train_algo_b8329_00004 started with configuration:
+╭──────────────────────────────────────────────────────────────╮
+│ Trial train_algo_b8329_00004 config                          │
+├──────────────────────────────────────────────────────────────┤
+│ algorithm_class                                          ppo │
+│ algorithm_type                                   independent │
+│ analysis/pref_ccm_analysis                              True │
+│ analysis/pref_granger_analysis                         False │
+│ analysis/pref_graph_analysis                           False │
+│ analysis/pref_spatial_ccm_analysis                     False │
+│ env_config/map_size                                       15 │
+│ env_config/max_cycles                                    100 │
+│ env_config/npred                                           2 │
+│ env_config/nprey                                           6 │
+│ env_config/pred_vision                                     2 │
+│ env_config/prey_type                                  static │
+│ env_config/reward_type                                type_1 │
+│ env_name                                      discrete_pp_v1 │
+│ evaluate/eval_episodes                                   500 │
+│ framework                                              torch │
+│ ray/init_dashboard                                     False │
+│ rollouts/batch_mode                        complete_episodes │
+│ rollouts/num_rollout_workers                               0 │
+│ stop_fn                                 ...t 0x14e6f417caf0> │
+│ training/lr                                           0.0001 │
+│ training/model/fcnet_activation                         relu │
+│ training/model/fcnet_hiddens                      [256, 256] │
+│ training/model/last_use_prev_action                     True │
+│ training/model/lstm_use_prev_reward                     True │
+│ training/model/use_lstm                                 True │
+│ training/num_sgd_iter                                     10 │
+│ training/sgd_minibatch_size                              128 │
+│ training/train_batch_size                                500 │
+│ training/use_critic                                     True │
+│ training/use_kl_loss                                    True │
+│ tune/max_concurrent_trials                                12 │
+│ tune/max_episodes                                      25000 │
+│ tune/num_samples                                           5 │
+│ tune/tune                                               True │
+│ wandb/wandb_dir_path                    ...edator-prey/wandb │
+│ wandb/wandb_entity                                       tpn │
+│ wandb/wandb_init                                        True │
+│ wandb/wandb_log_freq                                      50 │
+│ wandb/wandb_notes                              testing setup │
+│ wandb/wandb_project                                   rllib4 │
+╰──────────────────────────────────────────────────────────────╯
+
+Trial train_algo_b8329_00009 started with configuration:
+╭──────────────────────────────────────────────────────────────╮
+│ Trial train_algo_b8329_00009 config                          │
+├──────────────────────────────────────────────────────────────┤
+│ algorithm_class                                          ppo │
+│ algorithm_type                                   independent │
+│ analysis/pref_ccm_analysis                              True │
+│ analysis/pref_granger_analysis                         False │
+│ analysis/pref_graph_analysis                           False │
+│ analysis/pref_spatial_ccm_analysis                     False │
+│ env_config/map_size                                       15 │
+│ env_config/max_cycles                                    100 │
+│ env_config/npred                                           2 │
+│ env_config/nprey                                           6 │
+│ env_config/pred_vision                                     2 │
+│ env_config/prey_type                                  static │
+│ env_config/reward_type                                type_1 │
+│ env_name                                      discrete_pp_v1 │
+│ evaluate/eval_episodes                                   500 │
+│ framework                                              torch │
+│ ray/init_dashboard                                     False │
+│ rollouts/batch_mode                        complete_episodes │
+│ rollouts/num_rollout_workers                               0 │
+│ stop_fn                                 ...t 0x14e6f417caf0> │
+│ training/lr                                           0.0001 │
+│ training/model/fcnet_activation                         relu │
+│ training/model/fcnet_hiddens                      [256, 256] │
+│ training/model/last_use_prev_action                     True │
+│ training/model/lstm_use_prev_reward                     True │
+│ training/model/use_lstm                                False │
+│ training/num_sgd_iter                                     10 │
+│ training/sgd_minibatch_size                              128 │
+│ training/train_batch_size                                500 │
+│ training/use_critic                                     True │
+│ training/use_kl_loss                                    True │
+│ tune/max_concurrent_trials                                12 │
+│ tune/max_episodes                                      25000 │
+│ tune/num_samples                                           5 │
+│ tune/tune                                               True │
+│ wandb/wandb_dir_path                    ...edator-prey/wandb │
+│ wandb/wandb_entity                                       tpn │
+│ wandb/wandb_init                                        True │
+│ wandb/wandb_log_freq                                      50 │
+│ wandb/wandb_notes                              testing setup │
+│ wandb/wandb_project                                   rllib4 │
+╰──────────────────────────────────────────────────────────────╯
+
+Trial train_algo_b8329_00006 started with configuration:
+╭──────────────────────────────────────────────────────────────╮
+│ Trial train_algo_b8329_00006 config                          │
+├──────────────────────────────────────────────────────────────┤
+│ algorithm_class                                          ppo │
+│ algorithm_type                                   independent │
+│ analysis/pref_ccm_analysis                              True │
+│ analysis/pref_granger_analysis                         False │
+│ analysis/pref_graph_analysis                           False │
+│ analysis/pref_spatial_ccm_analysis                     False │
+│ env_config/map_size                                       15 │
+│ env_config/max_cycles                                    100 │
+│ env_config/npred                                           2 │
+│ env_config/nprey                                           6 │
+│ env_config/pred_vision                                     2 │
+│ env_config/prey_type                                  static │
+│ env_config/reward_type                                type_1 │
+│ env_name                                      discrete_pp_v1 │
+│ evaluate/eval_episodes                                   500 │
+│ framework                                              torch │
+│ ray/init_dashboard                                     False │
+│ rollouts/batch_mode                        complete_episodes │
+│ rollouts/num_rollout_workers                               0 │
+│ stop_fn                                 ...t 0x14e6f417caf0> │
+│ training/lr                                           0.0001 │
+│ training/model/fcnet_activation                         relu │
+│ training/model/fcnet_hiddens                      [256, 256] │
+│ training/model/last_use_prev_action                     True │
+│ training/model/lstm_use_prev_reward                     True │
+│ training/model/use_lstm                                 True │
+│ training/num_sgd_iter                                     10 │
+│ training/sgd_minibatch_size                              128 │
+│ training/train_batch_size                                500 │
+│ training/use_critic                                     True │
+│ training/use_kl_loss                                    True │
+│ tune/max_concurrent_trials                                12 │
+│ tune/max_episodes                                      25000 │
+│ tune/num_samples                                           5 │
+│ tune/tune                                               True │
+│ wandb/wandb_dir_path                    ...edator-prey/wandb │
+│ wandb/wandb_entity                                       tpn │
+│ wandb/wandb_init                                        True │
+│ wandb/wandb_log_freq                                      50 │
+│ wandb/wandb_notes                              testing setup │
+│ wandb/wandb_project                                   rllib4 │
+╰──────────────────────────────────────────────────────────────╯
+
+Trial train_algo_b8329_00000 errored after 0 iterations at 2023-12-05 19:17:32. Total running time: 8s
+Error file: /home/dalmiapriyam/ray_results/train_algo_2023-12-05_19-17-20/train_algo_b8329_00000_0_use_lstm=True_2023-12-05_19-17-24/error.txt
+
+Trial train_algo_b8329_00001 errored after 0 iterations at 2023-12-05 19:17:32. Total running time: 8s
+Error file: /home/dalmiapriyam/ray_results/train_algo_2023-12-05_19-17-20/train_algo_b8329_00001_1_use_lstm=False_2023-12-05_19-17-24/error.txt
+
+Trial train_algo_b8329_00007 errored after 0 iterations at 2023-12-05 19:17:32. Total running time: 8s
+Error file: /home/dalmiapriyam/ray_results/train_algo_2023-12-05_19-17-20/train_algo_b8329_00007_7_use_lstm=False_2023-12-05_19-17-24/error.txt
+
+Trial train_algo_b8329_00005 errored after 0 iterations at 2023-12-05 19:17:32. Total running time: 8s
+Error file: /home/dalmiapriyam/ray_results/train_algo_2023-12-05_19-17-20/train_algo_b8329_00005_5_use_lstm=False_2023-12-05_19-17-24/error.txt
+
+Trial train_algo_b8329_00008 errored after 0 iterations at 2023-12-05 19:17:32. Total running time: 8s
+Error file: /home/dalmiapriyam/ray_results/train_algo_2023-12-05_19-17-20/train_algo_b8329_00008_8_use_lstm=True_2023-12-05_19-17-24/error.txt
+
+Trial train_algo_b8329_00004 errored after 0 iterations at 2023-12-05 19:17:32. Total running time: 8s
+Error file: /home/dalmiapriyam/ray_results/train_algo_2023-12-05_19-17-20/train_algo_b8329_00004_4_use_lstm=True_2023-12-05_19-17-24/error.txt
+
+Trial train_algo_b8329_00009 errored after 0 iterations at 2023-12-05 19:17:32. Total running time: 8s
+Error file: /home/dalmiapriyam/ray_results/train_algo_2023-12-05_19-17-20/train_algo_b8329_00009_9_use_lstm=False_2023-12-05_19-17-24/error.txt
+
+Trial train_algo_b8329_00006 errored after 0 iterations at 2023-12-05 19:17:32. Total running time: 8s
+Error file: /home/dalmiapriyam/ray_results/train_algo_2023-12-05_19-17-20/train_algo_b8329_00006_6_use_lstm=True_2023-12-05_19-17-24/error.txt
+
+Trial train_algo_b8329_00003 started with configuration:
+╭──────────────────────────────────────────────────────────────╮
+│ Trial train_algo_b8329_00003 config                          │
+├──────────────────────────────────────────────────────────────┤
+│ algorithm_class                                          ppo │
+│ algorithm_type                                   independent │
+│ analysis/pref_ccm_analysis                              True │
+│ analysis/pref_granger_analysis                         False │
+│ analysis/pref_graph_analysis                           False │
+│ analysis/pref_spatial_ccm_analysis                     False │
+│ env_config/map_size                                       15 │
+│ env_config/max_cycles                                    100 │
+│ env_config/npred                                           2 │
+│ env_config/nprey                                           6 │
+│ env_config/pred_vision                                     2 │
+│ env_config/prey_type                                  static │
+│ env_config/reward_type                                type_1 │
+│ env_name                                      discrete_pp_v1 │
+│ evaluate/eval_episodes                                   500 │
+│ framework                                              torch │
+│ ray/init_dashboard                                     False │
+│ rollouts/batch_mode                        complete_episodes │
+│ rollouts/num_rollout_workers                               0 │
+│ stop_fn                                 ...t 0x14e6f417caf0> │
+│ training/lr                                           0.0001 │
+│ training/model/fcnet_activation                         relu │
+│ training/model/fcnet_hiddens                      [256, 256] │
+│ training/model/last_use_prev_action                     True │
+│ training/model/lstm_use_prev_reward                     True │
+│ training/model/use_lstm                                False │
+│ training/num_sgd_iter                                     10 │
+│ training/sgd_minibatch_size                              128 │
+│ training/train_batch_size                                500 │
+│ training/use_critic                                     True │
+│ training/use_kl_loss                                    True │
+│ tune/max_concurrent_trials                                12 │
+│ tune/max_episodes                                      25000 │
+│ tune/num_samples                                           5 │
+│ tune/tune                                               True │
+│ wandb/wandb_dir_path                    ...edator-prey/wandb │
+│ wandb/wandb_entity                                       tpn │
+│ wandb/wandb_init                                        True │
+│ wandb/wandb_log_freq                                      50 │
+│ wandb/wandb_notes                              testing setup │
+│ wandb/wandb_project                                   rllib4 │
+╰──────────────────────────────────────────────────────────────╯
+
+Trial train_algo_b8329_00002 started with configuration:
+╭──────────────────────────────────────────────────────────────╮
+│ Trial train_algo_b8329_00002 config                          │
+├──────────────────────────────────────────────────────────────┤
+│ algorithm_class                                          ppo │
+│ algorithm_type                                   independent │
+│ analysis/pref_ccm_analysis                              True │
+│ analysis/pref_granger_analysis                         False │
+│ analysis/pref_graph_analysis                           False │
+│ analysis/pref_spatial_ccm_analysis                     False │
+│ env_config/map_size                                       15 │
+│ env_config/max_cycles                                    100 │
+│ env_config/npred                                           2 │
+│ env_config/nprey                                           6 │
+│ env_config/pred_vision                                     2 │
+│ env_config/prey_type                                  static │
+│ env_config/reward_type                                type_1 │
+│ env_name                                      discrete_pp_v1 │
+│ evaluate/eval_episodes                                   500 │
+│ framework                                              torch │
+│ ray/init_dashboard                                     False │
+│ rollouts/batch_mode                        complete_episodes │
+│ rollouts/num_rollout_workers                               0 │
+│ stop_fn                                 ...t 0x14e6f417caf0> │
+│ training/lr                                           0.0001 │
+│ training/model/fcnet_activation                         relu │
+│ training/model/fcnet_hiddens                      [256, 256] │
+│ training/model/last_use_prev_action                     True │
+│ training/model/lstm_use_prev_reward                     True │
+│ training/model/use_lstm                                 True │
+│ training/num_sgd_iter                                     10 │
+│ training/sgd_minibatch_size                              128 │
+│ training/train_batch_size                                500 │
+│ training/use_critic                                     True │
+│ training/use_kl_loss                                    True │
+│ tune/max_concurrent_trials                                12 │
+│ tune/max_episodes                                      25000 │
+│ tune/num_samples                                           5 │
+│ tune/tune                                               True │
+│ wandb/wandb_dir_path                    ...edator-prey/wandb │
+│ wandb/wandb_entity                                       tpn │
+│ wandb/wandb_init                                        True │
+│ wandb/wandb_log_freq                                      50 │
+│ wandb/wandb_notes                              testing setup │
+│ wandb/wandb_project                                   rllib4 │
+╰──────────────────────────────────────────────────────────────╯
+
+Trial train_algo_b8329_00003 errored after 0 iterations at 2023-12-05 19:17:33. Total running time: 9s
+Error file: /home/dalmiapriyam/ray_results/train_algo_2023-12-05_19-17-20/train_algo_b8329_00003_3_use_lstm=False_2023-12-05_19-17-24/error.txt
+
+Trial train_algo_b8329_00002 errored after 0 iterations at 2023-12-05 19:17:33. Total running time: 9s
+Error file: /home/dalmiapriyam/ray_results/train_algo_2023-12-05_19-17-20/train_algo_b8329_00002_2_use_lstm=True_2023-12-05_19-17-24/error.txt
+
+Trial status: 10 ERROR
+Current time: 2023-12-05 19:17:34. Total running time: 9s
+Logical resource usage: 1.0/28 CPUs, 0/1 GPUs (0.0/1.0 accelerator_type:V100)
+╭────────────────────────────────────────────────────────────╮
+│ Trial name               status     ...ng/model/use_lstm   │
+├────────────────────────────────────────────────────────────┤
+│ train_algo_b8329_00000   ERROR      True                   │
+│ train_algo_b8329_00001   ERROR      False                  │
+│ train_algo_b8329_00002   ERROR      True                   │
+│ train_algo_b8329_00003   ERROR      False                  │
+│ train_algo_b8329_00004   ERROR      True                   │
+│ train_algo_b8329_00005   ERROR      False                  │
+│ train_algo_b8329_00006   ERROR      True                   │
+│ train_algo_b8329_00007   ERROR      False                  │
+│ train_algo_b8329_00008   ERROR      True                   │
+│ train_algo_b8329_00009   ERROR      False                  │
+╰────────────────────────────────────────────────────────────╯
+
+Number of errored trials: 10
+╭─────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────╮
+│ Trial name                 # failures   error file                                                                                                                          │
+├─────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┤
+│ train_algo_b8329_00000              1   /home/dalmiapriyam/ray_results/train_algo_2023-12-05_19-17-20/train_algo_b8329_00000_0_use_lstm=True_2023-12-05_19-17-24/error.txt  │
+│ train_algo_b8329_00001              1   /home/dalmiapriyam/ray_results/train_algo_2023-12-05_19-17-20/train_algo_b8329_00001_1_use_lstm=False_2023-12-05_19-17-24/error.txt │
+│ train_algo_b8329_00002              1   /home/dalmiapriyam/ray_results/train_algo_2023-12-05_19-17-20/train_algo_b8329_00002_2_use_lstm=True_2023-12-05_19-17-24/error.txt  │
+│ train_algo_b8329_00003              1   /home/dalmiapriyam/ray_results/train_algo_2023-12-05_19-17-20/train_algo_b8329_00003_3_use_lstm=False_2023-12-05_19-17-24/error.txt │
+│ train_algo_b8329_00004              1   /home/dalmiapriyam/ray_results/train_algo_2023-12-05_19-17-20/train_algo_b8329_00004_4_use_lstm=True_2023-12-05_19-17-24/error.txt  │
+│ train_algo_b8329_00005              1   /home/dalmiapriyam/ray_results/train_algo_2023-12-05_19-17-20/train_algo_b8329_00005_5_use_lstm=False_2023-12-05_19-17-24/error.txt │
+│ train_algo_b8329_00006              1   /home/dalmiapriyam/ray_results/train_algo_2023-12-05_19-17-20/train_algo_b8329_00006_6_use_lstm=True_2023-12-05_19-17-24/error.txt  │
+│ train_algo_b8329_00007              1   /home/dalmiapriyam/ray_results/train_algo_2023-12-05_19-17-20/train_algo_b8329_00007_7_use_lstm=False_2023-12-05_19-17-24/error.txt │
+│ train_algo_b8329_00008              1   /home/dalmiapriyam/ray_results/train_algo_2023-12-05_19-17-20/train_algo_b8329_00008_8_use_lstm=True_2023-12-05_19-17-24/error.txt  │
+│ train_algo_b8329_00009              1   /home/dalmiapriyam/ray_results/train_algo_2023-12-05_19-17-20/train_algo_b8329_00009_9_use_lstm=False_2023-12-05_19-17-24/error.txt │
+╰─────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────╯
+
+Empty DataFrame
+Columns: []
+Index: []
+Empty DataFrame
+Columns: []
+Index: []
+Empty DataFrame
+Columns: []
+Index: []
+Empty DataFrame
+Columns: []
+Index: []
+Empty DataFrame
+Columns: []
+Index: []
+Empty DataFrame
+Columns: []
+Index: []
+Empty DataFrame
+Columns: []
+Index: []
+Empty DataFrame
+Columns: []
+Index: []
+Empty DataFrame
+Columns: []
+Index: []
+Empty DataFrame
+Columns: []
+Index: []
+[36m(pid=20114)[0m 2023-12-05 19:17:33,044	WARNING __init__.py:10 -- PG has/have been moved to `rllib_contrib` and will no longer be maintained by the RLlib team. You can still use it/them normally inside RLlib util Ray 2.8, but from Ray 2.9 on, all `rllib_contrib` algorithms will no longer be part of the core repo, and will therefore have to be installed separately with pinned dependencies for e.g. ray[rllib] and other packages! See https://github.com/ray-project/ray/tree/master/rllib_contrib#rllib-contrib for more information on the RLlib contrib effort.[32m [repeated 9x across cluster] (Ray deduplicates logs by default. Set RAY_DEDUP_LOGS=0 to disable log deduplication, or see https://docs.ray.io/en/master/ray-observability/ray-logging.html#log-deduplication for more options.)[0m
+[36m(train_algo pid=20114)[0m /data/gpfs/projects/punim1355/dalmiapriyam/predator-prey/.venv/lib/python3.10/site-packages/ray/tune/logger/unified.py:53: RayDeprecationWarning: This API is deprecated and may be removed in future Ray releases. You could suppress this warning by setting env variable PYTHONWARNINGS="ignore::DeprecationWarning"[32m [repeated 36x across cluster][0m
+[36m(train_algo pid=20114)[0m `UnifiedLogger` will be removed in Ray 2.7.[32m [repeated 9x across cluster][0m
+[36m(train_algo pid=20114)[0m   return UnifiedLogger(config, logdir, loggers=None)[32m [repeated 9x across cluster][0m
+[36m(train_algo pid=20114)[0m The `JsonLogger interface is deprecated in favor of the `ray.tune.json.JsonLoggerCallback` interface and will be removed in Ray 2.7.[32m [repeated 9x across cluster][0m
+[36m(train_algo pid=20114)[0m   self._loggers.append(cls(self.config, self.logdir, self.trial))[32m [repeated 27x across cluster][0m
+[36m(train_algo pid=20114)[0m The `CSVLogger interface is deprecated in favor of the `ray.tune.csv.CSVLoggerCallback` interface and will be removed in Ray 2.7.[32m [repeated 9x across cluster][0m
+[36m(train_algo pid=20114)[0m The `TBXLogger interface is deprecated in favor of the `ray.tune.tensorboardx.TBXLoggerCallback` interface and will be removed in Ray 2.7.[32m [repeated 9x across cluster][0m
+Job ID           : 54124984
+Cluster          : spartan
+User/Project     : dalmiapriyam/punim1355
+Nodes            : 1
+Wall-clock time  : 00:00:33 / 1-00:00:00
+
+Displaying overall resources usage from 2023-12-05 19:17:04 to 2023-12-05 19:17:37:
+
+NODE            CPU#        TOT%   ( USR   / SYS   / WIO   / IDLE  ) 
+
+spartan-gpgpu081 : 
+                CPU# 1    : 0.9    (   0.3 /   0.6 /   0.0 /  99.1 ) 
+                CPU# 2    : 0.4    (   0.1 /   0.3 /   0.0 /  99.6 ) 
+                CPU# 3    : 0.6    (   0.2 /   0.4 /   0.0 /  99.4 ) 
+                CPU# 4    : 0.3    (   0.0 /   0.3 /   0.0 /  99.7 ) 
+                CPU# 5    : 0.7    (   0.4 /   0.3 /   0.0 /  99.3 ) 
+                CPU# 6    : 0.6    (   0.2 /   0.3 /   0.0 /  99.4 ) 
+                CPU# 7    : 0.4    (   0.2 /   0.3 /   0.0 /  99.6 ) 
+                CPU# 8    : 0.4    (   0.2 /   0.2 /   0.0 /  99.6 ) 
+                CPU# 9    : 0.4    (   0.2 /   0.3 /   0.0 /  99.6 ) 
+                CPU# 10   : 0.4    (   0.1 /   0.3 /   0.0 /  99.6 ) 
+                CPU# 11   : 1.5    (   0.7 /   0.7 /   0.0 /  98.5 ) 
+                CPU# 12   : 14.6   (  10.4 /   4.1 /   0.1 /  85.3 ) 
+
+                GPU# 1    : 0.0   
+
+
+Allocated CPUs            : 12   
+  CPUs with usage <25%    : 12   
+  CPUs with usage <50%    : 0    
+  CPUs with usage >50%    : 0    
+
+
+Allocated GPUs            : 1    
+  GPUs with usage <25%    : 1    
+  GPUs with usage <50%    : 0    
+  GPUs with usage >50%    : 0    
+
+Memory used (RAM)         : 6.3%  [3166MB of 50332MB]
+
+--------------------------------------------
+
