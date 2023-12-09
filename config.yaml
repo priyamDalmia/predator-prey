@@ -30,7 +30,7 @@ training:
       fcnet_activation: "relu"
       conv_activation: "relu"
       conv_filters: [[16, [2, 2], 1], [16, [2, 2], 1]]
-      use_lstm: false
+      use_lstm: true
       lstm_cell_size: 32
       max_seq_len: 10
       lstm_use_prev_reward: true
