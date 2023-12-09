@@ -325,7 +325,7 @@ def main():
         config['training']['train_batch_size'] = tune.grid_search([128, 256, 512])
         config['training']['sgd_minibatch_size'] = tune.grid_search([32, 64, 128])
         config['training']['num_sgd_iter'] = tune.grid_search([2, 5])
-        config['training']['model']['post_fcnet_hiddens'] = tune.grid_search([None, [256], [512]])
+        # config['training']['model']['post_fcnet_hiddens'] = tune.grid_search([None, [256], [512]])
         config['training']['model']['lstm_cell_size'] = tune.grid_search([16, 32, 64, 128])
 
     storage_path = str(Path("./experiments").absolute())

@@ -5,7 +5,7 @@ tune:
    tune: true # if true, tune hyperparameters in main!
    num_samples: 5
    max_episodes: 25000
-   max_concurrent_trials: 16
+   max_concurrent_trials: 24
 analysis:
    num_trials: 5
    analysis: false
@@ -41,7 +41,7 @@ rollouts:
    num_rollout_workers: 0
    batch_mode: "complete_episodes"
 wandb: 
-   wandb_init: false 
+   wandb_init: true 
    wandb_project: "rllib5"
    wandb_entity: "tpn"
    wandb_notes: "testing setup"
