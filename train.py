@@ -324,9 +324,11 @@ def main():
         # config["env_config"]["reward_type"] = tune.grid_search(
         #     ["type_1", "type_2", "type_3"]
         # )
-        # config['training']['model']['use_lstm'] = tune.grid_search([True])
+        config['training']['model']['use_lstm'] = tune.grid_search([True, False])
+        config['training']['model']['fcnet_hiddens'] = tune.grid_search([[128], [256]])
+        config['training']['model']['fcnet_activation'] = tune.grid_search(["relu", "tanh"])
+        config['training']['model']['conv_activation'] = tune.grid_search(["relu", "tanh"])
         config['training']['model']['conv_filters'] = tune.grid_search([[[16, [3, 3], 2]], [[16, [2,2], 1], [16, [2,2], 1]]])
-        # config['training']['model']['post_fcnet_hiddens'] = tune.grid_search([None, [256], [512]])
         config['training']['model']['lstm_cell_size'] = tune.grid_search([128, 256])
 
     storage_path = str(Path("./experiments").absolute())
@@ -383,24 +385,24 @@ def get_policy_mapping_fn(policy_name, algo):
     return policy_maps
 
 if __name__ == "__main__":
-    # main()
-    # load the yaml file
-    with open("config.yaml", "r") as f:
-        config = yaml.load(f, Loader=yaml.FullLoader)
-    register_env(config["env_name"], lambda config: env_creator(config))
+    main()
+    # # load the yaml file
+    # with open("config.yaml", "r") as f:
+    #     config = yaml.load(f, Loader=yaml.FullLoader)
+    # register_env(config["env_name"], lambda config: env_creator(config))
 
-    # # for config define param space
-    ray.init(num_cpus=1)
-    def stop_fn(trial_id, result):
-        # Stop training if episode total
-        stop = result["episodes_total"] > 500
-        return stop
-    config["stop_fn"] = stop_fn
-    config["wandb"]["wandb_dir_path"] = str(Path("./wandb").absolute())
+    # # # for config define param space
+    # ray.init(num_cpus=1)
+    # def stop_fn(trial_id, result):
+    #     # Stop training if episode total
+    #     stop = result["episodes_total"] > 500
+    #     return stop
+    # config["stop_fn"] = stop_fn
+    # config["wandb"]["wandb_dir_path"] = str(Path("./wandb").absolute())
     
-    algo = create_algo(config)
-    results = algo.train()
-    print(results)
+    # algo = create_algo(config)
+    # results = algo.train()
+    # print(results)
 #     # print(f"EVALUATING {algo} \n\n")
 #     # results = algo.evaluate()
 #     # create the two tables and store 

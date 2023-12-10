@@ -1,3 +1,4 @@
+from pyexpat import model
 import numpy as np
 from typing import Dict, List
 import gymnasium as gym
@@ -75,6 +76,9 @@ class PPOModel(TorchModelV2, nn.Module):
 
         out_channels, kernel, stride = filters[-1]
 
+        # No final linear: Last layer has activation function and exits with
+        # num_outputs nodes (this could be a 1x1 conv or a FC layer, depending
+
         layers.append(
             SlimConv2d(
                 in_channels,
@@ -88,67 +92,52 @@ class PPOModel(TorchModelV2, nn.Module):
 
         # num_outputs defined. Use that to create an exact
         # `num_output`-sized (1,1)-Conv2D.
-        if num_outputs:
-            in_size = [
-                np.ceil((in_size[0] - kernel[0]) / stride),
-                np.ceil((in_size[1] - kernel[1]) / stride),
-            ]
-            padding, _ = same_padding(in_size, [1, 1], [1, 1])
-            if post_fcnet_hiddens:
-                layers.append(nn.Flatten())
-                in_size = out_channels
-                # Add (optional) post-fc-stack after last Conv2D layer.
-                for i, out_size in enumerate(post_fcnet_hiddens + [num_outputs]):
-                    layers.append(
-                        SlimFC(
-                            in_size=in_size,
-                            out_size=out_size,
-                            activation_fn=post_fcnet_activation
-                            if i < len(post_fcnet_hiddens) - 1
-                            else None,
-                            initializer=normc_initializer(1.0),
-                        )
-                    )
-                    in_size = out_size
-                # Last layer is logits layer.
-                self._logits = layers.pop()
 
-            else:
-                self._logits = SlimConv2d(
-                    out_channels,
-                    num_outputs,
-                    [1, 1],
-                    1,
-                    padding,
-                    activation_fn=None,
+        layers.append(nn.Flatten())
+        if model_config.get('fcnet_hiddens'):
+            activation = model_config.get("fcnet_activation", "relu")
+            layers.append(
+                nn.LazyLinear(
+                    model_config["fcnet_hiddens"][0],
                 )
-
-        # num_outputs not known -> Flatten, then set self.num_outputs
-        # to the resulting number of nodes.
-        else:
+            )
+            layers.append(nn.ReLU() if activation == "relu" else nn.Tanh())
+        if not num_outputs:
             self.last_layer_is_flattened = True
-            layers.append(nn.Flatten())
 
         self._convs = nn.Sequential(*layers)
+
         # If our num_outputs still unknown, we need to do a test pass to
         # figure out the output dimensions. This could be the case, if we have
         # the Flatten layer at the end.
-        if self.num_outputs is None:
-            # Create a B=1 dummy sample and push it through out conv-net.
-            dummy_in = (
-                torch.from_numpy(self.obs_space.sample())
-                .permute(2, 0, 1)
-                .unsqueeze(0)
-                .float()
+        # Create a B=1 dummy sample and push it through out conv-net.
+        dummy_in = (
+            torch.from_numpy(self.obs_space.sample())
+            .permute(2, 0, 1)
+            .unsqueeze(0)
+            .float()
+        )
+        dummy_out = self._convs(dummy_in)
+        conv_output = dummy_out.shape[1]
+        
+        if model_config.get('use_lstm'):
+            self.num_outputs = conv_output
+        else:
+            self.num_outputs = num_outputs
+            self._logits = SlimFC(
+                conv_output,
+                num_outputs,
+                activation_fn=None,
             )
-            dummy_out = self._convs(dummy_in)
-            self.num_outputs = dummy_out.shape[1]
 
         # Build the value layers
         self._value_branch_separate = self._value_branch = None
         if vf_share_layers:
             self._value_branch = SlimFC(
-                out_channels, 1, initializer=normc_initializer(0.01), activation_fn=None
+                conv_output, 
+                1, 
+                initializer=normc_initializer(0.01), 
+                activation_fn=None
             )
         else:
             vf_layers = []
@@ -243,11 +232,11 @@ class PPOModel(TorchModelV2, nn.Module):
             value = value.squeeze(2)
             return value.squeeze(1)
         else:
-            if not self.last_layer_is_flattened:
-                features = self._features.squeeze(3)
-                features = features.squeeze(2)
-            else:
-                features = self._features
+            # if not self.last_layer_is_flattened:
+            #     features = self._features.squeeze(3)
+            #     features = features.squeeze(2)
+            # else:
+            features = self._features
             return self._value_branch(features).squeeze(1)
 
     def _hidden_layers(self, obs: TensorType) -> TensorType:
