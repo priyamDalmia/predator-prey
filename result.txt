@@ -1,0 +1,1818 @@
+╭───────────────────────────────────────────────────────────────────╮
+│ Configuration for experiment     train_algo_2023-12-11_16-45-06   │
+├───────────────────────────────────────────────────────────────────┤
+│ Search algorithm                 BasicVariantGenerator            │
+│ Scheduler                        FIFOScheduler                    │
+│ Number of trials                 8                                │
+╰───────────────────────────────────────────────────────────────────╯
+
+View detailed results here: /data/gpfs/projects/punim1355/dalmiapriyam/predator-prey/experiments/train_algo_2023-12-11_16-45-06
+
+Trial status: 2 PENDING
+Current time: 2023-12-11 16:45:19. Total running time: 0s
+Logical resource usage: 1.0/72 CPUs, 0/0 GPUs
+╭─────────────────────────────────────────────────────────────────────────────────────╮
+│ Trial name               status     ...del/fcnet_hiddens     ...ng/model/use_lstm   │
+├─────────────────────────────────────────────────────────────────────────────────────┤
+│ train_algo_77fc8_00000   PENDING    [128]                    True                   │
+│ train_algo_77fc8_00001   PENDING    [256]                    True                   │
+╰─────────────────────────────────────────────────────────────────────────────────────╯
+
+Trial train_algo_77fc8_00000 started with configuration:
+╭──────────────────────────────────────────────────────────────╮
+│ Trial train_algo_77fc8_00000 config                          │
+├──────────────────────────────────────────────────────────────┤
+│ algorithm_class                                          ppo │
+│ algorithm_type                                   independent │
+│ analysis/analysis                                      False │
+│ analysis/ccm_E                                             4 │
+│ analysis/ccm_tau                                           1 │
+│ analysis/dimensions                     ...'PCA_1', 'PCA_2'] │
+│ analysis/length_fac                                      500 │
+│ analysis/num_trials                                        5 │
+│ analysis/policy_set                     ...ginal', '_fixed'] │
+│ analysis/pref_ccm_analysis                              True │
+│ analysis/pref_granger_analysis                         False │
+│ analysis/pref_graph_analysis                           False │
+│ analysis/pref_spatial_ccm_analysis                     False │
+│ env_config/map_size                                       15 │
+│ env_config/max_cycles                                    100 │
+│ env_config/npred                                           2 │
+│ env_config/nprey                                           6 │
+│ env_config/pred_vision                                     2 │
+│ env_config/prey_type                                  static │
+│ env_config/reward_type                                type_1 │
+│ env_name                                      discrete_pp_v1 │
+│ evaluate/eval_episodes                                   500 │
+│ framework                                              torch │
+│ ray/init_dashboard                                     False │
+│ rollouts/batch_mode                        complete_episodes │
+│ rollouts/num_rollout_workers                               0 │
+│ stop_fn                                 ...t 0x14d4ce8d9fc0> │
+│ training/lr                                           0.0001 │
+│ training/model/conv_activation                          relu │
+│ training/model/conv_filters                [[16, [2, 2], 1]] │
+│ training/model/fcnet_activation                         relu │
+│ training/model/fcnet_hiddens                           [128] │
+│ training/model/lstm_cell_size                            256 │
+│ training/model/lstm_use_prev_action                     True │
+│ training/model/lstm_use_prev_reward                     True │
+│ training/model/max_seq_len                                10 │
+│ training/model/use_lstm                                 True │
+│ training/model/vf_share_layers                          True │
+│ training/num_sgd_iter                                      2 │
+│ training/sgd_minibatch_size                               32 │
+│ training/train_batch_size                                128 │
+│ training/use_critic                                     True │
+│ training/use_kl_loss                                    True │
+│ tune/max_concurrent_trials                                 2 │
+│ tune/max_episodes                                         50 │
+│ tune/num_samples                                           2 │
+│ tune/tune                                               True │
+│ wandb/wandb_dir_path                    ...edator-prey/wandb │
+│ wandb/wandb_entity                                       tpn │
+│ wandb/wandb_init                                       False │
+│ wandb/wandb_log_freq                                      50 │
+│ wandb/wandb_notes                              testing setup │
+│ wandb/wandb_project                                   rllib1 │
+╰──────────────────────────────────────────────────────────────╯
+
+Trial train_algo_77fc8_00001 started with configuration:
+╭──────────────────────────────────────────────────────────────╮
+│ Trial train_algo_77fc8_00001 config                          │
+├──────────────────────────────────────────────────────────────┤
+│ algorithm_class                                          ppo │
+│ algorithm_type                                   independent │
+│ analysis/analysis                                      False │
+│ analysis/ccm_E                                             4 │
+│ analysis/ccm_tau                                           1 │
+│ analysis/dimensions                     ...'PCA_1', 'PCA_2'] │
+│ analysis/length_fac                                      500 │
+│ analysis/num_trials                                        5 │
+│ analysis/policy_set                     ...ginal', '_fixed'] │
+│ analysis/pref_ccm_analysis                              True │
+│ analysis/pref_granger_analysis                         False │
+│ analysis/pref_graph_analysis                           False │
+│ analysis/pref_spatial_ccm_analysis                     False │
+│ env_config/map_size                                       15 │
+│ env_config/max_cycles                                    100 │
+│ env_config/npred                                           2 │
+│ env_config/nprey                                           6 │
+│ env_config/pred_vision                                     2 │
+│ env_config/prey_type                                  static │
+│ env_config/reward_type                                type_1 │
+│ env_name                                      discrete_pp_v1 │
+│ evaluate/eval_episodes                                   500 │
+│ framework                                              torch │
+│ ray/init_dashboard                                     False │
+│ rollouts/batch_mode                        complete_episodes │
+│ rollouts/num_rollout_workers                               0 │
+│ stop_fn                                 ...t 0x14d4ce8d9fc0> │
+│ training/lr                                           0.0001 │
+│ training/model/conv_activation                          relu │
+│ training/model/conv_filters                [[16, [2, 2], 1]] │
+│ training/model/fcnet_activation                         relu │
+│ training/model/fcnet_hiddens                           [256] │
+│ training/model/lstm_cell_size                            256 │
+│ training/model/lstm_use_prev_action                     True │
+│ training/model/lstm_use_prev_reward                     True │
+│ training/model/max_seq_len                                10 │
+│ training/model/use_lstm                                 True │
+│ training/model/vf_share_layers                          True │
+│ training/num_sgd_iter                                      2 │
+│ training/sgd_minibatch_size                               32 │
+│ training/train_batch_size                                128 │
+│ training/use_critic                                     True │
+│ training/use_kl_loss                                    True │
+│ tune/max_concurrent_trials                                 2 │
+│ tune/max_episodes                                         50 │
+│ tune/num_samples                                           2 │
+│ tune/tune                                               True │
+│ wandb/wandb_dir_path                    ...edator-prey/wandb │
+│ wandb/wandb_entity                                       tpn │
+│ wandb/wandb_init                                       False │
+│ wandb/wandb_log_freq                                      50 │
+│ wandb/wandb_notes                              testing setup │
+│ wandb/wandb_project                                   rllib1 │
+╰──────────────────────────────────────────────────────────────╯
+[36m(train_algo pid=240728)[0m WORKING DIRECTIRY: /data/gpfs/projects/punim1355/dalmiapriyam/predator-prey/experiments/train_algo_2023-12-11_16-45-06/train_algo_77fc8_00001_1_fcnet_hiddens=256,use_lstm=True_2023-12-11_16-45-19
+
+Trial status: 2 RUNNING
+Current time: 2023-12-11 16:45:49. Total running time: 30s
+Logical resource usage: 1.0/72 CPUs, 0/0 GPUs
+Current best trial: 77fc8_00000 with episode_len_mean=101.0 and params={'algorithm_type': 'independent', 'algorithm_class': 'ppo', 'framework': 'torch', 'tune': {'tune': True, 'num_samples': 2, 'max_episodes': 50, 'max_concurrent_trials': 2}, 'analysis': {'num_trials': 5, 'analysis': False, 'policy_set': ['original', '_fixed'], 'dimensions': ['dx', 'dy', 'PCA_1', 'PCA_2'], 'length_fac': 500, 'ccm_tau': 1, 'ccm_E': 4, 'pref_ccm_analysis': True, 'pref_granger_analysis': False, 'pref_graph_analysis': False, 'pref_spatial_ccm_analysis': False}, 'training': {'lr': 0.0001, 'use_critic': True, 'use_kl_loss': True, 'sgd_minibatch_size': 32, 'num_sgd_iter': 2, 'train_batch_size': 128, 'model': {'fcnet_hiddens': [128], 'fcnet_activation': 'relu', 'conv_activation': 'relu', 'conv_filters': [[16, [2, 2], 1]], 'use_lstm': True, 'lstm_cell_size': 256, 'max_seq_len': 10, 'lstm_use_prev_reward': True, 'lstm_use_prev_action': True, 'vf_share_layers': True}}, 'evaluate': {'eval_episodes': 500}, 'rollouts': {'num_rollout_workers': 0, 'batch_mode': 'complete_episodes'}, 'wandb': {'wandb_init': False, 'wandb_project': 'rllib1', 'wandb_entity': 'tpn', 'wandb_notes': 'testing setup', 'wandb_log_freq': 50, 'wandb_dir_path': '/data/gpfs/projects/punim1355/dalmiapriyam/predator-prey/wandb'}, 'env_name': 'discrete_pp_v1', 'env_config': {'map_size': 15, 'pred_vision': 2, 'prey_type': 'static', 'max_cycles': 100, 'npred': 2, 'nprey': 6, 'reward_type': 'type_1'}, 'ray': {'init_dashboard': False}, 'stop_fn': <function main.<locals>.stop_fn at 0x14d46650aa70>}
+╭─────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────╮
+│ Trial name               status     ...del/fcnet_hiddens     ...ng/model/use_lstm       iter     total time (s)     ts     reward     episode_reward_max     episode_reward_min     episode_len_mean     episodes_this_iter │
+├─────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┤
+│ train_algo_77fc8_00000   RUNNING    [128]                    True                          1            1.38574    202        1.5                      2                      1                  101                      2 │
+│ train_algo_77fc8_00001   RUNNING    [256]                    True                          1            1.40916    202        1                        2                      0                  101                      2 │
+╰─────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────╯
+Trial status: 2 RUNNING
+Current time: 2023-12-11 16:46:19. Total running time: 1min 0s
+Logical resource usage: 1.0/72 CPUs, 0/0 GPUs
+Current best trial: 77fc8_00000 with episode_len_mean=101.0 and params={'algorithm_type': 'independent', 'algorithm_class': 'ppo', 'framework': 'torch', 'tune': {'tune': True, 'num_samples': 2, 'max_episodes': 50, 'max_concurrent_trials': 2}, 'analysis': {'num_trials': 5, 'analysis': False, 'policy_set': ['original', '_fixed'], 'dimensions': ['dx', 'dy', 'PCA_1', 'PCA_2'], 'length_fac': 500, 'ccm_tau': 1, 'ccm_E': 4, 'pref_ccm_analysis': True, 'pref_granger_analysis': False, 'pref_graph_analysis': False, 'pref_spatial_ccm_analysis': False}, 'training': {'lr': 0.0001, 'use_critic': True, 'use_kl_loss': True, 'sgd_minibatch_size': 32, 'num_sgd_iter': 2, 'train_batch_size': 128, 'model': {'fcnet_hiddens': [128], 'fcnet_activation': 'relu', 'conv_activation': 'relu', 'conv_filters': [[16, [2, 2], 1]], 'use_lstm': True, 'lstm_cell_size': 256, 'max_seq_len': 10, 'lstm_use_prev_reward': True, 'lstm_use_prev_action': True, 'vf_share_layers': True}}, 'evaluate': {'eval_episodes': 500}, 'rollouts': {'num_rollout_workers': 0, 'batch_mode': 'complete_episodes'}, 'wandb': {'wandb_init': False, 'wandb_project': 'rllib1', 'wandb_entity': 'tpn', 'wandb_notes': 'testing setup', 'wandb_log_freq': 50, 'wandb_dir_path': '/data/gpfs/projects/punim1355/dalmiapriyam/predator-prey/wandb'}, 'env_name': 'discrete_pp_v1', 'env_config': {'map_size': 15, 'pred_vision': 2, 'prey_type': 'static', 'max_cycles': 100, 'npred': 2, 'nprey': 6, 'reward_type': 'type_1'}, 'ray': {'init_dashboard': False}, 'stop_fn': <function main.<locals>.stop_fn at 0x14d46650bd90>}
+╭─────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────╮
+│ Trial name               status     ...del/fcnet_hiddens     ...ng/model/use_lstm       iter     total time (s)     ts     reward     episode_reward_max     episode_reward_min     episode_len_mean     episodes_this_iter │
+├─────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┤
+│ train_algo_77fc8_00000   RUNNING    [128]                    True                         20            2.64265   4040      1.525                      4                      0                  101                      2 │
+│ train_algo_77fc8_00001   RUNNING    [256]                    True                         20            2.79725   4040      1.475                      4                      0                  101                      2 │
+╰─────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────╯
+
+Trial train_algo_77fc8_00000 completed after 40 iterations at 2023-12-11 16:46:20. Total running time: 1min 1s
+╭─────────────────────────────────────────────────────────────────────────────────────────────╮
+│ Trial train_algo_77fc8_00000 result                                                         │
+├─────────────────────────────────────────────────────────────────────────────────────────────┤
+│ checkpoint_dir_name                                                                         │
+│ episodes_total                                                                           80 │
+│ time_this_iter_s                                                                      1.277 │
+│ time_total_s                                                                        3.91965 │
+│ timesteps_total                                                                        8080 │
+│ training_iteration                                                                       40 │
+│ agent_timesteps_total                                                                 16160 │
+│ connector_metrics/ObsPreprocessorConnector_ms                          0.004909783601760864 │
+│ connector_metrics/StateBufferConnector_ms                             0.0050161778926849365 │
+│ connector_metrics/ViewRequirementAgentConnector_ms                      0.14220669865608215 │
+│ counters/num_agent_steps_sampled                                                      16160 │
+│ counters/num_agent_steps_trained                                                      16160 │
+│ counters/num_env_steps_sampled                                                         8080 │
+│ counters/num_env_steps_trained                                                         8080 │
+│ custom_metrics/assists_max                                                                1 │
+│ custom_metrics/assists_mean                                                             0.1 │
+│ custom_metrics/assists_min                                                                0 │
+│ custom_metrics/kills_max                                                                  5 │
+│ custom_metrics/kills_mean                                                             1.475 │
+│ custom_metrics/kills_min                                                                  0 │
+│ custom_metrics/predator_0_assists_max                                                     1 │
+│ custom_metrics/predator_0_assists_mean                                               0.0375 │
+│ custom_metrics/predator_0_assists_min                                                     0 │
+│ custom_metrics/predator_0_kills_max                                                       4 │
+│ custom_metrics/predator_0_kills_mean                                                 0.7625 │
+│ custom_metrics/predator_0_kills_min                                                       0 │
+│ custom_metrics/predator_1_assists_max                                                     1 │
+│ custom_metrics/predator_1_assists_mean                                               0.0625 │
+│ custom_metrics/predator_1_assists_min                                                     0 │
+│ custom_metrics/predator_1_kills_max                                                       3 │
+│ custom_metrics/predator_1_kills_mean                                                 0.7125 │
+│ custom_metrics/predator_1_kills_min                                                       0 │
+│ episode_len_mean                                                                       101. │
+│ episode_reward_max                                                                       5. │
+│ episode_reward_mean                                                                   1.475 │
+│ episode_reward_min                                                                       0. │
+│ episodes_this_iter                                                                        2 │
+│ hist_stats/episode_lengths                                             ...1, 101, 101, 101] │
+│ hist_stats/episode_reward                                              ...0, 1.0, 1.0, 2.0] │
+│ hist_stats/policy_predator_0_reward                                    ...0, 1.0, 1.0, 1.0] │
+│ hist_stats/policy_predator_1_reward                                    ...0, 0.0, 0.0, 1.0] │
+│ info/learner/predator_0/diff_num_grad_updates_vs_sampler_policy                         5.5 │
+│ info/learner/predator_0/learner_stats/allreduce_latency                                 0.0 │
+│ info/learner/predator_0/learner_stats/cur_kl_coeff                   3.6379788070917137e-13 │
+│ info/learner/predator_0/learner_stats/cur_lr                                         0.0001 │
+│ info/learner/predator_0/learner_stats/entropy                            1.6040967007478077 │
+│ info/learner/predator_0/learner_stats/entropy_coeff                                     0.0 │
+│ info/learner/predator_0/learner_stats/grad_gnorm                         0.9725347807010015 │
+│ info/learner/predator_0/learner_stats/kl                              4.923554330164374e-06 │
+│ info/learner/predator_0/learner_stats/policy_loss                     -0.057147918889919914 │
+│ info/learner/predator_0/learner_stats/total_loss                        0.09232652932405472 │
+│ info/learner/predator_0/learner_stats/vf_explained_var                  -0.5050526311000189 │
+│ info/learner/predator_0/learner_stats/vf_loss                           0.14947446808218956 │
+│ info/learner/predator_0/num_agent_steps_trained                                        32.0 │
+│ info/learner/predator_0/num_grad_updates_lifetime                                     474.5 │
+│ info/learner/predator_1/diff_num_grad_updates_vs_sampler_policy                         5.5 │
+│ info/learner/predator_1/learner_stats/allreduce_latency                                 0.0 │
+│ info/learner/predator_1/learner_stats/cur_kl_coeff                   3.6379788070917137e-13 │
+│ info/learner/predator_1/learner_stats/cur_lr                                         0.0001 │
+│ info/learner/predator_1/learner_stats/entropy                             1.604333072900772 │
+│ info/learner/predator_1/learner_stats/entropy_coeff                                     0.0 │
+│ info/learner/predator_1/learner_stats/grad_gnorm                         0.8119759013255438 │
+│ info/learner/predator_1/learner_stats/kl                              1.777440210097107e-05 │
+│ info/learner/predator_1/learner_stats/policy_loss                      -0.05027774473031362 │
+│ info/learner/predator_1/learner_stats/total_loss                       0.060632685820261635 │
+│ info/learner/predator_1/learner_stats/vf_explained_var                  -0.6478675504525503 │
+│ info/learner/predator_1/learner_stats/vf_loss                           0.11091043955336015 │
+│ info/learner/predator_1/num_agent_steps_trained                                        32.0 │
+│ info/learner/predator_1/num_grad_updates_lifetime                                     474.5 │
+│ info/num_agent_steps_sampled                                                          16160 │
+│ info/num_agent_steps_trained                                                          16160 │
+│ info/num_env_steps_sampled                                                             8080 │
+│ info/num_env_steps_trained                                                             8080 │
+│ num_agent_steps_sampled                                                               16160 │
+│ num_agent_steps_trained                                                               16160 │
+│ num_env_steps_sampled                                                                  8080 │
+│ num_env_steps_sampled_this_iter                                                         202 │
+│ num_env_steps_sampled_throughput_per_sec                                           158.7081 │
+│ num_env_steps_trained                                                                  8080 │
+│ num_env_steps_trained_this_iter                                                         202 │
+│ num_env_steps_trained_throughput_per_sec                                           158.7081 │
+│ num_faulty_episodes                                                                       0 │
+│ num_healthy_workers                                                                       0 │
+│ num_in_flight_async_reqs                                                                  0 │
+│ num_remote_worker_restarts                                                                0 │
+│ num_steps_trained_this_iter                                                             202 │
+│ perf/cpu_util_percent                                                                  13.6 │
+│ perf/ram_util_percent                                                                  26.9 │
+│ policy_reward_max/predator_0                                                            4.0 │
+│ policy_reward_max/predator_1                                                            3.0 │
+│ policy_reward_mean/predator_0                                                        0.7625 │
+│ policy_reward_mean/predator_1                                                        0.7125 │
+│ policy_reward_min/predator_0                                                            0.0 │
+│ policy_reward_min/predator_1                                                            0.0 │
+│ sampler_perf/mean_action_processing_ms                                  0.21207544928705085 │
+│ sampler_perf/mean_env_render_ms                                                         0.0 │
+│ sampler_perf/mean_env_wait_ms                                           0.13419264044056373 │
+│ sampler_perf/mean_inference_ms                                           3.6951489046223727 │
+│ sampler_perf/mean_raw_obs_processing_ms                                  0.6493768874501716 │
+│ sampler_results/connector_metrics/ObsPreprocessorConnector_ms          0.004909783601760864 │
+│ sampler_results/connector_metrics/StateBufferConnector_ms             0.0050161778926849365 │
+│ sampler_results/connector_metrics/ViewRequirementAgentConnector_ms      0.14220669865608215 │
+│ sampler_results/custom_metrics/assists_max                                                1 │
+│ sampler_results/custom_metrics/assists_mean                                             0.1 │
+│ sampler_results/custom_metrics/assists_min                                                0 │
+│ sampler_results/custom_metrics/kills_max                                                  5 │
+│ sampler_results/custom_metrics/kills_mean                                             1.475 │
+│ sampler_results/custom_metrics/kills_min                                                  0 │
+│ sampler_results/custom_metrics/predator_0_assists_max                                     1 │
+│ sampler_results/custom_metrics/predator_0_assists_mean                               0.0375 │
+│ sampler_results/custom_metrics/predator_0_assists_min                                     0 │
+│ sampler_results/custom_metrics/predator_0_kills_max                                       4 │
+│ sampler_results/custom_metrics/predator_0_kills_mean                                 0.7625 │
+│ sampler_results/custom_metrics/predator_0_kills_min                                       0 │
+│ sampler_results/custom_metrics/predator_1_assists_max                                     1 │
+│ sampler_results/custom_metrics/predator_1_assists_mean                               0.0625 │
+│ sampler_results/custom_metrics/predator_1_assists_min                                     0 │
+│ sampler_results/custom_metrics/predator_1_kills_max                                       3 │
+│ sampler_results/custom_metrics/predator_1_kills_mean                                 0.7125 │
+│ sampler_results/custom_metrics/predator_1_kills_min                                       0 │
+│ sampler_results/episode_len_mean                                                      101.0 │
+│ sampler_results/episode_reward_max                                                      5.0 │
+│ sampler_results/episode_reward_mean                                                   1.475 │
+│ sampler_results/episode_reward_min                                                      0.0 │
+│ sampler_results/episodes_this_iter                                                        2 │
+│ sampler_results/hist_stats/episode_lengths                             ...1, 101, 101, 101] │
+│ sampler_results/hist_stats/episode_reward                              ...0, 1.0, 1.0, 2.0] │
+│ sampler_results/hist_stats/policy_predator_0_reward                    ...0, 1.0, 1.0, 1.0] │
+│ sampler_results/hist_stats/policy_predator_1_reward                    ...0, 0.0, 0.0, 1.0] │
+│ sampler_results/num_faulty_episodes                                                       0 │
+│ sampler_results/policy_reward_max/predator_0                                            4.0 │
+│ sampler_results/policy_reward_max/predator_1                                            3.0 │
+│ sampler_results/policy_reward_mean/predator_0                                        0.7625 │
+│ sampler_results/policy_reward_mean/predator_1                                        0.7125 │
+│ sampler_results/policy_reward_min/predator_0                                            0.0 │
+│ sampler_results/policy_reward_min/predator_1                                            0.0 │
+│ sampler_results/sampler_perf/mean_action_processing_ms                  0.21207544928705085 │
+│ sampler_results/sampler_perf/mean_env_render_ms                                         0.0 │
+│ sampler_results/sampler_perf/mean_env_wait_ms                           0.13419264044056373 │
+│ sampler_results/sampler_perf/mean_inference_ms                           3.6951489046223727 │
+│ sampler_results/sampler_perf/mean_raw_obs_processing_ms                  0.6493768874501716 │
+│ timers/learn_throughput                                                             597.248 │
+│ timers/learn_time_ms                                                                338.218 │
+│ timers/sample_time_ms                                                                 929.6 │
+│ timers/synch_weights_time_ms                                                          0.009 │
+│ timers/training_iteration_time_ms                                                   1268.38 │
+╰─────────────────────────────────────────────────────────────────────────────────────────────╯
+
+Trial train_algo_77fc8_00002 started with configuration:
+╭──────────────────────────────────────────────────────────────╮
+│ Trial train_algo_77fc8_00002 config                          │
+├──────────────────────────────────────────────────────────────┤
+│ algorithm_class                                          ppo │
+│ algorithm_type                                   independent │
+│ analysis/analysis                                      False │
+│ analysis/ccm_E                                             4 │
+│ analysis/ccm_tau                                           1 │
+│ analysis/dimensions                     ...'PCA_1', 'PCA_2'] │
+│ analysis/length_fac                                      500 │
+│ analysis/num_trials                                        5 │
+│ analysis/policy_set                     ...ginal', '_fixed'] │
+│ analysis/pref_ccm_analysis                              True │
+│ analysis/pref_granger_analysis                         False │
+│ analysis/pref_graph_analysis                           False │
+│ analysis/pref_spatial_ccm_analysis                     False │
+│ env_config/map_size                                       15 │
+│ env_config/max_cycles                                    100 │
+│ env_config/npred                                           2 │
+│ env_config/nprey                                           6 │
+│ env_config/pred_vision                                     2 │
+│ env_config/prey_type                                  static │
+│ env_config/reward_type                                type_1 │
+│ env_name                                      discrete_pp_v1 │
+│ evaluate/eval_episodes                                   500 │
+│ framework                                              torch │
+│ ray/init_dashboard                                     False │
+│ rollouts/batch_mode                        complete_episodes │
+│ rollouts/num_rollout_workers                               0 │
+│ stop_fn                                 ...t 0x14d4ce8d9fc0> │
+│ training/lr                                           0.0001 │
+│ training/model/conv_activation                          relu │
+│ training/model/conv_filters                [[16, [2, 2], 1]] │
+│ training/model/fcnet_activation                         relu │
+│ training/model/fcnet_hiddens                           [128] │
+│ training/model/lstm_cell_size                            256 │
+│ training/model/lstm_use_prev_action                     True │
+│ training/model/lstm_use_prev_reward                     True │
+│ training/model/max_seq_len                                10 │
+│ training/model/use_lstm                                False │
+│ training/model/vf_share_layers                          True │
+│ training/num_sgd_iter                                      2 │
+│ training/sgd_minibatch_size                               32 │
+│ training/train_batch_size                                128 │
+│ training/use_critic                                     True │
+│ training/use_kl_loss                                    True │
+│ tune/max_concurrent_trials                                 2 │
+│ tune/max_episodes                                         50 │
+│ tune/num_samples                                           2 │
+│ tune/tune                                               True │
+│ wandb/wandb_dir_path                    ...edator-prey/wandb │
+│ wandb/wandb_entity                                       tpn │
+│ wandb/wandb_init                                       False │
+│ wandb/wandb_log_freq                                      50 │
+│ wandb/wandb_notes                              testing setup │
+│ wandb/wandb_project                                   rllib1 │
+╰──────────────────────────────────────────────────────────────╯
+[36m(train_algo pid=240727)[0m WORKING DIRECTIRY: /data/gpfs/projects/punim1355/dalmiapriyam/predator-prey/experiments/train_algo_2023-12-11_16-45-06/train_algo_77fc8_00002_2_fcnet_hiddens=128,use_lstm=False_2023-12-11_16-46-20[32m [repeated 2x across cluster] (Ray deduplicates logs by default. Set RAY_DEDUP_LOGS=0 to disable log deduplication, or see https://docs.ray.io/en/master/ray-observability/ray-logging.html#log-deduplication for more options.)[0m
+
+Trial train_algo_77fc8_00001 completed after 40 iterations at 2023-12-11 16:46:24. Total running time: 1min 4s
+╭─────────────────────────────────────────────────────────────────────────────────────────────╮
+│ Trial train_algo_77fc8_00001 result                                                         │
+├─────────────────────────────────────────────────────────────────────────────────────────────┤
+│ checkpoint_dir_name                                                                         │
+│ episodes_total                                                                           80 │
+│ time_this_iter_s                                                                    1.25166 │
+│ time_total_s                                                                        4.04891 │
+│ timesteps_total                                                                        8080 │
+│ training_iteration                                                                       40 │
+│ agent_timesteps_total                                                                 16160 │
+│ connector_metrics/ObsPreprocessorConnector_ms                          0.004906803369522095 │
+│ connector_metrics/StateBufferConnector_ms                               0.00507354736328125 │
+│ connector_metrics/ViewRequirementAgentConnector_ms                      0.14066264033317566 │
+│ counters/num_agent_steps_sampled                                                      16160 │
+│ counters/num_agent_steps_trained                                                      16160 │
+│ counters/num_env_steps_sampled                                                         8080 │
+│ counters/num_env_steps_trained                                                         8080 │
+│ custom_metrics/assists_max                                                                1 │
+│ custom_metrics/assists_mean                                                             0.1 │
+│ custom_metrics/assists_min                                                                0 │
+│ custom_metrics/kills_max                                                                  4 │
+│ custom_metrics/kills_mean                                                            1.3125 │
+│ custom_metrics/kills_min                                                                  0 │
+│ custom_metrics/predator_0_assists_max                                                     1 │
+│ custom_metrics/predator_0_assists_mean                                               0.0625 │
+│ custom_metrics/predator_0_assists_min                                                     0 │
+│ custom_metrics/predator_0_kills_max                                                       2 │
+│ custom_metrics/predator_0_kills_mean                                                   0.55 │
+│ custom_metrics/predator_0_kills_min                                                       0 │
+│ custom_metrics/predator_1_assists_max                                                     1 │
+│ custom_metrics/predator_1_assists_mean                                               0.0375 │
+│ custom_metrics/predator_1_assists_min                                                     0 │
+│ custom_metrics/predator_1_kills_max                                                       2 │
+│ custom_metrics/predator_1_kills_mean                                                 0.7625 │
+│ custom_metrics/predator_1_kills_min                                                       0 │
+│ episode_len_mean                                                                       101. │
+│ episode_reward_max                                                                       4. │
+│ episode_reward_mean                                                                  1.3125 │
+│ episode_reward_min                                                                       0. │
+│ episodes_this_iter                                                                        2 │
+│ hist_stats/episode_lengths                                             ...1, 101, 101, 101] │
+│ hist_stats/episode_reward                                              ...0, 1.0, 2.0, 1.0] │
+│ hist_stats/policy_predator_0_reward                                    ...0, 0.0, 1.0, 0.0] │
+│ hist_stats/policy_predator_1_reward                                    ...0, 1.0, 1.0, 1.0] │
+│ info/learner/predator_0/diff_num_grad_updates_vs_sampler_policy                         5.5 │
+│ info/learner/predator_0/learner_stats/allreduce_latency                                 0.0 │
+│ info/learner/predator_0/learner_stats/cur_kl_coeff                   3.6379788070917137e-13 │
+│ info/learner/predator_0/learner_stats/cur_lr                                         0.0001 │
+│ info/learner/predator_0/learner_stats/entropy                             1.605846107006073 │
+│ info/learner/predator_0/learner_stats/entropy_coeff                                     0.0 │
+│ info/learner/predator_0/learner_stats/grad_gnorm                         0.8592792401711146 │
+│ info/learner/predator_0/learner_stats/kl                              2.819828119626777e-05 │
+│ info/learner/predator_0/learner_stats/policy_loss                      -0.06557804346084595 │
+│ info/learner/predator_0/learner_stats/total_loss                       0.062403108924627304 │
+│ info/learner/predator_0/learner_stats/vf_explained_var                  -0.6721270829439163 │
+│ info/learner/predator_0/learner_stats/vf_loss                           0.12798113034417233 │
+│ info/learner/predator_0/num_agent_steps_trained                                        32.0 │
+│ info/learner/predator_0/num_grad_updates_lifetime                                     474.5 │
+│ info/learner/predator_1/diff_num_grad_updates_vs_sampler_policy                         5.5 │
+│ info/learner/predator_1/learner_stats/allreduce_latency                                 0.0 │
+│ info/learner/predator_1/learner_stats/cur_kl_coeff                   3.6379788070917137e-13 │
+│ info/learner/predator_1/learner_stats/cur_lr                                         0.0001 │
+│ info/learner/predator_1/learner_stats/entropy                             1.601960947116216 │
+│ info/learner/predator_1/learner_stats/entropy_coeff                                     0.0 │
+│ info/learner/predator_1/learner_stats/grad_gnorm                         0.9791707942883173 │
+│ info/learner/predator_1/learner_stats/kl                              3.134144408265908e-05 │
+│ info/learner/predator_1/learner_stats/policy_loss                      -0.04505013798673948 │
+│ info/learner/predator_1/learner_stats/total_loss                        0.08825159072875977 │
+│ info/learner/predator_1/learner_stats/vf_explained_var                   -0.493216613928477 │
+│ info/learner/predator_1/learner_stats/vf_loss                           0.13330173740784326 │
+│ info/learner/predator_1/num_agent_steps_trained                                        32.0 │
+│ info/learner/predator_1/num_grad_updates_lifetime                                     474.5 │
+│ info/num_agent_steps_sampled                                                          16160 │
+│ info/num_agent_steps_trained                                                          16160 │
+│ info/num_env_steps_sampled                                                             8080 │
+│ info/num_env_steps_trained                                                             8080 │
+│ num_agent_steps_sampled                                                               16160 │
+│ num_agent_steps_trained                                                               16160 │
+│ num_env_steps_sampled                                                                  8080 │
+│ num_env_steps_sampled_this_iter                                                         202 │
+│ num_env_steps_sampled_throughput_per_sec                                          161.94078 │
+│ num_env_steps_trained                                                                  8080 │
+│ num_env_steps_trained_this_iter                                                         202 │
+│ num_env_steps_trained_throughput_per_sec                                          161.94078 │
+│ num_faulty_episodes                                                                       0 │
+│ num_healthy_workers                                                                       0 │
+│ num_in_flight_async_reqs                                                                  0 │
+│ num_remote_worker_restarts                                                                0 │
+│ num_steps_trained_this_iter                                                             202 │
+│ perf/cpu_util_percent                                                                 13.45 │
+│ perf/ram_util_percent                                                                  26.8 │
+│ policy_reward_max/predator_0                                                            2.0 │
+│ policy_reward_max/predator_1                                                            2.0 │
+│ policy_reward_mean/predator_0                                                          0.55 │
+│ policy_reward_mean/predator_1                                                        0.7625 │
+│ policy_reward_min/predator_0                                                            0.0 │
+│ policy_reward_min/predator_1                                                            0.0 │
+│ sampler_perf/mean_action_processing_ms                                  0.21611921790861163 │
+│ sampler_perf/mean_env_render_ms                                                         0.0 │
+│ sampler_perf/mean_env_wait_ms                                           0.13618236309021184 │
+│ sampler_perf/mean_inference_ms                                            3.869802946212924 │
+│ sampler_perf/mean_raw_obs_processing_ms                                  0.6497022675476325 │
+│ sampler_results/connector_metrics/ObsPreprocessorConnector_ms          0.004906803369522095 │
+│ sampler_results/connector_metrics/StateBufferConnector_ms               0.00507354736328125 │
+│ sampler_results/connector_metrics/ViewRequirementAgentConnector_ms      0.14066264033317566 │
+│ sampler_results/custom_metrics/assists_max                                                1 │
+│ sampler_results/custom_metrics/assists_mean                                             0.1 │
+│ sampler_results/custom_metrics/assists_min                                                0 │
+│ sampler_results/custom_metrics/kills_max                                                  4 │
+│ sampler_results/custom_metrics/kills_mean                                            1.3125 │
+│ sampler_results/custom_metrics/kills_min                                                  0 │
+│ sampler_results/custom_metrics/predator_0_assists_max                                     1 │
+│ sampler_results/custom_metrics/predator_0_assists_mean                               0.0625 │
+│ sampler_results/custom_metrics/predator_0_assists_min                                     0 │
+│ sampler_results/custom_metrics/predator_0_kills_max                                       2 │
+│ sampler_results/custom_metrics/predator_0_kills_mean                                   0.55 │
+│ sampler_results/custom_metrics/predator_0_kills_min                                       0 │
+│ sampler_results/custom_metrics/predator_1_assists_max                                     1 │
+│ sampler_results/custom_metrics/predator_1_assists_mean                               0.0375 │
+│ sampler_results/custom_metrics/predator_1_assists_min                                     0 │
+│ sampler_results/custom_metrics/predator_1_kills_max                                       2 │
+│ sampler_results/custom_metrics/predator_1_kills_mean                                 0.7625 │
+│ sampler_results/custom_metrics/predator_1_kills_min                                       0 │
+│ sampler_results/episode_len_mean                                                      101.0 │
+│ sampler_results/episode_reward_max                                                      4.0 │
+│ sampler_results/episode_reward_mean                                                  1.3125 │
+│ sampler_results/episode_reward_min                                                      0.0 │
+│ sampler_results/episodes_this_iter                                                        2 │
+│ sampler_results/hist_stats/episode_lengths                             ...1, 101, 101, 101] │
+│ sampler_results/hist_stats/episode_reward                              ...0, 1.0, 2.0, 1.0] │
+│ sampler_results/hist_stats/policy_predator_0_reward                    ...0, 0.0, 1.0, 0.0] │
+│ sampler_results/hist_stats/policy_predator_1_reward                    ...0, 1.0, 1.0, 1.0] │
+│ sampler_results/num_faulty_episodes                                                       0 │
+│ sampler_results/policy_reward_max/predator_0                                            2.0 │
+│ sampler_results/policy_reward_max/predator_1                                            2.0 │
+│ sampler_results/policy_reward_mean/predator_0                                          0.55 │
+│ sampler_results/policy_reward_mean/predator_1                                        0.7625 │
+│ sampler_results/policy_reward_min/predator_0                                            0.0 │
+│ sampler_results/policy_reward_min/predator_1                                            0.0 │
+│ sampler_results/sampler_perf/mean_action_processing_ms                  0.21611921790861163 │
+│ sampler_results/sampler_perf/mean_env_render_ms                                         0.0 │
+│ sampler_results/sampler_perf/mean_env_wait_ms                           0.13618236309021184 │
+│ sampler_results/sampler_perf/mean_inference_ms                            3.869802946212924 │
+│ sampler_results/sampler_perf/mean_raw_obs_processing_ms                  0.6497022675476325 │
+│ timers/learn_throughput                                                              520.83 │
+│ timers/learn_time_ms                                                                387.843 │
+│ timers/sample_time_ms                                                               967.505 │
+│ timers/synch_weights_time_ms                                                          0.007 │
+│ timers/training_iteration_time_ms                                                  1355.915 │
+╰─────────────────────────────────────────────────────────────────────────────────────────────╯
+
+Trial train_algo_77fc8_00003 started with configuration:
+╭──────────────────────────────────────────────────────────────╮
+│ Trial train_algo_77fc8_00003 config                          │
+├──────────────────────────────────────────────────────────────┤
+│ algorithm_class                                          ppo │
+│ algorithm_type                                   independent │
+│ analysis/analysis                                      False │
+│ analysis/ccm_E                                             4 │
+│ analysis/ccm_tau                                           1 │
+│ analysis/dimensions                     ...'PCA_1', 'PCA_2'] │
+│ analysis/length_fac                                      500 │
+│ analysis/num_trials                                        5 │
+│ analysis/policy_set                     ...ginal', '_fixed'] │
+│ analysis/pref_ccm_analysis                              True │
+│ analysis/pref_granger_analysis                         False │
+│ analysis/pref_graph_analysis                           False │
+│ analysis/pref_spatial_ccm_analysis                     False │
+│ env_config/map_size                                       15 │
+│ env_config/max_cycles                                    100 │
+│ env_config/npred                                           2 │
+│ env_config/nprey                                           6 │
+│ env_config/pred_vision                                     2 │
+│ env_config/prey_type                                  static │
+│ env_config/reward_type                                type_1 │
+│ env_name                                      discrete_pp_v1 │
+│ evaluate/eval_episodes                                   500 │
+│ framework                                              torch │
+│ ray/init_dashboard                                     False │
+│ rollouts/batch_mode                        complete_episodes │
+│ rollouts/num_rollout_workers                               0 │
+│ stop_fn                                 ...t 0x14d4ce8d9fc0> │
+│ training/lr                                           0.0001 │
+│ training/model/conv_activation                          relu │
+│ training/model/conv_filters                [[16, [2, 2], 1]] │
+│ training/model/fcnet_activation                         relu │
+│ training/model/fcnet_hiddens                           [256] │
+│ training/model/lstm_cell_size                            256 │
+│ training/model/lstm_use_prev_action                     True │
+│ training/model/lstm_use_prev_reward                     True │
+│ training/model/max_seq_len                                10 │
+│ training/model/use_lstm                                False │
+│ training/model/vf_share_layers                          True │
+│ training/num_sgd_iter                                      2 │
+│ training/sgd_minibatch_size                               32 │
+│ training/train_batch_size                                128 │
+│ training/use_critic                                     True │
+│ training/use_kl_loss                                    True │
+│ tune/max_concurrent_trials                                 2 │
+│ tune/max_episodes                                         50 │
+│ tune/num_samples                                           2 │
+│ tune/tune                                               True │
+│ wandb/wandb_dir_path                    ...edator-prey/wandb │
+│ wandb/wandb_entity                                       tpn │
+│ wandb/wandb_init                                       False │
+│ wandb/wandb_log_freq                                      50 │
+│ wandb/wandb_notes                              testing setup │
+│ wandb/wandb_project                                   rllib1 │
+╰──────────────────────────────────────────────────────────────╯
+
+Trial train_algo_77fc8_00002 completed after 40 iterations at 2023-12-11 16:46:46. Total running time: 1min 26s
+╭─────────────────────────────────────────────────────────────────────────────────────────────╮
+│ Trial train_algo_77fc8_00002 result                                                         │
+├─────────────────────────────────────────────────────────────────────────────────────────────┤
+│ checkpoint_dir_name                                                                         │
+│ episodes_total                                                                           80 │
+│ time_this_iter_s                                                                    0.57153 │
+│ time_total_s                                                                        1.72549 │
+│ timesteps_total                                                                        8080 │
+│ training_iteration                                                                       40 │
+│ agent_timesteps_total                                                                 16160 │
+│ connector_metrics/ObsPreprocessorConnector_ms                         0.0037308037281036377 │
+│ connector_metrics/StateBufferConnector_ms                              0.003155320882797241 │
+│ connector_metrics/ViewRequirementAgentConnector_ms                       0.0691792368888855 │
+│ counters/num_agent_steps_sampled                                                      16160 │
+│ counters/num_agent_steps_trained                                                      16160 │
+│ counters/num_env_steps_sampled                                                         8080 │
+│ counters/num_env_steps_trained                                                         8080 │
+│ custom_metrics/assists_max                                                                1 │
+│ custom_metrics/assists_mean                                                            0.05 │
+│ custom_metrics/assists_min                                                                0 │
+│ custom_metrics/kills_max                                                                  5 │
+│ custom_metrics/kills_mean                                                            1.5375 │
+│ custom_metrics/kills_min                                                                  0 │
+│ custom_metrics/predator_0_assists_max                                                     1 │
+│ custom_metrics/predator_0_assists_mean                                               0.0375 │
+│ custom_metrics/predator_0_assists_min                                                     0 │
+│ custom_metrics/predator_0_kills_max                                                       3 │
+│ custom_metrics/predator_0_kills_mean                                                  0.775 │
+│ custom_metrics/predator_0_kills_min                                                       0 │
+│ custom_metrics/predator_1_assists_max                                                     1 │
+│ custom_metrics/predator_1_assists_mean                                               0.0125 │
+│ custom_metrics/predator_1_assists_min                                                     0 │
+│ custom_metrics/predator_1_kills_max                                                       4 │
+│ custom_metrics/predator_1_kills_mean                                                 0.7625 │
+│ custom_metrics/predator_1_kills_min                                                       0 │
+│ episode_len_mean                                                                       101. │
+│ episode_reward_max                                                                       5. │
+│ episode_reward_mean                                                                  1.5375 │
+│ episode_reward_min                                                                       0. │
+│ episodes_this_iter                                                                        2 │
+│ hist_stats/episode_lengths                                             ...1, 101, 101, 101] │
+│ hist_stats/episode_reward                                              ...0, 1.0, 1.0, 1.0] │
+│ hist_stats/policy_predator_0_reward                                    ...0, 0.0, 0.0, 1.0] │
+│ hist_stats/policy_predator_1_reward                                    ...0, 1.0, 1.0, 0.0] │
+│ info/learner/predator_0/diff_num_grad_updates_vs_sampler_policy                         6.5 │
+│ info/learner/predator_0/learner_stats/allreduce_latency                                 0.0 │
+│ info/learner/predator_0/learner_stats/cur_kl_coeff                   3.6379788070917137e-13 │
+│ info/learner/predator_0/learner_stats/cur_lr                         0.00010000000000000002 │
+│ info/learner/predator_0/learner_stats/entropy                            1.5964483278138297 │
+│ info/learner/predator_0/learner_stats/entropy_coeff                                     0.0 │
+│ info/learner/predator_0/learner_stats/grad_gnorm                        0.49192520337445395 │
+│ info/learner/predator_0/learner_stats/kl                              3.066238539111461e-05 │
+│ info/learner/predator_0/learner_stats/policy_loss                      0.012667868286371231 │
+│ info/learner/predator_0/learner_stats/total_loss                        0.13117593846150807 │
+│ info/learner/predator_0/learner_stats/vf_explained_var                 -0.06392840828214373 │
+│ info/learner/predator_0/learner_stats/vf_loss                           0.11850806857858386 │
+│ info/learner/predator_0/num_agent_steps_trained                          28.857142857142858 │
+│ info/learner/predator_0/num_grad_updates_lifetime                                     553.5 │
+│ info/learner/predator_1/diff_num_grad_updates_vs_sampler_policy                         6.5 │
+│ info/learner/predator_1/learner_stats/allreduce_latency                                 0.0 │
+│ info/learner/predator_1/learner_stats/cur_kl_coeff                   3.6379788070917137e-13 │
+│ info/learner/predator_1/learner_stats/cur_lr                         0.00010000000000000002 │
+│ info/learner/predator_1/learner_stats/entropy                            1.5837393403053284 │
+│ info/learner/predator_1/learner_stats/entropy_coeff                                     0.0 │
+│ info/learner/predator_1/learner_stats/grad_gnorm                         0.6128259386335101 │
+│ info/learner/predator_1/learner_stats/kl                              4.418285925567034e-05 │
+│ info/learner/predator_1/learner_stats/policy_loss                     -0.013377339978303229 │
+│ info/learner/predator_1/learner_stats/total_loss                        0.09618345155779805 │
+│ info/learner/predator_1/learner_stats/vf_explained_var                   0.0709083718912942 │
+│ info/learner/predator_1/learner_stats/vf_loss                            0.1095607935317925 │
+│ info/learner/predator_1/num_agent_steps_trained                          28.857142857142858 │
+│ info/learner/predator_1/num_grad_updates_lifetime                                     553.5 │
+│ info/num_agent_steps_sampled                                                          16160 │
+│ info/num_agent_steps_trained                                                          16160 │
+│ info/num_env_steps_sampled                                                             8080 │
+│ info/num_env_steps_trained                                                             8080 │
+│ num_agent_steps_sampled                                                               16160 │
+│ num_agent_steps_trained                                                               16160 │
+│ num_env_steps_sampled                                                                  8080 │
+│ num_env_steps_sampled_this_iter                                                         202 │
+│ num_env_steps_sampled_throughput_per_sec                                          355.99328 │
+│ num_env_steps_trained                                                                  8080 │
+│ num_env_steps_trained_this_iter                                                         202 │
+│ num_env_steps_trained_throughput_per_sec                                          355.99328 │
+│ num_faulty_episodes                                                                       0 │
+│ num_healthy_workers                                                                       0 │
+│ num_in_flight_async_reqs                                                                  0 │
+│ num_remote_worker_restarts                                                                0 │
+│ num_steps_trained_this_iter                                                             202 │
+│ perf/cpu_util_percent                                                                  14.3 │
+│ perf/ram_util_percent                                                                  26.8 │
+│ policy_reward_max/predator_0                                                            3.0 │
+│ policy_reward_max/predator_1                                                            4.0 │
+│ policy_reward_mean/predator_0                                                         0.775 │
+│ policy_reward_mean/predator_1                                                        0.7625 │
+│ policy_reward_min/predator_0                                                            0.0 │
+│ policy_reward_min/predator_1                                                            0.0 │
+│ sampler_perf/mean_action_processing_ms                                   0.1748241444796595 │
+│ sampler_perf/mean_env_render_ms                                                         0.0 │
+│ sampler_perf/mean_env_wait_ms                                           0.11469814122099867 │
+│ sampler_perf/mean_inference_ms                                           1.7459057806981684 │
+│ sampler_perf/mean_raw_obs_processing_ms                                  0.4070566651605546 │
+│ sampler_results/connector_metrics/ObsPreprocessorConnector_ms         0.0037308037281036377 │
+│ sampler_results/connector_metrics/StateBufferConnector_ms              0.003155320882797241 │
+│ sampler_results/connector_metrics/ViewRequirementAgentConnector_ms       0.0691792368888855 │
+│ sampler_results/custom_metrics/assists_max                                                1 │
+│ sampler_results/custom_metrics/assists_mean                                            0.05 │
+│ sampler_results/custom_metrics/assists_min                                                0 │
+│ sampler_results/custom_metrics/kills_max                                                  5 │
+│ sampler_results/custom_metrics/kills_mean                                            1.5375 │
+│ sampler_results/custom_metrics/kills_min                                                  0 │
+│ sampler_results/custom_metrics/predator_0_assists_max                                     1 │
+│ sampler_results/custom_metrics/predator_0_assists_mean                               0.0375 │
+│ sampler_results/custom_metrics/predator_0_assists_min                                     0 │
+│ sampler_results/custom_metrics/predator_0_kills_max                                       3 │
+│ sampler_results/custom_metrics/predator_0_kills_mean                                  0.775 │
+│ sampler_results/custom_metrics/predator_0_kills_min                                       0 │
+│ sampler_results/custom_metrics/predator_1_assists_max                                     1 │
+│ sampler_results/custom_metrics/predator_1_assists_mean                               0.0125 │
+│ sampler_results/custom_metrics/predator_1_assists_min                                     0 │
+│ sampler_results/custom_metrics/predator_1_kills_max                                       4 │
+│ sampler_results/custom_metrics/predator_1_kills_mean                                 0.7625 │
+│ sampler_results/custom_metrics/predator_1_kills_min                                       0 │
+│ sampler_results/episode_len_mean                                                      101.0 │
+│ sampler_results/episode_reward_max                                                      5.0 │
+│ sampler_results/episode_reward_mean                                                  1.5375 │
+│ sampler_results/episode_reward_min                                                      0.0 │
+│ sampler_results/episodes_this_iter                                                        2 │
+│ sampler_results/hist_stats/episode_lengths                             ...1, 101, 101, 101] │
+│ sampler_results/hist_stats/episode_reward                              ...0, 1.0, 1.0, 1.0] │
+│ sampler_results/hist_stats/policy_predator_0_reward                    ...0, 0.0, 0.0, 1.0] │
+│ sampler_results/hist_stats/policy_predator_1_reward                    ...0, 1.0, 1.0, 0.0] │
+│ sampler_results/num_faulty_episodes                                                       0 │
+│ sampler_results/policy_reward_max/predator_0                                            3.0 │
+│ sampler_results/policy_reward_max/predator_1                                            4.0 │
+│ sampler_results/policy_reward_mean/predator_0                                         0.775 │
+│ sampler_results/policy_reward_mean/predator_1                                        0.7625 │
+│ sampler_results/policy_reward_min/predator_0                                            0.0 │
+│ sampler_results/policy_reward_min/predator_1                                            0.0 │
+│ sampler_results/sampler_perf/mean_action_processing_ms                   0.1748241444796595 │
+│ sampler_results/sampler_perf/mean_env_render_ms                                         0.0 │
+│ sampler_results/sampler_perf/mean_env_wait_ms                           0.11469814122099867 │
+│ sampler_results/sampler_perf/mean_inference_ms                           1.7459057806981684 │
+│ sampler_results/sampler_perf/mean_raw_obs_processing_ms                  0.4070566651605546 │
+│ timers/learn_throughput                                                            1912.814 │
+│ timers/learn_time_ms                                                                105.604 │
+│ timers/sample_time_ms                                                               477.022 │
+│ timers/synch_weights_time_ms                                                          0.008 │
+│ timers/training_iteration_time_ms                                                   583.058 │
+╰─────────────────────────────────────────────────────────────────────────────────────────────╯
+
+Trial train_algo_77fc8_00004 started with configuration:
+╭──────────────────────────────────────────────────────────────╮
+│ Trial train_algo_77fc8_00004 config                          │
+├──────────────────────────────────────────────────────────────┤
+│ algorithm_class                                          ppo │
+│ algorithm_type                                   independent │
+│ analysis/analysis                                      False │
+│ analysis/ccm_E                                             4 │
+│ analysis/ccm_tau                                           1 │
+│ analysis/dimensions                     ...'PCA_1', 'PCA_2'] │
+│ analysis/length_fac                                      500 │
+│ analysis/num_trials                                        5 │
+│ analysis/policy_set                     ...ginal', '_fixed'] │
+│ analysis/pref_ccm_analysis                              True │
+│ analysis/pref_granger_analysis                         False │
+│ analysis/pref_graph_analysis                           False │
+│ analysis/pref_spatial_ccm_analysis                     False │
+│ env_config/map_size                                       15 │
+│ env_config/max_cycles                                    100 │
+│ env_config/npred                                           2 │
+│ env_config/nprey                                           6 │
+│ env_config/pred_vision                                     2 │
+│ env_config/prey_type                                  static │
+│ env_config/reward_type                                type_1 │
+│ env_name                                      discrete_pp_v1 │
+│ evaluate/eval_episodes                                   500 │
+│ framework                                              torch │
+│ ray/init_dashboard                                     False │
+│ rollouts/batch_mode                        complete_episodes │
+│ rollouts/num_rollout_workers                               0 │
+│ stop_fn                                 ...t 0x14d4ce8d9fc0> │
+│ training/lr                                           0.0001 │
+│ training/model/conv_activation                          relu │
+│ training/model/conv_filters                [[16, [2, 2], 1]] │
+│ training/model/fcnet_activation                         relu │
+│ training/model/fcnet_hiddens                           [128] │
+│ training/model/lstm_cell_size                            256 │
+│ training/model/lstm_use_prev_action                     True │
+│ training/model/lstm_use_prev_reward                     True │
+│ training/model/max_seq_len                                10 │
+│ training/model/use_lstm                                 True │
+│ training/model/vf_share_layers                          True │
+│ training/num_sgd_iter                                      2 │
+│ training/sgd_minibatch_size                               32 │
+│ training/train_batch_size                                128 │
+│ training/use_critic                                     True │
+│ training/use_kl_loss                                    True │
+│ tune/max_concurrent_trials                                 2 │
+│ tune/max_episodes                                         50 │
+│ tune/num_samples                                           2 │
+│ tune/tune                                               True │
+│ wandb/wandb_dir_path                    ...edator-prey/wandb │
+│ wandb/wandb_entity                                       tpn │
+│ wandb/wandb_init                                       False │
+│ wandb/wandb_log_freq                                      50 │
+│ wandb/wandb_notes                              testing setup │
+│ wandb/wandb_project                                   rllib1 │
+╰──────────────────────────────────────────────────────────────╯
+[36m(train_algo pid=240727)[0m WORKING DIRECTIRY: /data/gpfs/projects/punim1355/dalmiapriyam/predator-prey/experiments/train_algo_2023-12-11_16-45-06/train_algo_77fc8_00004_4_fcnet_hiddens=128,use_lstm=True_2023-12-11_16-46-46[32m [repeated 2x across cluster][0m
+
+Trial status: 3 TERMINATED | 2 RUNNING
+Current time: 2023-12-11 16:46:49. Total running time: 1min 30s
+Logical resource usage: 1.0/72 CPUs, 0/0 GPUs
+Current best trial: 77fc8_00000 with episode_len_mean=101.0 and params={'algorithm_type': 'independent', 'algorithm_class': 'ppo', 'framework': 'torch', 'tune': {'tune': True, 'num_samples': 2, 'max_episodes': 50, 'max_concurrent_trials': 2}, 'analysis': {'num_trials': 5, 'analysis': False, 'policy_set': ['original', '_fixed'], 'dimensions': ['dx', 'dy', 'PCA_1', 'PCA_2'], 'length_fac': 500, 'ccm_tau': 1, 'ccm_E': 4, 'pref_ccm_analysis': True, 'pref_granger_analysis': False, 'pref_graph_analysis': False, 'pref_spatial_ccm_analysis': False}, 'training': {'lr': 0.0001, 'use_critic': True, 'use_kl_loss': True, 'sgd_minibatch_size': 32, 'num_sgd_iter': 2, 'train_batch_size': 128, 'model': {'fcnet_hiddens': [128], 'fcnet_activation': 'relu', 'conv_activation': 'relu', 'conv_filters': [[16, [2, 2], 1]], 'use_lstm': True, 'lstm_cell_size': 256, 'max_seq_len': 10, 'lstm_use_prev_reward': True, 'lstm_use_prev_action': True, 'vf_share_layers': True}}, 'evaluate': {'eval_episodes': 500}, 'rollouts': {'num_rollout_workers': 0, 'batch_mode': 'complete_episodes'}, 'wandb': {'wandb_init': False, 'wandb_project': 'rllib1', 'wandb_entity': 'tpn', 'wandb_notes': 'testing setup', 'wandb_log_freq': 50, 'wandb_dir_path': '/data/gpfs/projects/punim1355/dalmiapriyam/predator-prey/wandb'}, 'env_name': 'discrete_pp_v1', 'env_config': {'map_size': 15, 'pred_vision': 2, 'prey_type': 'static', 'max_cycles': 100, 'npred': 2, 'nprey': 6, 'reward_type': 'type_1'}, 'ray': {'init_dashboard': False}, 'stop_fn': <function main.<locals>.stop_fn at 0x14d46655c0d0>}
+╭───────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────╮
+│ Trial name               status       ...del/fcnet_hiddens     ...ng/model/use_lstm       iter     total time (s)     ts     reward     episode_reward_max     episode_reward_min     episode_len_mean     episodes_this_iter │
+├───────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┤
+│ train_algo_77fc8_00003   RUNNING      [256]                    False                        20            1.20879   4040     1.225                       3                      0                  101                      2 │
+│ train_algo_77fc8_00004   RUNNING      [128]                    True                          1            1.27626    202     2.5                         3                      2                  101                      2 │
+│ train_algo_77fc8_00000   TERMINATED   [128]                    True                         40            3.91965   8080     1.475                       5                      0                  101                      2 │
+│ train_algo_77fc8_00001   TERMINATED   [256]                    True                         40            4.04891   8080     1.3125                      4                      0                  101                      2 │
+│ train_algo_77fc8_00002   TERMINATED   [128]                    False                        40            1.72549   8080     1.5375                      5                      0                  101                      2 │
+╰───────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────╯
+
+Trial train_algo_77fc8_00003 completed after 40 iterations at 2023-12-11 16:46:50. Total running time: 1min 30s
+╭─────────────────────────────────────────────────────────────────────────────────────────────╮
+│ Trial train_algo_77fc8_00003 result                                                         │
+├─────────────────────────────────────────────────────────────────────────────────────────────┤
+│ checkpoint_dir_name                                                                         │
+│ episodes_total                                                                           80 │
+│ time_this_iter_s                                                                    0.58706 │
+│ time_total_s                                                                        1.79585 │
+│ timesteps_total                                                                        8080 │
+│ training_iteration                                                                       40 │
+│ agent_timesteps_total                                                                 16160 │
+│ connector_metrics/ObsPreprocessorConnector_ms                          0.003840923309326172 │
+│ connector_metrics/StateBufferConnector_ms                              0.002974569797515869 │
+│ connector_metrics/ViewRequirementAgentConnector_ms                       0.0694875419139862 │
+│ counters/num_agent_steps_sampled                                                      16160 │
+│ counters/num_agent_steps_trained                                                      16160 │
+│ counters/num_env_steps_sampled                                                         8080 │
+│ counters/num_env_steps_trained                                                         8080 │
+│ custom_metrics/assists_max                                                                1 │
+│ custom_metrics/assists_mean                                                          0.1125 │
+│ custom_metrics/assists_min                                                                0 │
+│ custom_metrics/kills_max                                                                  4 │
+│ custom_metrics/kills_mean                                                            1.2625 │
+│ custom_metrics/kills_min                                                                  0 │
+│ custom_metrics/predator_0_assists_max                                                     1 │
+│ custom_metrics/predator_0_assists_mean                                               0.0625 │
+│ custom_metrics/predator_0_assists_min                                                     0 │
+│ custom_metrics/predator_0_kills_max                                                       3 │
+│ custom_metrics/predator_0_kills_mean                                                 0.5875 │
+│ custom_metrics/predator_0_kills_min                                                       0 │
+│ custom_metrics/predator_1_assists_max                                                     1 │
+│ custom_metrics/predator_1_assists_mean                                                 0.05 │
+│ custom_metrics/predator_1_assists_min                                                     0 │
+│ custom_metrics/predator_1_kills_max                                                       3 │
+│ custom_metrics/predator_1_kills_mean                                                  0.675 │
+│ custom_metrics/predator_1_kills_min                                                       0 │
+│ episode_len_mean                                                                       101. │
+│ episode_reward_max                                                                       4. │
+│ episode_reward_mean                                                                  1.2625 │
+│ episode_reward_min                                                                       0. │
+│ episodes_this_iter                                                                        2 │
+│ hist_stats/episode_lengths                                             ...1, 101, 101, 101] │
+│ hist_stats/episode_reward                                              ...0, 3.0, 1.0, 3.0] │
+│ hist_stats/policy_predator_0_reward                                    ...0, 1.0, 0.0, 3.0] │
+│ hist_stats/policy_predator_1_reward                                    ...0, 2.0, 1.0, 0.0] │
+│ info/learner/predator_0/diff_num_grad_updates_vs_sampler_policy                         6.5 │
+│ info/learner/predator_0/learner_stats/allreduce_latency                                 0.0 │
+│ info/learner/predator_0/learner_stats/cur_kl_coeff                   3.6379788070917137e-13 │
+│ info/learner/predator_0/learner_stats/cur_lr                         0.00010000000000000002 │
+│ info/learner/predator_0/learner_stats/entropy                             1.565996493612017 │
+│ info/learner/predator_0/learner_stats/entropy_coeff                                     0.0 │
+│ info/learner/predator_0/learner_stats/grad_gnorm                         1.2286648899316788 │
+│ info/learner/predator_0/learner_stats/kl                             0.00023287075311673178 │
+│ info/learner/predator_0/learner_stats/policy_loss                     -0.021106368729046414 │
+│ info/learner/predator_0/learner_stats/total_loss                           0.91325472508158 │
+│ info/learner/predator_0/learner_stats/vf_explained_var               0.00039395264216831753 │
+│ info/learner/predator_0/learner_stats/vf_loss                            0.9343610831669399 │
+│ info/learner/predator_0/num_agent_steps_trained                          28.857142857142858 │
+│ info/learner/predator_0/num_grad_updates_lifetime                                     553.5 │
+│ info/learner/predator_1/diff_num_grad_updates_vs_sampler_policy                         6.5 │
+│ info/learner/predator_1/learner_stats/allreduce_latency                                 0.0 │
+│ info/learner/predator_1/learner_stats/cur_kl_coeff                   3.6379788070917137e-13 │
+│ info/learner/predator_1/learner_stats/cur_lr                         0.00010000000000000002 │
+│ info/learner/predator_1/learner_stats/entropy                            1.4419958591461182 │
+│ info/learner/predator_1/learner_stats/entropy_coeff                                     0.0 │
+│ info/learner/predator_1/learner_stats/grad_gnorm                          0.855425591979708 │
+│ info/learner/predator_1/learner_stats/kl                             0.00019227742917442875 │
+│ info/learner/predator_1/learner_stats/policy_loss                      0.014744008492146219 │
+│ info/learner/predator_1/learner_stats/total_loss                        0.09994207189551421 │
+│ info/learner/predator_1/learner_stats/vf_explained_var                 -0.23255469969340734 │
+│ info/learner/predator_1/learner_stats/vf_loss                           0.08519806420164448 │
+│ info/learner/predator_1/num_agent_steps_trained                          28.857142857142858 │
+│ info/learner/predator_1/num_grad_updates_lifetime                                     553.5 │
+│ info/num_agent_steps_sampled                                                          16160 │
+│ info/num_agent_steps_trained                                                          16160 │
+│ info/num_env_steps_sampled                                                             8080 │
+│ info/num_env_steps_trained                                                             8080 │
+│ num_agent_steps_sampled                                                               16160 │
+│ num_agent_steps_trained                                                               16160 │
+│ num_env_steps_sampled                                                                  8080 │
+│ num_env_steps_sampled_this_iter                                                         202 │
+│ num_env_steps_sampled_throughput_per_sec                                          346.63712 │
+│ num_env_steps_trained                                                                  8080 │
+│ num_env_steps_trained_this_iter                                                         202 │
+│ num_env_steps_trained_throughput_per_sec                                          346.63712 │
+│ num_faulty_episodes                                                                       0 │
+│ num_healthy_workers                                                                       0 │
+│ num_in_flight_async_reqs                                                                  0 │
+│ num_remote_worker_restarts                                                                0 │
+│ num_steps_trained_this_iter                                                             202 │
+│ policy_reward_max/predator_0                                                            3.0 │
+│ policy_reward_max/predator_1                                                            3.0 │
+│ policy_reward_mean/predator_0                                                        0.5875 │
+│ policy_reward_mean/predator_1                                                         0.675 │
+│ policy_reward_min/predator_0                                                            0.0 │
+│ policy_reward_min/predator_1                                                            0.0 │
+│ sampler_perf/mean_action_processing_ms                                  0.17524050346879355 │
+│ sampler_perf/mean_env_render_ms                                                         0.0 │
+│ sampler_perf/mean_env_wait_ms                                           0.11650756811113157 │
+│ sampler_perf/mean_inference_ms                                           1.7625515418417046 │
+│ sampler_perf/mean_raw_obs_processing_ms                                  0.4083011718948189 │
+│ sampler_results/connector_metrics/ObsPreprocessorConnector_ms          0.003840923309326172 │
+│ sampler_results/connector_metrics/StateBufferConnector_ms              0.002974569797515869 │
+│ sampler_results/connector_metrics/ViewRequirementAgentConnector_ms       0.0694875419139862 │
+│ sampler_results/custom_metrics/assists_max                                                1 │
+│ sampler_results/custom_metrics/assists_mean                                          0.1125 │
+│ sampler_results/custom_metrics/assists_min                                                0 │
+│ sampler_results/custom_metrics/kills_max                                                  4 │
+│ sampler_results/custom_metrics/kills_mean                                            1.2625 │
+│ sampler_results/custom_metrics/kills_min                                                  0 │
+│ sampler_results/custom_metrics/predator_0_assists_max                                     1 │
+│ sampler_results/custom_metrics/predator_0_assists_mean                               0.0625 │
+│ sampler_results/custom_metrics/predator_0_assists_min                                     0 │
+│ sampler_results/custom_metrics/predator_0_kills_max                                       3 │
+│ sampler_results/custom_metrics/predator_0_kills_mean                                 0.5875 │
+│ sampler_results/custom_metrics/predator_0_kills_min                                       0 │
+│ sampler_results/custom_metrics/predator_1_assists_max                                     1 │
+│ sampler_results/custom_metrics/predator_1_assists_mean                                 0.05 │
+│ sampler_results/custom_metrics/predator_1_assists_min                                     0 │
+│ sampler_results/custom_metrics/predator_1_kills_max                                       3 │
+│ sampler_results/custom_metrics/predator_1_kills_mean                                  0.675 │
+│ sampler_results/custom_metrics/predator_1_kills_min                                       0 │
+│ sampler_results/episode_len_mean                                                      101.0 │
+│ sampler_results/episode_reward_max                                                      4.0 │
+│ sampler_results/episode_reward_mean                                                  1.2625 │
+│ sampler_results/episode_reward_min                                                      0.0 │
+│ sampler_results/episodes_this_iter                                                        2 │
+│ sampler_results/hist_stats/episode_lengths                             ...1, 101, 101, 101] │
+│ sampler_results/hist_stats/episode_reward                              ...0, 3.0, 1.0, 3.0] │
+│ sampler_results/hist_stats/policy_predator_0_reward                    ...0, 1.0, 0.0, 3.0] │
+│ sampler_results/hist_stats/policy_predator_1_reward                    ...0, 2.0, 1.0, 0.0] │
+│ sampler_results/num_faulty_episodes                                                       0 │
+│ sampler_results/policy_reward_max/predator_0                                            3.0 │
+│ sampler_results/policy_reward_max/predator_1                                            3.0 │
+│ sampler_results/policy_reward_mean/predator_0                                        0.5875 │
+│ sampler_results/policy_reward_mean/predator_1                                         0.675 │
+│ sampler_results/policy_reward_min/predator_0                                            0.0 │
+│ sampler_results/policy_reward_min/predator_1                                            0.0 │
+│ sampler_results/sampler_perf/mean_action_processing_ms                  0.17524050346879355 │
+│ sampler_results/sampler_perf/mean_env_render_ms                                         0.0 │
+│ sampler_results/sampler_perf/mean_env_wait_ms                           0.11650756811113157 │
+│ sampler_results/sampler_perf/mean_inference_ms                           1.7625515418417046 │
+│ sampler_results/sampler_perf/mean_raw_obs_processing_ms                  0.4083011718948189 │
+│ timers/learn_throughput                                                            1656.364 │
+│ timers/learn_time_ms                                                                121.954 │
+│ timers/sample_time_ms                                                               498.186 │
+│ timers/synch_weights_time_ms                                                          0.008 │
+│ timers/training_iteration_time_ms                                                   620.617 │
+╰─────────────────────────────────────────────────────────────────────────────────────────────╯
+
+Trial train_algo_77fc8_00005 started with configuration:
+╭──────────────────────────────────────────────────────────────╮
+│ Trial train_algo_77fc8_00005 config                          │
+├──────────────────────────────────────────────────────────────┤
+│ algorithm_class                                          ppo │
+│ algorithm_type                                   independent │
+│ analysis/analysis                                      False │
+│ analysis/ccm_E                                             4 │
+│ analysis/ccm_tau                                           1 │
+│ analysis/dimensions                     ...'PCA_1', 'PCA_2'] │
+│ analysis/length_fac                                      500 │
+│ analysis/num_trials                                        5 │
+│ analysis/policy_set                     ...ginal', '_fixed'] │
+│ analysis/pref_ccm_analysis                              True │
+│ analysis/pref_granger_analysis                         False │
+│ analysis/pref_graph_analysis                           False │
+│ analysis/pref_spatial_ccm_analysis                     False │
+│ env_config/map_size                                       15 │
+│ env_config/max_cycles                                    100 │
+│ env_config/npred                                           2 │
+│ env_config/nprey                                           6 │
+│ env_config/pred_vision                                     2 │
+│ env_config/prey_type                                  static │
+│ env_config/reward_type                                type_1 │
+│ env_name                                      discrete_pp_v1 │
+│ evaluate/eval_episodes                                   500 │
+│ framework                                              torch │
+│ ray/init_dashboard                                     False │
+│ rollouts/batch_mode                        complete_episodes │
+│ rollouts/num_rollout_workers                               0 │
+│ stop_fn                                 ...t 0x14d4ce8d9fc0> │
+│ training/lr                                           0.0001 │
+│ training/model/conv_activation                          relu │
+│ training/model/conv_filters                [[16, [2, 2], 1]] │
+│ training/model/fcnet_activation                         relu │
+│ training/model/fcnet_hiddens                           [256] │
+│ training/model/lstm_cell_size                            256 │
+│ training/model/lstm_use_prev_action                     True │
+│ training/model/lstm_use_prev_reward                     True │
+│ training/model/max_seq_len                                10 │
+│ training/model/use_lstm                                 True │
+│ training/model/vf_share_layers                          True │
+│ training/num_sgd_iter                                      2 │
+│ training/sgd_minibatch_size                               32 │
+│ training/train_batch_size                                128 │
+│ training/use_critic                                     True │
+│ training/use_kl_loss                                    True │
+│ tune/max_concurrent_trials                                 2 │
+│ tune/max_episodes                                         50 │
+│ tune/num_samples                                           2 │
+│ tune/tune                                               True │
+│ wandb/wandb_dir_path                    ...edator-prey/wandb │
+│ wandb/wandb_entity                                       tpn │
+│ wandb/wandb_init                                       False │
+│ wandb/wandb_log_freq                                      50 │
+│ wandb/wandb_notes                              testing setup │
+│ wandb/wandb_project                                   rllib1 │
+╰──────────────────────────────────────────────────────────────╯
+
+Trial status: 4 TERMINATED | 2 RUNNING
+Current time: 2023-12-11 16:47:20. Total running time: 2min 0s
+Logical resource usage: 1.0/72 CPUs, 0/0 GPUs
+Current best trial: 77fc8_00000 with episode_len_mean=101.0 and params={'algorithm_type': 'independent', 'algorithm_class': 'ppo', 'framework': 'torch', 'tune': {'tune': True, 'num_samples': 2, 'max_episodes': 50, 'max_concurrent_trials': 2}, 'analysis': {'num_trials': 5, 'analysis': False, 'policy_set': ['original', '_fixed'], 'dimensions': ['dx', 'dy', 'PCA_1', 'PCA_2'], 'length_fac': 500, 'ccm_tau': 1, 'ccm_E': 4, 'pref_ccm_analysis': True, 'pref_granger_analysis': False, 'pref_graph_analysis': False, 'pref_spatial_ccm_analysis': False}, 'training': {'lr': 0.0001, 'use_critic': True, 'use_kl_loss': True, 'sgd_minibatch_size': 32, 'num_sgd_iter': 2, 'train_batch_size': 128, 'model': {'fcnet_hiddens': [128], 'fcnet_activation': 'relu', 'conv_activation': 'relu', 'conv_filters': [[16, [2, 2], 1]], 'use_lstm': True, 'lstm_cell_size': 256, 'max_seq_len': 10, 'lstm_use_prev_reward': True, 'lstm_use_prev_action': True, 'vf_share_layers': True}}, 'evaluate': {'eval_episodes': 500}, 'rollouts': {'num_rollout_workers': 0, 'batch_mode': 'complete_episodes'}, 'wandb': {'wandb_init': False, 'wandb_project': 'rllib1', 'wandb_entity': 'tpn', 'wandb_notes': 'testing setup', 'wandb_log_freq': 50, 'wandb_dir_path': '/data/gpfs/projects/punim1355/dalmiapriyam/predator-prey/wandb'}, 'env_name': 'discrete_pp_v1', 'env_config': {'map_size': 15, 'pred_vision': 2, 'prey_type': 'static', 'max_cycles': 100, 'npred': 2, 'nprey': 6, 'reward_type': 'type_1'}, 'ray': {'init_dashboard': False}, 'stop_fn': <function main.<locals>.stop_fn at 0x14d46655c0d0>}
+╭───────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────╮
+│ Trial name               status       ...del/fcnet_hiddens     ...ng/model/use_lstm       iter     total time (s)     ts     reward     episode_reward_max     episode_reward_min     episode_len_mean     episodes_this_iter │
+├───────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┤
+│ train_algo_77fc8_00004   RUNNING      [128]                    True                         20            2.61875   4040     1.475                       3                      0                  101                      2 │
+│ train_algo_77fc8_00005   RUNNING      [256]                    True                          1            1.50157    202     1                           2                      0                  101                      2 │
+│ train_algo_77fc8_00000   TERMINATED   [128]                    True                         40            3.91965   8080     1.475                       5                      0                  101                      2 │
+│ train_algo_77fc8_00001   TERMINATED   [256]                    True                         40            4.04891   8080     1.3125                      4                      0                  101                      2 │
+│ train_algo_77fc8_00002   TERMINATED   [128]                    False                        40            1.72549   8080     1.5375                      5                      0                  101                      2 │
+│ train_algo_77fc8_00003   TERMINATED   [256]                    False                        40            1.79585   8080     1.2625                      4                      0                  101                      2 │
+╰───────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────╯
+
+Trial train_algo_77fc8_00004 completed after 40 iterations at 2023-12-11 16:47:40. Total running time: 2min 20s
+╭─────────────────────────────────────────────────────────────────────────────────────────────╮
+│ Trial train_algo_77fc8_00004 result                                                         │
+├─────────────────────────────────────────────────────────────────────────────────────────────┤
+│ checkpoint_dir_name                                                                         │
+│ episodes_total                                                                           80 │
+│ time_this_iter_s                                                                    1.32757 │
+│ time_total_s                                                                        3.94632 │
+│ timesteps_total                                                                        8080 │
+│ training_iteration                                                                       40 │
+│ agent_timesteps_total                                                                 16160 │
+│ connector_metrics/ObsPreprocessorConnector_ms                          0.005194991827011108 │
+│ connector_metrics/StateBufferConnector_ms                              0.005192607641220093 │
+│ connector_metrics/ViewRequirementAgentConnector_ms                      0.14714166522026062 │
+│ counters/num_agent_steps_sampled                                                      16160 │
+│ counters/num_agent_steps_trained                                                      16160 │
+│ counters/num_env_steps_sampled                                                         8080 │
+│ counters/num_env_steps_trained                                                         8080 │
+│ custom_metrics/assists_max                                                                1 │
+│ custom_metrics/assists_mean                                                           0.075 │
+│ custom_metrics/assists_min                                                                0 │
+│ custom_metrics/kills_max                                                                  3 │
+│ custom_metrics/kills_mean                                                             1.275 │
+│ custom_metrics/kills_min                                                                  0 │
+│ custom_metrics/predator_0_assists_max                                                     1 │
+│ custom_metrics/predator_0_assists_mean                                               0.0625 │
+│ custom_metrics/predator_0_assists_min                                                     0 │
+│ custom_metrics/predator_0_kills_max                                                       3 │
+│ custom_metrics/predator_0_kills_mean                                                   0.65 │
+│ custom_metrics/predator_0_kills_min                                                       0 │
+│ custom_metrics/predator_1_assists_max                                                     1 │
+│ custom_metrics/predator_1_assists_mean                                               0.0125 │
+│ custom_metrics/predator_1_assists_min                                                     0 │
+│ custom_metrics/predator_1_kills_max                                                       2 │
+│ custom_metrics/predator_1_kills_mean                                                  0.625 │
+│ custom_metrics/predator_1_kills_min                                                       0 │
+│ episode_len_mean                                                                       101. │
+│ episode_reward_max                                                                       3. │
+│ episode_reward_mean                                                                   1.275 │
+│ episode_reward_min                                                                       0. │
+│ episodes_this_iter                                                                        2 │
+│ hist_stats/episode_lengths                                             ...1, 101, 101, 101] │
+│ hist_stats/episode_reward                                              ...0, 2.0, 1.0, 2.0] │
+│ hist_stats/policy_predator_0_reward                                    ...0, 1.0, 1.0, 1.0] │
+│ hist_stats/policy_predator_1_reward                                    ...0, 1.0, 0.0, 1.0] │
+│ info/learner/predator_0/diff_num_grad_updates_vs_sampler_policy                         5.5 │
+│ info/learner/predator_0/learner_stats/allreduce_latency                                 0.0 │
+│ info/learner/predator_0/learner_stats/cur_kl_coeff                   3.6379788070917137e-13 │
+│ info/learner/predator_0/learner_stats/cur_lr                                         0.0001 │
+│ info/learner/predator_0/learner_stats/entropy                             1.604051947593689 │
+│ info/learner/predator_0/learner_stats/entropy_coeff                                     0.0 │
+│ info/learner/predator_0/learner_stats/grad_gnorm                         0.8427793060739835 │
+│ info/learner/predator_0/learner_stats/kl                             2.4156150995935377e-05 │
+│ info/learner/predator_0/learner_stats/policy_loss                      -0.07009762277205785 │
+│ info/learner/predator_0/learner_stats/total_loss                        0.09955744196971257 │
+│ info/learner/predator_0/learner_stats/vf_explained_var                  -0.3006621499856313 │
+│ info/learner/predator_0/learner_stats/vf_loss                            0.1696550523241361 │
+│ info/learner/predator_0/num_agent_steps_trained                                        32.0 │
+│ info/learner/predator_0/num_grad_updates_lifetime                                     474.5 │
+│ info/learner/predator_1/diff_num_grad_updates_vs_sampler_policy                         5.5 │
+│ info/learner/predator_1/learner_stats/allreduce_latency                                 0.0 │
+│ info/learner/predator_1/learner_stats/cur_kl_coeff                   3.6379788070917137e-13 │
+│ info/learner/predator_1/learner_stats/cur_lr                                         0.0001 │
+│ info/learner/predator_1/learner_stats/entropy                            1.6044884125391643 │
+│ info/learner/predator_1/learner_stats/entropy_coeff                                     0.0 │
+│ info/learner/predator_1/learner_stats/grad_gnorm                         0.6852207581202189 │
+│ info/learner/predator_1/learner_stats/kl                              9.606322862435826e-06 │
+│ info/learner/predator_1/learner_stats/policy_loss                     -0.021067742258310318 │
+│ info/learner/predator_1/learner_stats/total_loss                        0.06391556312640508 │
+│ info/learner/predator_1/learner_stats/vf_explained_var                  -0.8272241453329722 │
+│ info/learner/predator_1/learner_stats/vf_loss                           0.08498327806591988 │
+│ info/learner/predator_1/num_agent_steps_trained                                        32.0 │
+│ info/learner/predator_1/num_grad_updates_lifetime                                     474.5 │
+│ info/num_agent_steps_sampled                                                          16160 │
+│ info/num_agent_steps_trained                                                          16160 │
+│ info/num_env_steps_sampled                                                             8080 │
+│ info/num_env_steps_trained                                                             8080 │
+│ num_agent_steps_sampled                                                               16160 │
+│ num_agent_steps_trained                                                               16160 │
+│ num_env_steps_sampled                                                                  8080 │
+│ num_env_steps_sampled_this_iter                                                         202 │
+│ num_env_steps_sampled_throughput_per_sec                                           152.6647 │
+│ num_env_steps_trained                                                                  8080 │
+│ num_env_steps_trained_this_iter                                                         202 │
+│ num_env_steps_trained_throughput_per_sec                                           152.6647 │
+│ num_faulty_episodes                                                                       0 │
+│ num_healthy_workers                                                                       0 │
+│ num_in_flight_async_reqs                                                                  0 │
+│ num_remote_worker_restarts                                                                0 │
+│ num_steps_trained_this_iter                                                             202 │
+│ perf/cpu_util_percent                                                                 16.25 │
+│ perf/ram_util_percent                                                                 27.95 │
+│ policy_reward_max/predator_0                                                            3.0 │
+│ policy_reward_max/predator_1                                                            2.0 │
+│ policy_reward_mean/predator_0                                                          0.65 │
+│ policy_reward_mean/predator_1                                                         0.625 │
+│ policy_reward_min/predator_0                                                            0.0 │
+│ policy_reward_min/predator_1                                                            0.0 │
+│ sampler_perf/mean_action_processing_ms                                  0.20692993469100845 │
+│ sampler_perf/mean_env_render_ms                                                         0.0 │
+│ sampler_perf/mean_env_wait_ms                                             0.131567100003779 │
+│ sampler_perf/mean_inference_ms                                           3.6844887973182407 │
+│ sampler_perf/mean_raw_obs_processing_ms                                   0.651171241054705 │
+│ sampler_results/connector_metrics/ObsPreprocessorConnector_ms          0.005194991827011108 │
+│ sampler_results/connector_metrics/StateBufferConnector_ms              0.005192607641220093 │
+│ sampler_results/connector_metrics/ViewRequirementAgentConnector_ms      0.14714166522026062 │
+│ sampler_results/custom_metrics/assists_max                                                1 │
+│ sampler_results/custom_metrics/assists_mean                                           0.075 │
+│ sampler_results/custom_metrics/assists_min                                                0 │
+│ sampler_results/custom_metrics/kills_max                                                  3 │
+│ sampler_results/custom_metrics/kills_mean                                             1.275 │
+│ sampler_results/custom_metrics/kills_min                                                  0 │
+│ sampler_results/custom_metrics/predator_0_assists_max                                     1 │
+│ sampler_results/custom_metrics/predator_0_assists_mean                               0.0625 │
+│ sampler_results/custom_metrics/predator_0_assists_min                                     0 │
+│ sampler_results/custom_metrics/predator_0_kills_max                                       3 │
+│ sampler_results/custom_metrics/predator_0_kills_mean                                   0.65 │
+│ sampler_results/custom_metrics/predator_0_kills_min                                       0 │
+│ sampler_results/custom_metrics/predator_1_assists_max                                     1 │
+│ sampler_results/custom_metrics/predator_1_assists_mean                               0.0125 │
+│ sampler_results/custom_metrics/predator_1_assists_min                                     0 │
+│ sampler_results/custom_metrics/predator_1_kills_max                                       2 │
+│ sampler_results/custom_metrics/predator_1_kills_mean                                  0.625 │
+│ sampler_results/custom_metrics/predator_1_kills_min                                       0 │
+│ sampler_results/episode_len_mean                                                      101.0 │
+│ sampler_results/episode_reward_max                                                      3.0 │
+│ sampler_results/episode_reward_mean                                                   1.275 │
+│ sampler_results/episode_reward_min                                                      0.0 │
+│ sampler_results/episodes_this_iter                                                        2 │
+│ sampler_results/hist_stats/episode_lengths                             ...1, 101, 101, 101] │
+│ sampler_results/hist_stats/episode_reward                              ...0, 2.0, 1.0, 2.0] │
+│ sampler_results/hist_stats/policy_predator_0_reward                    ...0, 1.0, 1.0, 1.0] │
+│ sampler_results/hist_stats/policy_predator_1_reward                    ...0, 1.0, 0.0, 1.0] │
+│ sampler_results/num_faulty_episodes                                                       0 │
+│ sampler_results/policy_reward_max/predator_0                                            3.0 │
+│ sampler_results/policy_reward_max/predator_1                                            2.0 │
+│ sampler_results/policy_reward_mean/predator_0                                          0.65 │
+│ sampler_results/policy_reward_mean/predator_1                                         0.625 │
+│ sampler_results/policy_reward_min/predator_0                                            0.0 │
+│ sampler_results/policy_reward_min/predator_1                                            0.0 │
+│ sampler_results/sampler_perf/mean_action_processing_ms                  0.20692993469100845 │
+│ sampler_results/sampler_perf/mean_env_render_ms                                         0.0 │
+│ sampler_results/sampler_perf/mean_env_wait_ms                             0.131567100003779 │
+│ sampler_results/sampler_perf/mean_inference_ms                           3.6844887973182407 │
+│ sampler_results/sampler_perf/mean_raw_obs_processing_ms                   0.651171241054705 │
+│ timers/learn_throughput                                                             573.672 │
+│ timers/learn_time_ms                                                                352.118 │
+│ timers/sample_time_ms                                                              1000.221 │
+│ timers/synch_weights_time_ms                                                          0.009 │
+│ timers/training_iteration_time_ms                                                  1352.902 │
+╰─────────────────────────────────────────────────────────────────────────────────────────────╯
+
+Trial train_algo_77fc8_00006 started with configuration:
+╭──────────────────────────────────────────────────────────────╮
+│ Trial train_algo_77fc8_00006 config                          │
+├──────────────────────────────────────────────────────────────┤
+│ algorithm_class                                          ppo │
+│ algorithm_type                                   independent │
+│ analysis/analysis                                      False │
+│ analysis/ccm_E                                             4 │
+│ analysis/ccm_tau                                           1 │
+│ analysis/dimensions                     ...'PCA_1', 'PCA_2'] │
+│ analysis/length_fac                                      500 │
+│ analysis/num_trials                                        5 │
+│ analysis/policy_set                     ...ginal', '_fixed'] │
+│ analysis/pref_ccm_analysis                              True │
+│ analysis/pref_granger_analysis                         False │
+│ analysis/pref_graph_analysis                           False │
+│ analysis/pref_spatial_ccm_analysis                     False │
+│ env_config/map_size                                       15 │
+│ env_config/max_cycles                                    100 │
+│ env_config/npred                                           2 │
+│ env_config/nprey                                           6 │
+│ env_config/pred_vision                                     2 │
+│ env_config/prey_type                                  static │
+│ env_config/reward_type                                type_1 │
+│ env_name                                      discrete_pp_v1 │
+│ evaluate/eval_episodes                                   500 │
+│ framework                                              torch │
+│ ray/init_dashboard                                     False │
+│ rollouts/batch_mode                        complete_episodes │
+│ rollouts/num_rollout_workers                               0 │
+│ stop_fn                                 ...t 0x14d4ce8d9fc0> │
+│ training/lr                                           0.0001 │
+│ training/model/conv_activation                          relu │
+│ training/model/conv_filters                [[16, [2, 2], 1]] │
+│ training/model/fcnet_activation                         relu │
+│ training/model/fcnet_hiddens                           [128] │
+│ training/model/lstm_cell_size                            256 │
+│ training/model/lstm_use_prev_action                     True │
+│ training/model/lstm_use_prev_reward                     True │
+│ training/model/max_seq_len                                10 │
+│ training/model/use_lstm                                False │
+│ training/model/vf_share_layers                          True │
+│ training/num_sgd_iter                                      2 │
+│ training/sgd_minibatch_size                               32 │
+│ training/train_batch_size                                128 │
+│ training/use_critic                                     True │
+│ training/use_kl_loss                                    True │
+│ tune/max_concurrent_trials                                 2 │
+│ tune/max_episodes                                         50 │
+│ tune/num_samples                                           2 │
+│ tune/tune                                               True │
+│ wandb/wandb_dir_path                    ...edator-prey/wandb │
+│ wandb/wandb_entity                                       tpn │
+│ wandb/wandb_init                                       False │
+│ wandb/wandb_log_freq                                      50 │
+│ wandb/wandb_notes                              testing setup │
+│ wandb/wandb_project                                   rllib1 │
+╰──────────────────────────────────────────────────────────────╯
+[36m(train_algo pid=240727)[0m WORKING DIRECTIRY: /data/gpfs/projects/punim1355/dalmiapriyam/predator-prey/experiments/train_algo_2023-12-11_16-45-06/train_algo_77fc8_00006_6_fcnet_hiddens=128,use_lstm=False_2023-12-11_16-47-40[32m [repeated 2x across cluster][0m
+
+Trial train_algo_77fc8_00005 completed after 40 iterations at 2023-12-11 16:47:49. Total running time: 2min 29s
+╭─────────────────────────────────────────────────────────────────────────────────────────────╮
+│ Trial train_algo_77fc8_00005 result                                                         │
+├─────────────────────────────────────────────────────────────────────────────────────────────┤
+│ checkpoint_dir_name                                                                         │
+│ episodes_total                                                                           80 │
+│ time_this_iter_s                                                                    1.39101 │
+│ time_total_s                                                                         4.3294 │
+│ timesteps_total                                                                        8080 │
+│ training_iteration                                                                       40 │
+│ agent_timesteps_total                                                                 16160 │
+│ connector_metrics/ObsPreprocessorConnector_ms                          0.004967749118804932 │
+│ connector_metrics/StateBufferConnector_ms                              0.005294233560562134 │
+│ connector_metrics/ViewRequirementAgentConnector_ms                      0.14820918440818787 │
+│ counters/num_agent_steps_sampled                                                      16160 │
+│ counters/num_agent_steps_trained                                                      16160 │
+│ counters/num_env_steps_sampled                                                         8080 │
+│ counters/num_env_steps_trained                                                         8080 │
+│ custom_metrics/assists_max                                                                2 │
+│ custom_metrics/assists_mean                                                          0.1125 │
+│ custom_metrics/assists_min                                                                0 │
+│ custom_metrics/kills_max                                                                  4 │
+│ custom_metrics/kills_mean                                                              1.25 │
+│ custom_metrics/kills_min                                                                  0 │
+│ custom_metrics/predator_0_assists_max                                                     2 │
+│ custom_metrics/predator_0_assists_mean                                               0.0375 │
+│ custom_metrics/predator_0_assists_min                                                     0 │
+│ custom_metrics/predator_0_kills_max                                                       3 │
+│ custom_metrics/predator_0_kills_mean                                                    0.7 │
+│ custom_metrics/predator_0_kills_min                                                       0 │
+│ custom_metrics/predator_1_assists_max                                                     1 │
+│ custom_metrics/predator_1_assists_mean                                                0.075 │
+│ custom_metrics/predator_1_assists_min                                                     0 │
+│ custom_metrics/predator_1_kills_max                                                       2 │
+│ custom_metrics/predator_1_kills_mean                                                   0.55 │
+│ custom_metrics/predator_1_kills_min                                                       0 │
+│ episode_len_mean                                                                       101. │
+│ episode_reward_max                                                                       4. │
+│ episode_reward_mean                                                                    1.25 │
+│ episode_reward_min                                                                       0. │
+│ episodes_this_iter                                                                        2 │
+│ hist_stats/episode_lengths                                             ...1, 101, 101, 101] │
+│ hist_stats/episode_reward                                              ...0, 0.0, 2.0, 1.0] │
+│ hist_stats/policy_predator_0_reward                                    ...0, 0.0, 2.0, 1.0] │
+│ hist_stats/policy_predator_1_reward                                    ...0, 0.0, 0.0, 0.0] │
+│ info/learner/predator_0/diff_num_grad_updates_vs_sampler_policy                         5.5 │
+│ info/learner/predator_0/learner_stats/allreduce_latency                                 0.0 │
+│ info/learner/predator_0/learner_stats/cur_kl_coeff                   3.6379788070917137e-13 │
+│ info/learner/predator_0/learner_stats/cur_lr                                         0.0001 │
+│ info/learner/predator_0/learner_stats/entropy                            1.6055788099765778 │
+│ info/learner/predator_0/learner_stats/entropy_coeff                                     0.0 │
+│ info/learner/predator_0/learner_stats/grad_gnorm                         1.7101184253891308 │
+│ info/learner/predator_0/learner_stats/kl                             3.0002337125023537e-05 │
+│ info/learner/predator_0/learner_stats/policy_loss                      -0.07747788478930791 │
+│ info/learner/predator_0/learner_stats/total_loss                         0.4128105938434601 │
+│ info/learner/predator_0/learner_stats/vf_explained_var                  -0.3013748675584793 │
+│ info/learner/predator_0/learner_stats/vf_loss                            0.4902884879459937 │
+│ info/learner/predator_0/num_agent_steps_trained                                        32.0 │
+│ info/learner/predator_0/num_grad_updates_lifetime                                     474.5 │
+│ info/learner/predator_1/diff_num_grad_updates_vs_sampler_policy                         5.5 │
+│ info/learner/predator_1/learner_stats/allreduce_latency                                 0.0 │
+│ info/learner/predator_1/learner_stats/cur_kl_coeff                   3.6379788070917137e-13 │
+│ info/learner/predator_1/learner_stats/cur_lr                                         0.0001 │
+│ info/learner/predator_1/learner_stats/entropy                            1.6071305771668751 │
+│ info/learner/predator_1/learner_stats/entropy_coeff                                     0.0 │
+│ info/learner/predator_1/learner_stats/grad_gnorm                         0.9941397060950597 │
+│ info/learner/predator_1/learner_stats/kl                             4.0215487189243504e-05 │
+│ info/learner/predator_1/learner_stats/policy_loss                      -0.03147463003794352 │
+│ info/learner/predator_1/learner_stats/total_loss                        0.07583473079527418 │
+│ info/learner/predator_1/learner_stats/vf_explained_var                                 -1.0 │
+│ info/learner/predator_1/learner_stats/vf_loss                           0.10730934950212638 │
+│ info/learner/predator_1/num_agent_steps_trained                                        32.0 │
+│ info/learner/predator_1/num_grad_updates_lifetime                                     474.5 │
+│ info/num_agent_steps_sampled                                                          16160 │
+│ info/num_agent_steps_trained                                                          16160 │
+│ info/num_env_steps_sampled                                                             8080 │
+│ info/num_env_steps_trained                                                             8080 │
+│ num_agent_steps_sampled                                                               16160 │
+│ num_agent_steps_trained                                                               16160 │
+│ num_env_steps_sampled                                                                  8080 │
+│ num_env_steps_sampled_this_iter                                                         202 │
+│ num_env_steps_sampled_throughput_per_sec                                          145.67129 │
+│ num_env_steps_trained                                                                  8080 │
+│ num_env_steps_trained_this_iter                                                         202 │
+│ num_env_steps_trained_throughput_per_sec                                          145.67129 │
+│ num_faulty_episodes                                                                       0 │
+│ num_healthy_workers                                                                       0 │
+│ num_in_flight_async_reqs                                                                  0 │
+│ num_remote_worker_restarts                                                                0 │
+│ num_steps_trained_this_iter                                                             202 │
+│ perf/cpu_util_percent                                                                 16.15 │
+│ perf/ram_util_percent                                                                 28.15 │
+│ policy_reward_max/predator_0                                                            3.0 │
+│ policy_reward_max/predator_1                                                            2.0 │
+│ policy_reward_mean/predator_0                                                           0.7 │
+│ policy_reward_mean/predator_1                                                          0.55 │
+│ policy_reward_min/predator_0                                                            0.0 │
+│ policy_reward_min/predator_1                                                            0.0 │
+│ sampler_perf/mean_action_processing_ms                                    0.213863242750406 │
+│ sampler_perf/mean_env_render_ms                                                         0.0 │
+│ sampler_perf/mean_env_wait_ms                                           0.13982896631179348 │
+│ sampler_perf/mean_inference_ms                                            4.006298849686938 │
+│ sampler_perf/mean_raw_obs_processing_ms                                  0.6818949066722224 │
+│ sampler_results/connector_metrics/ObsPreprocessorConnector_ms          0.004967749118804932 │
+│ sampler_results/connector_metrics/StateBufferConnector_ms              0.005294233560562134 │
+│ sampler_results/connector_metrics/ViewRequirementAgentConnector_ms      0.14820918440818787 │
+│ sampler_results/custom_metrics/assists_max                                                2 │
+│ sampler_results/custom_metrics/assists_mean                                          0.1125 │
+│ sampler_results/custom_metrics/assists_min                                                0 │
+│ sampler_results/custom_metrics/kills_max                                                  4 │
+│ sampler_results/custom_metrics/kills_mean                                              1.25 │
+│ sampler_results/custom_metrics/kills_min                                                  0 │
+│ sampler_results/custom_metrics/predator_0_assists_max                                     2 │
+│ sampler_results/custom_metrics/predator_0_assists_mean                               0.0375 │
+│ sampler_results/custom_metrics/predator_0_assists_min                                     0 │
+│ sampler_results/custom_metrics/predator_0_kills_max                                       3 │
+│ sampler_results/custom_metrics/predator_0_kills_mean                                    0.7 │
+│ sampler_results/custom_metrics/predator_0_kills_min                                       0 │
+│ sampler_results/custom_metrics/predator_1_assists_max                                     1 │
+│ sampler_results/custom_metrics/predator_1_assists_mean                                0.075 │
+│ sampler_results/custom_metrics/predator_1_assists_min                                     0 │
+│ sampler_results/custom_metrics/predator_1_kills_max                                       2 │
+│ sampler_results/custom_metrics/predator_1_kills_mean                                   0.55 │
+│ sampler_results/custom_metrics/predator_1_kills_min                                       0 │
+│ sampler_results/episode_len_mean                                                      101.0 │
+│ sampler_results/episode_reward_max                                                      4.0 │
+│ sampler_results/episode_reward_mean                                                    1.25 │
+│ sampler_results/episode_reward_min                                                      0.0 │
+│ sampler_results/episodes_this_iter                                                        2 │
+│ sampler_results/hist_stats/episode_lengths                             ...1, 101, 101, 101] │
+│ sampler_results/hist_stats/episode_reward                              ...0, 0.0, 2.0, 1.0] │
+│ sampler_results/hist_stats/policy_predator_0_reward                    ...0, 0.0, 2.0, 1.0] │
+│ sampler_results/hist_stats/policy_predator_1_reward                    ...0, 0.0, 0.0, 0.0] │
+│ sampler_results/num_faulty_episodes                                                       0 │
+│ sampler_results/policy_reward_max/predator_0                                            3.0 │
+│ sampler_results/policy_reward_max/predator_1                                            2.0 │
+│ sampler_results/policy_reward_mean/predator_0                                           0.7 │
+│ sampler_results/policy_reward_mean/predator_1                                          0.55 │
+│ sampler_results/policy_reward_min/predator_0                                            0.0 │
+│ sampler_results/policy_reward_min/predator_1                                            0.0 │
+│ sampler_results/sampler_perf/mean_action_processing_ms                    0.213863242750406 │
+│ sampler_results/sampler_perf/mean_env_render_ms                                         0.0 │
+│ sampler_results/sampler_perf/mean_env_wait_ms                           0.13982896631179348 │
+│ sampler_results/sampler_perf/mean_inference_ms                            4.006298849686938 │
+│ sampler_results/sampler_perf/mean_raw_obs_processing_ms                  0.6818949066722224 │
+│ timers/learn_throughput                                                             494.355 │
+│ timers/learn_time_ms                                                                408.613 │
+│ timers/sample_time_ms                                                               998.522 │
+│ timers/synch_weights_time_ms                                                          0.008 │
+│ timers/training_iteration_time_ms                                                  1407.715 │
+╰─────────────────────────────────────────────────────────────────────────────────────────────╯
+
+Trial train_algo_77fc8_00007 started with configuration:
+╭──────────────────────────────────────────────────────────────╮
+│ Trial train_algo_77fc8_00007 config                          │
+├──────────────────────────────────────────────────────────────┤
+│ algorithm_class                                          ppo │
+│ algorithm_type                                   independent │
+│ analysis/analysis                                      False │
+│ analysis/ccm_E                                             4 │
+│ analysis/ccm_tau                                           1 │
+│ analysis/dimensions                     ...'PCA_1', 'PCA_2'] │
+│ analysis/length_fac                                      500 │
+│ analysis/num_trials                                        5 │
+│ analysis/policy_set                     ...ginal', '_fixed'] │
+│ analysis/pref_ccm_analysis                              True │
+│ analysis/pref_granger_analysis                         False │
+│ analysis/pref_graph_analysis                           False │
+│ analysis/pref_spatial_ccm_analysis                     False │
+│ env_config/map_size                                       15 │
+│ env_config/max_cycles                                    100 │
+│ env_config/npred                                           2 │
+│ env_config/nprey                                           6 │
+│ env_config/pred_vision                                     2 │
+│ env_config/prey_type                                  static │
+│ env_config/reward_type                                type_1 │
+│ env_name                                      discrete_pp_v1 │
+│ evaluate/eval_episodes                                   500 │
+│ framework                                              torch │
+│ ray/init_dashboard                                     False │
+│ rollouts/batch_mode                        complete_episodes │
+│ rollouts/num_rollout_workers                               0 │
+│ stop_fn                                 ...t 0x14d4ce8d9fc0> │
+│ training/lr                                           0.0001 │
+│ training/model/conv_activation                          relu │
+│ training/model/conv_filters                [[16, [2, 2], 1]] │
+│ training/model/fcnet_activation                         relu │
+│ training/model/fcnet_hiddens                           [256] │
+│ training/model/lstm_cell_size                            256 │
+│ training/model/lstm_use_prev_action                     True │
+│ training/model/lstm_use_prev_reward                     True │
+│ training/model/max_seq_len                                10 │
+│ training/model/use_lstm                                False │
+│ training/model/vf_share_layers                          True │
+│ training/num_sgd_iter                                      2 │
+│ training/sgd_minibatch_size                               32 │
+│ training/train_batch_size                                128 │
+│ training/use_critic                                     True │
+│ training/use_kl_loss                                    True │
+│ tune/max_concurrent_trials                                 2 │
+│ tune/max_episodes                                         50 │
+│ tune/num_samples                                           2 │
+│ tune/tune                                               True │
+│ wandb/wandb_dir_path                    ...edator-prey/wandb │
+│ wandb/wandb_entity                                       tpn │
+│ wandb/wandb_init                                       False │
+│ wandb/wandb_log_freq                                      50 │
+│ wandb/wandb_notes                              testing setup │
+│ wandb/wandb_project                                   rllib1 │
+╰──────────────────────────────────────────────────────────────╯
+[36m(train_algo pid=240728)[0m WORKING DIRECTIRY: /data/gpfs/projects/punim1355/dalmiapriyam/predator-prey/experiments/train_algo_2023-12-11_16-45-06/train_algo_77fc8_00007_7_fcnet_hiddens=256,use_lstm=False_2023-12-11_16-47-49
+
+Trial status: 6 TERMINATED | 2 RUNNING
+Current time: 2023-12-11 16:47:50. Total running time: 2min 30s
+Logical resource usage: 1.0/72 CPUs, 0/0 GPUs
+Current best trial: 77fc8_00000 with episode_len_mean=101.0 and params={'algorithm_type': 'independent', 'algorithm_class': 'ppo', 'framework': 'torch', 'tune': {'tune': True, 'num_samples': 2, 'max_episodes': 50, 'max_concurrent_trials': 2}, 'analysis': {'num_trials': 5, 'analysis': False, 'policy_set': ['original', '_fixed'], 'dimensions': ['dx', 'dy', 'PCA_1', 'PCA_2'], 'length_fac': 500, 'ccm_tau': 1, 'ccm_E': 4, 'pref_ccm_analysis': True, 'pref_granger_analysis': False, 'pref_graph_analysis': False, 'pref_spatial_ccm_analysis': False}, 'training': {'lr': 0.0001, 'use_critic': True, 'use_kl_loss': True, 'sgd_minibatch_size': 32, 'num_sgd_iter': 2, 'train_batch_size': 128, 'model': {'fcnet_hiddens': [128], 'fcnet_activation': 'relu', 'conv_activation': 'relu', 'conv_filters': [[16, [2, 2], 1]], 'use_lstm': True, 'lstm_cell_size': 256, 'max_seq_len': 10, 'lstm_use_prev_reward': True, 'lstm_use_prev_action': True, 'vf_share_layers': True}}, 'evaluate': {'eval_episodes': 500}, 'rollouts': {'num_rollout_workers': 0, 'batch_mode': 'complete_episodes'}, 'wandb': {'wandb_init': False, 'wandb_project': 'rllib1', 'wandb_entity': 'tpn', 'wandb_notes': 'testing setup', 'wandb_log_freq': 50, 'wandb_dir_path': '/data/gpfs/projects/punim1355/dalmiapriyam/predator-prey/wandb'}, 'env_name': 'discrete_pp_v1', 'env_config': {'map_size': 15, 'pred_vision': 2, 'prey_type': 'static', 'max_cycles': 100, 'npred': 2, 'nprey': 6, 'reward_type': 'type_1'}, 'ray': {'init_dashboard': False}, 'stop_fn': <function main.<locals>.stop_fn at 0x14d46655c0d0>}
+╭───────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────╮
+│ Trial name               status       ...del/fcnet_hiddens     ...ng/model/use_lstm       iter     total time (s)     ts     reward     episode_reward_max     episode_reward_min     episode_len_mean     episodes_this_iter │
+├───────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┤
+│ train_algo_77fc8_00006   RUNNING      [128]                    False                         1           0.61638     202     1.5                         2                      1                  101                      2 │
+│ train_algo_77fc8_00007   RUNNING      [256]                    False                         1           0.688947    202     0.5                         1                      0                  101                      2 │
+│ train_algo_77fc8_00000   TERMINATED   [128]                    True                         40           3.91965    8080     1.475                       5                      0                  101                      2 │
+│ train_algo_77fc8_00001   TERMINATED   [256]                    True                         40           4.04891    8080     1.3125                      4                      0                  101                      2 │
+│ train_algo_77fc8_00002   TERMINATED   [128]                    False                        40           1.72549    8080     1.5375                      5                      0                  101                      2 │
+│ train_algo_77fc8_00003   TERMINATED   [256]                    False                        40           1.79585    8080     1.2625                      4                      0                  101                      2 │
+│ train_algo_77fc8_00004   TERMINATED   [128]                    True                         40           3.94632    8080     1.275                       3                      0                  101                      2 │
+│ train_algo_77fc8_00005   TERMINATED   [256]                    True                         40           4.3294     8080     1.25                        4                      0                  101                      2 │
+╰───────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────╯
+
+Trial train_algo_77fc8_00006 completed after 40 iterations at 2023-12-11 16:48:05. Total running time: 2min 46s
+╭─────────────────────────────────────────────────────────────────────────────────────────────╮
+│ Trial train_algo_77fc8_00006 result                                                         │
+├─────────────────────────────────────────────────────────────────────────────────────────────┤
+│ checkpoint_dir_name                                                                         │
+│ episodes_total                                                                           80 │
+│ time_this_iter_s                                                                    0.59235 │
+│ time_total_s                                                                        1.97681 │
+│ timesteps_total                                                                        8080 │
+│ training_iteration                                                                       40 │
+│ agent_timesteps_total                                                                 16160 │
+│ connector_metrics/ObsPreprocessorConnector_ms                         0.0038564205169677734 │
+│ connector_metrics/StateBufferConnector_ms                             0.0031979382038116455 │
+│ connector_metrics/ViewRequirementAgentConnector_ms                      0.07090345025062561 │
+│ counters/num_agent_steps_sampled                                                      16160 │
+│ counters/num_agent_steps_trained                                                      16160 │
+│ counters/num_env_steps_sampled                                                         8080 │
+│ counters/num_env_steps_trained                                                         8080 │
+│ custom_metrics/assists_max                                                                1 │
+│ custom_metrics/assists_mean                                                          0.0375 │
+│ custom_metrics/assists_min                                                                0 │
+│ custom_metrics/kills_max                                                                  4 │
+│ custom_metrics/kills_mean                                                            1.2875 │
+│ custom_metrics/kills_min                                                                  0 │
+│ custom_metrics/predator_0_assists_max                                                     1 │
+│ custom_metrics/predator_0_assists_mean                                                0.025 │
+│ custom_metrics/predator_0_assists_min                                                     0 │
+│ custom_metrics/predator_0_kills_max                                                       3 │
+│ custom_metrics/predator_0_kills_mean                                                 0.6375 │
+│ custom_metrics/predator_0_kills_min                                                       0 │
+│ custom_metrics/predator_1_assists_max                                                     1 │
+│ custom_metrics/predator_1_assists_mean                                               0.0125 │
+│ custom_metrics/predator_1_assists_min                                                     0 │
+│ custom_metrics/predator_1_kills_max                                                       3 │
+│ custom_metrics/predator_1_kills_mean                                                   0.65 │
+│ custom_metrics/predator_1_kills_min                                                       0 │
+│ episode_len_mean                                                                       101. │
+│ episode_reward_max                                                                       4. │
+│ episode_reward_mean                                                                  1.2875 │
+│ episode_reward_min                                                                       0. │
+│ episodes_this_iter                                                                        2 │
+│ hist_stats/episode_lengths                                             ...1, 101, 101, 101] │
+│ hist_stats/episode_reward                                              ...0, 2.0, 2.0, 2.0] │
+│ hist_stats/policy_predator_0_reward                                    ...0, 1.0, 0.0, 1.0] │
+│ hist_stats/policy_predator_1_reward                                    ...0, 1.0, 2.0, 1.0] │
+│ info/learner/predator_0/diff_num_grad_updates_vs_sampler_policy                         6.5 │
+│ info/learner/predator_0/learner_stats/allreduce_latency                                 0.0 │
+│ info/learner/predator_0/learner_stats/cur_kl_coeff                   3.6379788070917137e-13 │
+│ info/learner/predator_0/learner_stats/cur_lr                         0.00010000000000000002 │
+│ info/learner/predator_0/learner_stats/entropy                            1.6048152957643782 │
+│ info/learner/predator_0/learner_stats/entropy_coeff                                     0.0 │
+│ info/learner/predator_0/learner_stats/grad_gnorm                         0.5391629348908152 │
+│ info/learner/predator_0/learner_stats/kl                             2.9408058129374937e-05 │
+│ info/learner/predator_0/learner_stats/policy_loss                     -0.027030146680772305 │
+│ info/learner/predator_0/learner_stats/total_loss                        0.10798169672489166 │
+│ info/learner/predator_0/learner_stats/vf_explained_var                 -0.04027893287794931 │
+│ info/learner/predator_0/learner_stats/vf_loss                           0.13501184433698654 │
+│ info/learner/predator_0/num_agent_steps_trained                          28.857142857142858 │
+│ info/learner/predator_0/num_grad_updates_lifetime                                     553.5 │
+│ info/learner/predator_1/diff_num_grad_updates_vs_sampler_policy                         6.5 │
+│ info/learner/predator_1/learner_stats/allreduce_latency                                 0.0 │
+│ info/learner/predator_1/learner_stats/cur_kl_coeff                   3.6379788070917137e-13 │
+│ info/learner/predator_1/learner_stats/cur_lr                         0.00010000000000000002 │
+│ info/learner/predator_1/learner_stats/entropy                            1.5835959655897958 │
+│ info/learner/predator_1/learner_stats/entropy_coeff                                     0.0 │
+│ info/learner/predator_1/learner_stats/grad_gnorm                         1.1924484627587455 │
+│ info/learner/predator_1/learner_stats/kl                              0.0002370715101539998 │
+│ info/learner/predator_1/learner_stats/policy_loss                      0.010076500209314483 │
+│ info/learner/predator_1/learner_stats/total_loss                         0.5454436370304653 │
+│ info/learner/predator_1/learner_stats/vf_explained_var                -0.004134786980492728 │
+│ info/learner/predator_1/learner_stats/vf_loss                            0.5353671205895287 │
+│ info/learner/predator_1/num_agent_steps_trained                          28.857142857142858 │
+│ info/learner/predator_1/num_grad_updates_lifetime                                     553.5 │
+│ info/num_agent_steps_sampled                                                          16160 │
+│ info/num_agent_steps_trained                                                          16160 │
+│ info/num_env_steps_sampled                                                             8080 │
+│ info/num_env_steps_trained                                                             8080 │
+│ num_agent_steps_sampled                                                               16160 │
+│ num_agent_steps_trained                                                               16160 │
+│ num_env_steps_sampled                                                                  8080 │
+│ num_env_steps_sampled_this_iter                                                         202 │
+│ num_env_steps_sampled_throughput_per_sec                                          343.47749 │
+│ num_env_steps_trained                                                                  8080 │
+│ num_env_steps_trained_this_iter                                                         202 │
+│ num_env_steps_trained_throughput_per_sec                                          343.47749 │
+│ num_faulty_episodes                                                                       0 │
+│ num_healthy_workers                                                                       0 │
+│ num_in_flight_async_reqs                                                                  0 │
+│ num_remote_worker_restarts                                                                0 │
+│ num_steps_trained_this_iter                                                             202 │
+│ perf/cpu_util_percent                                                                  18.1 │
+│ perf/ram_util_percent                                                                  29.2 │
+│ policy_reward_max/predator_0                                                            3.0 │
+│ policy_reward_max/predator_1                                                            3.0 │
+│ policy_reward_mean/predator_0                                                        0.6375 │
+│ policy_reward_mean/predator_1                                                          0.65 │
+│ policy_reward_min/predator_0                                                            0.0 │
+│ policy_reward_min/predator_1                                                            0.0 │
+│ sampler_perf/mean_action_processing_ms                                  0.17812842542967253 │
+│ sampler_perf/mean_env_render_ms                                                         0.0 │
+│ sampler_perf/mean_env_wait_ms                                           0.11899029069058398 │
+│ sampler_perf/mean_inference_ms                                            1.727202928540222 │
+│ sampler_perf/mean_raw_obs_processing_ms                                 0.41985797148704407 │
+│ sampler_results/connector_metrics/ObsPreprocessorConnector_ms         0.0038564205169677734 │
+│ sampler_results/connector_metrics/StateBufferConnector_ms             0.0031979382038116455 │
+│ sampler_results/connector_metrics/ViewRequirementAgentConnector_ms      0.07090345025062561 │
+│ sampler_results/custom_metrics/assists_max                                                1 │
+│ sampler_results/custom_metrics/assists_mean                                          0.0375 │
+│ sampler_results/custom_metrics/assists_min                                                0 │
+│ sampler_results/custom_metrics/kills_max                                                  4 │
+│ sampler_results/custom_metrics/kills_mean                                            1.2875 │
+│ sampler_results/custom_metrics/kills_min                                                  0 │
+│ sampler_results/custom_metrics/predator_0_assists_max                                     1 │
+│ sampler_results/custom_metrics/predator_0_assists_mean                                0.025 │
+│ sampler_results/custom_metrics/predator_0_assists_min                                     0 │
+│ sampler_results/custom_metrics/predator_0_kills_max                                       3 │
+│ sampler_results/custom_metrics/predator_0_kills_mean                                 0.6375 │
+│ sampler_results/custom_metrics/predator_0_kills_min                                       0 │
+│ sampler_results/custom_metrics/predator_1_assists_max                                     1 │
+│ sampler_results/custom_metrics/predator_1_assists_mean                               0.0125 │
+│ sampler_results/custom_metrics/predator_1_assists_min                                     0 │
+│ sampler_results/custom_metrics/predator_1_kills_max                                       3 │
+│ sampler_results/custom_metrics/predator_1_kills_mean                                   0.65 │
+│ sampler_results/custom_metrics/predator_1_kills_min                                       0 │
+│ sampler_results/episode_len_mean                                                      101.0 │
+│ sampler_results/episode_reward_max                                                      4.0 │
+│ sampler_results/episode_reward_mean                                                  1.2875 │
+│ sampler_results/episode_reward_min                                                      0.0 │
+│ sampler_results/episodes_this_iter                                                        2 │
+│ sampler_results/hist_stats/episode_lengths                             ...1, 101, 101, 101] │
+│ sampler_results/hist_stats/episode_reward                              ...0, 2.0, 2.0, 2.0] │
+│ sampler_results/hist_stats/policy_predator_0_reward                    ...0, 1.0, 0.0, 1.0] │
+│ sampler_results/hist_stats/policy_predator_1_reward                    ...0, 1.0, 2.0, 1.0] │
+│ sampler_results/num_faulty_episodes                                                       0 │
+│ sampler_results/policy_reward_max/predator_0                                            3.0 │
+│ sampler_results/policy_reward_max/predator_1                                            3.0 │
+│ sampler_results/policy_reward_mean/predator_0                                        0.6375 │
+│ sampler_results/policy_reward_mean/predator_1                                          0.65 │
+│ sampler_results/policy_reward_min/predator_0                                            0.0 │
+│ sampler_results/policy_reward_min/predator_1                                            0.0 │
+│ sampler_results/sampler_perf/mean_action_processing_ms                  0.17812842542967253 │
+│ sampler_results/sampler_perf/mean_env_render_ms                                         0.0 │
+│ sampler_results/sampler_perf/mean_env_wait_ms                           0.11899029069058398 │
+│ sampler_results/sampler_perf/mean_inference_ms                            1.727202928540222 │
+│ sampler_results/sampler_perf/mean_raw_obs_processing_ms                 0.41985797148704407 │
+│ timers/learn_throughput                                                            1858.888 │
+│ timers/learn_time_ms                                                                108.667 │
+│ timers/sample_time_ms                                                               488.418 │
+│ timers/synch_weights_time_ms                                                          0.009 │
+│ timers/training_iteration_time_ms                                                   597.536 │
+╰─────────────────────────────────────────────────────────────────────────────────────────────╯
+
+Trial train_algo_77fc8_00007 completed after 40 iterations at 2023-12-11 16:48:14. Total running time: 2min 55s
+╭─────────────────────────────────────────────────────────────────────────────────────────────╮
+│ Trial train_algo_77fc8_00007 result                                                         │
+├─────────────────────────────────────────────────────────────────────────────────────────────┤
+│ checkpoint_dir_name                                                                         │
+│ episodes_total                                                                           80 │
+│ time_this_iter_s                                                                    0.57515 │
+│ time_total_s                                                                        1.86002 │
+│ timesteps_total                                                                        8080 │
+│ training_iteration                                                                       40 │
+│ agent_timesteps_total                                                                 16160 │
+│ connector_metrics/ObsPreprocessorConnector_ms                          0.003809034824371338 │
+│ connector_metrics/StateBufferConnector_ms                              0.002979785203933716 │
+│ connector_metrics/ViewRequirementAgentConnector_ms                      0.06911426782608032 │
+│ counters/num_agent_steps_sampled                                                      16160 │
+│ counters/num_agent_steps_trained                                                      16160 │
+│ counters/num_env_steps_sampled                                                         8080 │
+│ counters/num_env_steps_trained                                                         8080 │
+│ custom_metrics/assists_max                                                                1 │
+│ custom_metrics/assists_mean                                                             0.1 │
+│ custom_metrics/assists_min                                                                0 │
+│ custom_metrics/kills_max                                                                  4 │
+│ custom_metrics/kills_mean                                                             1.275 │
+│ custom_metrics/kills_min                                                                  0 │
+│ custom_metrics/predator_0_assists_max                                                     1 │
+│ custom_metrics/predator_0_assists_mean                                                0.075 │
+│ custom_metrics/predator_0_assists_min                                                     0 │
+│ custom_metrics/predator_0_kills_max                                                       4 │
+│ custom_metrics/predator_0_kills_mean                                                  0.625 │
+│ custom_metrics/predator_0_kills_min                                                       0 │
+│ custom_metrics/predator_1_assists_max                                                     1 │
+│ custom_metrics/predator_1_assists_mean                                                0.025 │
+│ custom_metrics/predator_1_assists_min                                                     0 │
+│ custom_metrics/predator_1_kills_max                                                       2 │
+│ custom_metrics/predator_1_kills_mean                                                   0.65 │
+│ custom_metrics/predator_1_kills_min                                                       0 │
+│ episode_len_mean                                                                       101. │
+│ episode_reward_max                                                                       4. │
+│ episode_reward_mean                                                                   1.275 │
+│ episode_reward_min                                                                       0. │
+│ episodes_this_iter                                                                        2 │
+│ hist_stats/episode_lengths                                             ...1, 101, 101, 101] │
+│ hist_stats/episode_reward                                              ...0, 0.0, 1.0, 0.0] │
+│ hist_stats/policy_predator_0_reward                                    ...0, 0.0, 0.0, 0.0] │
+│ hist_stats/policy_predator_1_reward                                    ...0, 0.0, 1.0, 0.0] │
+│ info/learner/predator_0/diff_num_grad_updates_vs_sampler_policy                         6.5 │
+│ info/learner/predator_0/learner_stats/allreduce_latency                                 0.0 │
+│ info/learner/predator_0/learner_stats/cur_kl_coeff                   3.6379788070917137e-13 │
+│ info/learner/predator_0/learner_stats/cur_lr                         0.00010000000000000002 │
+│ info/learner/predator_0/learner_stats/entropy                            1.5737080318587167 │
+│ info/learner/predator_0/learner_stats/entropy_coeff                                     0.0 │
+│ info/learner/predator_0/learner_stats/grad_gnorm                         1.1459698379039764 │
+│ info/learner/predator_0/learner_stats/kl                              0.0003306356749863047 │
+│ info/learner/predator_0/learner_stats/policy_loss                      0.001652064866253308 │
+│ info/learner/predator_0/learner_stats/total_loss                        0.08957806336028236 │
+│ info/learner/predator_0/learner_stats/vf_explained_var                                 -1.0 │
+│ info/learner/predator_0/learner_stats/vf_loss                            0.0879259966313839 │
+│ info/learner/predator_0/num_agent_steps_trained                          28.857142857142858 │
+│ info/learner/predator_0/num_grad_updates_lifetime                                     553.5 │
+│ info/learner/predator_1/diff_num_grad_updates_vs_sampler_policy                         6.5 │
+│ info/learner/predator_1/learner_stats/allreduce_latency                                 0.0 │
+│ info/learner/predator_1/learner_stats/cur_kl_coeff                   3.6379788070917137e-13 │
+│ info/learner/predator_1/learner_stats/cur_lr                         0.00010000000000000002 │
+│ info/learner/predator_1/learner_stats/entropy                             1.565785825252533 │
+│ info/learner/predator_1/learner_stats/entropy_coeff                                     0.0 │
+│ info/learner/predator_1/learner_stats/grad_gnorm                         0.5494460378374372 │
+│ info/learner/predator_1/learner_stats/kl                             4.7781336578773494e-05 │
+│ info/learner/predator_1/learner_stats/policy_loss                      0.007482260332575866 │
+│ info/learner/predator_1/learner_stats/total_loss                         0.1483502254954406 │
+│ info/learner/predator_1/learner_stats/vf_explained_var                  -0.1969921248299735 │
+│ info/learner/predator_1/learner_stats/vf_loss                           0.14086797354476793 │
+│ info/learner/predator_1/num_agent_steps_trained                          28.857142857142858 │
+│ info/learner/predator_1/num_grad_updates_lifetime                                     553.5 │
+│ info/num_agent_steps_sampled                                                          16160 │
+│ info/num_agent_steps_trained                                                          16160 │
+│ info/num_env_steps_sampled                                                             8080 │
+│ info/num_env_steps_trained                                                             8080 │
+│ num_agent_steps_sampled                                                               16160 │
+│ num_agent_steps_trained                                                               16160 │
+│ num_env_steps_sampled                                                                  8080 │
+│ num_env_steps_sampled_this_iter                                                         202 │
+│ num_env_steps_sampled_throughput_per_sec                                           353.8019 │
+│ num_env_steps_trained                                                                  8080 │
+│ num_env_steps_trained_this_iter                                                         202 │
+│ num_env_steps_trained_throughput_per_sec                                           353.8019 │
+│ num_faulty_episodes                                                                       0 │
+│ num_healthy_workers                                                                       0 │
+│ num_in_flight_async_reqs                                                                  0 │
+│ num_remote_worker_restarts                                                                0 │
+│ num_steps_trained_this_iter                                                             202 │
+│ policy_reward_max/predator_0                                                            4.0 │
+│ policy_reward_max/predator_1                                                            2.0 │
+│ policy_reward_mean/predator_0                                                         0.625 │
+│ policy_reward_mean/predator_1                                                          0.65 │
+│ policy_reward_min/predator_0                                                            0.0 │
+│ policy_reward_min/predator_1                                                            0.0 │
+│ sampler_perf/mean_action_processing_ms                                  0.17758256646905596 │
+│ sampler_perf/mean_env_render_ms                                                         0.0 │
+│ sampler_perf/mean_env_wait_ms                                           0.11907229512240325 │
+│ sampler_perf/mean_inference_ms                                           1.7541956565037808 │
+│ sampler_perf/mean_raw_obs_processing_ms                                  0.4185328619339309 │
+│ sampler_results/connector_metrics/ObsPreprocessorConnector_ms          0.003809034824371338 │
+│ sampler_results/connector_metrics/StateBufferConnector_ms              0.002979785203933716 │
+│ sampler_results/connector_metrics/ViewRequirementAgentConnector_ms      0.06911426782608032 │
+│ sampler_results/custom_metrics/assists_max                                                1 │
+│ sampler_results/custom_metrics/assists_mean                                             0.1 │
+│ sampler_results/custom_metrics/assists_min                                                0 │
+│ sampler_results/custom_metrics/kills_max                                                  4 │
+│ sampler_results/custom_metrics/kills_mean                                             1.275 │
+│ sampler_results/custom_metrics/kills_min                                                  0 │
+│ sampler_results/custom_metrics/predator_0_assists_max                                     1 │
+│ sampler_results/custom_metrics/predator_0_assists_mean                                0.075 │
+│ sampler_results/custom_metrics/predator_0_assists_min                                     0 │
+│ sampler_results/custom_metrics/predator_0_kills_max                                       4 │
+│ sampler_results/custom_metrics/predator_0_kills_mean                                  0.625 │
+│ sampler_results/custom_metrics/predator_0_kills_min                                       0 │
+│ sampler_results/custom_metrics/predator_1_assists_max                                     1 │
+│ sampler_results/custom_metrics/predator_1_assists_mean                                0.025 │
+│ sampler_results/custom_metrics/predator_1_assists_min                                     0 │
+│ sampler_results/custom_metrics/predator_1_kills_max                                       2 │
+│ sampler_results/custom_metrics/predator_1_kills_mean                                   0.65 │
+│ sampler_results/custom_metrics/predator_1_kills_min                                       0 │
+│ sampler_results/episode_len_mean                                                      101.0 │
+│ sampler_results/episode_reward_max                                                      4.0 │
+│ sampler_results/episode_reward_mean                                                   1.275 │
+│ sampler_results/episode_reward_min                                                      0.0 │
+│ sampler_results/episodes_this_iter                                                        2 │
+│ sampler_results/hist_stats/episode_lengths                             ...1, 101, 101, 101] │
+│ sampler_results/hist_stats/episode_reward                              ...0, 0.0, 1.0, 0.0] │
+│ sampler_results/hist_stats/policy_predator_0_reward                    ...0, 0.0, 0.0, 0.0] │
+│ sampler_results/hist_stats/policy_predator_1_reward                    ...0, 0.0, 1.0, 0.0] │
+│ sampler_results/num_faulty_episodes                                                       0 │
+│ sampler_results/policy_reward_max/predator_0                                            4.0 │
+│ sampler_results/policy_reward_max/predator_1                                            2.0 │
+│ sampler_results/policy_reward_mean/predator_0                                         0.625 │
+│ sampler_results/policy_reward_mean/predator_1                                          0.65 │
+│ sampler_results/policy_reward_min/predator_0                                            0.0 │
+│ sampler_results/policy_reward_min/predator_1                                            0.0 │
+│ sampler_results/sampler_perf/mean_action_processing_ms                  0.17758256646905596 │
+│ sampler_results/sampler_perf/mean_env_render_ms                                         0.0 │
+│ sampler_results/sampler_perf/mean_env_wait_ms                           0.11907229512240325 │
+│ sampler_results/sampler_perf/mean_inference_ms                           1.7541956565037808 │
+│ sampler_results/sampler_perf/mean_raw_obs_processing_ms                  0.4185328619339309 │
+│ timers/learn_throughput                                                            1837.148 │
+│ timers/learn_time_ms                                                                109.953 │
+│ timers/sample_time_ms                                                               478.435 │
+│ timers/synch_weights_time_ms                                                          0.007 │
+│ timers/training_iteration_time_ms                                                   588.833 │
+╰─────────────────────────────────────────────────────────────────────────────────────────────╯
+
+Trial status: 8 TERMINATED
+Current time: 2023-12-11 16:48:14. Total running time: 2min 55s
+Logical resource usage: 0.5/72 CPUs, 0/0 GPUs
+Current best trial: 77fc8_00000 with episode_len_mean=101.0 and params={'algorithm_type': 'independent', 'algorithm_class': 'ppo', 'framework': 'torch', 'tune': {'tune': True, 'num_samples': 2, 'max_episodes': 50, 'max_concurrent_trials': 2}, 'analysis': {'num_trials': 5, 'analysis': False, 'policy_set': ['original', '_fixed'], 'dimensions': ['dx', 'dy', 'PCA_1', 'PCA_2'], 'length_fac': 500, 'ccm_tau': 1, 'ccm_E': 4, 'pref_ccm_analysis': True, 'pref_granger_analysis': False, 'pref_graph_analysis': False, 'pref_spatial_ccm_analysis': False}, 'training': {'lr': 0.0001, 'use_critic': True, 'use_kl_loss': True, 'sgd_minibatch_size': 32, 'num_sgd_iter': 2, 'train_batch_size': 128, 'model': {'fcnet_hiddens': [128], 'fcnet_activation': 'relu', 'conv_activation': 'relu', 'conv_filters': [[16, [2, 2], 1]], 'use_lstm': True, 'lstm_cell_size': 256, 'max_seq_len': 10, 'lstm_use_prev_reward': True, 'lstm_use_prev_action': True, 'vf_share_layers': True}}, 'evaluate': {'eval_episodes': 500}, 'rollouts': {'num_rollout_workers': 0, 'batch_mode': 'complete_episodes'}, 'wandb': {'wandb_init': False, 'wandb_project': 'rllib1', 'wandb_entity': 'tpn', 'wandb_notes': 'testing setup', 'wandb_log_freq': 50, 'wandb_dir_path': '/data/gpfs/projects/punim1355/dalmiapriyam/predator-prey/wandb'}, 'env_name': 'discrete_pp_v1', 'env_config': {'map_size': 15, 'pred_vision': 2, 'prey_type': 'static', 'max_cycles': 100, 'npred': 2, 'nprey': 6, 'reward_type': 'type_1'}, 'ray': {'init_dashboard': False}, 'stop_fn': <function main.<locals>.stop_fn at 0x14d46655c0d0>}
+╭───────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────╮
+│ Trial name               status       ...del/fcnet_hiddens     ...ng/model/use_lstm       iter     total time (s)     ts     reward     episode_reward_max     episode_reward_min     episode_len_mean     episodes_this_iter │
+├───────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┤
+│ train_algo_77fc8_00000   TERMINATED   [128]                    True                         40            3.91965   8080     1.475                       5                      0                  101                      2 │
+│ train_algo_77fc8_00001   TERMINATED   [256]                    True                         40            4.04891   8080     1.3125                      4                      0                  101                      2 │
+│ train_algo_77fc8_00002   TERMINATED   [128]                    False                        40            1.72549   8080     1.5375                      5                      0                  101                      2 │
+│ train_algo_77fc8_00003   TERMINATED   [256]                    False                        40            1.79585   8080     1.2625                      4                      0                  101                      2 │
+│ train_algo_77fc8_00004   TERMINATED   [128]                    True                         40            3.94632   8080     1.275                       3                      0                  101                      2 │
+│ train_algo_77fc8_00005   TERMINATED   [256]                    True                         40            4.3294    8080     1.25                        4                      0                  101                      2 │
+│ train_algo_77fc8_00006   TERMINATED   [128]                    False                        40            1.97681   8080     1.2875                      4                      0                  101                      2 │
+│ train_algo_77fc8_00007   TERMINATED   [256]                    False                        40            1.86002   8080     1.275                       4                      0                  101                      2 │
+╰───────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────╯
+
+Empty DataFrame
+Columns: []
+Index: []
+Empty DataFrame
+Columns: []
+Index: []
+Empty DataFrame
+Columns: []
+Index: []
+Empty DataFrame
+Columns: []
+Index: []
+Empty DataFrame
+Columns: []
+Index: []
+Empty DataFrame
+Columns: []
+Index: []
+Empty DataFrame
+Columns: []
+Index: []
+Empty DataFrame
+Columns: []
+Index: []
+Time taken to finish tune: 3.15
