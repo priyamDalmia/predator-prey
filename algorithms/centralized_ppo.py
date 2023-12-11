@@ -1,3 +1,4 @@
+from pyexpat import model
 import numpy as np
 from gymnasium.spaces import Discrete
 from ray.rllib.algorithms.ppo.ppo import PPO
@@ -20,7 +21,12 @@ from ray.rllib.models.torch.misc import (
     normc_initializer as torch_normc_initializer,
     SlimFC,
 )
-
+from ray.rllib.models.torch.misc import (
+    normc_initializer,
+    same_padding,
+    SlimConv2d,
+    SlimFC,
+)
 import torch
 import torch.nn as nn
 
@@ -112,7 +118,7 @@ class ComplexInputNetwork(TorchModelV2, nn.Module):
                 else:
                     size = np.sum(component.nvec)
                 config = {
-                    "fcnet_hiddens": model_config["fcnet_hiddens"],
+                    "fcnet_hiddens": [32],
                     "fcnet_activation": model_config.get("fcnet_activation"),
                     "post_fcnet_hiddens": [],
                 }
@@ -160,8 +166,15 @@ class ComplexInputNetwork(TorchModelV2, nn.Module):
             name="post_fc_stack",
         )
 
-        self.value_layer = SlimFC(
+        self.last_layer = SlimFC(
             in_size=self.post_fc_stack.num_outputs,
+            out_size = model_config['fcnet_hiddens'][-1],
+            initializer=torch_normc_initializer(0.01),
+            activation_fn=model_config.get("fcnet_activation"),
+        )
+
+        self.value_layer = SlimFC(
+            in_size=model_config['fcnet_hiddens'][-1],
             out_size=1,
             initializer=torch_normc_initializer(0.01),
             activation_fn=None,
@@ -169,15 +182,18 @@ class ComplexInputNetwork(TorchModelV2, nn.Module):
         self._value_out = None
     
     @override(ModelV2)
-    def forward(self, own_obs, opponent_obs):
+    def forward(self, own_obs, opponent_obs, opponent_actions):
         # Push through CNN(s).
         cnn_out_0, _= self.cnns['0'](SampleBatch({SampleBatch.OBS: own_obs}))
         cnn_out_1, _ = self.cnns['1'](SampleBatch({SampleBatch.OBS: opponent_obs}))
-        outs = [cnn_out_0, cnn_out_1]
+
+        opponent_actions = torch.nn.functional.one_hot(opponent_actions.long(), 5).float()
+        action_out = self.one_hot_2(SampleBatch({SampleBatch.OBS: opponent_actions}))
+        outs = [cnn_out_0, cnn_out_1, action_out[0]]
         # Concat all outputs and the non-image inputs.
         out = torch.cat(outs, dim=1)
         # Push through (optional) FC-stack (this may be an empty stack).
-        out = self.value_layer(out)
+        out =  self.value_layer(self.last_layer(out))
         self._value_out = torch.reshape(out, [-1])
         return out
 
@@ -223,8 +239,93 @@ class TorchCentralizedCriticModel(TorchModelV2, nn.Module):
         nn.Module.__init__(self)
 
         # Base of the model
-        self.model = TorchFC(obs_space, action_space, num_outputs, model_config, name)
+        self.use_lstm = model_config.get("use_lstm")
+        if not self.use_lstm:
+            self.model = TorchFC(obs_space, action_space, num_outputs, model_config, name)
+        else:
+            self.model_1 = TorchFC(obs_space, action_space, num_outputs, model_config, name)
+        activation = self.model_config.get("conv_activation")
+        filters = self.model_config["conv_filters"]
+        assert len(filters) > 0, "Must provide at least 1 entry in `conv_filters`!"
 
+        # Whether the last layer is the output of a Flattened (rather than
+        # a n x (1,1) Conv2D).
+        self.last_layer_is_flattened = False
+        self._logits = None
+
+        layers = []
+        (w, h, in_channels) = obs_space.shape
+
+        in_size = [w, h]
+        for out_channels, kernel, stride in filters[:-1]:
+            padding, out_size = same_padding(in_size, kernel, stride)
+            layers.append(
+                SlimConv2d(
+                    in_channels,
+                    out_channels,
+                    kernel,
+                    stride,
+                    padding,
+                    activation_fn=activation,
+                )
+            )
+            in_channels = out_channels
+            in_size = out_size
+
+        out_channels, kernel, stride = filters[-1]
+
+        # No final linear: Last layer has activation function and exits with
+        # num_outputs nodes (this could be a 1x1 conv or a FC layer, depending
+
+        layers.append(
+            SlimConv2d(
+                in_channels,
+                out_channels,
+                kernel,
+                stride,
+                None,  # padding=valid
+                activation_fn=activation,
+            )
+        )
+
+        # num_outputs defined. Use that to create an exact
+        # `num_output`-sized (1,1)-Conv2D.
+
+        layers.append(nn.Flatten())
+        if model_config.get('fcnet_hiddens'):
+            activation = model_config.get("fcnet_activation", "relu")
+            layers.append(
+                nn.LazyLinear(
+                    model_config["fcnet_hiddens"][0],
+                )
+            )
+            layers.append(nn.ReLU() if activation == "relu" else nn.Tanh())
+        if not num_outputs:
+            self.last_layer_is_flattened = True
+
+        self._convs = nn.Sequential(*layers)
+
+        # If our num_outputs still unknown, we need to do a test pass to
+        # figure out the output dimensions. This could be the case, if we have
+        # the Flatten layer at the end.
+        # Create a B=1 dummy sample and push it through out conv-net.
+        dummy_in = (
+            torch.from_numpy(self.obs_space.sample())
+            .permute(2, 0, 1)
+            .unsqueeze(0)
+            .float()
+        )
+        dummy_out = self._convs(dummy_in)
+        conv_output = dummy_out.shape[1]
+        if model_config.get('use_lstm'):
+            self.num_outputs = conv_output
+        else:
+            self.num_outputs = num_outputs
+            self._logits = SlimFC(
+                conv_output,
+                num_outputs,
+                activation_fn=None,
+            )
         # vf_obs_space = Box(
         #     low=-1.0,
         #     high=1.0,
@@ -236,22 +337,56 @@ class TorchCentralizedCriticModel(TorchModelV2, nn.Module):
             {
                 0: obs_space,
                 1: obs_space,
+                2: action_space,
             }
         )
         self.central_vf = ComplexInputNetwork(vf_obs_space, action_space, num_outputs, model_config, name)
  
     @override(ModelV2)
     def forward(self, input_dict, state, seq_lens):
-        model_out, _ = self.model(input_dict, state, seq_lens)
-        return model_out, []
+        self._features = input_dict["obs"].float()
+
+        if not self.use_lstm:
+            model_out, _ = self.model(input_dict, state, seq_lens)
+        else:
+            model_out, _ = self.model_1(input_dict, state, seq_lens)
+        # Permuate b/c data comes in as [B, dim, dim, channels]:
+        self._features = self._features.permute(0, 3, 1, 2)
+        conv_out = self._convs(self._features)
+        # Store features to save forward pass when getting value_function out.
+        if not self.last_layer_is_flattened:
+            if self._logits:
+                conv_out = self._logits(conv_out)
+            if len(conv_out.shape) == 4:
+                if conv_out.shape[2] != 1 or conv_out.shape[3] != 1:
+                    raise ValueError(
+                        "Given `conv_filters` ({}) do not result in a [B, {} "
+                        "(`num_outputs`), 1, 1] shape (but in {})! Please "
+                        "adjust your Conv2D stack such that the last 2 dims "
+                        "are both 1.".format(
+                            self.model_config["conv_filters"],
+                            self.num_outputs,
+                            list(conv_out.shape),
+                        )
+                    )
+                logits = conv_out.squeeze(3)
+                logits = logits.squeeze(2)
+            else:
+                logits = conv_out
+            return logits, state
+        else:
+            return conv_out, state
 
     def central_value_function(self, obs, opponent_obs, opponent_actions):
-        values = self.central_vf.forward(obs, opponent_obs)
+        values = self.central_vf.forward(obs, opponent_obs, opponent_actions)
         return torch.reshape(values, [-1])
 
     @override(ModelV2)
     def value_function(self):
-        return self.model.value_function()  # not used
+        if not self.use_lstm:
+            return self.model.value_function()
+        else:
+            return self.model_1.value_function()
 
 # Grabs the opponent obs/act and includes it in the experience train_batch,
 # and computes GAE using the central vf predictions.

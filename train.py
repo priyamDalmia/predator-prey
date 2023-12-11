@@ -82,6 +82,8 @@ def create_algo(config):
             .offline_data(output=None)
         )
         algo = algo_config.build()
+        algo.build_config_dict = config
+        return algo
     elif config["algorithm_type"] == "shared":
         ModelCatalog.register_custom_model("cc_model", PPOModel)
         algo_config = (
@@ -112,8 +114,10 @@ def create_algo(config):
             .offline_data(output=None)
         )
         algo = algo_config.build()
+        algo.build_config_dict = config
+        return algo
     elif config["algorithm_type"] == "centralized":
-        ModelCatalog.register_custom_model("cc_model", TorchCentralizedCriticModel)
+        ModelCatalog.register_custom_model("centralized_model", TorchCentralizedCriticModel)
         algo_config = (
             PPOConfig()
             .environment(
@@ -126,13 +130,7 @@ def create_algo(config):
                 **config["rollouts"],
             )
             .training(
-                model={
-                    "custom_model": "cc_model",
-                    "conv_filters": [[16, [3, 3], 2]],
-                    "use_lstm": True,
-                    "fcnet_activation": "relu",
-                    "conv_activation": "relu",
-                },
+                model={"custom_model": "centralized_model", **config["training"]["model"]},
                 lr=config["training"]["lr"],
                 sgd_minibatch_size=config["training"]["sgd_minibatch_size"],
                 num_sgd_iter=config["training"]["num_sgd_iter"],
@@ -359,12 +357,10 @@ def main():
 
     if config["tune"]["tune"]:
         # SET HYPERPARAMETERS for TUNING
-        config["algorithm_type"] = tune.grid_search(["independent", "shared"])
-        # config["env_config"]["reward_type"] = tune.grid_search(
-        #     ["type_1", "type_2", "type_3"]
-        # )
+        config['env_config']['step_penalty'] = tune.grid_search([0.0, -0.01, -0.03])
+        config["algorithm_type"] = tune.grid_search(["independent", "shared", "centralized"])
+        config["env_config"]["reward_type"] = tune.grid_search(["type_1", "type_2"])
         config["training"]["model"]["use_lstm"] = tune.grid_search([True, False])
-        # config['training']['model']['fcnet_hiddens'] = tune.grid_search([[128], [256]])
 
     storage_path = str(Path("./experiments").absolute())
     tuner = tune.Tuner(
@@ -425,13 +421,12 @@ def get_policy_mapping_fn(policy_name, algo):
     return policy_maps
 
 if __name__ == "__main__":
-    # set global variable
+    # # set global variable
     os.environ["TUNE_DISABLE_AUTO_CALLBACK_LOGGERS"] = "1"
     os.environ["TUNE_DISABLE_AUTO_CALLBACK_SYNCER"] = "1"
-    os.environ["TUNE_GLOBAL_CHECKPOINT_S"] = "60"
     os.environ["TUNE_RESULT_DIR"] = str(Path("./experiments").absolute())
     main()
-    # # load the yaml file
+    # load the yaml file
     # with open("config.yaml", "r") as f:
     #     config = yaml.load(f, Loader=yaml.FullLoader)
     # register_env(config["env_name"], lambda config: env_creator(config))
@@ -446,10 +441,10 @@ if __name__ == "__main__":
     # config["wandb"]["wandb_dir_path"] = str(Path("./wandb").absolute())
 
     # algo = create_algo(config)
-    # # results = algo.train()
-    # # print(results)
-    # # print(f"EVALUATING {algo} \n\n")
-    # # results = algo.evaluate()
+    # results = algo.train()
+    # print(results)
+    # print(f"EVALUATING {algo} \n\n")
+    # results = algo.evaluate()
     # # create the two tables and store
     # if config['analysis']['analysis']:
     #     analysis_df = get_analysis_df(
@@ -484,7 +479,7 @@ if __name__ == "__main__":
     # sys.exit()
 
 #    # test tune fit
-#     # config["algorithm_type"] = tune.grid_search(["centralized", "shared", "independent"])
+    # config["algorithm_type"] = tune.grid_search(["centralized", "shared", "independent"])
 #     # config["env_config"]["reward_type"] = tune.grid_search(["type_1", "type_2"])
 #     resource_group = tune.PlacementGroupFactory(
 #         [{'CPU': 1.0}] + [{'CPU': 1.0}] * 1,
@@ -512,4 +507,4 @@ if __name__ == "__main__":
 #         print(res.metrics_dataframe)
 
 #     sys.exit(0)
-# 
+# # 

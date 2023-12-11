@@ -1,14 +1,14 @@
-algorithm_type: "shared"
+algorithm_type: "centralized"
 algorithm_class: "ppo"
 framework: "torch"
 tune:
    tune: true # if true, tune hyperparameters in main!
-   num_samples: 5
+   num_samples: 10
    max_episodes: 25000
-   max_concurrent_trials: 6
+   max_concurrent_trials: 32
 analysis:
    num_trials: 5
-   analysis: true
+   analysis: false
    policy_set: ['original', '_fixed']
    dimensions: ['dx', 'dy', 'PCA_1', 'PCA_2']
    length_fac: 50
@@ -30,7 +30,7 @@ training:
       fcnet_activation: "relu"
       conv_activation: "relu"
       conv_filters: [[16,[3,3],1]]
-      use_lstm: false 
+      use_lstm: false
       lstm_cell_size: 128
       max_seq_len: 10
       lstm_use_prev_reward: true
@@ -42,8 +42,8 @@ rollouts:
    num_rollout_workers: 0
    batch_mode: "complete_episodes"
 wandb: 
-   wandb_init: false
-   wandb_project: "rllib2"
+   wandb_init: true
+   wandb_project: "rllib1"
    wandb_entity: "tpn"
    wandb_notes: "testing setup"
    wandb_log_freq: 50
@@ -56,5 +56,6 @@ env_config:
    npred: 2
    nprey: 6
    reward_type: "type_1"
+   step_penalty: 0.0
 ray:
    init_dashboard: false
