@@ -134,6 +134,5 @@ slurmoutput/
 wandb/
 .wandb/
 
-temp/
 
 nonlin/
