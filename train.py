@@ -52,10 +52,10 @@ def create_algo(config):
             .training(
                 model={"custom_model": "cc_model", **config["training"]["model"]},
                 lr=config["training"]["lr"],
-                use_critic=config["training"]["use_critic"],
-                use_kl_loss=config["training"]["use_kl_loss"],
-                sgd_minibatch_size=config["training"]["sgd_minibatch_size"],
-                num_sgd_iter=config["training"]["num_sgd_iter"],
+                use_critic=config["training"]["use_critic"], # type: ignore
+                use_kl_loss=config["training"]["use_kl_loss"], # type: ignore
+                sgd_minibatch_size=config["training"]["sgd_minibatch_size"], # type: ignore
+                num_sgd_iter=config["training"]["num_sgd_iter"], # type: ignore
                 train_batch_size=config["training"]["train_batch_size"],
                 _enable_learner_api=False,
             )
@@ -76,6 +76,36 @@ def create_algo(config):
                 },
                 policy_mapping_fn=(lambda agent_id, *args, **kwargs: agent_id),
                 policies_to_train=list(env.par_env.possible_agents),
+            )
+            .rl_module(_enable_rl_module_api=False)
+            .reporting(keep_per_episode_custom_metrics=False)
+            .offline_data(output=None)
+        )
+        algo = algo_config.build()
+    elif config["algorithm_type"] == "shared":
+        ModelCatalog.register_custom_model("cc_model", PPOModel)
+        algo_config = (
+            PPOConfig()
+            .framework(framework=config["framework"])
+            .callbacks(episodeMetrics)
+            .training(
+                model={"custom_model": "cc_model", **config["training"]["model"]},
+                lr=config["training"]["lr"],
+                use_critic=config["training"]["use_critic"],
+                use_kl_loss=config["training"]["use_kl_loss"],
+                sgd_minibatch_size=config["training"]["sgd_minibatch_size"],
+                num_sgd_iter=config["training"]["num_sgd_iter"],
+                train_batch_size=config["training"]["train_batch_size"],
+                _enable_learner_api=False,
+            )
+            .environment(
+                config["env_name"],
+                env_config=config["env_config"],
+            )
+            .rollouts(**config["rollouts"])
+            .multi_agent(
+                policies={"shared_policy"},
+                policy_mapping_fn=(lambda agent_id, *args, **kwargs: "shared_policy"),
             )
             .rl_module(_enable_rl_module_api=False)
             .reporting(keep_per_episode_custom_metrics=False)
@@ -126,33 +156,11 @@ def create_algo(config):
             .offline_data(output=None)
         )
         algo = CentralizedCritic(config=algo_config)
-    elif config["algorithm_type"] == "shared":
-        algo_config = (
-            PPOConfig()
-            .framework(framework=config["framework"])
-            .callbacks(episodeMetrics)
-            .training(
-                **config["training"],
-            )
-            .environment(
-                config["env_name"],
-                env_config=config["env_config"],
-            )
-            .rollouts(**config["rollouts"])
-            .multi_agent(
-                policies={"shared_policy"},
-                policy_mapping_fn=(lambda agent_id, *args, **kwargs: "shared_policy"),
-            )
-            .rl_module(_enable_rl_module_api=True)
-            .offline_data(output=None)
-        )
-        algo = algo_config.build()
     else:
         raise ValueError(f"algorithm_type {config['algorithm_type']} not supported")
 
     algo.build_config_dict = config
     return algo
-
 
 class episodeMetrics(DefaultCallbacks):
     def on_episode_start(
@@ -212,7 +220,6 @@ class episodeMetrics(DefaultCallbacks):
             episode.custom_metrics[f"{agent_id}_assists"] = val
         for agent_id, val in episode.user_data["kills_by_id"].items():
             episode.custom_metrics[f"{agent_id}_kills"] = val
-
 
 # define the Trainable
 def train_algo(config):
@@ -352,12 +359,12 @@ def main():
 
     if config["tune"]["tune"]:
         # SET HYPERPARAMETERS for TUNING
-        # config["algorithm_type"] = tune.grid_search(["independent", "shared", "centralized"])
+        config["algorithm_type"] = tune.grid_search(["independent", "shared"])
         # config["env_config"]["reward_type"] = tune.grid_search(
         #     ["type_1", "type_2", "type_3"]
         # )
         config["training"]["model"]["use_lstm"] = tune.grid_search([True, False])
-        config['training']['model']['fcnet_hiddens'] = tune.grid_search([[128], [256]])
+        # config['training']['model']['fcnet_hiddens'] = tune.grid_search([[128], [256]])
 
     storage_path = str(Path("./experiments").absolute())
     tuner = tune.Tuner(
@@ -419,62 +426,62 @@ def get_policy_mapping_fn(policy_name, algo):
 
 if __name__ == "__main__":
     # set global variable
-    # os.environ["TUNE_DISABLE_AUTO_CALLBACK_LOGGERS"] = "1"
-    # os.environ["TUNE_DISABLE_AUTO_CALLBACK_SYNCER"] = "1"
-    # os.environ["TUNE_GLOBAL_CHECKPOINT_S"] = "60"
-    # os.environ["TUNE_RESULT_DIR"] = str(Path("./experiments").absolute())
-    # main()
-    # load the yaml file
-    with open("config.yaml", "r") as f:
-        config = yaml.load(f, Loader=yaml.FullLoader)
-    register_env(config["env_name"], lambda config: env_creator(config))
+    os.environ["TUNE_DISABLE_AUTO_CALLBACK_LOGGERS"] = "1"
+    os.environ["TUNE_DISABLE_AUTO_CALLBACK_SYNCER"] = "1"
+    os.environ["TUNE_GLOBAL_CHECKPOINT_S"] = "60"
+    os.environ["TUNE_RESULT_DIR"] = str(Path("./experiments").absolute())
+    main()
+    # # load the yaml file
+    # with open("config.yaml", "r") as f:
+    #     config = yaml.load(f, Loader=yaml.FullLoader)
+    # register_env(config["env_name"], lambda config: env_creator(config))
 
-    # # for config define param space
-    ray.init(num_cpus=1)
-    def stop_fn(trial_id, result):
-        # Stop training if episode total
-        stop = result["episodes_total"] > 500
-        return stop
-    config["stop_fn"] = stop_fn
-    config["wandb"]["wandb_dir_path"] = str(Path("./wandb").absolute())
+    # # # for config define param space
+    # ray.init(num_cpus=1)
+    # def stop_fn(trial_id, result):
+    #     # Stop training if episode total
+    #     stop = result["episodes_total"] > 500
+    #     return stop
+    # config["stop_fn"] = stop_fn
+    # config["wandb"]["wandb_dir_path"] = str(Path("./wandb").absolute())
 
-    algo = create_algo(config)
-    # results = algo.train()
-    # print(results)
-    # print(f"EVALUATING {algo} \n\n")
-    # results = algo.evaluate()
-    # create the two tables and store
-    if config['analysis']['analysis']:
-        analysis_df = get_analysis_df(
-            config['analysis']['policy_set'],
-            config['analysis']['dimensions'],
-            config['analysis']['length_fac']
-        )
-        for policy_i in config['analysis']['policy_set']:
-            policy_name = config['algorithm_type'] if policy_i == 'original'\
-                  else f"{config['algorithm_type']}_{policy_i}"
-            # build the policy mapping fn
-            policy_mapping_fn = get_policy_mapping_fn(policy_name, algo)
-            env = env_creator(config["env_config"]).par_env
-            analysis_df, eval_df = perform_causal_analysis(
-                num_trials=config["analysis"]["num_trials"],
-                use_ray = True,
-                analysis_df=analysis_df,
-                env = env,
-                policy_name = policy_name,
-                policy_mapping_fn = policy_mapping_fn,
-                is_recurrent = config['training']['model']['use_lstm'],
-                dimensions = config['analysis']['dimensions'],
-                length_fac = config['analysis']['length_fac'],
-                ccm_tau = config['analysis']['ccm_tau'],
-                ccm_E = config['analysis']['ccm_E'],
-                pref_ccm_analysis = config['analysis']['pref_ccm_analysis'],
-                pref_granger_analysis = config['analysis']['pref_granger_analysis'],
-                pref_spatial_ccm_analysis = config['analysis']['pref_spatial_ccm_analysis'],
-                pref_graph_analysis = config['analysis']['pref_graph_analysis'],
-            )
-            print(analysis_df)
-    sys.exit()
+    # algo = create_algo(config)
+    # # results = algo.train()
+    # # print(results)
+    # # print(f"EVALUATING {algo} \n\n")
+    # # results = algo.evaluate()
+    # # create the two tables and store
+    # if config['analysis']['analysis']:
+    #     analysis_df = get_analysis_df(
+    #         config['analysis']['policy_set'],
+    #         config['analysis']['dimensions'],
+    #         config['analysis']['length_fac']
+    #     )
+    #     for policy_i in config['analysis']['policy_set']:
+    #         policy_name = config['algorithm_type'] if policy_i == 'original'\
+    #               else f"{config['algorithm_type']}_{policy_i}"
+    #         # build the policy mapping fn
+    #         policy_mapping_fn = get_policy_mapping_fn(policy_name, algo)
+    #         env = env_creator(config["env_config"]).par_env
+    #         analysis_df, eval_df = perform_causal_analysis(
+    #             num_trials=config["analysis"]["num_trials"],
+    #             use_ray = True,
+    #             analysis_df=analysis_df,
+    #             env = env,
+    #             policy_name = policy_name,
+    #             policy_mapping_fn = policy_mapping_fn,
+    #             is_recurrent = config['training']['model']['use_lstm'],
+    #             dimensions = config['analysis']['dimensions'],
+    #             length_fac = config['analysis']['length_fac'],
+    #             ccm_tau = config['analysis']['ccm_tau'],
+    #             ccm_E = config['analysis']['ccm_E'],
+    #             pref_ccm_analysis = config['analysis']['pref_ccm_analysis'],
+    #             pref_granger_analysis = config['analysis']['pref_granger_analysis'],
+    #             pref_spatial_ccm_analysis = config['analysis']['pref_spatial_ccm_analysis'],
+    #             pref_graph_analysis = config['analysis']['pref_graph_analysis'],
+    #         )
+    #         print(analysis_df)
+    # sys.exit()
 
 #    # test tune fit
 #     # config["algorithm_type"] = tune.grid_search(["centralized", "shared", "independent"])
@@ -505,3 +512,4 @@ if __name__ == "__main__":
 #         print(res.metrics_dataframe)
 
 #     sys.exit(0)
+# 
