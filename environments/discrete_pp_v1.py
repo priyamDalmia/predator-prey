@@ -83,6 +83,8 @@ class discrete_pp_v1(ParallelEnv):
             self._reward_func = self.reward_dist_3
         else:
             raise ValueError(f"Reward type {self._reward_type} not supported.")
+        # step penalty 
+        self._step_penalty = kwargs.get("step_penalty", 0.0)
         # build base game state here 
         self._possible_agents = list(set([f"predator_{i}" for i in range(self._npred)]))
         self._map_pad = self._pred_vision
@@ -307,6 +309,7 @@ class discrete_pp_v1(ParallelEnv):
                 # update to new position 
                 # and reward is zero 
                 rewards[agent_id] = rewards.get(agent_id, 0)
+                rewards[agent_id] -= self._step_penalty
                 agent.move(next_position)
         
         arr = np.zeros(
