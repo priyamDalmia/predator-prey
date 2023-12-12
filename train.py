@@ -235,6 +235,7 @@ class episodeMetrics(DefaultCallbacks):
 def train_algo(config):
     algo = create_algo(config)
     print(f"WORKING DIRECTIRY: {os.getcwd()}")
+    print(f"CONFIG: {config}")
 
     if config["wandb"]["wandb_init"]:
         wandb.init(
