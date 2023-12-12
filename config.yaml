@@ -5,13 +5,13 @@ tune:
    tune: true # if true, tune hyperparameters in main!
    num_samples: 10
    max_episodes: 25000
-   max_concurrent_trials: 32
+   max_concurrent_trials: 24
 analysis:
-   num_trials: 5
-   analysis: false
-   policy_set: ['original', '_fixed']
+   num_trials: 2
+   analysis: true
+   policy_set: ['original', 'fixed', 'chaser']
    dimensions: ['dx', 'dy', 'PCA_1', 'PCA_2']
-   length_fac: 50
+   length_fac: 500
    ccm_tau: 1
    ccm_E: 4
    pref_ccm_analysis: true
@@ -30,7 +30,7 @@ training:
       fcnet_activation: "relu"
       conv_activation: "relu"
       conv_filters: [[16,[3,3],1]]
-      use_lstm: false
+      use_lstm: true
       lstm_cell_size: 128
       max_seq_len: 10
       lstm_use_prev_reward: true

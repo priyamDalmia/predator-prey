@@ -1,7 +1,7 @@
 from ast import Str
 from curses import meta
 from logging import config
-from math import e, inf
+from math import e, exp, inf
 from operator import is_
 import os
 import re
@@ -25,6 +25,7 @@ import warnings
 
 import ray
 from tests.test_multiagent_2d import CONFIG
+
 warnings.filterwarnings("ignore")
 _agent_type_dict = {
     "chaser": ChaserAgent,
@@ -33,29 +34,40 @@ _agent_type_dict = {
 }
 POLICY_SETS = ["chaser_follower", "fixed_follower", "chaser_fixed"]
 CONFIG = dict(
-    policy_name=None, # if none specficied, cycle through all in POLICY_SETS
-    policy_mapping_fn=None, # f none specified, will try to infer from policy name 
+    policy_name=None,  # if none specficied, cycle through all in POLICY_SETS
+    policy_mapping_fn=None,  # f none specified, will try to infer from policy name
     is_recurrent=False,
     length_fac=100,
-    dimensions = ["x", "y", "dx", "dy", "PCA_1", "PCA_2", "PCA_3"],
-    env_config = dict(
-        map_size = 15,
-        npred =2 ,
-        nprey = 6,
+    dimensions=["x", "y", "dx", "dy", "PCA_1", "PCA_2", "PCA_3"],
+    env_config=dict(
+        map_size=15,
+        npred=2,
+        nprey=6,
         pred_vision=6,
         reward_type="type_1",
-        prey_type="static",),
-    ccm_tau = 1,
-    ccm_E = 4,
+        prey_type="static",
+    ),
+    ccm_tau=1,
+    ccm_E=4,
     pref_ccm_analysis=True,
     pref_granger_analysis=False,
     pref_spatial_ccm_analysis=False,
-    pref_graph_analysis=False, 
+    pref_graph_analysis=False,
 )
 
 CAUSAL_PAIRS = [("predator_0", "predator_1"), ("predator_1", "predator_0")]
-CAUSAL_TESTS = ["ccm_1"]#  "spatial_ccm", "ccm_pval"]
+CAUSAL_TESTS = ["ccm_1"]  #  "spatial_ccm", "ccm_pval"]
 NUM_SAMPLES = 10
+
+
+# alogrithm policy model container class
+class AlgoModel:
+    def __init__(self, model):
+        self.model = model.eval()
+
+    def compute_single_action(self, obs, explore):
+        return self.model.compute_single_action(obs, explore)
+
 
 def get_ccm_score(X, Y, tau, E) -> list[tuple[str, float]]:
     """
@@ -65,7 +77,8 @@ def get_ccm_score(X, Y, tau, E) -> list[tuple[str, float]]:
     if pd.isna(corr):
         corr = 0.0
         pval = -1.0
-    return [("ccm_1", round(corr, 3))] # , ("ccm_pval", round(pval, 2))]
+    return [("ccm_1", round(corr, 3))]  # , ("ccm_pval", round(pval, 2))]
+
 
 def get_granger_score(X, Y, maxlag=1) -> tuple[str, float]:
     """
@@ -78,7 +91,11 @@ def get_granger_score(X, Y, maxlag=1) -> tuple[str, float]:
     results = grangercausalitytests(data, maxlag=5)
     return [("granger", 0.0)]
 
+
 def get_episode_record(env, policy_mapping_fn, is_recurrent):
+    explore = True
+    if explore:
+        warnings.warn("Exploration is on!")
     # create a data frame to store the data for
     # agents A and agent B
     col_names = [
@@ -92,13 +109,33 @@ def get_episode_record(env, policy_mapping_fn, is_recurrent):
     obs, info = env.reset()
     center = env.state().shape[0] // 2
     done = False
+    if is_recurrent:
+        rnn_states = dict()
+        last_actions = dict()
+        last_rewards = dict()
+        for agent_id in env.agents:
+            last_actions[agent_id] = 0
+            last_rewards[agent_id] = 0
+            rnn_states[agent_id] = policy_mapping_fn[agent_id].get_initial_state()
+    else:
+        rnn_states = None
+        last_actions = None
+        last_rewards = None
+
     while env.agents:
         actions = dict()
         for agent_id in env.agents:
             if is_recurrent:
-                raise NotImplementedError("Not implemented yet")
+                actions[agent_id], rnn_states[agent_id], _ = policy_mapping_fn[
+                    agent_id
+                ].compute_single_action(
+                    obs[agent_id], state=rnn_states[agent_id], explore=explore,
+                    prev_action=last_actions[agent_id], prev_reward=last_rewards[agent_id]
+                )
             else:
-                actions[agent_id] = policy_mapping_fn[agent_id].compute_single_action(obs[agent_id], explore=False)[0]
+                actions[agent_id] = policy_mapping_fn[agent_id].compute_single_action(
+                    obs[agent_id], explore=explore
+                )[0]
 
         obs, rewards, terminated, truncated, infos = env.step(actions)
         for agent_id in env.agents:
@@ -118,6 +155,9 @@ def get_episode_record(env, policy_mapping_fn, is_recurrent):
         # print(env.render())
         # time.sleep(0.2)
         step += 1
+        if is_recurrent:
+            last_actions = actions
+            last_rewards = rewards
 
     for agent_id in env.possible_agents:
         episode_record.loc[:, (agent_id, "dx")] = (
@@ -126,7 +166,7 @@ def get_episode_record(env, policy_mapping_fn, is_recurrent):
         episode_record.loc[:, (agent_id, "dy")] = (
             episode_record.loc[:, (agent_id, "y")].diff().fillna(0)
         )
-        
+
         xy_data = episode_record.loc[:, (agent_id, ["dx", "dy"])].to_numpy()
         episode_record.loc[:, (agent_id, "PCA_1")] = (
             PCA(n_components=1).fit_transform(xy_data).flatten()
@@ -136,16 +176,16 @@ def get_episode_record(env, policy_mapping_fn, is_recurrent):
         episode_record.loc[:, (agent_id, "PCA_2")] = (
             PCA(n_components=1).fit_transform(xy_data).flatten()
         )
-        
-        # noramlize x and y from center
-        episode_record.loc[:, (agent_id, "x")] = (
-            episode_record.loc[:, (agent_id, "x")].apply(lambda x: (x - center) / (2 * center))
-        )
 
-        episode_record.loc[:, (agent_id, "y")] = (
-            episode_record.loc[:, (agent_id, "y")].apply(lambda x: (x - center) / (2 * center))
-        )
-        
+        # noramlize x and y from center
+        episode_record.loc[:, (agent_id, "x")] = episode_record.loc[
+            :, (agent_id, "x")
+        ].apply(lambda x: (x - center) / (2 * center))
+
+        episode_record.loc[:, (agent_id, "y")] = episode_record.loc[
+            :, (agent_id, "y")
+        ].apply(lambda x: (x - center) / (2 * center))
+
         xy_data = episode_record.loc[:, (agent_id, ["x", "y"])].to_numpy()
         episode_record.loc[:, (agent_id, "PCA_3")] = (
             PCA(n_components=1).fit_transform(xy_data).flatten()
@@ -156,15 +196,25 @@ def get_episode_record(env, policy_mapping_fn, is_recurrent):
     metadata["assists"] = env._assists
     metadata["kills"] = env._kills
     metadata.update(
-        {f"{agent_id}_assists": env._assists_by_id[agent_id] for agent_id in env.possible_agents}
+        {
+            f"{agent_id}_assists": env._assists_by_id[agent_id]
+            for agent_id in env.possible_agents
+        }
     )
     metadata.update(
-        {f"{agent_id}_kills": env._kills_by_id[agent_id] for agent_id in env.possible_agents}
+        {
+            f"{agent_id}_kills": env._kills_by_id[agent_id]
+            for agent_id in env.possible_agents
+        }
     )
     metadata.update(
-        {f"{agent_id}_reward": env._rewards_sum[agent_id] for agent_id in env.possible_agents}
+        {
+            f"{agent_id}_reward": env._rewards_sum[agent_id]
+            for agent_id in env.possible_agents
+        }
     )
     return episode_record, metadata
+
 
 def analyze_task(
     trial_id,
@@ -184,10 +234,12 @@ def analyze_task(
     analysis_results = []
     rolled_out_env_steps = pd.DataFrame([])
     eval_stats = None
-    for i in range(length_fac, (10*length_fac)+1, length_fac):
-        # 1. Generate epsiode data 
+    for i in range(length_fac, (10 * length_fac) + 1, length_fac):
+        # 1. Generate epsiode data
         while len(rolled_out_env_steps) <= int(i):
-            episode_record, metadata = get_episode_record(env, policy_mapping_fn, is_recurrent)
+            episode_record, metadata = get_episode_record(
+                env, policy_mapping_fn, is_recurrent
+            )
             rolled_out_env_steps = (
                 pd.concat([rolled_out_env_steps, episode_record], axis=0)
                 if len(rolled_out_env_steps) > 0
@@ -195,7 +247,11 @@ def analyze_task(
             )
             rolled_out_env_steps.reset_index(drop=True, inplace=False)
             metadata = pd.DataFrame([metadata])
-            eval_stats = metadata if eval_stats is None else pd.concat([eval_stats, metadata], axis=0).reset_index(drop=True)
+            eval_stats = (
+                metadata
+                if eval_stats is None
+                else pd.concat([eval_stats, metadata], axis=0).reset_index(drop=True)
+            )
         # 2. For each fragment length, do causal analysis
         for pair in CAUSAL_PAIRS:
             for dim in dimensions:
@@ -210,7 +266,11 @@ def analyze_task(
                     results = get_ccm_score(X, Y, tau=ccm_tau, E=ccm_E)
                     for result in results:
                         analysis_results.append(
-                            [(trial_id, policy_name, *pair, result[0], dim), i, result[1]]
+                            [
+                                (trial_id, policy_name, *pair, result[0], dim),
+                                i,
+                                result[1],
+                            ]
                         )
 
                 # Granger analysis
@@ -218,7 +278,11 @@ def analyze_task(
                     results = get_granger_score(X, Y, maxlag=1)
                     for result in results:
                         analysis_results.append(
-                            [(trial_id, policy_name, *pair, result[0], dim), i, result[1]]
+                            [
+                                (trial_id, policy_name, *pair, result[0], dim),
+                                i,
+                                result[1],
+                            ]
                         )
                 # Spatial CCM analysis
                 if pref_spatial_ccm_analysis:
@@ -227,19 +291,16 @@ def analyze_task(
                 # Graph analysis
                 if i == 10000 and pref_graph_analysis:
                     raise NotImplementedError("Not implemented yet")
-    
-    eval_stats_df = pd.DataFrame(eval_stats).mean()
-    return analysis_results, eval_stats_df
+
+    return analysis_results, eval_stats
+
 
 @ray.remote
 def remote_analyze_task(*args, **kwargs):
     return analyze_task(*args, **kwargs)
 
-def get_analysis_df(
-        policy_sets: list,
-        dimensions: list,
-        length_fac: int = 100
-):
+
+def get_analysis_df(policy_sets: list, dimensions: list, length_fac: int = 100):
     _df_data = [
         [0, policy, *pair, test, dim]
         for policy in policy_sets
@@ -250,45 +311,36 @@ def get_analysis_df(
     _df_index = pd.MultiIndex.from_tuples(
         _df_data, names=["run_id", "mode", "agent_a", "agent_b", "test", "dimension"]
     )
-    traj_length = [i for i in range(length_fac, (10*length_fac)+1, length_fac)]
+    traj_length = [i for i in range(length_fac, (10 * length_fac) + 1, length_fac)]
     analysis_df = pd.DataFrame(index=_df_index, columns=traj_length).fillna(0.0)
     return analysis_df
 
-def perform_causal_analysis(
-        num_trials: int,
-        use_ray: bool,
-        analysis_df: pd.DataFrame,
-        env,
-        **kwargs
-    ):
 
+def perform_causal_analysis(
+    num_trials: int, use_ray: bool, analysis_df: pd.DataFrame, env, **kwargs
+):
     results = []
-    eval_scores = None
+    eval_df = None
     if use_ray:
-        ray_tasks = [remote_analyze_task.remote(
-            i,
-            env,
-            **kwargs
-        ) for i in range(num_trials)]
+        ray_tasks = [
+            remote_analyze_task.remote(i, env, **kwargs) for i in range(num_trials)
+        ]
         results = ray.get(ray_tasks)
     else:
         for i in range(num_trials):
-            results.append(analyze_task(
-                i,
-                env,
-                **kwargs
-            ))
+            results.append(analyze_task(i, env, **kwargs))
         pass
 
-    for analysis_results, eval_df in results:
+    for analysis_results, eval_results in results:
         for result in analysis_results:
             analysis_df.loc[result[0], result[1]] = result[2]
-        eval_scores = eval_df if eval_scores is None else pd.concat([eval_scores, eval_df], axis=0)
-    if isinstance(eval_scores, pd.DataFrame):
-        eval_df = eval_scores.mean()
-    else:
-        eval_df = eval_scores
+        eval_df = (
+            eval_results
+            if eval_df is None
+            else pd.concat([eval_results, eval_df], axis=0)
+        )
     return analysis_df, eval_df
+
 
 if __name__ == "__main__":
     config_dict = CONFIG.copy()
@@ -296,16 +348,16 @@ if __name__ == "__main__":
     for policy_name in POLICY_SETS:
         start_time = time.time()
         policy_mapping_fn = {
-            f'predator_{i}': _agent_type_dict[agent_class]() for i, agent_class in enumerate(policy_name.split("_"))}
+            f"predator_{i}": _agent_type_dict[agent_class]()
+            for i, agent_class in enumerate(policy_name.split("_"))
+        }
         analysis_df, eval_df = perform_causal_analysis(
-            num_trials = 2,
-            use_ray = True,
-            analysis_df = get_analysis_df(
-                [policy_name],
-                config_dict["dimensions"],
-                config_dict["length_fac"]
+            num_trials=2,
+            use_ray=True,
+            analysis_df=get_analysis_df(
+                [policy_name], config_dict["dimensions"], config_dict["length_fac"]
             ),
-            env = env,
+            env=env,
             policy_name=policy_name,
             policy_mapping_fn=policy_mapping_fn,
             is_recurrent=config_dict["is_recurrent"],
@@ -318,5 +370,7 @@ if __name__ == "__main__":
             pref_spatial_ccm_analysis=config_dict["pref_spatial_ccm_analysis"],
             pref_graph_analysis=config_dict["pref_graph_analysis"],
         )
-        print(f"Time taken for {policy_name}: {(time.time() - start_time)/60:.2f} minutes")
+        print(
+            f"Time taken for {policy_name}: {(time.time() - start_time)/60:.2f} minutes"
+        )
         analysis_df.to_csv(f"./experiments/{policy_name}_analysis.csv")

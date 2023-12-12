@@ -472,7 +472,10 @@ class FixedSwingAgent:
                     return discrete_pp_v1.STR_TO_ACTION[random.choice(["UP", "DOWN"])]
     
     def compute_single_action(self, observation, *args, **kwargs):
-        return self.get_action(observation), None
+        return self.get_action(observation), None, None
+
+    def get_initial_state(self):
+        return 0
 
 class FollowerAgent:
     """
@@ -505,7 +508,10 @@ class FollowerAgent:
             return discrete_pp_v1.STR_TO_ACTION[random.choice(["UP", "DOWN", "LEFT", "RIGHT"])]
     
     def compute_single_action(self, observation, *args, **kwargs):
-        return self.get_action(observation), None
+        return self.get_action(observation), None, None
+    
+    def get_initial_state(self):
+        return 0 
 
 class ChaserAgent:
     """
@@ -540,7 +546,10 @@ class ChaserAgent:
             return discrete_pp_v1.STR_TO_ACTION[random.choice(["UP", "DOWN", "LEFT", "RIGHT"])]
     
     def compute_single_action(self, observation, *args, **kwargs):
-        return self.get_action(observation), None
+        return self.get_action(observation), None, None
+    
+    def get_initial_state(self):
+        return 0 
 
 if __name__ == "__main__":
     config = dict(

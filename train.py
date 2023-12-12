@@ -34,7 +34,12 @@ from ray.rllib.policy import Policy
 from algorithms.centralized_ppo import TorchCentralizedCriticModel, CentralizedCritic
 from ray.rllib.models import ModelCatalog
 
-from analyze import perform_causal_analysis, get_analysis_df, _agent_type_dict
+from analyze import (
+    perform_causal_analysis,
+    get_analysis_df,
+    _agent_type_dict,
+    AlgoModel,
+)
 
 warnings.filterwarnings("ignore")
 env_creator = lambda config: ParallelPettingZooEnv(discrete_pp_v1(**config))
@@ -52,10 +57,10 @@ def create_algo(config):
             .training(
                 model={"custom_model": "cc_model", **config["training"]["model"]},
                 lr=config["training"]["lr"],
-                use_critic=config["training"]["use_critic"], # type: ignore
-                use_kl_loss=config["training"]["use_kl_loss"], # type: ignore
-                sgd_minibatch_size=config["training"]["sgd_minibatch_size"], # type: ignore
-                num_sgd_iter=config["training"]["num_sgd_iter"], # type: ignore
+                use_critic=config["training"]["use_critic"],  # type: ignore
+                use_kl_loss=config["training"]["use_kl_loss"],  # type: ignore
+                sgd_minibatch_size=config["training"]["sgd_minibatch_size"],  # type: ignore
+                num_sgd_iter=config["training"]["num_sgd_iter"],  # type: ignore
                 train_batch_size=config["training"]["train_batch_size"],
                 _enable_learner_api=False,
             )
@@ -117,7 +122,9 @@ def create_algo(config):
         algo.build_config_dict = config
         return algo
     elif config["algorithm_type"] == "centralized":
-        ModelCatalog.register_custom_model("centralized_model", TorchCentralizedCriticModel)
+        ModelCatalog.register_custom_model(
+            "centralized_model", TorchCentralizedCriticModel
+        )
         algo_config = (
             PPOConfig()
             .environment(
@@ -130,7 +137,10 @@ def create_algo(config):
                 **config["rollouts"],
             )
             .training(
-                model={"custom_model": "centralized_model", **config["training"]["model"]},
+                model={
+                    "custom_model": "centralized_model",
+                    **config["training"]["model"],
+                },
                 lr=config["training"]["lr"],
                 sgd_minibatch_size=config["training"]["sgd_minibatch_size"],
                 num_sgd_iter=config["training"]["num_sgd_iter"],
@@ -159,6 +169,7 @@ def create_algo(config):
 
     algo.build_config_dict = config
     return algo
+
 
 class episodeMetrics(DefaultCallbacks):
     def on_episode_start(
@@ -218,6 +229,7 @@ class episodeMetrics(DefaultCallbacks):
             episode.custom_metrics[f"{agent_id}_assists"] = val
         for agent_id, val in episode.user_data["kills_by_id"].items():
             episode.custom_metrics[f"{agent_id}_kills"] = val
+
 
 # define the Trainable
 def train_algo(config):
@@ -287,22 +299,22 @@ def train_algo(config):
                         ],
                     )
                 )
-                # create the two tables and store
                 if config["analysis"]["analysis"]:
-                    analysis_df = get_analysis_df(
-                        config["analysis"]["policy_set"],
-                        config["analysis"]["dimensions"],
-                        config["analysis"]["length_fac"],
-                    )
-                    for policy_name in config["analysis"]["policy_set"]:
+                    for policy_i in config["analysis"]["policy_set"]:
                         policy_name = (
                             config["algorithm_type"]
-                            if policy_name == "original"
-                            else f"{config['algorithm_type']}_{policy_name}"
+                            if policy_i == "original"
+                            else f"{config['algorithm_type']}_{policy_i}"
                         )
+                        analysis_df = get_analysis_df(
+                            [policy_name],
+                            config["analysis"]["dimensions"],
+                            config["analysis"]["length_fac"],
+                        )
+
                         # build the policy mapping fn
                         policy_mapping_fn = get_policy_mapping_fn(policy_name, algo)
-                        env = env_creator(config["env_config"])
+                        env = env_creator(config["env_config"]).par_env
                         analysis_df, eval_df = perform_causal_analysis(
                             num_trials=config["analysis"]["num_trials"],
                             use_ray=False,
@@ -319,24 +331,30 @@ def train_algo(config):
                             pref_granger_analysis=config["analysis"][
                                 "pref_granger_analysis"
                             ],
-                            pref_spatial_analysis=config["analysis"][
-                                "pref_spatial_analysis"
+                            pref_spatial_ccm_analysis=config["analysis"][
+                                "pref_spatial_ccm_analysis"
                             ],
                             pref_graph_analysis=config["analysis"][
                                 "pref_graph_analysis"
                             ],
                         )
+                        # create the two tables and store
+                        analysis_df.columns = analysis_df.columns.astype(str)
+                        analysis_table = wandb.Table(dataframe=analysis_df.reset_index())
+                        eval_table = wandb.Table(dataframe=eval_df)
                         wandb.log(
                             {
-                                f"{policy_name}_analysis_df": wandb.Table(
-                                    dataframe=analysis_df.reset_index()
-                                ),
-                            }
-                        )
-                        # TODO maybe concat all and save a global with mean done
+                                f"{policy_name}_analysis_df" : analysis_table,
+                                f"{policy_name}_eval_df" : eval_table,
+                            })
                 wandb.finish()
-        if results['training_iteration'] % 20 == 0 or results['training_iteration'] == 1:
+                train.report(results)
+        if (
+            results["training_iteration"] % 20 == 0
+            or results["training_iteration"] == 1
+        ):
             train.report(results)
+
 
 # define the main function
 def main():
@@ -345,11 +363,11 @@ def main():
     with open("config.yaml", "r") as f:
         config = yaml.load(f, Loader=yaml.FullLoader)
     register_env(config["env_name"], lambda config: env_creator(config))
-    MAX_EXPISODES = config['tune']['max_episodes']
+    MAX_EXPISODES = config["tune"]["max_episodes"]
 
     def stop_fn(trial_id, result):
         # Stop training if episode total
-        stop = result["episodes_total"] > MAX_EXPISODES 
+        stop = result["episodes_total"] > MAX_EXPISODES
         return stop
 
     config["stop_fn"] = stop_fn
@@ -357,8 +375,10 @@ def main():
 
     if config["tune"]["tune"]:
         # SET HYPERPARAMETERS for TUNING
-        config['env_config']['step_penalty'] = tune.grid_search([0.0, -0.01, -0.03])
-        config["algorithm_type"] = tune.grid_search(["independent", "shared", "centralized"])
+        config["env_config"]["step_penalty"] = tune.grid_search([0.0, -0.01, -0.03])
+        config["algorithm_type"] = tune.grid_search(
+            ["independent", "shared", "centralized"]
+        )
         config["env_config"]["reward_type"] = tune.grid_search(["type_1", "type_2"])
         config["training"]["model"]["use_lstm"] = tune.grid_search([True, False])
 
@@ -371,6 +391,7 @@ def main():
             mode="min",
             num_samples=config["tune"]["num_samples"],
             max_concurrent_trials=config["tune"]["max_concurrent_trials"],
+            trial_name_creator=trail_name_creator,
         ),
         run_config=train.RunConfig(
             verbose=1,
@@ -389,6 +410,7 @@ def main():
 
     print(f"Time taken to finish tune: {(time.time() - start)/60:.2f}")
     return
+
 
 def get_policy_mapping_fn(policy_name, algo):
     policy_maps = dict()
@@ -420,19 +442,29 @@ def get_policy_mapping_fn(policy_name, algo):
 
     return policy_maps
 
+def trail_name_creator(trail, *args, **kwargs):
+    config = trail.config
+    name = ""
+    name += "r-" if config['training']['model']['use_lstm'] else ""
+    name = f"{config['algorithm_type'][0]}_"
+    name += f"{config['env_config']['reward_type'][-1]}_"
+    name += f"{config['env_config']['step_penalty']}_"
+    name += f"_{trail.trial_id}"
+    return name
+
+
 if __name__ == "__main__":
-    # # set global variable
+    # set global variable
     os.environ["TUNE_DISABLE_AUTO_CALLBACK_LOGGERS"] = "1"
     os.environ["TUNE_DISABLE_AUTO_CALLBACK_SYNCER"] = "1"
     os.environ["TUNE_RESULT_DIR"] = str(Path("./experiments").absolute())
     main()
-    # load the yaml file
+
+    # # load the yaml file
     # with open("config.yaml", "r") as f:
     #     config = yaml.load(f, Loader=yaml.FullLoader)
     # register_env(config["env_name"], lambda config: env_creator(config))
-
-    # # # for config define param space
-    # ray.init(num_cpus=1)
+    # # create the stop function
     # def stop_fn(trial_id, result):
     #     # Stop training if episode total
     #     stop = result["episodes_total"] > 500
@@ -441,46 +473,73 @@ if __name__ == "__main__":
     # config["wandb"]["wandb_dir_path"] = str(Path("./wandb").absolute())
 
     # algo = create_algo(config)
+    # # # for config define param space
+    # ray.init(num_cpus=1)
+    # wandb.init(
+    #     dir=config["wandb"]["wandb_dir_path"],
+    #     config={
+    #         "algorithm_type": config["algorithm_type"],
+    #         "algorithm_class": config["algorithm_class"],
+    #         **(config),
+    #     },
+    #     entity=config["wandb"]["wandb_entity"],
+    #     project=config["wandb"]["wandb_project"],
+    # )
+
     # results = algo.train()
     # print(results)
-    # print(f"EVALUATING {algo} \n\n")
-    # results = algo.evaluate()
+    # # print(f"evaluating {algo} \n\n")
+    # # results = algo.evaluate()
     # # create the two tables and store
-    # if config['analysis']['analysis']:
-    #     analysis_df = get_analysis_df(
-    #         config['analysis']['policy_set'],
-    #         config['analysis']['dimensions'],
-    #         config['analysis']['length_fac']
-    #     )
-    #     for policy_i in config['analysis']['policy_set']:
-    #         policy_name = config['algorithm_type'] if policy_i == 'original'\
-    #               else f"{config['algorithm_type']}_{policy_i}"
+    # if config["analysis"]["analysis"]:
+    #     for policy_i in config["analysis"]["policy_set"]:
+    #         policy_name = (
+    #             config["algorithm_type"]
+    #             if policy_i == "original"
+    #             else f"{config['algorithm_type']}_{policy_i}"
+    #         )
+    #         analysis_df = get_analysis_df(
+    #             [policy_name],
+    #             config["analysis"]["dimensions"],
+    #             config["analysis"]["length_fac"],
+    #         )
+
     #         # build the policy mapping fn
     #         policy_mapping_fn = get_policy_mapping_fn(policy_name, algo)
     #         env = env_creator(config["env_config"]).par_env
     #         analysis_df, eval_df = perform_causal_analysis(
     #             num_trials=config["analysis"]["num_trials"],
-    #             use_ray = True,
+    #             use_ray=False,
     #             analysis_df=analysis_df,
-    #             env = env,
-    #             policy_name = policy_name,
-    #             policy_mapping_fn = policy_mapping_fn,
-    #             is_recurrent = config['training']['model']['use_lstm'],
-    #             dimensions = config['analysis']['dimensions'],
-    #             length_fac = config['analysis']['length_fac'],
-    #             ccm_tau = config['analysis']['ccm_tau'],
-    #             ccm_E = config['analysis']['ccm_E'],
-    #             pref_ccm_analysis = config['analysis']['pref_ccm_analysis'],
-    #             pref_granger_analysis = config['analysis']['pref_granger_analysis'],
-    #             pref_spatial_ccm_analysis = config['analysis']['pref_spatial_ccm_analysis'],
-    #             pref_graph_analysis = config['analysis']['pref_graph_analysis'],
+    #             env=env,
+    #             policy_name=policy_name,
+    #             policy_mapping_fn=policy_mapping_fn,
+    #             is_recurrent=config["training"]["model"]["use_lstm"],
+    #             dimensions=config["analysis"]["dimensions"],
+    #             length_fac=config["analysis"]["length_fac"],
+    #             ccm_tau=config["analysis"]["ccm_tau"],
+    #             ccm_E=config["analysis"]["ccm_E"],
+    #             pref_ccm_analysis=config["analysis"]["pref_ccm_analysis"],
+    #             pref_granger_analysis=config["analysis"]["pref_granger_analysis"],
+    #             pref_spatial_ccm_analysis=config["analysis"][
+    #                 "pref_spatial_ccm_analysis"
+    #             ],
+    #             pref_graph_analysis=config["analysis"]["pref_graph_analysis"],
     #         )
     #         print(analysis_df)
+    #         analysis_df.columns = analysis_df.columns.astype(str)
+    #         analysis_table = wandb.Table(dataframe=analysis_df.reset_index())
+    #         eval_table = wandb.Table(dataframe=eval_df)
+    #         wandb.log(
+    #             {
+    #                 f"{policy_name}_analysis_df" : analysis_table,
+    #                 f"{policy_name}_eval_df" : eval_table,
+    #             })
     # sys.exit()
 
-#    # test tune fit
+    # test tune fit
     # config["algorithm_type"] = tune.grid_search(["centralized", "shared", "independent"])
-#     # config["env_config"]["reward_type"] = tune.grid_search(["type_1", "type_2"])
+    # config["env_config"]["reward_type"] = tune.grid_search(["type_1", "type_2"])
 #     resource_group = tune.PlacementGroupFactory(
 #         [{'CPU': 1.0}] + [{'CPU': 1.0}] * 1,
 #     )
@@ -492,6 +551,7 @@ if __name__ == "__main__":
 #             mode="min",
 #             num_samples=1,
 #             max_concurrent_trials=2,
+#             trial_name_creator=trail_name_creator,
 #         ),
 #         run_config=train.RunConfig(
 #             stop=stop_fn,
@@ -507,4 +567,4 @@ if __name__ == "__main__":
 #         print(res.metrics_dataframe)
 
 #     sys.exit(0)
-# # 
+# #
