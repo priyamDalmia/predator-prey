@@ -12,6 +12,15 @@
             "console": "integratedTerminal",
             "justMyCode": false,
             "cwd": "/home/priyam/projects/predator-prey"
+        },
+        {
+            "name": "analyze.py",
+            "type": "python",
+            "request": "launch",
+            "program": "analyze.py",
+            "console": "integratedTerminal",
+            "justMyCode": false,
+            "cwd": "/home/priyam/projects/predator-prey"
         }
     ]
 }

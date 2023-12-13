@@ -11,7 +11,7 @@ from cycler import L
 from matplotlib.pylab import f
 import pandas as pd
 import numpy as np
-from pyparsing import C
+from pyparsing import C, col
 from sympy import N, O, per
 from itertools import product
 
@@ -32,18 +32,19 @@ _agent_type_dict = {
     "follower": FollowerAgent,
     "fixed": FixedSwingAgent,
 }
-POLICY_SETS = ["chaser_follower", "fixed_follower", "chaser_fixed"]
+POLICY_SETS = ["chaser_follower", "fixed_follower", "chaser_fixed",
+               "chaser_chaser"]
 CONFIG = dict(
     policy_name=None,  # if none specficied, cycle through all in POLICY_SETS
     policy_mapping_fn=None,  # f none specified, will try to infer from policy name
     is_recurrent=False,
-    length_fac=100,
+    length_fac=500,
     dimensions=["x", "y", "dx", "dy", "PCA_1", "PCA_2", "PCA_3"],
     env_config=dict(
         map_size=15,
         npred=2,
         nprey=6,
-        pred_vision=6,
+        pred_vision=4,
         reward_type="type_1",
         prey_type="static",
     ),
@@ -93,7 +94,7 @@ def get_granger_score(X, Y, maxlag=1) -> tuple[str, float]:
 
 
 def get_episode_record(env, policy_mapping_fn, is_recurrent):
-    explore = True
+    explore = False
     if explore:
         warnings.warn("Exploration is on!")
     # create a data frame to store the data for
@@ -341,36 +342,83 @@ def perform_causal_analysis(
         )
     return analysis_df, eval_df
 
+@ray.remote
+def print_eval_scores(name, env, policy_mapping_fn, is_recurrent):
+    is_recurrent = False
+    eval_stats = [] 
+    for i in range(500):
+        eval_stats.append(get_episode_record(env, policy_mapping_fn, is_recurrent)[1])
+    
+    eval_df = pd.DataFrame(eval_stats)
+    desc_str = f"{name} with env:\n{env.metadata}"
+    return desc_str, pd.concat([eval_df.mean(), eval_df.std()], axis=1)
 
 if __name__ == "__main__":
     config_dict = CONFIG.copy()
     env = discrete_pp_v1(**config_dict["env_config"])
-    for policy_name in POLICY_SETS:
-        start_time = time.time()
-        policy_mapping_fn = {
-            f"predator_{i}": _agent_type_dict[agent_class]()
-            for i, agent_class in enumerate(policy_name.split("_"))
-        }
-        analysis_df, eval_df = perform_causal_analysis(
-            num_trials=2,
-            use_ray=True,
-            analysis_df=get_analysis_df(
-                [policy_name], config_dict["dimensions"], config_dict["length_fac"]
-            ),
-            env=env,
-            policy_name=policy_name,
-            policy_mapping_fn=policy_mapping_fn,
-            is_recurrent=config_dict["is_recurrent"],
-            dimensions=config_dict["dimensions"],
-            length_fac=config_dict["length_fac"],
-            ccm_tau=config_dict["ccm_tau"],
-            ccm_E=config_dict["ccm_E"],
-            pref_ccm_analysis=config_dict["pref_ccm_analysis"],
-            pref_granger_analysis=config_dict["pref_granger_analysis"],
-            pref_spatial_ccm_analysis=config_dict["pref_spatial_ccm_analysis"],
-            pref_graph_analysis=config_dict["pref_graph_analysis"],
-        )
-        print(
-            f"Time taken for {policy_name}: {(time.time() - start_time)/60:.2f} minutes"
-        )
-        analysis_df.to_csv(f"./experiments/{policy_name}_analysis.csv")
+    anaylze_agents = False 
+    evaluate_agents = True
+    eval_list = ['chaser_follower', 'fixed_follower', 'chaser_fixed']
+    if anaylze_agents:
+        for policy_name in POLICY_SETS:
+            start_time = time.time()
+            policy_mapping_fn = {
+                f"predator_{i}": _agent_type_dict[agent_class]()
+                for i, agent_class in enumerate(policy_name.split("_"))
+            }
+            analysis_df, eval_df = perform_causal_analysis(
+                num_trials=3,
+                use_ray=True,
+                analysis_df=get_analysis_df(
+                    [policy_name], config_dict["dimensions"], config_dict["length_fac"]
+                ),
+                env=env,
+                policy_name=policy_name,
+                policy_mapping_fn=policy_mapping_fn,
+                is_recurrent=config_dict["is_recurrent"],
+                dimensions=config_dict["dimensions"],
+                length_fac=config_dict["length_fac"],
+                ccm_tau=config_dict["ccm_tau"],
+                ccm_E=config_dict["ccm_E"],
+                pref_ccm_analysis=config_dict["pref_ccm_analysis"],
+                pref_granger_analysis=config_dict["pref_granger_analysis"],
+                pref_spatial_ccm_analysis=config_dict["pref_spatial_ccm_analysis"],
+                pref_graph_analysis=config_dict["pref_graph_analysis"],
+            )
+            print(
+                f"Time taken for {policy_name}: {(time.time() - start_time)/60:.2f} minutes"
+            )
+            analysis_df.to_csv(f"./experiments/{policy_name}_analysis.csv")
+
+    # evaluate_agents = True
+    # if evaluate_agents:
+    #     ray.init(num_cpus=12)
+    #     eval_df = []
+    #     ray_tasks = []
+    #     for step_penalty in [0.0, 0.01, 0.03]:
+    #         for reward_type in ['type_1', 'type_2']:
+    #             for map_size in [15, 20, 25]:
+    #                 for vision in [2,4,6]:
+    #                     env_config = dict(
+    #                         map_size=map_size,
+    #                         npred=2,
+    #                         nprey=6,
+    #                         pred_vision=vision,
+    #                         reward_type=reward_type,
+    #                         prey_type="static",
+    #                         step_penalty=step_penalty
+    #                     )
+    #                     env = discrete_pp_v1(**env_config)
+    #                     for policy_name in eval_list:
+    #                         policy_mapping_fn = {
+    #                             f"predator_{i}": _agent_type_dict[agent_class]()
+    #                             for i, agent_class in enumerate(policy_name.split("_"))
+    #                         }
+    #                         ray_tasks.append(print_eval_scores.remote(f"{policy_name}_{step_penalty}_{reward_type}_{map_size}_{vision}", env, policy_mapping_fn, False))
+
+    #     results = ray.get(ray_tasks)
+    #     for result in results:
+    #         print(f"""\n\n{result[0]}: \n{result[1]}""")
+
+
+
