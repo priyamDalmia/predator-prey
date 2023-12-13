@@ -3,7 +3,7 @@ algorithm_class: "ppo"
 framework: "torch"
 tune:
    tune: true # if true, tune hyperparameters in main!
-   num_samples: 10
+   num_samples: 3
    max_episodes: 25000
    max_concurrent_trials: 24
 analysis:
@@ -28,7 +28,7 @@ training:
    grad_clip: "norm"
    gamma: 0.90
    model: 
-      fcnet_hiddens: [128]
+      fcnet_hiddens: [256]
       fcnet_activation: "relu"
       conv_activation: "relu"
       conv_filters: [[16,[3,3],1]]
