@@ -38,7 +38,7 @@ CONFIG = dict(
     policy_name=None,  # if none specficied, cycle through all in POLICY_SETS
     policy_mapping_fn=None,  # f none specified, will try to infer from policy name
     is_recurrent=False,
-    length_fac=500,
+    length_fac=50,
     dimensions=["x", "y", "dx", "dy", "PCA_1", "PCA_2", "PCA_3"],
     env_config=dict(
         map_size=15,
@@ -389,6 +389,7 @@ if __name__ == "__main__":
                 f"Time taken for {policy_name}: {(time.time() - start_time)/60:.2f} minutes"
             )
             analysis_df.to_csv(f"./experiments/{policy_name}_analysis.csv")
+            eval_df.to_csv(f"./experiments/{policy_name}_eval.csv")
 
     # evaluate_agents = True
     # if evaluate_agents:
