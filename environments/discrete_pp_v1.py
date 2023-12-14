@@ -293,6 +293,7 @@ class discrete_pp_v1(ParallelEnv):
             # if new position is wall; do not take action
             if self._global_state[next_position[0], next_position[1], self.GROUND_CHANNEL] == 1:
                 rewards[agent_id] = rewards.get(agent_id, 0)
+                rewards[agent_id] = rewards[agent_id] - self._step_penalty
                 # if wall, do not move or do anything.
                 # and reward is zero 
             elif self._global_state[next_position[0], next_position[1], self.PREY_CHANNEL] == 1:
@@ -309,7 +310,7 @@ class discrete_pp_v1(ParallelEnv):
                 # update to new position 
                 # and reward is zero 
                 rewards[agent_id] = rewards.get(agent_id, 0)
-                rewards[agent_id] -= self._step_penalty
+                rewards[agent_id] = rewards[agent_id] - self._step_penalty
                 agent.move(next_position)
         
         arr = np.zeros(
