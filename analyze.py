@@ -33,12 +33,12 @@ _agent_type_dict = {
     "fixed": FixedSwingAgent,
 }
 POLICY_SETS = ["chaser_follower", "fixed_follower", "chaser_fixed",
-               "chaser_chaser"]
+               "chaser_chaser", "follower_chaser", "fixed_chaser"]
 CONFIG = dict(
     policy_name=None,  # if none specficied, cycle through all in POLICY_SETS
     policy_mapping_fn=None,  # f none specified, will try to infer from policy name
     is_recurrent=False,
-    length_fac=50,
+    length_fac=500,
     dimensions=["x", "y", "dx", "dy", "PCA_1", "PCA_2", "PCA_3"],
     env_config=dict(
         map_size=15,
@@ -356,7 +356,7 @@ def print_eval_scores(name, env, policy_mapping_fn, is_recurrent):
 if __name__ == "__main__":
     config_dict = CONFIG.copy()
     env = discrete_pp_v1(**config_dict["env_config"])
-    anaylze_agents = False 
+    anaylze_agents = True 
     evaluate_agents = True
     eval_list = ['chaser_follower', 'fixed_follower', 'chaser_fixed']
     if anaylze_agents:
@@ -388,8 +388,8 @@ if __name__ == "__main__":
             print(
                 f"Time taken for {policy_name}: {(time.time() - start_time)/60:.2f} minutes"
             )
-            analysis_df.to_csv(f"./experiments/{policy_name}_analysis.csv")
-            eval_df.to_csv(f"./experiments/{policy_name}_eval.csv")
+            analysis_df.to_csv(f"./experiments/results/{policy_name}_analysis.csv")
+            eval_df.to_csv(f"./experiments/results/{policy_name}_eval.csv")
 
     # evaluate_agents = True
     # if evaluate_agents:

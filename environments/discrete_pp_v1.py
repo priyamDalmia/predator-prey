@@ -84,7 +84,7 @@ class discrete_pp_v1(ParallelEnv):
         else:
             raise ValueError(f"Reward type {self._reward_type} not supported.")
         # step penalty 
-        self._step_penalty = kwargs.get("step_penalty", 0.0)
+        self._step_penalty = abs(kwargs.get("step_penalty", 0.0))
         # build base game state here 
         self._possible_agents = list(set([f"predator_{i}" for i in range(self._npred)]))
         self._map_pad = self._pred_vision
