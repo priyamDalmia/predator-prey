@@ -2,7 +2,7 @@
 #SBATCH --nodes=1
 #SBTACH --ntasks=1
 #SBATCH --ntasks-per-node=1
-#SBATCH --cpus-per-task=12
+#SBATCH --cpus-per-task=16
 
 #SBATCH --gres=gpu:1
 #SBATCH --qos=gpgpudeeplearn
@@ -11,7 +11,7 @@
 # SBATCH --mem-per-cpu=4G
 # SBATCH --partition=cascade
 
-#SBATCH --time=01-00:00:00
+#SBATCH --time=02-00:00:00
 #SBATCH -o ./slurmoutput/train-%j.out
 #SBATCH --mail-type=fail         # send email if job fails
 #SBATCH --mail-user=p.dalmia@unimelb.edu.au

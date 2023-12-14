@@ -3,9 +3,9 @@ algorithm_class: "ppo"
 framework: "torch"
 tune:
    tune: true # if true, tune hyperparameters in main!
-   num_samples: 3
+   num_samples: 4
    max_episodes: 25000
-   max_concurrent_trials: 24
+   max_concurrent_trials: 32
 analysis:
    num_trials: 2
    analysis: true

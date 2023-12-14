@@ -1,0 +1,1622 @@
+2023-12-13 19:34:40,148	WARNING __init__.py:10 -- PG has/have been moved to `rllib_contrib` and will no longer be maintained by the RLlib team. You can still use it/them normally inside RLlib util Ray 2.8, but from Ray 2.9 on, all `rllib_contrib` algorithms will no longer be part of the core repo, and will therefore have to be installed separately with pinned dependencies for e.g. ray[rllib] and other packages! See https://github.com/ray-project/ray/tree/master/rllib_contrib#rllib-contrib for more information on the RLlib contrib effort.
+2023-12-13 19:34:43,141	INFO worker.py:1673 -- Started a local Ray instance.
+
+
+chaser_follower_0.0_type_1_15_2 with env:
+{'name': 'discrete_pp_v0', 'render.modes': ['human', 'rgb_array'], 'map_size': 15, 'reward_type': 'type_1', 'max_cycles': 100, 'npred': 2, 'nprey': 6, 'pred_vision': 2, 'prey_type': 'static'}: 
+                          0         1
+episode_len         100.694  2.550564
+episode_reward        2.940  1.280500
+assists               0.734  1.092534
+kills                 2.940  1.280500
+predator_0_assists    0.020  0.140140
+predator_1_assists    0.714  1.072616
+predator_0_kills      2.420  1.250090
+predator_1_kills      0.520  0.733946
+predator_0_reward     2.420  1.250090
+predator_1_reward     0.520  0.733946
+
+
+fixed_follower_0.0_type_1_15_2 with env:
+{'name': 'discrete_pp_v0', 'render.modes': ['human', 'rgb_array'], 'map_size': 15, 'reward_type': 'type_1', 'max_cycles': 100, 'npred': 2, 'nprey': 6, 'pred_vision': 2, 'prey_type': 'static'}: 
+                          0         1
+episode_len         100.998  0.044721
+episode_reward        1.808  1.101618
+assists               0.662  0.888445
+kills                 1.808  1.101618
+predator_0_assists    0.188  0.470211
+predator_1_assists    0.474  0.747289
+predator_0_kills      1.206  0.923726
+predator_1_kills      0.602  0.748811
+predator_0_reward     1.206  0.923726
+predator_1_reward     0.602  0.748811
+
+
+chaser_fixed_0.0_type_1_15_2 with env:
+{'name': 'discrete_pp_v0', 'render.modes': ['human', 'rgb_array'], 'map_size': 15, 'reward_type': 'type_1', 'max_cycles': 100, 'npred': 2, 'nprey': 6, 'pred_vision': 2, 'prey_type': 'static'}: 
+                          0         1
+episode_len         100.458  3.943010
+episode_reward        3.242  1.246814
+assists               0.250  0.551460
+kills                 3.242  1.246814
+predator_0_assists    0.032  0.176176
+predator_1_assists    0.218  0.504961
+predator_0_kills      2.312  1.222147
+predator_1_kills      0.930  0.854729
+predator_0_reward     2.312  1.222147
+predator_1_reward     0.930  0.854729
+
+
+chaser_follower_0.0_type_1_15_4 with env:
+{'name': 'discrete_pp_v0', 'render.modes': ['human', 'rgb_array'], 'map_size': 15, 'reward_type': 'type_1', 'max_cycles': 100, 'npred': 2, 'nprey': 6, 'pred_vision': 4, 'prey_type': 'static'}: 
+                         0          1
+episode_len         93.274  16.599458
+episode_reward       4.522   1.246042
+assists              1.898   1.805024
+kills                4.522   1.246042
+predator_0_assists   0.096   0.320921
+predator_1_assists   1.802   1.758688
+predator_0_kills     4.146   1.355122
+predator_1_kills     0.376   0.599452
+predator_0_reward    4.146   1.355122
+predator_1_reward    0.376   0.599452
+
+
+fixed_follower_0.0_type_1_15_4 with env:
+{'name': 'discrete_pp_v0', 'render.modes': ['human', 'rgb_array'], 'map_size': 15, 'reward_type': 'type_1', 'max_cycles': 100, 'npred': 2, 'nprey': 6, 'pred_vision': 4, 'prey_type': 'static'}: 
+                          0         1
+episode_len         101.000  0.000000
+episode_reward        1.510  1.041186
+assists               0.762  0.868830
+kills                 1.510  1.041186
+predator_0_assists    0.182  0.439616
+predator_1_assists    0.580  0.746132
+predator_0_kills      1.052  0.864170
+predator_1_kills      0.458  0.679086
+predator_0_reward     1.052  0.864170
+predator_1_reward     0.458  0.679086
+
+
+chaser_fixed_0.0_type_1_15_4 with env:
+{'name': 'discrete_pp_v0', 'render.modes': ['human', 'rgb_array'], 'map_size': 15, 'reward_type': 'type_1', 'max_cycles': 100, 'npred': 2, 'nprey': 6, 'pred_vision': 4, 'prey_type': 'static'}: 
+                         0          1
+episode_len         90.806  19.787153
+episode_reward       4.612   1.234708
+assists              0.400   0.651805
+kills                4.612   1.234708
+predator_0_assists   0.020   0.140140
+predator_1_assists   0.380   0.632772
+predator_0_kills     4.066   1.371644
+predator_1_kills     0.546   0.718970
+predator_0_reward    4.066   1.371644
+predator_1_reward    0.546   0.718970
+
+
+chaser_follower_0.0_type_1_15_6 with env:
+{'name': 'discrete_pp_v0', 'render.modes': ['human', 'rgb_array'], 'map_size': 15, 'reward_type': 'type_1', 'max_cycles': 100, 'npred': 2, 'nprey': 6, 'pred_vision': 6, 'prey_type': 'static'}: 
+                         0          1
+episode_len         72.320  26.987372
+episode_reward       5.448   0.872249
+assists              2.716   1.787101
+kills                5.448   0.872249
+predator_0_assists   0.128   0.334424
+predator_1_assists   2.588   1.772156
+predator_0_kills     5.078   1.026657
+predator_1_kills     0.370   0.574247
+predator_0_reward    5.078   1.026657
+predator_1_reward    0.370   0.574247
+
+
+fixed_follower_0.0_type_1_15_6 with env:
+{'name': 'discrete_pp_v0', 'render.modes': ['human', 'rgb_array'], 'map_size': 15, 'reward_type': 'type_1', 'max_cycles': 100, 'npred': 2, 'nprey': 6, 'pred_vision': 6, 'prey_type': 'static'}: 
+                          0         1
+episode_len         101.000  0.000000
+episode_reward        1.116  0.853229
+assists               0.566  0.683065
+kills                 1.116  0.853229
+predator_0_assists    0.170  0.406732
+predator_1_assists    0.396  0.589813
+predator_0_kills      0.660  0.702415
+predator_1_kills      0.456  0.610581
+predator_0_reward     0.660  0.702415
+predator_1_reward     0.456  0.610581
+
+
+chaser_fixed_0.0_type_1_15_6 with env:
+{'name': 'discrete_pp_v0', 'render.modes': ['human', 'rgb_array'], 'map_size': 15, 'reward_type': 'type_1', 'max_cycles': 100, 'npred': 2, 'nprey': 6, 'pred_vision': 6, 'prey_type': 'static'}: 
+                         0          1
+episode_len         76.716  26.488311
+episode_reward       5.306   0.949825
+assists              0.442   0.641451
+kills                5.306   0.949825
+predator_0_assists   0.012   0.108994
+predator_1_assists   0.430   0.633959
+predator_0_kills     5.070   1.011507
+predator_1_kills     0.236   0.443506
+predator_0_reward    5.070   1.011507
+predator_1_reward    0.236   0.443506
+
+
+chaser_follower_0.0_type_1_20_2 with env:
+{'name': 'discrete_pp_v0', 'render.modes': ['human', 'rgb_array'], 'map_size': 20, 'reward_type': 'type_1', 'max_cycles': 100, 'npred': 2, 'nprey': 6, 'pred_vision': 2, 'prey_type': 'static'}: 
+                          0         1
+episode_len         100.866  2.128169
+episode_reward        1.894  1.218907
+assists               0.324  0.684076
+kills                 1.894  1.218907
+predator_0_assists    0.008  0.089173
+predator_1_assists    0.316  0.670106
+predator_0_kills      1.520  1.126116
+predator_1_kills      0.374  0.588912
+predator_0_reward     1.520  1.126116
+predator_1_reward     0.374  0.588912
+
+
+fixed_follower_0.0_type_1_20_2 with env:
+{'name': 'discrete_pp_v0', 'render.modes': ['human', 'rgb_array'], 'map_size': 20, 'reward_type': 'type_1', 'max_cycles': 100, 'npred': 2, 'nprey': 6, 'pred_vision': 2, 'prey_type': 'static'}: 
+                          0         1
+episode_len         101.000  0.000000
+episode_reward        1.316  1.022857
+assists               0.316  0.645738
+kills                 1.316  1.022857
+predator_0_assists    0.070  0.270641
+predator_1_assists    0.246  0.560457
+predator_0_kills      0.902  0.842506
+predator_1_kills      0.414  0.615924
+predator_0_reward     0.902  0.842506
+predator_1_reward     0.414  0.615924
+
+
+chaser_fixed_0.0_type_1_20_2 with env:
+{'name': 'discrete_pp_v0', 'render.modes': ['human', 'rgb_array'], 'map_size': 20, 'reward_type': 'type_1', 'max_cycles': 100, 'npred': 2, 'nprey': 6, 'pred_vision': 2, 'prey_type': 'static'}: 
+                          0         1
+episode_len         100.814  2.939504
+episode_reward        2.410  1.218552
+assists               0.092  0.289315
+kills                 2.410  1.218552
+predator_0_assists    0.014  0.117608
+predator_1_assists    0.078  0.268440
+predator_0_kills      1.620  1.148145
+predator_1_kills      0.790  0.806971
+predator_0_reward     1.620  1.148145
+predator_1_reward     0.790  0.806971
+
+
+chaser_follower_0.0_type_1_20_4 with env:
+{'name': 'discrete_pp_v0', 'render.modes': ['human', 'rgb_array'], 'map_size': 20, 'reward_type': 'type_1', 'max_cycles': 100, 'npred': 2, 'nprey': 6, 'pred_vision': 4, 'prey_type': 'static'}: 
+                          0         1
+episode_len         100.018  6.010818
+episode_reward        3.056  1.517059
+assists               0.842  1.325349
+kills                 3.056  1.517059
+predator_0_assists    0.046  0.209695
+predator_1_assists    0.796  1.281276
+predator_0_kills      2.734  1.484470
+predator_1_kills      0.322  0.582232
+predator_0_reward     2.734  1.484470
+predator_1_reward     0.322  0.582232
+
+
+fixed_follower_0.0_type_1_20_4 with env:
+{'name': 'discrete_pp_v0', 'render.modes': ['human', 'rgb_array'], 'map_size': 20, 'reward_type': 'type_1', 'max_cycles': 100, 'npred': 2, 'nprey': 6, 'pred_vision': 4, 'prey_type': 'static'}: 
+                          0         1
+episode_len         101.000  0.000000
+episode_reward        1.136  0.948316
+assists               0.394  0.680949
+kills                 1.136  0.948316
+predator_0_assists    0.102  0.328347
+predator_1_assists    0.292  0.565133
+predator_0_kills      0.766  0.777466
+predator_1_kills      0.370  0.581185
+predator_0_reward     0.766  0.777466
+predator_1_reward     0.370  0.581185
+
+
+chaser_fixed_0.0_type_1_20_4 with env:
+{'name': 'discrete_pp_v0', 'render.modes': ['human', 'rgb_array'], 'map_size': 20, 'reward_type': 'type_1', 'max_cycles': 100, 'npred': 2, 'nprey': 6, 'pred_vision': 4, 'prey_type': 'static'}: 
+                         0         1
+episode_len         99.238  8.459343
+episode_reward       3.224  1.445685
+assists              0.172  0.427530
+kills                3.224  1.445685
+predator_0_assists   0.006  0.077304
+predator_1_assists   0.166  0.422849
+predator_0_kills     2.722  1.487663
+predator_1_kills     0.502  0.665494
+predator_0_reward    2.722  1.487663
+predator_1_reward    0.502  0.665494
+
+
+chaser_follower_0.0_type_1_20_6 with env:
+{'name': 'discrete_pp_v0', 'render.modes': ['human', 'rgb_array'], 'map_size': 20, 'reward_type': 'type_1', 'max_cycles': 100, 'npred': 2, 'nprey': 6, 'pred_vision': 6, 'prey_type': 'static'}: 
+                         0          1
+episode_len         93.542  17.138953
+episode_reward       4.284   1.339751
+assists              1.800   1.749893
+kills                4.284   1.339751
+predator_0_assists   0.090   0.293381
+predator_1_assists   1.710   1.714579
+predator_0_kills     3.998   1.409244
+predator_1_kills     0.286   0.490597
+predator_0_reward    3.998   1.409244
+predator_1_reward    0.286   0.490597
+
+
+fixed_follower_0.0_type_1_20_6 with env:
+{'name': 'discrete_pp_v0', 'render.modes': ['human', 'rgb_array'], 'map_size': 20, 'reward_type': 'type_1', 'max_cycles': 100, 'npred': 2, 'nprey': 6, 'pred_vision': 6, 'prey_type': 'static'}: 
+                          0         1
+episode_len         101.000  0.000000
+episode_reward        0.960  0.912175
+assists               0.424  0.620479
+kills                 0.960  0.912175
+predator_0_assists    0.128  0.368630
+predator_1_assists    0.296  0.522427
+predator_0_kills      0.596  0.702689
+predator_1_kills      0.364  0.635856
+predator_0_reward     0.596  0.702689
+predator_1_reward     0.364  0.635856
+
+
+chaser_fixed_0.0_type_1_20_6 with env:
+{'name': 'discrete_pp_v0', 'render.modes': ['human', 'rgb_array'], 'map_size': 20, 'reward_type': 'type_1', 'max_cycles': 100, 'npred': 2, 'nprey': 6, 'pred_vision': 6, 'prey_type': 'static'}: 
+                         0          1
+episode_len         92.136  19.335906
+episode_reward       4.346   1.360141
+assists              0.246   0.531082
+kills                4.346   1.360141
+predator_0_assists   0.024   0.153202
+predator_1_assists   0.222   0.499214
+predator_0_kills     3.962   1.415827
+predator_1_kills     0.384   0.610975
+predator_0_reward    3.962   1.415827
+predator_1_reward    0.384   0.610975
+
+
+chaser_follower_0.0_type_2_15_2 with env:
+{'name': 'discrete_pp_v0', 'render.modes': ['human', 'rgb_array'], 'map_size': 15, 'reward_type': 'type_2', 'max_cycles': 100, 'npred': 2, 'nprey': 6, 'pred_vision': 2, 'prey_type': 'static'}: 
+                          0         1
+episode_len         100.878  1.671138
+episode_reward        3.242  1.536019
+assists               0.700  1.073455
+kills                 2.822  1.278117
+predator_0_assists    0.022  0.159897
+predator_1_assists    0.678  1.050964
+predator_0_kills      2.372  1.247690
+predator_1_kills      0.450  0.654490
+predator_0_reward     2.254  1.195132
+predator_1_reward     0.988  0.898371
+
+
+fixed_follower_0.0_type_2_15_2 with env:
+{'name': 'discrete_pp_v0', 'render.modes': ['human', 'rgb_array'], 'map_size': 15, 'reward_type': 'type_2', 'max_cycles': 100, 'npred': 2, 'nprey': 6, 'pred_vision': 2, 'prey_type': 'static'}: 
+                           0         1
+episode_len         101.0000  0.000000
+episode_reward        2.1972  1.291964
+assists               0.5820  0.802848
+kills                 1.8480  1.085935
+predator_0_assists    0.1180  0.352597
+predator_1_assists    0.4640  0.713949
+predator_0_kills      1.2760  0.910760
+predator_1_kills      0.5720  0.716829
+predator_0_reward     1.2776  0.865399
+predator_1_reward     0.9196  0.758661
+
+
+chaser_fixed_0.0_type_2_15_2 with env:
+{'name': 'discrete_pp_v0', 'render.modes': ['human', 'rgb_array'], 'map_size': 15, 'reward_type': 'type_2', 'max_cycles': 100, 'npred': 2, 'nprey': 6, 'pred_vision': 2, 'prey_type': 'static'}: 
+                          0         1
+episode_len         100.362  4.848295
+episode_reward        3.408  1.342543
+assists               0.220  0.469084
+kills                 3.276  1.283401
+predator_0_assists    0.018  0.147375
+predator_1_assists    0.202  0.448998
+predator_0_kills      2.262  1.203434
+predator_1_kills      1.014  0.848082
+predator_0_reward     2.236  1.186355
+predator_1_reward     1.172  0.881072
+
+
+chaser_follower_0.0_type_2_15_4 with env:
+{'name': 'discrete_pp_v0', 'render.modes': ['human', 'rgb_array'], 'map_size': 15, 'reward_type': 'type_2', 'max_cycles': 100, 'npred': 2, 'nprey': 6, 'pred_vision': 4, 'prey_type': 'static'}: 
+                         0          1
+episode_len         90.810  18.986597
+episode_reward       5.672   1.952814
+assists              1.830   1.808768
+kills                4.574   1.297649
+predator_0_assists   0.064   0.244998
+predator_1_assists   1.766   1.793789
+predator_0_kills     4.206   1.362085
+predator_1_kills     0.368   0.607713
+predator_0_reward    3.904   1.227174
+predator_1_reward    1.768   1.375689
+
+
+fixed_follower_0.0_type_2_15_4 with env:
+{'name': 'discrete_pp_v0', 'render.modes': ['human', 'rgb_array'], 'map_size': 15, 'reward_type': 'type_2', 'max_cycles': 100, 'npred': 2, 'nprey': 6, 'pred_vision': 4, 'prey_type': 'static'}: 
+                           0         1
+episode_len         101.0000  0.000000
+episode_reward        2.0116  1.407262
+assists               0.7360  0.846012
+kills                 1.5700  1.093385
+predator_0_assists    0.1760  0.425895
+predator_1_assists    0.5600  0.758651
+predator_0_kills      1.0660  0.944154
+predator_1_kills      0.5040  0.671480
+predator_0_reward     1.0948  0.874060
+predator_1_reward     0.9168  0.768178
+
+
+chaser_fixed_0.0_type_2_15_4 with env:
+{'name': 'discrete_pp_v0', 'render.modes': ['human', 'rgb_array'], 'map_size': 15, 'reward_type': 'type_2', 'max_cycles': 100, 'npred': 2, 'nprey': 6, 'pred_vision': 4, 'prey_type': 'static'}: 
+                          0          1
+episode_len         90.1700  21.164522
+episode_reward       4.8664   1.299079
+assists              0.4040   0.636864
+kills                4.6240   1.177028
+predator_0_assists   0.0220   0.146830
+predator_1_assists   0.3820   0.607300
+predator_0_kills     4.0920   1.269156
+predator_1_kills     0.5320   0.673709
+predator_0_reward    4.0332   1.254258
+predator_1_reward    0.8332   0.770250
+
+
+chaser_follower_0.0_type_2_15_6 with env:
+{'name': 'discrete_pp_v0', 'render.modes': ['human', 'rgb_array'], 'map_size': 15, 'reward_type': 'type_2', 'max_cycles': 100, 'npred': 2, 'nprey': 6, 'pred_vision': 6, 'prey_type': 'static'}: 
+                         0          1
+episode_len         72.190  27.045755
+episode_reward       7.230   1.600394
+assists              2.970   1.860113
+kills                5.448   0.851320
+predator_0_assists   0.128   0.340364
+predator_1_assists   2.842   1.844951
+predator_0_kills     5.122   0.992515
+predator_1_kills     0.326   0.536936
+predator_0_reward    4.656   0.857960
+predator_1_reward    2.574   1.402504
+
+
+fixed_follower_0.0_type_2_15_6 with env:
+{'name': 'discrete_pp_v0', 'render.modes': ['human', 'rgb_array'], 'map_size': 15, 'reward_type': 'type_2', 'max_cycles': 100, 'npred': 2, 'nprey': 6, 'pred_vision': 6, 'prey_type': 'static'}: 
+                          0         1
+episode_len         101.000  0.000000
+episode_reward        1.356  1.188313
+assists               0.530  0.685595
+kills                 1.038  0.906753
+predator_0_assists    0.152  0.411381
+predator_1_assists    0.378  0.589756
+predator_0_kills      0.686  0.748682
+predator_1_kills      0.352  0.590587
+predator_0_reward     0.732  0.702255
+predator_1_reward     0.624  0.656877
+
+
+chaser_fixed_0.0_type_2_15_6 with env:
+{'name': 'discrete_pp_v0', 'render.modes': ['human', 'rgb_array'], 'map_size': 15, 'reward_type': 'type_2', 'max_cycles': 100, 'npred': 2, 'nprey': 6, 'pred_vision': 6, 'prey_type': 'static'}: 
+                          0          1
+episode_len         75.5440  26.785051
+episode_reward       5.6408   0.991959
+assists              0.4780   0.682971
+kills                5.3540   0.879905
+predator_0_assists   0.0240   0.153202
+predator_1_assists   0.4540   0.663902
+predator_0_kills     5.1260   0.967469
+predator_1_kills     0.2280   0.456544
+predator_0_reward    5.0544   0.955734
+predator_1_reward    0.5864   0.647095
+
+
+chaser_follower_0.0_type_2_20_2 with env:
+{'name': 'discrete_pp_v0', 'render.modes': ['human', 'rgb_array'], 'map_size': 20, 'reward_type': 'type_2', 'max_cycles': 100, 'npred': 2, 'nprey': 6, 'pred_vision': 2, 'prey_type': 'static'}: 
+                           0         1
+episode_len         100.9920  0.141336
+episode_reward        2.1084  1.348111
+assists               0.2840  0.672494
+kills                 1.9380  1.195414
+predator_0_assists    0.0100  0.099598
+predator_1_assists    0.2740  0.657105
+predator_0_kills      1.5920  1.150732
+predator_1_kills      0.3460  0.553984
+predator_0_reward     1.5452  1.118095
+predator_1_reward     0.5632  0.702191
+
+
+fixed_follower_0.0_type_2_20_2 with env:
+{'name': 'discrete_pp_v0', 'render.modes': ['human', 'rgb_array'], 'map_size': 20, 'reward_type': 'type_2', 'max_cycles': 100, 'npred': 2, 'nprey': 6, 'pred_vision': 2, 'prey_type': 'static'}: 
+                           0         1
+episode_len         101.0000  0.000000
+episode_reward        1.3768  1.194955
+assists               0.3080  0.640278
+kills                 1.1920  0.996555
+predator_0_assists    0.0600  0.261796
+predator_1_assists    0.2480  0.550547
+predator_0_kills      0.8360  0.850029
+predator_1_kills      0.3560  0.584763
+predator_0_reward     0.8344  0.831697
+predator_1_reward     0.5424  0.678589
+
+
+chaser_fixed_0.0_type_2_20_2 with env:
+{'name': 'discrete_pp_v0', 'render.modes': ['human', 'rgb_array'], 'map_size': 20, 'reward_type': 'type_2', 'max_cycles': 100, 'npred': 2, 'nprey': 6, 'pred_vision': 2, 'prey_type': 'static'}: 
+                          0         1
+episode_len         100.894  2.080245
+episode_reward        2.318  1.252075
+assists               0.070  0.270641
+kills                 2.276  1.212751
+predator_0_assists    0.004  0.063182
+predator_1_assists    0.066  0.264166
+predator_0_kills      1.494  1.140423
+predator_1_kills      0.782  0.807329
+predator_0_reward     1.484  1.126678
+predator_1_reward     0.834  0.811468
+
+
+chaser_follower_0.0_type_2_20_4 with env:
+{'name': 'discrete_pp_v0', 'render.modes': ['human', 'rgb_array'], 'map_size': 20, 'reward_type': 'type_2', 'max_cycles': 100, 'npred': 2, 'nprey': 6, 'pred_vision': 4, 'prey_type': 'static'}: 
+                          0         1
+episode_len         99.8180  6.275958
+episode_reward       3.6764  1.879283
+assists              0.8240  1.304003
+kills                3.1820  1.464639
+predator_0_assists   0.0320  0.197621
+predator_1_assists   0.7920  1.266469
+predator_0_kills     2.8680  1.476121
+predator_1_kills     0.3140  0.536638
+predator_0_reward    2.7352  1.407154
+predator_1_reward    0.9412  1.038335
+
+
+fixed_follower_0.0_type_2_20_4 with env:
+{'name': 'discrete_pp_v0', 'render.modes': ['human', 'rgb_array'], 'map_size': 20, 'reward_type': 'type_2', 'max_cycles': 100, 'npred': 2, 'nprey': 6, 'pred_vision': 4, 'prey_type': 'static'}: 
+                          0         1
+episode_len         101.000  0.000000
+episode_reward        1.408  1.152194
+assists               0.410  0.677361
+kills                 1.162  0.925997
+predator_0_assists    0.124  0.385904
+predator_1_assists    0.286  0.555717
+predator_0_kills      0.784  0.783947
+predator_1_kills      0.378  0.606508
+predator_0_reward     0.826  0.753059
+predator_1_reward     0.582  0.661507
+
+
+chaser_fixed_0.0_type_2_20_4 with env:
+{'name': 'discrete_pp_v0', 'render.modes': ['human', 'rgb_array'], 'map_size': 20, 'reward_type': 'type_2', 'max_cycles': 100, 'npred': 2, 'nprey': 6, 'pred_vision': 4, 'prey_type': 'static'}: 
+                          0         1
+episode_len         100.072  5.376302
+episode_reward        3.282  1.459924
+assists               0.180  0.438160
+kills                 3.174  1.411279
+predator_0_assists    0.008  0.089173
+predator_1_assists    0.172  0.422816
+predator_0_kills      2.634  1.445068
+predator_1_kills      0.540  0.741282
+predator_0_reward     2.606  1.431301
+predator_1_reward     0.676  0.763380
+
+
+chaser_follower_0.0_type_2_20_6 with env:
+{'name': 'discrete_pp_v0', 'render.modes': ['human', 'rgb_array'], 'map_size': 20, 'reward_type': 'type_2', 'max_cycles': 100, 'npred': 2, 'nprey': 6, 'pred_vision': 6, 'prey_type': 'static'}: 
+                          0          1
+episode_len         91.9140  18.985877
+episode_reward       5.4004   2.110514
+assists              1.7540   1.796647
+kills                4.3480   1.426522
+predator_0_assists   0.0580   0.233978
+predator_1_assists   1.6960   1.784925
+predator_0_kills     4.0900   1.486715
+predator_1_kills     0.2580   0.489812
+predator_0_reward    3.7972   1.358559
+predator_1_reward    1.6032   1.437708
+
+
+fixed_follower_0.0_type_2_20_6 with env:
+{'name': 'discrete_pp_v0', 'render.modes': ['human', 'rgb_array'], 'map_size': 20, 'reward_type': 'type_2', 'max_cycles': 100, 'npred': 2, 'nprey': 6, 'pred_vision': 6, 'prey_type': 'static'}: 
+                           0         1
+episode_len         101.0000  0.000000
+episode_reward        1.3824  1.151043
+assists               0.5040  0.689154
+kills                 1.0800  0.882699
+predator_0_assists    0.1360  0.371187
+predator_1_assists    0.3680  0.587594
+predator_0_kills      0.6940  0.738549
+predator_1_kills      0.3860  0.598097
+predator_0_reward     0.7292  0.706247
+predator_1_reward     0.6532  0.688038
+
+
+chaser_fixed_0.0_type_2_20_6 with env:
+{'name': 'discrete_pp_v0', 'render.modes': ['human', 'rgb_array'], 'map_size': 20, 'reward_type': 'type_2', 'max_cycles': 100, 'npred': 2, 'nprey': 6, 'pred_vision': 6, 'prey_type': 'static'}: 
+                          0          1
+episode_len         91.7560  18.572084
+episode_reward       4.5824   1.409505
+assists              0.2740   0.536189
+kills                4.4180   1.321654
+predator_0_assists   0.0220   0.146830
+predator_1_assists   0.2520   0.498993
+predator_0_kills     4.0620   1.405028
+predator_1_kills     0.3560   0.584763
+predator_0_reward    4.0292   1.387616
+predator_1_reward    0.5532   0.664329
+
+
+chaser_follower_0.01_type_1_15_2 with env:
+{'name': 'discrete_pp_v0', 'render.modes': ['human', 'rgb_array'], 'map_size': 15, 'reward_type': 'type_1', 'max_cycles': 100, 'npred': 2, 'nprey': 6, 'pred_vision': 2, 'prey_type': 'static'}: 
+                            0         1
+episode_len         100.46200  4.553463
+episode_reward        1.10574  1.351468
+assists               0.72600  1.163457
+kills                 2.96600  1.320732
+predator_0_assists    0.01400  0.117608
+predator_1_assists    0.71200  1.145286
+predator_0_kills      2.47600  1.277767
+predator_1_kills      0.49000  0.697763
+predator_0_reward     1.56660  1.284282
+predator_1_reward    -0.46086  0.714000
+
+
+fixed_follower_0.01_type_1_15_2 with env:
+{'name': 'discrete_pp_v0', 'render.modes': ['human', 'rgb_array'], 'map_size': 15, 'reward_type': 'type_1', 'max_cycles': 100, 'npred': 2, 'nprey': 6, 'pred_vision': 2, 'prey_type': 'static'}: 
+                            0         1
+episode_len         101.00000  0.000000
+episode_reward       -0.17922  1.107592
+assists               0.61400  0.830894
+kills                 1.78800  1.085086
+predator_0_assists    0.15200  0.439639
+predator_1_assists    0.46200  0.713845
+predator_0_kills      1.19600  0.880417
+predator_1_kills      0.59200  0.720120
+predator_0_reward     0.19796  0.889221
+predator_1_reward    -0.37718  0.732962
+
+
+chaser_fixed_0.01_type_1_15_2 with env:
+{'name': 'discrete_pp_v0', 'render.modes': ['human', 'rgb_array'], 'map_size': 15, 'reward_type': 'type_1', 'max_cycles': 100, 'npred': 2, 'nprey': 6, 'pred_vision': 2, 'prey_type': 'static'}: 
+                            0         1
+episode_len         100.55000  3.514000
+episode_reward        1.46338  1.271124
+assists               0.26000  0.552277
+kills                 3.37400  1.254301
+predator_0_assists    0.03000  0.170758
+predator_1_assists    0.23000  0.511491
+predator_0_kills      2.36600  1.184420
+predator_1_kills      1.00800  0.858726
+predator_0_reward     1.45080  1.188546
+predator_1_reward     0.01258  0.869567
+
+
+chaser_follower_0.01_type_1_15_4 with env:
+{'name': 'discrete_pp_v0', 'render.modes': ['human', 'rgb_array'], 'map_size': 15, 'reward_type': 'type_1', 'max_cycles': 100, 'npred': 2, 'nprey': 6, 'pred_vision': 4, 'prey_type': 'static'}: 
+                           0          1
+episode_len         91.59000  18.547180
+episode_reward       2.82210   1.530966
+assists              1.95800   1.795183
+kills                4.51200   1.299706
+predator_0_assists   0.07600   0.272714
+predator_1_assists   1.88200   1.759052
+predator_0_kills     4.19000   1.365881
+predator_1_kills     0.32200   0.543052
+predator_0_reward    3.37782   1.463965
+predator_1_reward   -0.55572   0.584241
+
+
+fixed_follower_0.01_type_1_15_4 with env:
+{'name': 'discrete_pp_v0', 'render.modes': ['human', 'rgb_array'], 'map_size': 15, 'reward_type': 'type_1', 'max_cycles': 100, 'npred': 2, 'nprey': 6, 'pred_vision': 4, 'prey_type': 'static'}: 
+                            0         1
+episode_len         100.99400  0.134164
+episode_reward       -0.49652  1.082489
+assists               0.69800  0.800048
+kills                 1.48600  1.063987
+predator_0_assists    0.16200  0.414850
+predator_1_assists    0.53600  0.719541
+predator_0_kills      0.99800  0.869199
+predator_1_kills      0.48800  0.668393
+predator_0_reward    -0.00196  0.878169
+predator_1_reward    -0.49456  0.682404
+
+
+chaser_fixed_0.01_type_1_15_4 with env:
+{'name': 'discrete_pp_v0', 'render.modes': ['human', 'rgb_array'], 'map_size': 15, 'reward_type': 'type_1', 'max_cycles': 100, 'npred': 2, 'nprey': 6, 'pred_vision': 4, 'prey_type': 'static'}: 
+                           0          1
+episode_len         92.69800  18.019106
+episode_reward       2.85572   1.368218
+assists              0.41400   0.659905
+kills                4.60000   1.139560
+predator_0_assists   0.03600   0.186477
+predator_1_assists   0.37800   0.622810
+predator_0_kills     4.05800   1.295373
+predator_1_kills     0.54200   0.702298
+predator_0_reward    3.23528   1.380943
+predator_1_reward   -0.37956   0.744821
+
+
+chaser_follower_0.01_type_1_15_6 with env:
+{'name': 'discrete_pp_v0', 'render.modes': ['human', 'rgb_array'], 'map_size': 15, 'reward_type': 'type_1', 'max_cycles': 100, 'npred': 2, 'nprey': 6, 'pred_vision': 6, 'prey_type': 'static'}: 
+                           0          1
+episode_len         74.58600  27.829257
+episode_reward       4.02194   1.258198
+assists              2.93000   1.806551
+kills                5.39800   0.846776
+predator_0_assists   0.11600   0.326738
+predator_1_assists   2.81400   1.781503
+predator_0_kills     5.07000   0.991497
+predator_1_kills     0.32800   0.548651
+predator_0_reward    4.41612   1.155345
+predator_1_reward   -0.39418   0.622554
+
+
+fixed_follower_0.01_type_1_15_6 with env:
+{'name': 'discrete_pp_v0', 'render.modes': ['human', 'rgb_array'], 'map_size': 15, 'reward_type': 'type_1', 'max_cycles': 100, 'npred': 2, 'nprey': 6, 'pred_vision': 6, 'prey_type': 'static'}: 
+                            0         1
+episode_len         101.00000  0.000000
+episode_reward       -0.98870  0.828902
+assists               0.48200  0.640700
+kills                 1.01000  0.816844
+predator_0_assists    0.14800  0.387810
+predator_1_assists    0.33400  0.575418
+predator_0_kills      0.62800  0.700426
+predator_1_kills      0.38200  0.583744
+predator_0_reward    -0.37572  0.707431
+predator_1_reward    -0.61298  0.595001
+
+
+chaser_fixed_0.01_type_1_15_6 with env:
+{'name': 'discrete_pp_v0', 'render.modes': ['human', 'rgb_array'], 'map_size': 15, 'reward_type': 'type_1', 'max_cycles': 100, 'npred': 2, 'nprey': 6, 'pred_vision': 6, 'prey_type': 'static'}: 
+                           0          1
+episode_len         75.24000  27.073018
+episode_reward       3.94762   1.313212
+assists              0.49200   0.680339
+kills                5.35400   0.909031
+predator_0_assists   0.02800   0.165138
+predator_1_assists   0.46400   0.655411
+predator_0_kills     5.11400   0.979246
+predator_1_kills     0.24000   0.463497
+predator_0_reward    4.45762   1.139505
+predator_1_reward   -0.51000   0.566009
+
+
+chaser_follower_0.01_type_1_20_2 with env:
+{'name': 'discrete_pp_v0', 'render.modes': ['human', 'rgb_array'], 'map_size': 20, 'reward_type': 'type_1', 'max_cycles': 100, 'npred': 2, 'nprey': 6, 'pred_vision': 2, 'prey_type': 'static'}: 
+                            0         1
+episode_len         101.00000  0.000000
+episode_reward        0.01416  1.246593
+assists               0.33400  0.726291
+kills                 1.92400  1.241494
+predator_0_assists    0.01400  0.117608
+predator_1_assists    0.32000  0.708947
+predator_0_kills      1.54400  1.160499
+predator_1_kills      0.38000  0.610201
+predator_0_reward     0.59898  1.163225
+predator_1_reward    -0.58482  0.617206
+
+
+fixed_follower_0.01_type_1_20_2 with env:
+{'name': 'discrete_pp_v0', 'render.modes': ['human', 'rgb_array'], 'map_size': 20, 'reward_type': 'type_1', 'max_cycles': 100, 'npred': 2, 'nprey': 6, 'pred_vision': 2, 'prey_type': 'static'}: 
+                            0         1
+episode_len         101.00000  0.000000
+episode_reward       -0.77254  0.961798
+assists               0.30800  0.624432
+kills                 1.20200  0.946037
+predator_0_assists    0.07800  0.282977
+predator_1_assists    0.23000  0.538219
+predator_0_kills      0.84000  0.834141
+predator_1_kills      0.36200  0.575864
+predator_0_reward    -0.16160  0.842483
+predator_1_reward    -0.61094  0.581898
+
+
+chaser_fixed_0.01_type_1_20_2 with env:
+{'name': 'discrete_pp_v0', 'render.modes': ['human', 'rgb_array'], 'map_size': 20, 'reward_type': 'type_1', 'max_cycles': 100, 'npred': 2, 'nprey': 6, 'pred_vision': 2, 'prey_type': 'static'}: 
+                            0         1
+episode_len         100.94400  1.052178
+episode_reward        0.29972  1.236129
+assists               0.06600  0.264166
+kills                 2.24600  1.228210
+predator_0_assists    0.00400  0.063182
+predator_1_assists    0.06200  0.257466
+predator_0_kills      1.46200  1.096796
+predator_1_kills      0.78400  0.809106
+predator_0_reward     0.51732  1.096331
+predator_1_reward    -0.21760  0.817539
+
+
+chaser_follower_0.01_type_1_20_4 with env:
+{'name': 'discrete_pp_v0', 'render.modes': ['human', 'rgb_array'], 'map_size': 20, 'reward_type': 'type_1', 'max_cycles': 100, 'npred': 2, 'nprey': 6, 'pred_vision': 4, 'prey_type': 'static'}: 
+                           0         1
+episode_len         99.58200  7.604666
+episode_reward       1.12086  1.576685
+assists              0.77000  1.265030
+kills                2.99000  1.518721
+predator_0_assists   0.02600  0.159295
+predator_1_assists   0.74400  1.220427
+predator_0_kills     2.70000  1.486748
+predator_1_kills     0.29000  0.520039
+predator_0_reward    1.78474  1.512255
+predator_1_reward   -0.66388  0.540240
+
+
+fixed_follower_0.01_type_1_20_4 with env:
+{'name': 'discrete_pp_v0', 'render.modes': ['human', 'rgb_array'], 'map_size': 20, 'reward_type': 'type_1', 'max_cycles': 100, 'npred': 2, 'nprey': 6, 'pred_vision': 4, 'prey_type': 'static'}: 
+                            0         1
+episode_len         101.00000  0.000000
+episode_reward       -0.81826  0.961039
+assists               0.38000  0.645316
+kills                 1.16000  0.953004
+predator_0_assists    0.09400  0.292121
+predator_1_assists    0.28600  0.569959
+predator_0_kills      0.81600  0.826747
+predator_1_kills      0.34400  0.571241
+predator_0_reward    -0.18584  0.835015
+predator_1_reward    -0.63242  0.575150
+
+
+chaser_fixed_0.01_type_1_20_4 with env:
+{'name': 'discrete_pp_v0', 'render.modes': ['human', 'rgb_array'], 'map_size': 20, 'reward_type': 'type_1', 'max_cycles': 100, 'npred': 2, 'nprey': 6, 'pred_vision': 4, 'prey_type': 'static'}: 
+                           0         1
+episode_len         99.80200  6.921171
+episode_reward       1.27594  1.497837
+assists              0.17400  0.460596
+kills                3.18600  1.443458
+predator_0_assists   0.02400  0.153202
+predator_1_assists   0.15000  0.433446
+predator_0_kills     2.64400  1.442715
+predator_1_kills     0.54200  0.664167
+predator_0_reward    1.72654  1.466539
+predator_1_reward   -0.45060  0.677943
+
+
+chaser_follower_0.01_type_1_20_6 with env:
+{'name': 'discrete_pp_v0', 'render.modes': ['human', 'rgb_array'], 'map_size': 20, 'reward_type': 'type_1', 'max_cycles': 100, 'npred': 2, 'nprey': 6, 'pred_vision': 6, 'prey_type': 'static'}: 
+                           0          1
+episode_len         92.09200  18.495613
+episode_reward       2.56556   1.627504
+assists              1.73600   1.730981
+kills                4.29400   1.388315
+predator_0_assists   0.09000   0.286468
+predator_1_assists   1.64600   1.693050
+predator_0_kills     4.02600   1.424564
+predator_1_kills     0.26800   0.486466
+predator_0_reward    3.19032   1.533983
+predator_1_reward   -0.62476   0.531060
+
+
+fixed_follower_0.01_type_1_20_6 with env:
+{'name': 'discrete_pp_v0', 'render.modes': ['human', 'rgb_array'], 'map_size': 20, 'reward_type': 'type_1', 'max_cycles': 100, 'npred': 2, 'nprey': 6, 'pred_vision': 6, 'prey_type': 'static'}: 
+                            0         1
+episode_len         101.00000  0.000000
+episode_reward       -0.88222  0.932456
+assists               0.47200  0.679809
+kills                 1.10800  0.917616
+predator_0_assists    0.12400  0.364541
+predator_1_assists    0.34800  0.599679
+predator_0_kills      0.70200  0.749880
+predator_1_kills      0.40600  0.646529
+predator_0_reward    -0.30098  0.757379
+predator_1_reward    -0.58124  0.656225
+
+
+chaser_fixed_0.01_type_1_20_6 with env:
+{'name': 'discrete_pp_v0', 'render.modes': ['human', 'rgb_array'], 'map_size': 20, 'reward_type': 'type_1', 'max_cycles': 100, 'npred': 2, 'nprey': 6, 'pred_vision': 6, 'prey_type': 'static'}: 
+                           0          1
+episode_len         92.16400  18.514499
+episode_reward       2.59926   1.644477
+assists              0.26000   0.544972
+kills                4.35600   1.416077
+predator_0_assists   0.02400   0.165768
+predator_1_assists   0.23600   0.510711
+predator_0_kills     4.04000   1.482834
+predator_1_kills     0.31600   0.533585
+predator_0_reward    3.20174   1.585316
+predator_1_reward   -0.60248   0.566200
+
+
+chaser_follower_0.01_type_2_15_2 with env:
+{'name': 'discrete_pp_v0', 'render.modes': ['human', 'rgb_array'], 'map_size': 15, 'reward_type': 'type_2', 'max_cycles': 100, 'npred': 2, 'nprey': 6, 'pred_vision': 2, 'prey_type': 'static'}: 
+                            0         1
+episode_len         100.77800  2.206911
+episode_reward        1.52776  1.518500
+assists               0.74600  1.109931
+kills                 2.95200  1.220112
+predator_0_assists    0.02600  0.159295
+predator_1_assists    0.72000  1.075133
+predator_0_kills      2.39600  1.173857
+predator_1_kills      0.55600  0.740243
+predator_0_reward     1.35698  1.110146
+predator_1_reward     0.17078  0.942724
+
+
+fixed_follower_0.01_type_2_15_2 with env:
+{'name': 'discrete_pp_v0', 'render.modes': ['human', 'rgb_array'], 'map_size': 15, 'reward_type': 'type_2', 'max_cycles': 100, 'npred': 2, 'nprey': 6, 'pred_vision': 2, 'prey_type': 'static'}: 
+                            0         1
+episode_len         101.00000  0.000000
+episode_reward        0.27288  1.370786
+assists               0.65200  0.843991
+kills                 1.84800  1.139954
+predator_0_assists    0.17200  0.418050
+predator_1_assists    0.48000  0.742093
+predator_0_kills      1.23400  0.951343
+predator_1_kills      0.61400  0.725297
+predator_0_reward     0.27794  0.900673
+predator_1_reward    -0.00506  0.777191
+
+
+chaser_fixed_0.01_type_2_15_2 with env:
+{'name': 'discrete_pp_v0', 'render.modes': ['human', 'rgb_array'], 'map_size': 15, 'reward_type': 'type_2', 'max_cycles': 100, 'npred': 2, 'nprey': 6, 'pred_vision': 2, 'prey_type': 'static'}: 
+                            0         1
+episode_len         100.40200  4.320849
+episode_reward        1.46028  1.342541
+assists               0.23000  0.487417
+kills                 3.22800  1.258246
+predator_0_assists    0.02000  0.140140
+predator_1_assists    0.21000  0.471534
+predator_0_kills      2.28000  1.298064
+predator_1_kills      0.94800  0.871099
+predator_0_reward     1.34282  1.283873
+predator_1_reward     0.11746  0.895655
+
+
+chaser_follower_0.01_type_2_15_4 with env:
+{'name': 'discrete_pp_v0', 'render.modes': ['human', 'rgb_array'], 'map_size': 15, 'reward_type': 'type_2', 'max_cycles': 100, 'npred': 2, 'nprey': 6, 'pred_vision': 4, 'prey_type': 'static'}: 
+                           0          1
+episode_len         91.76200  18.487968
+episode_reward       4.01584   2.086219
+assists              1.88000   1.851609
+kills                4.57800   1.216090
+predator_0_assists   0.07400   0.269573
+predator_1_assists   1.80600   1.811886
+predator_0_kills     4.18000   1.259672
+predator_1_kills     0.39800   0.623196
+predator_0_reward    3.06428   1.248855
+predator_1_reward    0.95156   1.436721
+
+
+fixed_follower_0.01_type_2_15_4 with env:
+{'name': 'discrete_pp_v0', 'render.modes': ['human', 'rgb_array'], 'map_size': 15, 'reward_type': 'type_2', 'max_cycles': 100, 'npred': 2, 'nprey': 6, 'pred_vision': 4, 'prey_type': 'static'}: 
+                            0         1
+episode_len         100.99800  0.044721
+episode_reward       -0.00924  1.339740
+assists               0.67800  0.819548
+kills                 1.56000  1.037571
+predator_0_assists    0.15200  0.386257
+predator_1_assists    0.52600  0.755291
+predator_0_kills      1.05200  0.900510
+predator_1_kills      0.50800  0.644023
+predator_0_reward     0.06894  0.837020
+predator_1_reward    -0.07818  0.751396
+
+
+chaser_fixed_0.01_type_2_15_4 with env:
+{'name': 'discrete_pp_v0', 'render.modes': ['human', 'rgb_array'], 'map_size': 15, 'reward_type': 'type_2', 'max_cycles': 100, 'npred': 2, 'nprey': 6, 'pred_vision': 4, 'prey_type': 'static'}: 
+                           0          1
+episode_len         93.97400  16.315321
+episode_reward       3.08292   1.427028
+assists              0.45600   0.687757
+kills                4.57800   1.141280
+predator_0_assists   0.02600   0.171414
+predator_1_assists   0.43000   0.667826
+predator_0_kills     4.03200   1.279942
+predator_1_kills     0.54600   0.730034
+predator_0_reward    3.13240   1.329966
+predator_1_reward   -0.04948   0.824550
+
+
+chaser_follower_0.01_type_2_15_6 with env:
+{'name': 'discrete_pp_v0', 'render.modes': ['human', 'rgb_array'], 'map_size': 15, 'reward_type': 'type_2', 'max_cycles': 100, 'npred': 2, 'nprey': 6, 'pred_vision': 6, 'prey_type': 'static'}: 
+                           0          1
+episode_len         76.73200  26.434253
+episode_reward       5.58714   2.015881
+assists              2.83000   1.880471
+kills                5.30200   0.944765
+predator_0_assists   0.11600   0.326738
+predator_1_assists   2.71400   1.847981
+predator_0_kills     4.98800   1.066833
+predator_1_kills     0.31400   0.513743
+predator_0_reward    3.86724   1.086340
+predator_1_reward    1.71990   1.473900
+
+
+fixed_follower_0.01_type_2_15_6 with env:
+{'name': 'discrete_pp_v0', 'render.modes': ['human', 'rgb_array'], 'map_size': 15, 'reward_type': 'type_2', 'max_cycles': 100, 'npred': 2, 'nprey': 6, 'pred_vision': 6, 'prey_type': 'static'}: 
+                            0         1
+episode_len         101.00000  0.000000
+episode_reward       -0.66604  1.168191
+assists               0.52800  0.661885
+kills                 1.01800  0.880469
+predator_0_assists    0.18400  0.398072
+predator_1_assists    0.34400  0.581671
+predator_0_kills      0.59000  0.686179
+predator_1_kills      0.42800  0.633734
+predator_0_reward    -0.33570  0.652697
+predator_1_reward    -0.33034  0.692987
+
+
+chaser_fixed_0.01_type_2_15_6 with env:
+{'name': 'discrete_pp_v0', 'render.modes': ['human', 'rgb_array'], 'map_size': 15, 'reward_type': 'type_2', 'max_cycles': 100, 'npred': 2, 'nprey': 6, 'pred_vision': 6, 'prey_type': 'static'}: 
+                           0          1
+episode_len         74.33600  26.614654
+episode_reward       4.25920   1.473864
+assists              0.50200   0.706395
+kills                5.34800   0.965796
+predator_0_assists   0.01000   0.099598
+predator_1_assists   0.49200   0.703510
+predator_0_kills     5.10600   1.054983
+predator_1_kills     0.24200   0.460282
+predator_0_reward    4.36654   1.198101
+predator_1_reward   -0.10734   0.724967
+
+
+chaser_follower_0.01_type_2_20_2 with env:
+{'name': 'discrete_pp_v0', 'render.modes': ['human', 'rgb_array'], 'map_size': 20, 'reward_type': 'type_2', 'max_cycles': 100, 'npred': 2, 'nprey': 6, 'pred_vision': 2, 'prey_type': 'static'}: 
+                            0         1
+episode_len         100.99200  0.178885
+episode_reward        0.23360  1.319288
+assists               0.32000  0.728465
+kills                 1.95200  1.156014
+predator_0_assists    0.00800  0.089173
+predator_1_assists    0.31200  0.718114
+predator_0_kills      1.59800  1.107632
+predator_1_kills      0.35400  0.570381
+predator_0_reward     0.59486  1.071529
+predator_1_reward    -0.36126  0.714972
+
+
+fixed_follower_0.01_type_2_20_2 with env:
+{'name': 'discrete_pp_v0', 'render.modes': ['human', 'rgb_array'], 'map_size': 20, 'reward_type': 'type_2', 'max_cycles': 100, 'npred': 2, 'nprey': 6, 'pred_vision': 2, 'prey_type': 'static'}: 
+                            0         1
+episode_len         101.00000  0.000000
+episode_reward       -0.51500  1.186191
+assists               0.27800  0.597855
+kills                 1.29000  1.027624
+predator_0_assists    0.06600  0.278926
+predator_1_assists    0.21200  0.513404
+predator_0_kills      0.90200  0.888806
+predator_1_kills      0.38800  0.605135
+predator_0_reward    -0.08858  0.868773
+predator_1_reward    -0.42642  0.668082
+
+
+chaser_fixed_0.01_type_2_20_2 with env:
+{'name': 'discrete_pp_v0', 'render.modes': ['human', 'rgb_array'], 'map_size': 20, 'reward_type': 'type_2', 'max_cycles': 100, 'npred': 2, 'nprey': 6, 'pred_vision': 2, 'prey_type': 'static'}: 
+                            0         1
+episode_len         101.00000  0.000000
+episode_reward        0.37932  1.234471
+assists               0.07600  0.279966
+kills                 2.28200  1.200566
+predator_0_assists    0.00800  0.089173
+predator_1_assists    0.06800  0.259829
+predator_0_kills      1.50800  1.077152
+predator_1_kills      0.77400  0.807607
+predator_0_reward     0.55478  1.067064
+predator_1_reward    -0.17546  0.823592
+
+
+chaser_follower_0.01_type_2_20_4 with env:
+{'name': 'discrete_pp_v0', 'render.modes': ['human', 'rgb_array'], 'map_size': 20, 'reward_type': 'type_2', 'max_cycles': 100, 'npred': 2, 'nprey': 6, 'pred_vision': 4, 'prey_type': 'static'}: 
+                           0         1
+episode_len         99.67600  7.160277
+episode_reward       1.63834  2.014061
+assists              0.86600  1.338517
+kills                2.98200  1.522601
+predator_0_assists   0.03600  0.206856
+predator_1_assists   0.83000  1.296326
+predator_0_kills     2.71000  1.484016
+predator_1_kills     0.27200  0.527800
+predator_0_reward    1.66368  1.431352
+predator_1_reward   -0.02534  1.083585
+
+
+fixed_follower_0.01_type_2_20_4 with env:
+{'name': 'discrete_pp_v0', 'render.modes': ['human', 'rgb_array'], 'map_size': 20, 'reward_type': 'type_2', 'max_cycles': 100, 'npred': 2, 'nprey': 6, 'pred_vision': 4, 'prey_type': 'static'}: 
+                            0         1
+episode_len         101.00000  0.000000
+episode_reward       -0.52298  1.229051
+assists               0.44800  0.707316
+kills                 1.18800  0.962553
+predator_0_assists    0.10600  0.350728
+predator_1_assists    0.34200  0.617899
+predator_0_kills      0.81600  0.866976
+predator_1_kills      0.37200  0.588480
+predator_0_reward    -0.16944  0.825452
+predator_1_reward    -0.35354  0.670783
+
+
+chaser_fixed_0.01_type_2_20_4 with env:
+{'name': 'discrete_pp_v0', 'render.modes': ['human', 'rgb_array'], 'map_size': 20, 'reward_type': 'type_2', 'max_cycles': 100, 'npred': 2, 'nprey': 6, 'pred_vision': 4, 'prey_type': 'static'}: 
+                           0         1
+episode_len         99.69600  6.687977
+episode_reward       1.43840  1.553450
+assists              0.13800  0.383732
+kills                3.26600  1.433651
+predator_0_assists   0.00800  0.089173
+predator_1_assists   0.13000  0.370641
+predator_0_kills     2.75400  1.482525
+predator_1_kills     0.51200  0.677328
+predator_0_reward    1.81584  1.493354
+predator_1_reward   -0.37744  0.729271
+
+
+chaser_follower_0.01_type_2_20_6 with env:
+{'name': 'discrete_pp_v0', 'render.modes': ['human', 'rgb_array'], 'map_size': 20, 'reward_type': 'type_2', 'max_cycles': 100, 'npred': 2, 'nprey': 6, 'pred_vision': 6, 'prey_type': 'static'}: 
+                           0          1
+episode_len         92.74000  17.621050
+episode_reward       3.69744   2.167551
+assists              1.76000   1.745995
+kills                4.38400   1.340200
+predator_0_assists   0.06600   0.248531
+predator_1_assists   1.69400   1.719965
+predator_0_kills     4.08600   1.390853
+predator_1_kills     0.29800   0.495669
+predator_0_reward    2.95790   1.364925
+predator_1_reward    0.73954   1.389028
+
+
+fixed_follower_0.01_type_2_20_6 with env:
+{'name': 'discrete_pp_v0', 'render.modes': ['human', 'rgb_array'], 'map_size': 20, 'reward_type': 'type_2', 'max_cycles': 100, 'npred': 2, 'nprey': 6, 'pred_vision': 6, 'prey_type': 'static'}: 
+                            0         1
+episode_len         101.00000  0.000000
+episode_reward       -0.55446  1.262043
+assists               0.53800  0.746774
+kills                 1.11400  0.935283
+predator_0_assists    0.16600  0.422849
+predator_1_assists    0.37200  0.618369
+predator_0_kills      0.68800  0.758820
+predator_1_kills      0.42600  0.620721
+predator_0_reward    -0.25672  0.749034
+predator_1_reward    -0.29774  0.689143
+
+
+chaser_fixed_0.01_type_2_20_6 with env:
+{'name': 'discrete_pp_v0', 'render.modes': ['human', 'rgb_array'], 'map_size': 20, 'reward_type': 'type_2', 'max_cycles': 100, 'npred': 2, 'nprey': 6, 'pred_vision': 6, 'prey_type': 'static'}: 
+                           0          1
+episode_len         91.36000  19.014139
+episode_reward       2.82212   1.690089
+assists              0.27000   0.530720
+kills                4.40000   1.373963
+predator_0_assists   0.01800   0.133084
+predator_1_assists   0.25200   0.518685
+predator_0_kills     4.12600   1.478681
+predator_1_kills     0.27400   0.509355
+predator_0_reward    3.26098   1.576364
+predator_1_reward   -0.43886   0.624643
+
+
+chaser_follower_0.03_type_1_15_2 with env:
+{'name': 'discrete_pp_v0', 'render.modes': ['human', 'rgb_array'], 'map_size': 15, 'reward_type': 'type_1', 'max_cycles': 100, 'npred': 2, 'nprey': 6, 'pred_vision': 2, 'prey_type': 'static'}: 
+                            0         1
+episode_len         100.70800  2.957741
+episode_reward       -2.70382  1.391347
+assists               0.70800  1.094134
+kills                 2.89400  1.319943
+predator_0_assists    0.02200  0.146830
+predator_1_assists    0.68600  1.079692
+predator_0_kills      2.44000  1.268708
+predator_1_kills      0.45400  0.642425
+predator_0_reward    -0.30536  1.284798
+predator_1_reward    -2.39846  0.696232
+
+
+fixed_follower_0.03_type_1_15_2 with env:
+{'name': 'discrete_pp_v0', 'render.modes': ['human', 'rgb_array'], 'map_size': 15, 'reward_type': 'type_1', 'max_cycles': 100, 'npred': 2, 'nprey': 6, 'pred_vision': 2, 'prey_type': 'static'}: 
+                            0         1
+episode_len         101.00000  0.000000
+episode_reward       -4.09104  1.114925
+assists               0.62600  0.860002
+kills                 1.80000  1.049859
+predator_0_assists    0.15000  0.399774
+predator_1_assists    0.47600  0.728344
+predator_0_kills      1.21400  0.902126
+predator_1_kills      0.58600  0.668954
+predator_0_reward    -1.77958  0.929190
+predator_1_reward    -2.31146  0.720422
+
+
+chaser_fixed_0.03_type_1_15_2 with env:
+{'name': 'discrete_pp_v0', 'render.modes': ['human', 'rgb_array'], 'map_size': 15, 'reward_type': 'type_1', 'max_cycles': 100, 'npred': 2, 'nprey': 6, 'pred_vision': 2, 'prey_type': 'static'}: 
+                            0         1
+episode_len         100.10200  5.628406
+episode_reward       -2.37338  1.435182
+assists               0.20600  0.442669
+kills                 3.32800  1.282070
+predator_0_assists    0.02200  0.146830
+predator_1_assists    0.18400  0.417724
+predator_0_kills      2.32400  1.187368
+predator_1_kills      1.00400  0.868039
+predator_0_reward    -0.40444  1.231134
+predator_1_reward    -1.96894  0.935601
+
+
+chaser_follower_0.03_type_1_15_4 with env:
+{'name': 'discrete_pp_v0', 'render.modes': ['human', 'rgb_array'], 'map_size': 15, 'reward_type': 'type_1', 'max_cycles': 100, 'npred': 2, 'nprey': 6, 'pred_vision': 4, 'prey_type': 'static'}: 
+                           0          1
+episode_len         92.50400  17.780165
+episode_reward      -0.57280   2.010702
+assists              1.81000   1.813416
+kills                4.54400   1.256671
+predator_0_assists   0.06400   0.244998
+predator_1_assists   1.74600   1.774198
+predator_0_kills     4.21800   1.292213
+predator_1_kills     0.32600   0.569537
+predator_0_reward    1.74966   1.600132
+predator_1_reward   -2.32246   0.825855
+
+
+fixed_follower_0.03_type_1_15_4 with env:
+{'name': 'discrete_pp_v0', 'render.modes': ['human', 'rgb_array'], 'map_size': 15, 'reward_type': 'type_1', 'max_cycles': 100, 'npred': 2, 'nprey': 6, 'pred_vision': 4, 'prey_type': 'static'}: 
+                            0         1
+episode_len         101.00000  0.000000
+episode_reward       -4.46332  1.150679
+assists               0.70000  0.855256
+kills                 1.47800  1.086221
+predator_0_assists    0.17600  0.406638
+predator_1_assists    0.52400  0.781438
+predator_0_kills      0.99400  0.896421
+predator_1_kills      0.48400  0.668309
+predator_0_reward    -2.00618  0.923314
+predator_1_reward    -2.45714  0.707225
+
+
+chaser_fixed_0.03_type_1_15_4 with env:
+{'name': 'discrete_pp_v0', 'render.modes': ['human', 'rgb_array'], 'map_size': 15, 'reward_type': 'type_1', 'max_cycles': 100, 'npred': 2, 'nprey': 6, 'pred_vision': 4, 'prey_type': 'static'}: 
+                          0          1
+episode_len         93.1800  17.400493
+episode_reward      -0.7116   1.944561
+assists              0.3800   0.648414
+kills                4.5360   1.208149
+predator_0_assists   0.0160   0.125601
+predator_1_assists   0.3640   0.632696
+predator_0_kills     3.9860   1.378988
+predator_1_kills     0.5500   0.727019
+predator_0_reward    1.5173   1.660505
+predator_1_reward   -2.2289   0.916985
+
+
+chaser_follower_0.03_type_1_15_6 with env:
+{'name': 'discrete_pp_v0', 'render.modes': ['human', 'rgb_array'], 'map_size': 15, 'reward_type': 'type_1', 'max_cycles': 100, 'npred': 2, 'nprey': 6, 'pred_vision': 6, 'prey_type': 'static'}: 
+                           0          1
+episode_len         75.76200  27.666011
+episode_reward       1.15866   2.263369
+assists              2.77400   1.846549
+kills                5.34000   0.915465
+predator_0_assists   0.13400   0.352552
+predator_1_assists   2.64000   1.812449
+predator_0_kills     4.96200   1.032807
+predator_1_kills     0.37800   0.561914
+predator_0_reward    2.97624   1.575515
+predator_1_reward   -1.81758   1.032801
+
+
+fixed_follower_0.03_type_1_15_6 with env:
+{'name': 'discrete_pp_v0', 'render.modes': ['human', 'rgb_array'], 'map_size': 15, 'reward_type': 'type_1', 'max_cycles': 100, 'npred': 2, 'nprey': 6, 'pred_vision': 6, 'prey_type': 'static'}: 
+                            0         1
+episode_len         101.00000  0.000000
+episode_reward       -5.00128  0.921410
+assists               0.47000  0.611431
+kills                 0.99800  0.871502
+predator_0_assists    0.14800  0.371985
+predator_1_assists    0.32200  0.524276
+predator_0_kills      0.62600  0.689256
+predator_1_kills      0.37200  0.581629
+predator_0_reward    -2.38522  0.709934
+predator_1_reward    -2.61606  0.616919
+
+
+chaser_fixed_0.03_type_1_15_6 with env:
+{'name': 'discrete_pp_v0', 'render.modes': ['human', 'rgb_array'], 'map_size': 15, 'reward_type': 'type_1', 'max_cycles': 100, 'npred': 2, 'nprey': 6, 'pred_vision': 6, 'prey_type': 'static'}: 
+                           0          1
+episode_len         73.83000  28.012113
+episode_reward       1.20922   2.310385
+assists              0.46800   0.658668
+kills                5.35600   0.873378
+predator_0_assists   0.01800   0.133084
+predator_1_assists   0.45000   0.651421
+predator_0_kills     5.11200   1.004726
+predator_1_kills     0.24400   0.465723
+predator_0_reward    3.17280   1.600514
+predator_1_reward   -1.96358   0.960844
+
+
+chaser_follower_0.03_type_1_20_2 with env:
+{'name': 'discrete_pp_v0', 'render.modes': ['human', 'rgb_array'], 'map_size': 20, 'reward_type': 'type_1', 'max_cycles': 100, 'npred': 2, 'nprey': 6, 'pred_vision': 2, 'prey_type': 'static'}: 
+                            0         1
+episode_len         101.00000  0.000000
+episode_reward       -3.71720  1.199029
+assists               0.27400  0.684003
+kills                 1.99600  1.170780
+predator_0_assists    0.01400  0.133565
+predator_1_assists    0.26000  0.664291
+predator_0_kills      1.63000  1.109758
+predator_1_kills      0.36600  0.576810
+predator_0_reward    -1.19936  1.123520
+predator_1_reward    -2.51784  0.606047
+
+
+fixed_follower_0.03_type_1_20_2 with env:
+{'name': 'discrete_pp_v0', 'render.modes': ['human', 'rgb_array'], 'map_size': 20, 'reward_type': 'type_1', 'max_cycles': 100, 'npred': 2, 'nprey': 6, 'pred_vision': 2, 'prey_type': 'static'}: 
+                            0         1
+episode_len         101.00000  0.000000
+episode_reward       -4.61612  1.042578
+assists               0.37600  0.641441
+kills                 1.30600  0.989101
+predator_0_assists    0.12400  0.369997
+predator_1_assists    0.25200  0.510899
+predator_0_kills      0.85400  0.816098
+predator_1_kills      0.45200  0.651571
+predator_0_reward    -2.15038  0.840581
+predator_1_reward    -2.46574  0.686538
+
+
+chaser_fixed_0.03_type_1_20_2 with env:
+{'name': 'discrete_pp_v0', 'render.modes': ['human', 'rgb_array'], 'map_size': 20, 'reward_type': 'type_1', 'max_cycles': 100, 'npred': 2, 'nprey': 6, 'pred_vision': 2, 'prey_type': 'static'}: 
+                            0         1
+episode_len         100.89400  1.213965
+episode_reward       -3.57098  1.272063
+assists               0.07400  0.304482
+kills                 2.26600  1.232185
+predator_0_assists    0.01000  0.099598
+predator_1_assists    0.06400  0.289952
+predator_0_kills      1.47800  1.131405
+predator_1_kills      0.78800  0.772171
+predator_0_reward    -1.35580  1.149693
+predator_1_reward    -2.21518  0.796033
+
+
+chaser_follower_0.03_type_1_20_4 with env:
+{'name': 'discrete_pp_v0', 'render.modes': ['human', 'rgb_array'], 'map_size': 20, 'reward_type': 'type_1', 'max_cycles': 100, 'npred': 2, 'nprey': 6, 'pred_vision': 4, 'prey_type': 'static'}: 
+                           0         1
+episode_len         99.59600  7.719583
+episode_reward      -2.40792  1.659217
+assists              0.84600  1.295237
+kills                3.19800  1.429294
+predator_0_assists   0.03600  0.186477
+predator_1_assists   0.81000  1.279521
+predator_0_kills     2.87400  1.490828
+predator_1_kills     0.32400  0.558254
+predator_0_reward    0.13332  1.586519
+predator_1_reward   -2.54124  0.624578
+
+
+fixed_follower_0.03_type_1_20_4 with env:
+{'name': 'discrete_pp_v0', 'render.modes': ['human', 'rgb_array'], 'map_size': 20, 'reward_type': 'type_1', 'max_cycles': 100, 'npred': 2, 'nprey': 6, 'pred_vision': 4, 'prey_type': 'static'}: 
+                            0         1
+episode_len         101.00000  0.000000
+episode_reward       -4.84116  0.952702
+assists               0.39000  0.625045
+kills                 1.08600  0.912288
+predator_0_assists    0.11200  0.345970
+predator_1_assists    0.27800  0.518897
+predator_0_kills      0.75200  0.758714
+predator_1_kills      0.33400  0.568410
+predator_0_reward    -2.25544  0.781476
+predator_1_reward    -2.58572  0.600698
+
+
+chaser_fixed_0.03_type_1_20_4 with env:
+{'name': 'discrete_pp_v0', 'render.modes': ['human', 'rgb_array'], 'map_size': 20, 'reward_type': 'type_1', 'max_cycles': 100, 'npred': 2, 'nprey': 6, 'pred_vision': 4, 'prey_type': 'static'}: 
+                           0         1
+episode_len         99.41400  8.088105
+episode_reward      -2.46238  1.637586
+assists              0.15800  0.411552
+kills                3.24800  1.380691
+predator_0_assists   0.00800  0.089173
+predator_1_assists   0.15000  0.389620
+predator_0_kills     2.71600  1.418227
+predator_1_kills     0.53200  0.682574
+predator_0_reward   -0.02792  1.520129
+predator_1_reward   -2.43446  0.758431
+
+
+chaser_follower_0.03_type_1_20_6 with env:
+{'name': 'discrete_pp_v0', 'render.modes': ['human', 'rgb_array'], 'map_size': 20, 'reward_type': 'type_1', 'max_cycles': 100, 'npred': 2, 'nprey': 6, 'pred_vision': 6, 'prey_type': 'static'}: 
+                           0          1
+episode_len         92.86800  17.539608
+episode_reward      -0.92012   2.148491
+assists              1.76400   1.781756
+kills                4.31200   1.412319
+predator_0_assists   0.07800   0.282977
+predator_1_assists   1.68600   1.745135
+predator_0_kills     4.02000   1.503370
+predator_1_kills     0.29200   0.513091
+predator_0_reward    1.49034   1.828809
+predator_1_reward   -2.41046   0.716015
+
+
+fixed_follower_0.03_type_1_20_6 with env:
+{'name': 'discrete_pp_v0', 'render.modes': ['human', 'rgb_array'], 'map_size': 20, 'reward_type': 'type_1', 'max_cycles': 100, 'npred': 2, 'nprey': 6, 'pred_vision': 6, 'prey_type': 'static'}: 
+                            0         1
+episode_len         101.00000  0.000000
+episode_reward       -4.90168  0.901752
+assists               0.44200  0.635172
+kills                 1.07600  0.860060
+predator_0_assists    0.12400  0.353375
+predator_1_assists    0.31800  0.538010
+predator_0_kills      0.68200  0.705600
+predator_1_kills      0.39400  0.592846
+predator_0_reward    -2.32754  0.726768
+predator_1_reward    -2.57414  0.620305
+
+
+chaser_fixed_0.03_type_1_20_6 with env:
+{'name': 'discrete_pp_v0', 'render.modes': ['human', 'rgb_array'], 'map_size': 20, 'reward_type': 'type_1', 'max_cycles': 100, 'npred': 2, 'nprey': 6, 'pred_vision': 6, 'prey_type': 'static'}: 
+                           0          1
+episode_len         92.32000  19.105907
+episode_reward      -0.98746   2.217913
+assists              0.23400   0.489616
+kills                4.28600   1.387102
+predator_0_assists   0.02000   0.140140
+predator_1_assists   0.21400   0.465443
+predator_0_kills     3.96000   1.450036
+predator_1_kills     0.32600   0.593657
+predator_0_reward    1.44636   1.792634
+predator_1_reward   -2.43382   0.857764
+
+
+chaser_follower_0.03_type_2_15_2 with env:
+{'name': 'discrete_pp_v0', 'render.modes': ['human', 'rgb_array'], 'map_size': 15, 'reward_type': 'type_2', 'max_cycles': 100, 'npred': 2, 'nprey': 6, 'pred_vision': 2, 'prey_type': 'static'}: 
+                            0         1
+episode_len         100.80400  2.262703
+episode_reward       -2.18398  1.586650
+assists               0.74000  1.158916
+kills                 2.97800  1.266778
+predator_0_assists    0.04200  0.210534
+predator_1_assists    0.69800  1.095992
+predator_0_kills      2.45400  1.234070
+predator_1_kills      0.52400  0.677009
+predator_0_reward    -0.39610  1.189621
+predator_1_reward    -1.78788  0.915436
+
+
+fixed_follower_0.03_type_2_15_2 with env:
+{'name': 'discrete_pp_v0', 'render.modes': ['human', 'rgb_array'], 'map_size': 15, 'reward_type': 'type_2', 'max_cycles': 100, 'npred': 2, 'nprey': 6, 'pred_vision': 2, 'prey_type': 'static'}: 
+                            0         1
+episode_len         100.96400  0.804984
+episode_reward       -3.68066  1.396110
+assists               0.64400  0.871081
+kills                 1.82200  1.101245
+predator_0_assists    0.14200  0.412524
+predator_1_assists    0.50200  0.739655
+predator_0_kills      1.25400  0.868904
+predator_1_kills      0.56800  0.741941
+predator_0_reward    -1.72410  0.874475
+predator_1_reward    -1.95656  0.818879
+
+
+chaser_fixed_0.03_type_2_15_2 with env:
+{'name': 'discrete_pp_v0', 'render.modes': ['human', 'rgb_array'], 'map_size': 15, 'reward_type': 'type_2', 'max_cycles': 100, 'npred': 2, 'nprey': 6, 'pred_vision': 2, 'prey_type': 'static'}: 
+                            0         1
+episode_len         100.42200  5.087207
+episode_reward       -2.43998  1.425665
+assists               0.22600  0.513275
+kills                 3.14800  1.251090
+predator_0_assists    0.03400  0.181411
+predator_1_assists    0.19200  0.481248
+predator_0_kills      2.18200  1.224694
+predator_1_kills      0.96600  0.859256
+predator_0_reward    -0.56910  1.232718
+predator_1_reward    -1.87088  0.914016
+
+
+chaser_follower_0.03_type_2_15_4 with env:
+{'name': 'discrete_pp_v0', 'render.modes': ['human', 'rgb_array'], 'map_size': 15, 'reward_type': 'type_2', 'max_cycles': 100, 'npred': 2, 'nprey': 6, 'pred_vision': 4, 'prey_type': 'static'}: 
+                           0          1
+episode_len         92.39800  18.228553
+episode_reward       0.49616   2.497392
+assists              1.92200   1.774885
+kills                4.46600   1.256982
+predator_0_assists   0.07600   0.279966
+predator_1_assists   1.84600   1.739061
+predator_0_kills     4.17000   1.274499
+predator_1_kills     0.29600   0.490781
+predator_0_reward    1.40586   1.510285
+predator_1_reward   -0.90970   1.467013
+
+
+fixed_follower_0.03_type_2_15_4 with env:
+{'name': 'discrete_pp_v0', 'render.modes': ['human', 'rgb_array'], 'map_size': 15, 'reward_type': 'type_2', 'max_cycles': 100, 'npred': 2, 'nprey': 6, 'pred_vision': 4, 'prey_type': 'static'}: 
+                            0         1
+episode_len         100.90400  2.146625
+episode_reward       -3.96418  1.474447
+assists               0.72400  0.837393
+kills                 1.53200  1.093328
+predator_0_assists    0.21000  0.479959
+predator_1_assists    0.51400  0.723083
+predator_0_kills      0.99400  0.905319
+predator_1_kills      0.53800  0.730495
+predator_0_reward    -1.93810  0.910601
+predator_1_reward    -2.02608  0.810741
+
+
+chaser_fixed_0.03_type_2_15_4 with env:
+{'name': 'discrete_pp_v0', 'render.modes': ['human', 'rgb_array'], 'map_size': 15, 'reward_type': 'type_2', 'max_cycles': 100, 'npred': 2, 'nprey': 6, 'pred_vision': 4, 'prey_type': 'static'}: 
+                           0          1
+episode_len         91.95600  18.522749
+episode_reward      -0.39946   2.115451
+assists              0.39200   0.644334
+kills                4.56200   1.231743
+predator_0_assists   0.02800   0.165138
+predator_1_assists   0.36400   0.610122
+predator_0_kills     4.00400   1.379780
+predator_1_kills     0.55800   0.720885
+predator_0_reward    1.49888   1.663818
+predator_1_reward   -1.89834   1.015160
+
+
+chaser_follower_0.03_type_2_15_6 with env:
+{'name': 'discrete_pp_v0', 'render.modes': ['human', 'rgb_array'], 'map_size': 15, 'reward_type': 'type_2', 'max_cycles': 100, 'npred': 2, 'nprey': 6, 'pred_vision': 6, 'prey_type': 'static'}: 
+                           0          1
+episode_len         74.15800  27.310085
+episode_reward       2.90776   2.776277
+assists              2.73600   1.889297
+kills                5.36800   0.875276
+predator_0_assists   0.12800   0.340364
+predator_1_assists   2.60800   1.851808
+predator_0_kills     5.02200   1.001760
+predator_1_kills     0.34600   0.561172
+predator_0_reward    2.65232   1.433427
+predator_1_reward    0.25544   1.761902
+
+
+fixed_follower_0.03_type_2_15_6 with env:
+{'name': 'discrete_pp_v0', 'render.modes': ['human', 'rgb_array'], 'map_size': 15, 'reward_type': 'type_2', 'max_cycles': 100, 'npred': 2, 'nprey': 6, 'pred_vision': 6, 'prey_type': 'static'}: 
+                            0         1
+episode_len         101.00000  0.000000
+episode_reward       -4.56372  1.183907
+assists               0.54600  0.690534
+kills                 1.11000  0.866835
+predator_0_assists    0.16600  0.408384
+predator_1_assists    0.38000  0.596919
+predator_0_kills      0.68800  0.701170
+predator_1_kills      0.42200  0.623453
+predator_0_reward    -2.26456  0.679078
+predator_1_reward    -2.29916  0.710176
+
+
+chaser_fixed_0.03_type_2_15_6 with env:
+{'name': 'discrete_pp_v0', 'render.modes': ['human', 'rgb_array'], 'map_size': 15, 'reward_type': 'type_2', 'max_cycles': 100, 'npred': 2, 'nprey': 6, 'pred_vision': 6, 'prey_type': 'static'}: 
+                           0          1
+episode_len         74.41200  27.209170
+episode_reward       1.46732   2.379858
+assists              0.49200   0.677387
+kills                5.34800   0.929852
+predator_0_assists   0.02200   0.146830
+predator_1_assists   0.47000   0.658762
+predator_0_kills     5.10000   1.050813
+predator_1_kills     0.24800   0.480581
+predator_0_reward    3.07264   1.596389
+predator_1_reward   -1.60532   1.099432
+
+
+chaser_follower_0.03_type_2_20_2 with env:
+{'name': 'discrete_pp_v0', 'render.modes': ['human', 'rgb_array'], 'map_size': 20, 'reward_type': 'type_2', 'max_cycles': 100, 'npred': 2, 'nprey': 6, 'pred_vision': 2, 'prey_type': 'static'}: 
+                            0         1
+episode_len         100.98400  0.357771
+episode_reward       -3.54138  1.384256
+assists               0.27400  0.695623
+kills                 2.01000  1.236510
+predator_0_assists    0.00200  0.044721
+predator_1_assists    0.27200  0.689178
+predator_0_kills      1.63200  1.171033
+predator_1_kills      0.37800  0.603195
+predator_0_reward    -1.25184  1.147513
+predator_1_reward    -2.28954  0.720853
+
+
+fixed_follower_0.03_type_2_20_2 with env:
+{'name': 'discrete_pp_v0', 'render.modes': ['human', 'rgb_array'], 'map_size': 20, 'reward_type': 'type_2', 'max_cycles': 100, 'npred': 2, 'nprey': 6, 'pred_vision': 2, 'prey_type': 'static'}: 
+                            0         1
+episode_len         101.00000  0.000000
+episode_reward       -4.50174  1.223199
+assists               0.27800  0.591113
+kills                 1.24800  1.016150
+predator_0_assists    0.08400  0.324275
+predator_1_assists    0.19400  0.469900
+predator_0_kills      0.82000  0.808026
+predator_1_kills      0.42800  0.627378
+predator_0_reward    -2.15700  0.819491
+predator_1_reward    -2.34474  0.697896
+
+
+chaser_fixed_0.03_type_2_20_2 with env:
+{'name': 'discrete_pp_v0', 'render.modes': ['human', 'rgb_array'], 'map_size': 20, 'reward_type': 'type_2', 'max_cycles': 100, 'npred': 2, 'nprey': 6, 'pred_vision': 2, 'prey_type': 'static'}: 
+                            0         1
+episode_len         100.90600  2.101904
+episode_reward       -3.57952  1.248021
+assists               0.08000  0.278847
+kills                 2.19200  1.189102
+predator_0_assists    0.01200  0.108994
+predator_1_assists    0.06800  0.259829
+predator_0_kills      1.39400  1.086796
+predator_1_kills      0.79800  0.804045
+predator_0_reward    -1.42628  1.090709
+predator_1_reward    -2.15324  0.841723
+
+
+chaser_follower_0.03_type_2_20_4 with env:
+{'name': 'discrete_pp_v0', 'render.modes': ['human', 'rgb_array'], 'map_size': 20, 'reward_type': 'type_2', 'max_cycles': 100, 'npred': 2, 'nprey': 6, 'pred_vision': 4, 'prey_type': 'static'}: 
+                            0         1
+episode_len         100.18400  6.107762
+episode_reward       -2.10666  1.961585
+assists               0.82000  1.287990
+kills                 3.04200  1.442358
+predator_0_assists    0.03000  0.170758
+predator_1_assists    0.79000  1.252613
+predator_0_kills      2.73000  1.471540
+predator_1_kills      0.31200  0.513013
+predator_0_reward    -0.15854  1.452801
+predator_1_reward    -1.94812  1.039607
+
+
+fixed_follower_0.03_type_2_20_4 with env:
+{'name': 'discrete_pp_v0', 'render.modes': ['human', 'rgb_array'], 'map_size': 20, 'reward_type': 'type_2', 'max_cycles': 100, 'npred': 2, 'nprey': 6, 'pred_vision': 4, 'prey_type': 'static'}: 
+                            0         1
+episode_len         101.00000  0.000000
+episode_reward       -4.62136  1.203778
+assists               0.38200  0.687766
+kills                 1.09400  0.933223
+predator_0_assists    0.10800  0.364144
+predator_1_assists    0.27400  0.582755
+predator_0_kills      0.71000  0.796976
+predator_1_kills      0.38400  0.584146
+predator_0_reward    -2.26710  0.777489
+predator_1_reward    -2.35426  0.674640
+
+
+chaser_fixed_0.03_type_2_20_4 with env:
+{'name': 'discrete_pp_v0', 'render.modes': ['human', 'rgb_array'], 'map_size': 20, 'reward_type': 'type_2', 'max_cycles': 100, 'npred': 2, 'nprey': 6, 'pred_vision': 4, 'prey_type': 'static'}: 
+                           0         1
+episode_len         99.38000  8.181777
+episode_reward      -2.31544  1.742575
+assists              0.16200  0.409990
+kills                3.28400  1.439266
+predator_0_assists   0.00800  0.089173
+predator_1_assists   0.15400  0.388053
+predator_0_kills     2.73400  1.474990
+predator_1_kills     0.55000  0.693153
+predator_0_reward   -0.02214  1.557424
+predator_1_reward   -2.29330  0.802811
+
+
+chaser_follower_0.03_type_2_20_6 with env:
+{'name': 'discrete_pp_v0', 'render.modes': ['human', 'rgb_array'], 'map_size': 20, 'reward_type': 'type_2', 'max_cycles': 100, 'npred': 2, 'nprey': 6, 'pred_vision': 6, 'prey_type': 'static'}: 
+                           0          1
+episode_len         92.57600  17.677024
+episode_reward       0.15238   2.626611
+assists              1.73600   1.687602
+kills                4.33600   1.360443
+predator_0_assists   0.09600   0.301606
+predator_1_assists   1.64000   1.633320
+predator_0_kills     4.01400   1.430348
+predator_1_kills     0.32200   0.543052
+predator_0_reward    1.23398   1.662306
+predator_1_reward   -1.08160   1.456289
+
+
+fixed_follower_0.03_type_2_20_6 with env:
+{'name': 'discrete_pp_v0', 'render.modes': ['human', 'rgb_array'], 'map_size': 20, 'reward_type': 'type_2', 'max_cycles': 100, 'npred': 2, 'nprey': 6, 'pred_vision': 6, 'prey_type': 'static'}: 
+                            0         1
+episode_len         101.00000  0.000000
+episode_reward       -4.59578  1.214235
+assists               0.45400  0.648634
+kills                 1.11400  0.952270
+predator_0_assists    0.13400  0.358191
+predator_1_assists    0.32000  0.567666
+predator_0_kills      0.71600  0.774948
+predator_1_kills      0.39800  0.613473
+predator_0_reward    -2.24932  0.749388
+predator_1_reward    -2.34646  0.685264
+
+
+chaser_fixed_0.03_type_2_20_6 with env:
+{'name': 'discrete_pp_v0', 'render.modes': ['human', 'rgb_array'], 'map_size': 20, 'reward_type': 'type_2', 'max_cycles': 100, 'npred': 2, 'nprey': 6, 'pred_vision': 6, 'prey_type': 'static'}: 
+                           0          1
+episode_len         92.54200  18.412449
+episode_reward      -0.75608   2.172195
+assists              0.22400   0.484038
+kills                4.40200   1.338649
+predator_0_assists   0.00400   0.063182
+predator_1_assists   0.22000   0.481730
+predator_0_kills     4.09000   1.445711
+predator_1_kills     0.31200   0.557923
+predator_0_reward    1.52362   1.768203
+predator_1_reward   -2.27970   0.852270
