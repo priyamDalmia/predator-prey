@@ -1,0 +1,23 @@
+centralized, type_1, 0: {'crashed_runs': 1, 'finished_runs': 1, 'matching_runs': 12}
+                    COMPLETED RUNS: 1
+                    RUNNING RUNS: 0
+                    CRASHED RUNS: 1
+                    TOTAL = 2
+                    
+BASE PERFORMANCE: trial_count               2.000000
+training_iteration    10025.000000
+episodes_total        24941.500000
+train_len                55.095000
+train_reward              5.905000
+train_assists             0.465000
+eval_len                 63.034722
+eval_reward               5.759259
+eval_assists              0.469907
+analysis_len             55.902975
+analysis_reward           5.873108
+analysis_assists          0.440810
+dtype: float64
+                                  trial_count  training_iteration  episodes_total  train_len  train_reward  train_assists   eval_len  eval_reward  eval_assists  analysis_len  analysis_reward  analysis_assists
+run_name                                                                                                                                                                                    
+df1702402535            2               10450           24999      56.92          5.87           0.46  65.291667     5.666667      0.458333     58.702857         5.777143          0.422857
+df1702456883            2                9600           24884      53.27          5.94           0.47  60.777778     5.851852      0.481481     53.103093         5.969072          0.458763
