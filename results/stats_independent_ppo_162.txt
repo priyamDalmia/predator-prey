@@ -1,0 +1,12 @@
+Finished: 162, Running: 64, Crashed: 0
+                                             episode_length                  episode_reward                 epsiode_assists                 eval_length                  eval_reward                 eval_assists                
+                                                       mean        std count           mean       std count            mean       std count        mean        std count        mean       std count         mean       std count
+step_penalty reward_type lstm algorithm_type                                                                                                                                                                                     
+-0.03        type_1      True independent         52.520000   8.872377    26       2.935704  0.673214    26        0.339615  0.113119    26   52.419354   8.188927    26    2.971053  0.563838    26     0.306964  0.141916    26
+             type_2      True independent         53.855000  10.309434    26       3.047723  1.029090    26        0.414615  0.144616    26   53.744766  10.409001    26    3.063636  0.923711    26     0.403466  0.218495    26
+-0.01        type_1      True independent         53.541071   7.798617    28       4.876996  0.352700    28        0.387500  0.124413    28   54.107639   8.282102    28    4.848260  0.391896    28     0.398603  0.202981    28
+             type_2      True independent         55.123704   8.320139    27       5.170926  0.319574    27        0.531481  0.251514    27   55.498850  11.005941    27    5.131214  0.389574    27     0.472991  0.218340    27
+ 0.00        type_1      True independent         54.438929   6.179984    28       5.898571  0.088096    28        0.381786  0.084330    28   54.593789   7.768644    28    5.893801  0.134528    28     0.334190  0.128385    28
+             type_2      True independent         56.203333   4.752066    27       6.200815  0.159881    27        0.526667  0.228086    27   57.285488   7.617374    27    6.231095  0.218381    27     0.592253  0.298521    27
+
+

@@ -26,7 +26,8 @@ independent predator_0 predator_1 ccm_1 PCA_1      0.432308  0.415077  0.419712 
             predator_1 predator_0 ccm_1 PCA_1      0.451019  0.441481  0.439404  0.434615  0.429846  0.428000  0.428519  0.424769  0.424019  0.422154            1
                                         PCA_2      0.369788  0.374269  0.384173  0.378365  0.381558  0.380788  0.380288  0.377962  0.376750  0.376154            1
                                         dx         0.181558  0.114788  0.101038  0.085096  0.078077  0.069462  0.068212  0.058058  0.044712  0.047865            1
-                                        dy         0.152904  0.122904  0.096538  0.093212  0.052404  0.055962  0.054808  0.044673  0.046962  0.050615            1              trial_count  training_iteration  episodes_total  train_len  train_reward  train_assists   eval_len  eval_reward  eval_assists  analysis_len  analysis_reward  analysis_assists
+                                        dy         0.152904  0.122904  0.096538  0.093212  0.052404  0.055962  0.054808  0.044673  0.046962  0.050615            1              
+                trial_count  training_iteration  episodes_total  train_len  train_reward  train_assists   eval_len  eval_reward  eval_assists  analysis_len  analysis_reward  analysis_assists
 run_name                                                                                                                                                                                    
 df1702647727            2                9800           24904      57.13         6.126           0.46  68.600000     6.184000      0.640000     61.500000         6.127711          0.493976
 df1702644551            2               10400           24993      53.74         6.172           0.37  44.552632     6.068421      0.157895     49.781553         6.200000          0.422330
