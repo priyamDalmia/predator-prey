@@ -1,0 +1,24 @@
+Finished: 244, Running: 64, Crashed: 0
+                                             episode_length                  episode_reward                 epsiode_assists                 eval_length                  eval_reward                 eval_assists                
+                                                       mean        std count           mean       std count            mean       std count        mean        std count        mean       std count         mean       std count
+step_penalty reward_type lstm algorithm_type                                                                                                                                                                                     
+-0.03        type_1      True independent         53.102000  10.098028    40       2.867963  0.867837    40        0.349750  0.099085    40   52.978948  10.510942    40    2.879648  0.964188    40     0.331171  0.152733    40
+             type_2      True independent         53.418750   8.565355    40       3.108080  0.843404    40        0.422000  0.147617    40   52.880921   9.275174    40    3.140781  0.796211    40     0.402574  0.201161    40
+-0.01        type_1      True independent         54.275610   8.091515    41       4.856983  0.345097    41        0.379024  0.123041    41   54.644294   8.225607    41    4.846260  0.357786    41     0.400082  0.186395    41
+             type_2      True independent         55.539512   7.566037    41       5.150407  0.303217    41        0.511463  0.220086    41   56.006283   9.839173    41    5.103958  0.361339    41     0.469994  0.208421    41
+ 0.00        type_1      True independent         54.675610   5.941535    41       5.896098  0.089635    41        0.387317  0.087465    41   55.324990   6.932920    41    5.886156  0.122632    41     0.364137  0.140137    41
+             type_2      True independent         58.664634  10.242919    41       6.018732  0.709911    41        0.464146  0.224410    41   59.421651  11.624734    41    6.036218  0.792283    41     0.528110  0.277919    41
+
+
+Finished: 244, Running: 64, Crashed: 0
+                                             episode_length                  episode_reward                 epsiode_assists                 eval_length                  eval_reward                 eval_assists                
+                                                       mean        std count           mean       std count            mean       std count        mean        std count        mean       std count         mean       std count
+step_penalty reward_type lstm algorithm_type                                                                                                                                                                                     
+-0.03        type_1      True independent         53.102000  10.098028    40       2.867963  0.867837    40        0.349750  0.099085    40   52.978948  10.510942    40    2.879648  0.964188    40     0.331171  0.152733    40
+             type_2      True independent         53.418750   8.565355    40       3.108080  0.843404    40        0.422000  0.147617    40   52.880921   9.275174    40    3.140781  0.796211    40     0.402574  0.201161    40
+-0.01        type_1      True independent         54.275610   8.091515    41       4.856983  0.345097    41        0.379024  0.123041    41   54.644294   8.225607    41    4.846260  0.357786    41     0.400082  0.186395    41
+             type_2      True independent         55.539512   7.566037    41       5.150407  0.303217    41        0.511463  0.220086    41   56.006283   9.839173    41    5.103958  0.361339    41     0.469994  0.208421    41
+ 0.00        type_1      True independent         54.675610   5.941535    41       5.896098  0.089635    41        0.387317  0.087465    41   55.324990   6.932920    41    5.886156  0.122632    41     0.364137  0.140137    41
+             type_2      True independent         58.664634  10.242919    41       6.018732  0.709911    41        0.464146  0.224410    41   59.421651  11.624734    41    6.036218  0.792283    41     0.528110  0.277919    41
+
+
