@@ -374,24 +374,14 @@ def main():
     config["stop_fn"] = stop_fn
     config["wandb"]["wandb_dir_path"] = str(Path("./wandb").absolute())
     
-    config['wandb']['wandb_project'] = 'centralized_ppo'
     if config["tune"]["tune"]:
         # SET HYPERPARAMETERS for TUNING
         config["env_config"]["step_penalty"] = tune.grid_search([0.0, -0.01, -0.03])
-        # config["algorithm_type"] = tune.grid_search(
-        #     ["independent", "shared", "centralized"]
-        # )
-        config["env_config"]["reward_type"] = tune.grid_search(["type_1", "type_2"])
-        config["training"]["model"]["use_lstm"] = tune.grid_search([True, False])
-        config['training']['model']['fcnet_hiddens'] = tune.grid_search([[64], [128], [256]])
-        config['training']['model']['conv_filters'] = tune.grid_search([[[16, [3, 3], 1], [32, [3, 3], 1]], [[16, [3, 3], 1], [32, [3, 3], 1]]])
-        config['training']['model']['lstm_cell_size'] = tune.grid_search([64, 128, 256])
-        config['training']['model']['max_seq_len'] = tune.grid_search([5, 10, 15])
-        config['training']['num_sgd_iter'] = tune.grid_search([2, 5, 10])
-        config['training']['sgd_minibatch_size'] = tune.grid_search([32, 64, 128, 256])
-        config['training']['train_batch_size'] = tune.grid_search([128, 256, 512])
-
-
+        config["algorithm_type"] = tune.grid_search(
+            ["independent", "shared", "centralized"]
+        )
+        config["env_config"]["reward_type"] = tune.grid_search(["type_1", "type_2", "type_3"])
+    
     storage_path = str(Path("./experiments").absolute())
     tuner = tune.Tuner(
         tune.with_resources(train_algo, {"cpu": 0.5}),
@@ -404,12 +394,11 @@ def main():
             trial_name_creator=trail_name_creator,
         ),
         run_config=train.RunConfig(
-            verbose=1,
+            verbose=0,
             stop=stop_fn,
             storage_path=storage_path,
             log_to_file=False,
             checkpoint_config=train.CheckpointConfig(
-                checkpoint_frequency=0,
                 checkpoint_at_end=False,
             ),
         ),

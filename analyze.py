@@ -7,16 +7,16 @@ import os
 import re
 import time
 from typing import Any
+from unittest import result
 from cycler import L
 from matplotlib.pylab import f
 import pandas as pd
 import numpy as np
-from pyparsing import C, col
+from sklearn.utils import resample
 from sympy import N, O, per
 from itertools import product
 
 from wandb import agent
-from analyze_ray import analyze
 from environments.discrete_pp_v1 import ChaserAgent, FollowerAgent, discrete_pp_v1
 from environments.discrete_pp_v1 import FixedSwingAgent
 from causal_ccm.causal_ccm import ccm
@@ -38,15 +38,16 @@ CONFIG = dict(
     policy_name=None,  # if none specficied, cycle through all in POLICY_SETS
     policy_mapping_fn=None,  # f none specified, will try to infer from policy name
     is_recurrent=False,
-    length_fac=500,
+    length_fac=1000,
     dimensions=["x", "y", "dx", "dy", "PCA_1", "PCA_2", "PCA_3"],
     env_config=dict(
         map_size=15,
         npred=2,
         nprey=6,
-        pred_vision=4,
-        reward_type="type_1",
+        pred_vision=6,
+        reward_type="type_2",
         prey_type="static",
+        step_penalty=0.01,
     ),
     ccm_tau=1,
     ccm_E=4,
@@ -352,6 +353,36 @@ def print_eval_scores(name, env, policy_mapping_fn, is_recurrent):
     eval_df = pd.DataFrame(eval_stats)
     desc_str = f"{name} with env:\n{env.metadata}"
     return desc_str, pd.concat([eval_df.mean(), eval_df.std()], axis=1)
+    
+def analyze_fixed_strategies(config, results):
+    grouped_dfs = []
+    eval_dfs = None
+
+    for policy_set, analyis_df, eval_df in results:
+        col_list = list(analyis_df.groupby(['mode', 'agent_a', 'agent_b', 'test', 'dimension']).mean().columns)
+        agg_funs = []
+        for col in col_list:
+            if col != 'run_id':
+                agg_funs.append((col, lambda x: round(x.mean(), 2)))
+            else:
+                agg_funs.append((col, 'count'))
+        
+        df2 = analyis_df.groupby(['mode', 'agent_a', 'agent_b', 'test', 'dimension']).agg(dict(agg_funs))
+        grouped_dfs.append(df2) 
+        eval_dfs = pd.concat([
+            eval_dfs,
+            pd.DataFrame([dict(name=policy_set,**dict(eval_df.mean()))])
+                ]) if eval_dfs is not None else pd.DataFrame([dict(name=policy_set,**dict(eval_df.mean()))])
+    
+    eval_dfs.set_index('name', inplace=True)
+    filename = f"{config['env_config']['map_size']}r_{config['env_config']['reward_type']}_s_{config['env_config']['step_penalty']}_v_{config['env_config']['pred_vision']}.txt"
+    with open(f"./results/{filename}", "w") as f:
+        f.write(f"""EVALUATION: ENV = {config['env_config']}\n""")
+        f.write(eval_dfs.to_string())
+        f.write("\n\n")
+        for df in grouped_dfs:
+            f.write(df.to_string())
+            f.write("\n\n")
 
 if __name__ == "__main__":
     config_dict = CONFIG.copy()
@@ -360,6 +391,7 @@ if __name__ == "__main__":
     evaluate_agents = True
     eval_list = ['chaser_follower', 'fixed_follower', 'chaser_fixed']
     if anaylze_agents:
+        results = []
         for policy_name in POLICY_SETS:
             start_time = time.time()
             policy_mapping_fn = {
@@ -388,8 +420,11 @@ if __name__ == "__main__":
             print(
                 f"Time taken for {policy_name}: {(time.time() - start_time)/60:.2f} minutes"
             )
+            analysis_df.metadata = env.metadata
             analysis_df.to_csv(f"./experiments/results/{policy_name}_analysis.csv")
             eval_df.to_csv(f"./experiments/results/{policy_name}_eval.csv")
+            results.append((policy_name, analysis_df, eval_df))
+        analyze_fixed_strategies(config_dict, results)
 
     # evaluate_agents = True
     # if evaluate_agents:

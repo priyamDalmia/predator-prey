@@ -3,7 +3,7 @@ algorithm_class: "ppo"
 framework: "torch"
 tune:
    tune: true # if true, tune hyperparameters in main!
-   num_samples: 4
+   num_samples: 3
    max_episodes: 25000
    max_concurrent_trials: 32
 analysis:
@@ -32,7 +32,7 @@ training:
       fcnet_activation: "relu"
       conv_activation: "relu"
       conv_filters: [[16,[3,3],1]]
-      use_lstm: true
+      use_lstm: false
       lstm_cell_size: 128
       max_seq_len: 10
       lstm_use_prev_reward: true
