@@ -173,7 +173,7 @@ class discrete_pp_v1(ParallelEnv):
         if (kill_area_1.sum()+kill_area_2.sum()) > 2:
             self._assists += 1
             for _id in self._possible_agents:
-                rewards[_id] = 1.5 + rewards.get(_id, 0)
+                rewards[_id] = 1.2 + rewards.get(_id, 0)
                 if agent_id != _id:
                     self._assists_by_id[_id] = 1 + self._assists_by_id.get(_id, 0)
             return rewards

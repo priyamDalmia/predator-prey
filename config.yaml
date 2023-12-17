@@ -1,13 +1,13 @@
-algorithm_type: "centralized"
+algorithm_type: "independent"
 algorithm_class: "ppo"
 framework: "torch"
 tune:
    tune: true # if true, tune hyperparameters in main!
-   num_samples: 3
+   num_samples: 5
    max_episodes: 25000
    max_concurrent_trials: 32
 analysis:
-   num_trials: 2
+   num_trials: 10
    analysis: true
    policy_set: ['original', 'fixed', 'chaser']
    dimensions: ['dx', 'dy', 'PCA_1', 'PCA_2']
@@ -28,11 +28,11 @@ training:
    grad_clip: "norm"
    gamma: 0.90
    model: 
-      fcnet_hiddens: [256]
+      fcnet_hiddens: [128]
       fcnet_activation: "relu"
       conv_activation: "relu"
-      conv_filters: [[16,[3,3],1]]
-      use_lstm: false
+      conv_filters: [[16,[3,3],1], [16, [3,3], 1]]
+      use_lstm: true
       lstm_cell_size: 128
       max_seq_len: 10
       lstm_use_prev_reward: true
@@ -45,9 +45,9 @@ rollouts:
    batch_mode: "complete_episodes"
 wandb: 
    wandb_init: true
-   wandb_project: "rllib2"
+   wandb_project: "final"
    wandb_entity: "tpn"
-   wandb_notes: "testing setup"
+   wandb_notes: "final training results"
    wandb_log_freq: 50
 env_name: "discrete_pp_v1"
 env_config:
