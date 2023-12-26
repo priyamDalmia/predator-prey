@@ -285,6 +285,7 @@ def train_algo(config):
 
         if config["stop_fn"](None, results):
             if config["wandb"]["wandb_init"]:
+                wandb.log(log_dict)
                 eval_results = algo.evaluate()["evaluation"]
                 wandb.summary.update(
                     dict(
