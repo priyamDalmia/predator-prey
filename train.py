@@ -85,6 +85,12 @@ def create_algo(config):
             .rl_module(_enable_rl_module_api=False)
             .reporting(keep_per_episode_custom_metrics=False)
             .offline_data(output=None)
+            .debugging(
+                logger_config={
+                    # Use the tune.logger.NoopLogger class for no logging.
+                    "type": ray.tune.logger.NoopLogger, 
+                },
+            )
         )
         algo = algo_config.build()
         algo.build_config_dict = config
@@ -117,6 +123,12 @@ def create_algo(config):
             .rl_module(_enable_rl_module_api=False)
             .reporting(keep_per_episode_custom_metrics=False)
             .offline_data(output=None)
+            .debugging(
+                logger_config={
+                    # Use the tune.logger.NoopLogger class for no logging.
+                    "type": ray.tune.logger.NoopLogger, 
+                },
+            )
         )
         algo = algo_config.build()
         algo.build_config_dict = config
@@ -162,6 +174,12 @@ def create_algo(config):
             )
             .rl_module(_enable_rl_module_api=False)
             .offline_data(output=None)
+            .debugging(
+                logger_config={
+                    # Use the tune.logger.NoopLogger class for no logging.
+                    "type": ray.tune.logger.NoopLogger, 
+                },
+            )
         )
         algo = CentralizedCritic(config=algo_config)
     else:

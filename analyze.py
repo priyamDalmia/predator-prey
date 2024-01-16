@@ -25,7 +25,14 @@ import warnings
 
 import ray
 from tests.test_multiagent_2d import CONFIG
+import nonlincausality as nlc 
+from nonlincausality.nonlincausality import nonlincausalityARIMA, nonlincausalityMLP
 
+from statsmodels.tsa.stattools import grangercausalitytests
+
+
+# disable tensorflow cuda 
+os.environ["CUDA_VISIBLE_DEVICES"] = "-1"
 warnings.filterwarnings("ignore")
 _agent_type_dict = {
     "chaser": ChaserAgent,
@@ -51,8 +58,9 @@ CONFIG = dict(
     ),
     ccm_tau=1,
     ccm_E=4,
+    gc_lag=10,
     pref_ccm_analysis=True,
-    pref_granger_analysis=False,
+    pref_granger_analysis=True,
     pref_spatial_ccm_analysis=False,
     pref_graph_analysis=False,
 )
@@ -71,27 +79,17 @@ class AlgoModel:
         return self.model.compute_single_action(obs, explore)
 
 
-def get_ccm_score(X, Y, tau, E) -> list[tuple[str, float]]:
+def get_ccm_score(X, Y, lag) -> list[tuple[str, float]]:
     """
     return ccm coorelation and p-value
     """
+    E = lag
+    tau = 1
     corr, pval = ccm(list(X), list(Y), tau=tau, E=E).causality()
     if pd.isna(corr):
         corr = 0.0
         pval = -1.0
-    return [("ccm_1", round(corr, 3))]  # , ("ccm_pval", round(pval, 2))]
-
-
-def get_granger_score(X, Y, maxlag=1) -> tuple[str, float]:
-    """
-    return granger causality and p-value
-    """
-    import statsmodels as sm
-    from statsmodels.tsa.stattools import grangercausalitytests
-
-    data = np.array([X, Y]).T.astype(np.float64)
-    results = grangercausalitytests(data, maxlag=5)
-    return [("granger", 0.0)]
+    return [("ccm_score", round(corr, 3)),  ("ccm_pval", round(pval, 3))]
 
 
 def get_episode_record(env, policy_mapping_fn, is_recurrent):
@@ -228,6 +226,7 @@ def analyze_task(
     length_fac,
     ccm_tau,
     ccm_E,
+    gc_lag,
     pref_ccm_analysis=False,
     pref_granger_analysis=False,
     pref_spatial_ccm_analysis=False,
@@ -236,7 +235,7 @@ def analyze_task(
     analysis_results = []
     rolled_out_env_steps = pd.DataFrame([])
     eval_stats = None
-    for i in range(length_fac, (10 * length_fac) + 1, length_fac):
+    for i in [i * length_fac for i in [2, 5, 10]]:
         # 1. Generate epsiode data
         while len(rolled_out_env_steps) <= int(i):
             episode_record, metadata = get_episode_record(
@@ -265,7 +264,7 @@ def analyze_task(
                     f"{i}-{policy_name}: CCM analysis for {pair[0]} and {pair[1]} in {dim} dimension; len(X)={len(X)})"
                 )
                 if pref_ccm_analysis:
-                    results = get_ccm_score(X, Y, tau=ccm_tau, E=ccm_E)
+                    results = get_ccm_score(X, Y, ccm_E)
                     for result in results:
                         analysis_results.append(
                             [
@@ -277,7 +276,7 @@ def analyze_task(
 
                 # Granger analysis
                 if pref_granger_analysis:
-                    results = get_granger_score(X, Y, maxlag=1)
+                    results = get_granger_linear(X, Y, gc_lag)
                     for result in results:
                         analysis_results.append(
                             [
@@ -286,13 +285,27 @@ def analyze_task(
                                 result[1],
                             ]
                         )
-                # Spatial CCM analysis
-                if pref_spatial_ccm_analysis:
-                    raise NotImplementedError("Not implemented yet")
 
-                # Graph analysis
-                if i == 10000 and pref_graph_analysis:
-                    raise NotImplementedError("Not implemented yet")
+
+                    results = get_granger_arima(X, Y, gc_lag)
+                    for result in results:
+                        analysis_results.append(
+                            [
+                                (trial_id, policy_name, *pair, result[0], dim),
+                                i,
+                                result[1],
+                            ]
+                        )
+
+                    results = get_granger_mlp(X, Y, gc_lag)
+                    for result in results:
+                        analysis_results.append(
+                            [
+                                (trial_id, policy_name, *pair, result[0], dim),
+                                i,
+                                result[1],
+                            ]
+                        )     
 
     return analysis_results, eval_stats
 
@@ -313,7 +326,7 @@ def get_analysis_df(policy_sets: list, dimensions: list, length_fac: int = 100):
     _df_index = pd.MultiIndex.from_tuples(
         _df_data, names=["run_id", "mode", "agent_a", "agent_b", "test", "dimension"]
     )
-    traj_length = [i for i in range(length_fac, (10 * length_fac) + 1, length_fac)]
+    traj_length = [i * length_fac for i in [2, 5, 10]]
     analysis_df = pd.DataFrame(index=_df_index, columns=traj_length).fillna(0.0)
     return analysis_df
 
@@ -400,7 +413,7 @@ if __name__ == "__main__":
             }
             analysis_df, eval_df = perform_causal_analysis(
                 num_trials=3,
-                use_ray=True,
+                use_ray=False,
                 analysis_df=get_analysis_df(
                     [policy_name], config_dict["dimensions"], config_dict["length_fac"]
                 ),
@@ -412,6 +425,7 @@ if __name__ == "__main__":
                 length_fac=config_dict["length_fac"],
                 ccm_tau=config_dict["ccm_tau"],
                 ccm_E=config_dict["ccm_E"],
+                gc_lag=config_dict["gc_lag"],
                 pref_ccm_analysis=config_dict["pref_ccm_analysis"],
                 pref_granger_analysis=config_dict["pref_granger_analysis"],
                 pref_spatial_ccm_analysis=config_dict["pref_spatial_ccm_analysis"],
