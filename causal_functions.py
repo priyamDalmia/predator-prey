@@ -59,8 +59,8 @@ def get_granger_mlp(X, Y, lag):
         run=1,
         epochs_num=50,
         batch_size_num=128,
-        verbose=True,
-        plot=True,
+        verbose=False,
+        plot=False,
     )
 
     p_value = results[lag].p_value
@@ -100,7 +100,7 @@ if plot:
 
 
 linear_gc = get_granger_linear(x, y, lag)
-arima_gc = get_granger_arima(x, y, lag)
+# arima_gc = get_granger_arima(x, y, lag)
 mlp_gc = get_granger_mlp(x, y, lag)
 
 print(f"Linear Granger Causality y-causing-X: {linear_gc}")

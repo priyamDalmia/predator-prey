@@ -91,6 +91,69 @@ def get_ccm_score(X, Y, lag) -> list[tuple[str, float]]:
         pval = -1.0
     return [("ccm_score", round(corr, 3)),  ("ccm_pval", round(pval, 3))]
 
+def get_granger_linear(X, Y, lag):
+    data = np.array([X, Y]).T.astype(np.float64)
+    results = grangercausalitytests(data, maxlag=[lag])
+    ssr_ftest = results[lag][0]["ssr_ftest"]
+    chi_test = results[lag][0]["ssr_chi2test"]
+    return [("F-statistic", ssr_ftest[0]), ("p-value", ssr_ftest[1]),
+            ("chi2", chi_test[0]), ("p-value", chi_test[1])]
+
+
+def get_granger_arima(X, Y, lag):
+    data = np.array([X, Y]).T.astype(np.float64)
+    results = nonlincausalityARIMA(
+        x=data, 
+        maxlag=[lag],
+        x_test=data)
+
+    p_value = results[lag].p_value
+    test_statistic = results[lag]._test_statistic
+
+    best_errors_X = results[lag].best_errors_X
+    best_errors_XY = results[lag].best_errors_XY
+    cohens_d = np.abs(
+        (np.mean(np.abs(best_errors_X)) - np.mean(np.abs(best_errors_XY)))
+        / np.std([best_errors_X, best_errors_XY])
+    )
+    return [
+        ("arima_pval", p_value),
+        ("arima_stat", test_statistic),
+        ("arima_cohen", cohens_d),
+    ]
+
+def get_granger_mlp(X, Y, lag):
+    nlen = len(X)
+    data = np.array([X, Y]).T.astype(np.float64)
+    data_train = data[:int(nlen*0.8)]
+    data_test = data[int(nlen*0.8):]
+    results = nonlincausalityMLP(
+        x=data_train, 
+        maxlag=[lag],
+        Dense_layers=2,
+        Dense_neurons=[100, 100],
+        x_test=data_test,
+        run=1,
+        epochs_num=50,
+        batch_size_num=128,
+        verbose=False,
+        plot=False,
+    )
+
+    p_value = results[lag].p_value
+    test_statistic = results[lag]._test_statistic
+
+    best_errors_X = results[lag].best_errors_X
+    best_errors_XY = results[lag].best_errors_XY
+    cohens_d = np.abs(
+        (np.mean(np.abs(best_errors_X)) - np.mean(np.abs(best_errors_XY)))
+        / np.std([best_errors_X, best_errors_XY])
+    )
+    return [
+        ("mlp_pval", p_value),
+        ("mlp_stat", test_statistic),
+        ("mlp_cohen", cohens_d),
+    ]
 
 def get_episode_record(env, policy_mapping_fn, is_recurrent):
     explore = False
