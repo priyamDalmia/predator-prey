@@ -2,7 +2,7 @@
 #SBATCH --nodes=1
 #SBTACH --ntasks=1
 #SBATCH --ntasks-per-node=1
-#SBATCH --cpus-per-task=16
+#SBATCH --cpus-per-task=4
 
 #SBATCH --gres=gpu:1
 #SBATCH --qos=gpgpudeeplearn
@@ -54,6 +54,6 @@ source ./.venv/bin/activate
 echo -e "\n\n\n PYTHON SCRIPT OUTPUT: \n"
 
 rm -rf ~/ray_results/*
-python3 ./train.py
+python3 ./analyze.py
 
 my-job-stats -a -n -s
