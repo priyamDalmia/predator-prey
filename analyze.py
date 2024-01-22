@@ -500,8 +500,8 @@ if __name__ == "__main__":
                 f"Time taken for {policy_name}: {(time.time() - start_time)/60:.2f} minutes"
             )
             analysis_df.metadata = env.metadata
-            analysis_df.to_csv(f"./experiments/results/{policy_name}_analysis.csv")
-            eval_df.to_csv(f"./experiments/results/{policy_name}_eval.csv")
+            analysis_df.to_csv(f"./results/{policy_name}_analysis.csv")
+            eval_df.to_csv(f"./results/{policy_name}_eval.csv")
             results.append((policy_name, analysis_df, eval_df))
         analyze_fixed_strategies(config_dict, results)
 
