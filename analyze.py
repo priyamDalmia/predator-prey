@@ -30,9 +30,11 @@ from nonlincausality.nonlincausality import nonlincausalityARIMA, nonlincausalit
 
 from statsmodels.tsa.stattools import grangercausalitytests
 
+import tensorflow as tf
+tf.compat.v1.enable_eager_execution()
 
 # disable tensorflow cuda 
-os.environ["CUDA_VISIBLE_DEVICES"] = "-1"
+# os.environ["CUDA_VISIBLE_DEVICES"] = "-1"
 warnings.filterwarnings("ignore")
 _agent_type_dict = {
     "chaser": ChaserAgent,
@@ -476,7 +478,7 @@ if __name__ == "__main__":
             }
             analysis_df, eval_df = perform_causal_analysis(
                 num_trials=3,
-                use_ray=False,
+                use_ray=True,
                 analysis_df=get_analysis_df(
                     [policy_name], config_dict["dimensions"], config_dict["length_fac"]
                 ),
