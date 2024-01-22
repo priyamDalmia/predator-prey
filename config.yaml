@@ -3,12 +3,12 @@ algorithm_class: "ppo"
 framework: "torch"
 tune:
    tune: true # if true, tune hyperparameters in main!
-   num_samples: 5
-   max_episodes: 25000
-   max_concurrent_trials: 32
+   num_samples: 2
+   max_episodes: 250
+   max_concurrent_trials: 6
 analysis:
    num_trials: 10
-   analysis: true
+   analysis: false
    policy_set: ['original', 'fixed', 'chaser']
    dimensions: ['dx', 'dy', 'PCA_1', 'PCA_2']
    length_fac: 500
@@ -32,7 +32,7 @@ training:
       fcnet_activation: "relu"
       conv_activation: "relu"
       conv_filters: [[16,[3,3],1], [16, [3,3], 1]]
-      use_lstm: true
+      use_lstm: false
       lstm_cell_size: 64
       max_seq_len: 5
       lstm_use_prev_reward: true
@@ -44,12 +44,12 @@ rollouts:
    num_rollout_workers: 0
    batch_mode: "complete_episodes"
 wandb: 
-   wandb_init: true
+   wandb_init: false
    wandb_project: "final"
    wandb_entity: "tpn"
    wandb_notes: "final training results"
    wandb_log_freq: 50
-env_name: "discrete_pp_v1"
+env_name: "wolfpack_discrete"
 env_config:
    map_size: 15
    pred_vision: 2

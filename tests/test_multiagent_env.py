@@ -3,6 +3,7 @@ from pettingzoo.test import parallel_api_test
 from pettingzoo.test import seed_test
 from sympy import O
 from environments.discrete_pp_v1 import discrete_pp_v1
+from environments.wolfpack_discrete import wolfpack_discrete
 from ray.rllib.env import ParallelPettingZooEnv
 from ray.tune.registry import register_env
 from ray.rllib.algorithms.callbacks import DefaultCallbacks
@@ -25,7 +26,7 @@ CONFIG = dict(
         max_cycles = 100,
         npred = 2,
         pred_vision = 2,
-        nprey = 6,
+        nprey = 2,
         prey_type = "static",
         render_mode = None
     ),
@@ -41,7 +42,7 @@ CONFIG = dict(
 def test_independent_algo():
     from ray.rllib.algorithms.ppo import PPOConfig
     config = CONFIG.copy()
-    env_creator = lambda cfg: ParallelPettingZooEnv(discrete_pp_v1(**cfg))
+    env_creator = lambda cfg: ParallelPettingZooEnv(wolfpack_discrete(**cfg))
     register_env(config['env_name'], lambda config: env_creator(config))
     env = env_creator(config['env_config'])
     algo_config = (
@@ -92,43 +93,6 @@ def test_independent_algo():
     env.close()
 
 class MyCallbacks(DefaultCallbacks):
-    def on_episode_start(
-        self,
-        *,
-        worker: RolloutWorker,
-        base_env: BaseEnv,
-        policies: Dict[str, Policy],
-        episode: Episode,
-        env_index: int,
-        **kwargs,
-    ):
-        # Make sure this episode has just been started (only initial obs
-        # logged so far).
-        episode.user_data["assists"] = 0
-        episode.user_data["kills"] = 0
-        episode.user_data["assists_by_id"] = []
-        episode.user_data["kills_by_id"] = []
-
-    def on_episode_step(
-        self,
-        *,
-        worker: RolloutWorker,
-        base_env: BaseEnv,
-        policies: Dict[str, Policy],
-        episode: Episode,
-        env_index: int,
-        **kwargs,
-    ):
-        # Make sure this episode is ongoing.
-        assert episode.length > 0, (
-            "ERROR: `on_episode_step()` callback should not be called right "
-            "after env reset!"
-        )
-        episode.user_data['assists'] = episode._last_infos['__common__']['assists']
-        episode.user_data['kills'] = episode._last_infos['__common__']['kills']
-        episode.user_data['assists_by_id'] = episode._last_infos['__common__']['assists_by_id']
-        episode.user_data['kills_by_id'] = episode._last_infos['__common__']['kills_by_id']
-
     def on_episode_end(
         self,
         *,
@@ -139,12 +103,15 @@ class MyCallbacks(DefaultCallbacks):
         env_index: int,
         **kwargs,
     ):
-        episode.custom_metrics["assists"] = episode.user_data['assists'] 
-        episode.custom_metrics["kills"] = episode.user_data['kills'] 
-        for agent_id, val in episode.user_data['assists_by_id'].items():
-            episode.custom_metrics[f'{agent_id}_assists'] = val
-        for agent_id, val in episode.user_data['kills_by_id'].items():
-            episode.custom_metrics[f'{agent_id}_kills'] = val
+        env = episode.worker.env.par_env 
+        episode.custom_metrics['rewards'] = env._game_history['total_rewards'].sum()
+        episode.custom_metrics['kills'] = env._game_history['total_kills'].sum()
+        episode.custom_metrics['assists'] = env._game_history['total_assists'].sum()
+        for agent_id in env.possible_agents:
+            episode.custom_metrics[f'{agent_id}_rewards'] = env._game_history[f"{agent_id}_rewards"].sum()
+            episode.custom_metrics[f'{agent_id}_kills'] = env._game_history[f"{agent_id}_kills"].sum()
+            episode.custom_metrics[f'{agent_id}_assists'] = env._game_history[f"{agent_id}_assists"].sum()
+
 
     def on_train_result(self, *, algorithm, result: dict, **kwargs):
         # you can mutate the result dict to add new fields to return
@@ -152,7 +119,7 @@ class MyCallbacks(DefaultCallbacks):
 
 def test_shared_algo():
     config = CONFIG.copy()
-    env_creator = lambda cfg: ParallelPettingZooEnv(discrete_pp_v1(**cfg))
+    env_creator = lambda cfg: ParallelPettingZooEnv(wolfpack_discrete(**cfg))
     register_env(config['env_name'], lambda config: env_creator(config))
     env = env_creator(config['env_config'])
     algo_config = (
@@ -179,27 +146,29 @@ def test_shared_algo():
             },
             policy_mapping_fn=(lambda agent_id, *args, **kwargs: "shared_policy"),
         )
+        .evaluation(evaluation_duration=20)
         .rl_module(_enable_rl_module_api=True)
     )
     algo = algo_config.build()
     
     ## Test single step 
-    # env = algo.workers.local_worker().env.par_env
-    # # observations, infos = env.reset() 
-    # steps = 0
-    # while env.agents:
-    #     steps +=1 
-    #     actions = {agent:algo.get_policy('shared_policy').compute_single_action(observations[agent])[0] \
-    #            for agent in env.agents}
-    #     # actions = {agent: env.action_space(agent).sample() for agent in env.agents}
-    #     observations, rewards, terminations, truncations, infos = env.step(actions)
-    #     msg = f"""step: {steps}\n {print([(k, f"{v:.2f}") for k,v in rewards.items()])}"""
+    env = algo.workers.local_worker().env.par_env
+    observations, infos = env.reset() 
+    steps = 0
+    while env.agents:
+        steps +=1 
+        actions = {agent:algo.get_policy('shared_policy').compute_single_action(observations[agent])[0] \
+               for agent in env.agents}
+        # actions = {agent: env.action_space(agent).sample() for agent in env.agents}
+        observations, rewards, terminations, truncations, infos = env.step(actions)
+        msg = f"""step: {steps}\n {print([(k, f"{v:.2f}") for k,v in rewards.items()])}"""
     #     print(msg)
     # #     break
     # env.close()
 
     ## Test train
     results = algo.train()
+    results = algo.evaluate()
     print(results)
 
 from ray.rllib.models import ModelCatalog
@@ -278,6 +247,9 @@ def test_centralized_algo():
                 )   for agent_id in env.par_env.possible_agents
             },
             policy_mapping_fn=(lambda agent_id, *args, **kwargs: agent_id),
+        )
+        .evaluation(
+            evaluation_duration=20,
         )
         .rl_module(_enable_rl_module_api=False)
     )

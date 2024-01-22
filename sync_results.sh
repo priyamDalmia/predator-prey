@@ -1,1 +1,1 @@
-rsync -av spartan:~/project/dalmiapriyam/predator-prey/experiments/results/* experiments/results
+rsync -av spartan:~/project/dalmiapriyam/predator-prey/results/* ./results

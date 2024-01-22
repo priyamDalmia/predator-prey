@@ -13,6 +13,14 @@ from statsmodels.tsa.stattools import grangercausalitytests
 os.environ["CUDA_VISIBLE_DEVICES"] = "-1"
 plot = False 
 
+def get_mutual_information(X, Y, bins=10):
+    return None 
+
+def get_transfer_entropy(X, Y, bins=10):
+    return None
+
+def get_correlation(X, Y):
+    return None
 
 def get_granger_linear(X, Y, lag):
     data = np.array([X, Y]).T.astype(np.float64)
