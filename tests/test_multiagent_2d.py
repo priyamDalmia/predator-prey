@@ -1,5 +1,6 @@
 from unittest import result
 from environments.discrete_pp_v2 import discrete_pp_v2
+from environments.wolfpack_discrete import wolfpack_discrete
 from ray.rllib.env import ParallelPettingZooEnv
 from ray.tune.registry import register_env
 from ray.rllib.algorithms.ppo import PPOConfig
@@ -27,7 +28,7 @@ CONFIG = dict(
 ) 
 
 config = CONFIG.copy()
-env_creator = lambda cfg: ParallelPettingZooEnv(discrete_pp_v2(**cfg))
+env_creator = lambda cfg: ParallelPettingZooEnv(wolfpack_discrete(**cfg))
 register_env(config['env_name'], lambda config: env_creator(config))
 env = env_creator(config['env_config'])
 algo_config = (

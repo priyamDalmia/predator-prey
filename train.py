@@ -21,6 +21,7 @@ from ray.tune.registry import register_env
 from ray.rllib.env import ParallelPettingZooEnv
 from algorithms.base_model import PPOModel
 from analyze import get_analysis_df, perform_causal_analysis
+from environments.wolfpack_discrete import wolfpack_discrete
 from environments.discrete_pp_v1 import discrete_pp_v1
 from environments.discrete_pp_v2 import discrete_pp_v2
 from ray.rllib.algorithms.ppo import PPOConfig
@@ -42,7 +43,7 @@ from analyze import (
 )
 
 warnings.filterwarnings("ignore")
-env_creator = lambda config: ParallelPettingZooEnv(discrete_pp_v1(**config))
+env_creator = lambda config: ParallelPettingZooEnv(wolfpack_discrete(**config))
 
 
 # init the env and the algo
@@ -85,6 +86,7 @@ def create_algo(config):
             .rl_module(_enable_rl_module_api=False)
             .reporting(keep_per_episode_custom_metrics=False)
             .offline_data(output=None)
+            .evaluation(evaluation_duration=500)
             .debugging(
                 logger_config={
                     # Use the tune.logger.NoopLogger class for no logging.
@@ -123,6 +125,7 @@ def create_algo(config):
             .rl_module(_enable_rl_module_api=False)
             .reporting(keep_per_episode_custom_metrics=False)
             .offline_data(output=None)
+            .evaluation(evaluation_duration=500)
             .debugging(
                 logger_config={
                     # Use the tune.logger.NoopLogger class for no logging.
@@ -174,6 +177,7 @@ def create_algo(config):
             )
             .rl_module(_enable_rl_module_api=False)
             .offline_data(output=None)
+            .evaluation(evaluation_duration=500)
             .debugging(
                 logger_config={
                     # Use the tune.logger.NoopLogger class for no logging.
@@ -190,47 +194,6 @@ def create_algo(config):
 
 
 class episodeMetrics(DefaultCallbacks):
-    def on_episode_start(
-        self,
-        *,
-        worker: RolloutWorker,
-        base_env: BaseEnv,
-        policies: Dict[str, Policy],
-        episode: Episode,
-        env_index: int,
-        **kwargs,
-    ):
-        # Make sure this episode has just been started (only initial obs
-        # logged so far).
-        episode.user_data["assists"] = 0
-        episode.user_data["kills"] = 0
-        episode.user_data["assists_by_id"] = []
-        episode.user_data["kills_by_id"] = []
-
-    def on_episode_step(
-        self,
-        *,
-        worker: RolloutWorker,
-        base_env: BaseEnv,
-        policies: Dict[str, Policy],
-        episode: Episode,
-        env_index: int,
-        **kwargs,
-    ):
-        # Make sure this episode is ongoing.
-        assert episode.length > 0, (
-            "ERROR: `on_episode_step()` callback should not be called right "
-            "after env reset!"
-        )
-        episode.user_data["assists"] = episode._last_infos["__common__"]["assists"]
-        episode.user_data["kills"] = episode._last_infos["__common__"]["kills"]
-        episode.user_data["assists_by_id"] = episode._last_infos["__common__"][
-            "assists_by_id"
-        ]
-        episode.user_data["kills_by_id"] = episode._last_infos["__common__"][
-            "kills_by_id"
-        ]
-
     def on_episode_end(
         self,
         *,
@@ -241,13 +204,19 @@ class episodeMetrics(DefaultCallbacks):
         env_index: int,
         **kwargs,
     ):
-        episode.custom_metrics["assists"] = episode.user_data["assists"]
-        episode.custom_metrics["kills"] = episode.user_data["kills"]
-        for agent_id, val in episode.user_data["assists_by_id"].items():
-            episode.custom_metrics[f"{agent_id}_assists"] = val
-        for agent_id, val in episode.user_data["kills_by_id"].items():
-            episode.custom_metrics[f"{agent_id}_kills"] = val
+        env = episode.worker.env.par_env 
+        episode.custom_metrics['rewards'] = env._game_history['total_rewards'].sum()
+        episode.custom_metrics['kills'] = env._game_history['total_kills'].sum()
+        episode.custom_metrics['assists'] = env._game_history['total_assists'].sum()
+        for agent_id in env.possible_agents:
+            episode.custom_metrics[f'{agent_id}_rewards'] = env._game_history[f"{agent_id}_rewards"].sum()
+            episode.custom_metrics[f'{agent_id}_kills'] = env._game_history[f"{agent_id}_kills"].sum()
+            episode.custom_metrics[f'{agent_id}_assists'] = env._game_history[f"{agent_id}_assists"].sum()
 
+
+    def on_train_result(self, *, algorithm, result: dict, **kwargs):
+        # you can mutate the result dict to add new fields to return
+        result["callback_ok"] = True
 
 # define the Trainable
 def train_algo(config):
@@ -307,6 +276,7 @@ def train_algo(config):
                 eval_results = algo.evaluate()["evaluation"]
                 wandb.summary.update(
                     dict(
+                        eval_episodes=eval_results['episodes_this_iter'],
                         eval_reward=eval_results["episode_reward_mean"],
                         eval_episode_len=eval_results["episode_len_mean"],
                         eval_assists=eval_results["custom_metrics"]["assists_mean"],
@@ -395,11 +365,11 @@ def main():
     
     if config["tune"]["tune"]:
         # SET HYPERPARAMETERS for TUNING
-        config["env_config"]["step_penalty"] = tune.grid_search([0.0, -0.01, -0.03])
-        config["algorithm_type"] = tune.grid_search(
-            ["independent", "shared", "centralized"]
-        )
-        config["env_config"]["reward_type"] = tune.grid_search(["type_1", "type_2", "type_3"])
+        config["env_config"]["map_size"] = tune.grid_search([15, 20])
+        # config["algorithm_type"] = tune.grid_search(
+        #     ["independent", "shared", "centralized"]
+        # )
+        # config["env_config"]["reward_type"] = tune.grid_search(["type_1", "type_2", "type_3"])
     
     storage_path = str(Path("./experiments").absolute())
     tuner = tune.Tuner(
@@ -506,8 +476,9 @@ if __name__ == "__main__":
 
     # results = algo.train()
     # print(results)
-    # # print(f"evaluating {algo} \n\n")
-    # # results = algo.evaluate()
+    # print(f"evaluating {algo} \n\n")
+    # results = algo.evaluate()
+    # print(results)
     # # create the two tables and store
     # if config["analysis"]["analysis"]:
     #     for policy_i in config["analysis"]["policy_set"]:
