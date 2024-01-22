@@ -3,8 +3,8 @@ algorithm_class: "ppo"
 framework: "torch"
 tune:
    tune: true # if true, tune hyperparameters in main!
-   num_samples: 2
-   max_episodes: 250
+   num_samples: 5
+   max_episodes: 50000
    max_concurrent_trials: 6
 analysis:
    num_trials: 10
@@ -44,8 +44,8 @@ rollouts:
    num_rollout_workers: 0
    batch_mode: "complete_episodes"
 wandb: 
-   wandb_init: false
-   wandb_project: "final"
+   wandb_init: true
+   wandb_project: "wolf_1"
    wandb_entity: "tpn"
    wandb_notes: "final training results"
    wandb_log_freq: 50
