@@ -13,7 +13,6 @@ from matplotlib.pylab import f
 import pandas as pd
 import numpy as np
 from sklearn.utils import resample
-from sympy import N, O, per
 from itertools import product
 
 from wandb import agent
@@ -55,6 +54,8 @@ CONFIG = dict(
         npred=2,
         nprey=6,
         pred_vision=6,
+        reward_lone = 1.0,
+        reward_team = 1.5,
     ),
     ccm_E=5,
     gc_lag=5,
@@ -388,13 +389,14 @@ def analyze_fixed_strategies(config, results):
         grouped_dfs.append(df2) 
         eval_dfs = pd.concat([
             eval_dfs,
-            pd.DataFrame([dict(name=policy_set,**dict(eval_df.mean()))])
-                ]) if eval_dfs is not None else pd.DataFrame([dict(name=policy_set,**dict(eval_df.mean()))])
+            pd.DataFrame([dict(name=policy_set,**dict(eval_df.mean(1)))])
+                ]) if eval_dfs is not None else pd.DataFrame([dict(name=policy_set,**dict(eval_df.mean(1)))])
     
     eval_dfs.set_index('name', inplace=True)
-    filename = f"{config['env_config']['map_size']}r_{config['env_config']['reward_type']}_s_{config['env_config']['step_penalty']}_v_{config['env_config']['pred_vision']}.txt"
+    config = config['env_config']
+    filename = f"FA_{config['map_size']}r_{config['reward_lone']}.{config['reward_team']}_s_{config['pred_vision']}.txt"
     with open(f"./results/{filename}", "w") as f:
-        f.write(f"""EVALUATION: ENV = {config['env_config']}\n""")
+        f.write(f"""EVALUATION: ENV = {config}\n""")
         f.write(eval_dfs.to_string())
         f.write("\n\n")
         for df in grouped_dfs:

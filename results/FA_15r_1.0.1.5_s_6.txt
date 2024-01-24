@@ -1,0 +1,96 @@
+EVALUATION: ENV = {'map_size': 15, 'npred': 2, 'nprey': 6, 'pred_vision': 6, 'reward_lone': 1.0, 'reward_team': 1.5}
+                 episode_length   rewards    kills   assists  predator_0_kills  predator_1_kills  predator_0_assists  predator_1_assists  predator_0_rewards  predator_1_rewards
+name                                                                                                                                                                            
+chaser_follower       81.779762  8.032738  4.39881  2.422619          3.839286          0.559524            0.369048            2.053571            4.392857            3.639881
+
+                                                                 400        1000
+mode            agent_a    agent_b    test        dimension                     
+chaser_follower predator_0 predator_1 F-p         dx             0.00       0.00
+                                                  dy             0.00       0.00
+                                                  x              0.00       0.00
+                                                  y              0.00       0.00
+                                      F-statistic dx            58.98     128.42
+                                                  dy            23.60      41.92
+                                                  x             16.22      25.03
+                                                  y              6.84       7.75
+                                      arima_cohen dx             0.24       0.21
+                                                  dy             0.08       0.04
+                                                  x              0.12       0.05
+                                                  y              0.02       0.01
+                                      arima_pval  dx             0.00       0.00
+                                                  dy             0.00       0.05
+                                                  x              0.00       0.00
+                                                  y              0.67       0.89
+                                      arima_stat  dx         68852.00  385841.50
+                                                  dy         57897.00  302501.00
+                                                  x          67427.00  325814.00
+                                                  y          44059.00  257059.00
+                                      ccm_1       dx             0.00       0.00
+                                                  dy             0.00       0.00
+                                                  x              0.00       0.00
+                                                  y              0.00       0.00
+                                      ccm_pval    dx             0.00       0.00
+                                                  dy             0.00       0.00
+                                                  x              0.00       0.00
+                                                  y              0.00       0.00
+                                      ccm_score   dx             0.39       0.35
+                                                  dy             0.37       0.31
+                                                  x              0.89       0.85
+                                                  y              0.86       0.71
+                                      chi-p       dx             0.00       0.00
+                                                  dy             0.00       0.00
+                                                  x              0.00       0.00
+                                                  y              0.00       0.00
+                                      chi2        dx           302.40     648.89
+                                                  dy           121.03     211.83
+                                                  x             83.17     126.48
+                                                  y             35.07      39.18
+                                      correlation dx             0.27       0.18
+                                                  dy             0.36       0.29
+                                                  x              0.86       0.84
+                                                  y              0.82       0.64
+                predator_1 predator_0 F-p         dx             0.10       0.29
+                                                  dy             0.49       0.41
+                                                  x              0.23       0.24
+                                                  y              0.64       0.48
+                                      F-statistic dx             1.94       1.30
+                                                  dy             1.00       1.02
+                                                  x              1.54       1.34
+                                                  y              0.68       1.03
+                                      arima_cohen dx             0.00       0.02
+                                                  dy             0.01       0.01
+                                                  x              0.01       0.01
+                                                  y              0.01       0.00
+                                      arima_pval  dx             0.43       0.00
+                                                  dy             0.49       0.45
+                                                  x              0.30       0.65
+                                                  y              0.95       0.57
+                                      arima_stat  dx         48792.50  314429.00
+                                                  dy         49000.00  285965.00
+                                                  x          49685.00  261026.00
+                                                  y          43846.50  271138.50
+                                      ccm_1       dx             0.00       0.00
+                                                  dy             0.00       0.00
+                                                  x              0.00       0.00
+                                                  y              0.00       0.00
+                                      ccm_pval    dx             0.00       0.00
+                                                  dy             0.00       0.00
+                                                  x              0.00       0.00
+                                                  y              0.00       0.00
+                                      ccm_score   dx             0.66       0.63
+                                                  dy             0.63       0.55
+                                                  x              0.88       0.86
+                                                  y              0.88       0.70
+                                      chi-p       dx             0.09       0.28
+                                                  dy             0.48       0.40
+                                                  x              0.22       0.24
+                                                  y              0.63       0.47
+                                      chi2        dx             9.95       6.56
+                                                  dy             5.15       5.18
+                                                  x              7.89       6.79
+                                                  y              3.48       5.20
+                                      correlation dx             0.27       0.18
+                                                  dy             0.36       0.29
+                                                  x              0.86       0.84
+                                                  y              0.82       0.64
+
