@@ -19,6 +19,7 @@ from itertools import product
 from wandb import agent
 from environments.discrete_pp_v1 import ChaserAgent, FollowerAgent, discrete_pp_v1
 from environments.discrete_pp_v1 import FixedSwingAgent
+from environments.wolfpack_discrete import wolfpack_discrete
 from causal_ccm.causal_ccm import ccm
 from sklearn.decomposition import PCA
 import warnings
@@ -41,30 +42,24 @@ _agent_type_dict = {
     "follower": FollowerAgent,
     "fixed": FixedSwingAgent,
 }
-POLICY_SETS = ["chaser_follower", "fixed_follower", "chaser_fixed",
-               "chaser_chaser", "follower_chaser", "fixed_chaser"]
+POLICY_SETS = ["chaser_follower",] # "fixed_follower", "chaser_fixed",
+            #    "chaser_chaser", "follower_chaser", "fixed_chaser"]
 CONFIG = dict(
     policy_name=None,  # if none specficied, cycle through all in POLICY_SETS
     policy_mapping_fn=None,  # f none specified, will try to infer from policy name
     is_recurrent=False,
-    length_fac=1000,
-    dimensions=["x", "y", "dx", "dy", "PCA_1", "PCA_2", "PCA_3"],
+    length_fac=200,
+    dimensions=["x", "y", "dx", "dy"],
     env_config=dict(
         map_size=15,
         npred=2,
         nprey=6,
         pred_vision=6,
-        reward_type="type_2",
-        prey_type="static",
-        step_penalty=0.01,
     ),
-    ccm_tau=1,
-    ccm_E=4,
-    gc_lag=10,
-    pref_ccm_analysis=True,
-    pref_granger_analysis=True,
-    pref_spatial_ccm_analysis=False,
-    pref_graph_analysis=False,
+    ccm_E=5,
+    gc_lag=5,
+    perform_ccm=True,
+    perform_granger_linear=True,
 )
 
 CAUSAL_PAIRS = [("predator_0", "predator_1"), ("predator_1", "predator_0")]
@@ -81,34 +76,43 @@ class AlgoModel:
         return self.model.compute_single_action(obs, explore)
 
 
-def get_ccm_score(X, Y, lag) -> list[tuple[str, float]]:
-    """
-    return ccm coorelation and p-value
-    """
+# TIME SERIES ANALYSIS
+def get_correlation(X, Y):
+    return [("correlation", round(np.corrcoef(X, Y)[0][1],4))]
+
+def get_ccm(X, Y, lag):
     E = lag
     tau = 1
     corr, pval = ccm(list(X), list(Y), tau=tau, E=E).causality()
     if pd.isna(corr):
         corr = 0.0
         pval = -1.0
-    return [("ccm_score", round(corr, 3)),  ("ccm_pval", round(pval, 3))]
+    return [("ccm_score", round(corr, 4)),  ("ccm_pval", round(pval, 4))]
 
+
+# Returns the results from fitting an OLS model to the data 
 def get_granger_linear(X, Y, lag):
-    data = np.array([X, Y]).T.astype(np.float64)
-    results = grangercausalitytests(data, maxlag=[lag])
-    ssr_ftest = results[lag][0]["ssr_ftest"]
-    chi_test = results[lag][0]["ssr_chi2test"]
-    return [("F-statistic", ssr_ftest[0]), ("p-value", ssr_ftest[1]),
-            ("chi2", chi_test[0]), ("p-value", chi_test[1])]
+    try:
+        data = np.array([X, Y]).T.astype(np.float64)
+        results = grangercausalitytests(data, maxlag=[lag], verbose=False)
+        ssr_ftest = results[lag][0]["ssr_ftest"]
+        chi_test = results[lag][0]["ssr_chi2test"]
+        return [
+        ("F-statistic", ssr_ftest[0]),
+        ("F-p", ssr_ftest[1]),
+        ("chi2", chi_test[0]),
+        ("chi-p", chi_test[1]),
+    ]
+    except:
+        return []
 
 
 def get_granger_arima(X, Y, lag):
     data = np.array([X, Y]).T.astype(np.float64)
-    results = nonlincausalityARIMA(
-        x=data, 
-        maxlag=[lag],
-        x_test=data)
-
+    try:
+        results = nonlincausalityARIMA(x=data, maxlag=[lag], x_test=data, plot=False)
+    except: 
+        return []
     p_value = results[lag].p_value
     test_statistic = results[lag]._test_statistic
 
@@ -157,19 +161,13 @@ def get_granger_mlp(X, Y, lag):
         ("mlp_cohen", cohens_d),
     ]
 
-def get_episode_record(env, policy_mapping_fn, is_recurrent):
+def play_episode(env, policy_mapping_fn, is_recurrent):
     explore = False
     if explore:
         warnings.warn("Exploration is on!")
     # create a data frame to store the data for
     # agents A and agent B
-    col_names = [
-        ["predator_0", "predator_1"],
-        ["x", "y", "dx", "dy", "done", "reward", "action"],
-    ]
-    col_index = pd.MultiIndex.from_product(col_names, names=["agent_id", "dimension"])
-    episode_record = pd.DataFrame([], columns=col_index)
-    metadata = dict()
+
     step = 0
     obs, info = env.reset()
     center = env.state().shape[0] // 2
@@ -203,82 +201,58 @@ def get_episode_record(env, policy_mapping_fn, is_recurrent):
                 )[0]
 
         obs, rewards, terminated, truncated, infos = env.step(actions)
-        for agent_id in env.agents:
-            episode_record.loc[step, (agent_id, "x")] = env._predators[
-                agent_id
-            ].position[0]
-            episode_record.loc[step, (agent_id, "y")] = env._predators[
-                agent_id
-            ].position[1]
-            episode_record.loc[step, (agent_id, "dx")] = 0
-            episode_record.loc[step, (agent_id, "dy")] = 0
-            episode_record.loc[step, (agent_id, "done")] = int(terminated[agent_id])
-            episode_record.loc[step, (agent_id, "reward")] = rewards[agent_id]
-            episode_record.loc[step, (agent_id, "action")] = actions[agent_id]
-            episode_record.loc[step, (agent_id, "PCA")] = 0.0
-        # os.system("clear")
-        # print(env.render())
-        # time.sleep(0.2)
         step += 1
         if is_recurrent:
             last_actions = actions
             last_rewards = rewards
+    
+    return env._game_history[:env._game_step - 1]
 
-    for agent_id in env.possible_agents:
-        episode_record.loc[:, (agent_id, "dx")] = (
-            episode_record.loc[:, (agent_id, "x")].diff().fillna(0)
-        )
-        episode_record.loc[:, (agent_id, "dy")] = (
-            episode_record.loc[:, (agent_id, "y")].diff().fillna(0)
-        )
 
-        xy_data = episode_record.loc[:, (agent_id, ["dx", "dy"])].to_numpy()
-        episode_record.loc[:, (agent_id, "PCA_1")] = (
+def transform_epsiode_history(agents, episode_history):
+    col_list = ["x", "y", "action", "dx", "dy", "PCA_1", "PCA_2"]
+    selected_data = None  
+    for agent_id in agents:
+        episode_history[f'{agent_id}_x'] =\
+              episode_history[f'{agent_id}_position'].apply(eval).apply(lambda x: x[0]).astype(int)
+        episode_history[f'{agent_id}_y'] =\
+              episode_history[f'{agent_id}_position'].apply(eval).apply(lambda x: x[1]).astype(int)
+        episode_history[f'{agent_id}_dx'] =\
+              episode_history[f'{agent_id}_x'].diff(-1).fillna(0)
+        episode_history[f'{agent_id}_dy'] =\
+              episode_history[f'{agent_id}_y'].diff(-1).fillna(0)
+        
+        xy_data = episode_history.loc[:, [f"{agent_id}_x", f"{agent_id}_y"]].to_numpy()
+        episode_history[f'{agent_id}_PCA_1'] = (
             PCA(n_components=1).fit_transform(xy_data).flatten()
         )
 
-        xy_data = episode_record.loc[:, (agent_id, ["dx", "dy", "action"])].to_numpy()
-        episode_record.loc[:, (agent_id, "PCA_2")] = (
+        xy_data = episode_history.loc[:, [f"{agent_id}_x", f"{agent_id}_y", f"{agent_id}_action"]].to_numpy()
+        episode_history[f'{agent_id}_PCA_2'] = (
             PCA(n_components=1).fit_transform(xy_data).flatten()
         )
-
-        # noramlize x and y from center
-        episode_record.loc[:, (agent_id, "x")] = episode_record.loc[
-            :, (agent_id, "x")
-        ].apply(lambda x: (x - center) / (2 * center))
-
-        episode_record.loc[:, (agent_id, "y")] = episode_record.loc[
-            :, (agent_id, "y")
-        ].apply(lambda x: (x - center) / (2 * center))
-
-        xy_data = episode_record.loc[:, (agent_id, ["x", "y"])].to_numpy()
-        episode_record.loc[:, (agent_id, "PCA_3")] = (
-            PCA(n_components=1).fit_transform(xy_data).flatten()
-        )
-
-    metadata["episode_len"] = step
-    metadata["episode_reward"] = sum(env._rewards_sum.values())
-    metadata["assists"] = env._assists
-    metadata["kills"] = env._kills
-    metadata.update(
-        {
-            f"{agent_id}_assists": env._assists_by_id[agent_id]
-            for agent_id in env.possible_agents
-        }
+        if selected_data is None:
+            selected_data = episode_history.loc[:, [f"{agent_id}_{c}" for c in col_list]]
+        else:
+            selected_data = pd.concat([
+                selected_data,
+                episode_history.loc[:, [f"{agent_id}_{c}" for c in col_list]]
+            ], axis=1)
+    
+    selected_data['step'] = selected_data.index
+    metadata = dict(
+        episode_length = len(selected_data),
+        rewards = episode_history['total_rewards'].sum(),
+        kills = episode_history['total_kills'].sum(),
+        assists = episode_history['total_assists'].sum(),
+        predator_0_kills = episode_history['predator_0_kills'].sum(),
+        predator_1_kills = episode_history['predator_1_kills'].sum(),
+        predator_0_assists = episode_history['predator_0_assists'].sum(),
+        predator_1_assists = episode_history['predator_1_assists'].sum(),
+        predator_0_rewards = episode_history['predator_0_rewards'].sum(),
+        predator_1_rewards = episode_history['predator_1_rewards'].sum(),
     )
-    metadata.update(
-        {
-            f"{agent_id}_kills": env._kills_by_id[agent_id]
-            for agent_id in env.possible_agents
-        }
-    )
-    metadata.update(
-        {
-            f"{agent_id}_reward": env._rewards_sum[agent_id]
-            for agent_id in env.possible_agents
-        }
-    )
-    return episode_record, metadata
+    return selected_data, metadata
 
 
 def analyze_task(
@@ -289,49 +263,46 @@ def analyze_task(
     is_recurrent,
     dimensions,
     length_fac,
-    ccm_tau,
     ccm_E,
     gc_lag,
-    pref_ccm_analysis=False,
-    pref_granger_analysis=False,
-    pref_spatial_ccm_analysis=False,
-    pref_graph_analysis=False,
+    perform_ccm=False,
+    perform_granger_linear=False,
 ):
     analysis_results = []
-    rolled_out_env_steps = pd.DataFrame([])
-    eval_stats = None
-    for i in [i * length_fac for i in [2, 5, 10]]:
+    collected_data = pd.DataFrame()
+    performance_metrics = []
+    num_episodes = 0
+    for i in [i * length_fac for i in [2, 5]]:
         # 1. Generate epsiode data
-        while len(rolled_out_env_steps) <= int(i):
-            episode_record, metadata = get_episode_record(
-                env, policy_mapping_fn, is_recurrent
-            )
-            rolled_out_env_steps = (
-                pd.concat([rolled_out_env_steps, episode_record], axis=0)
-                if len(rolled_out_env_steps) > 0
-                else episode_record
-            )
-            rolled_out_env_steps.reset_index(drop=True, inplace=False)
-            metadata = pd.DataFrame([metadata])
-            eval_stats = (
-                metadata
-                if eval_stats is None
-                else pd.concat([eval_stats, metadata], axis=0).reset_index(drop=True)
-            )
-        # 2. For each fragment length, do causal analysis
+        while len(collected_data) <= int(i):
+            episode_data = play_episode(env, policy_mapping_fn, is_recurrent)
+            transformed_data, metadata = transform_epsiode_history(env.possible_agents, episode_data)
+            performance_metrics.append(metadata)
+            transformed_data['episode_num'] = num_episodes
+            num_episodes += 1
+            if len(collected_data) == 0:
+                collected_data = transformed_data
+            else:
+                collected_data = pd.concat([collected_data, transformed_data])
+                collected_data.reset_index(inplace=True, drop=True)
+        
+        # 1. For each fragment length, do causal analysis
         for pair in CAUSAL_PAIRS:
             for dim in dimensions:
-                X: pd.Series = rolled_out_env_steps.loc[:, (pair[0], dim)]
-                Y: pd.Series = rolled_out_env_steps.loc[:, (pair[1], dim)]
+                X: pd.Series = collected_data.loc[:, f"{pair[0]}_{dim}"]
+                Y: pd.Series = collected_data.loc[:, f"{pair[1]}_{dim}"]
 
-                # CCM analysis
-                print(
-                    f"{i}-{policy_name}: CCM analysis for {pair[0]} and {pair[1]} in {dim} dimension; len(X)={len(X)})"
-                )
-                if pref_ccm_analysis:
-                    results = get_ccm_score(X, Y, ccm_E)
-                    for result in results:
-                        analysis_results.append(
+                results = list()
+                results.extend(get_correlation(X, Y))
+                if perform_ccm:
+                    results.extend(get_ccm(X, Y, ccm_E))
+                
+                if perform_granger_linear:
+                    results.extend(get_granger_linear(Y, X, gc_lag))
+                    results.extend(get_granger_arima(Y, X, gc_lag))
+
+                for result in results:
+                    analysis_results.append(
                             [
                                 (trial_id, policy_name, *pair, result[0], dim),
                                 i,
@@ -339,40 +310,8 @@ def analyze_task(
                             ]
                         )
 
-                # Granger analysis
-                if pref_granger_analysis:
-                    results = get_granger_linear(X, Y, gc_lag)
-                    for result in results:
-                        analysis_results.append(
-                            [
-                                (trial_id, policy_name, *pair, result[0], dim),
-                                i,
-                                result[1],
-                            ]
-                        )
-
-
-                    results = get_granger_arima(X, Y, gc_lag)
-                    for result in results:
-                        analysis_results.append(
-                            [
-                                (trial_id, policy_name, *pair, result[0], dim),
-                                i,
-                                result[1],
-                            ]
-                        )
-
-                    results = get_granger_mlp(X, Y, gc_lag)
-                    for result in results:
-                        analysis_results.append(
-                            [
-                                (trial_id, policy_name, *pair, result[0], dim),
-                                i,
-                                result[1],
-                            ]
-                        )     
-
-    return analysis_results, eval_stats
+    performance_metrics = pd.DataFrame(performance_metrics).mean()
+    return analysis_results, performance_metrics
 
 
 @ray.remote
@@ -391,7 +330,7 @@ def get_analysis_df(policy_sets: list, dimensions: list, length_fac: int = 100):
     _df_index = pd.MultiIndex.from_tuples(
         _df_data, names=["run_id", "mode", "agent_a", "agent_b", "test", "dimension"]
     )
-    traj_length = [i * length_fac for i in [2, 5, 10]]
+    traj_length = [i * length_fac for i in [2, 5]]
     analysis_df = pd.DataFrame(index=_df_index, columns=traj_length).fillna(0.0)
     return analysis_df
 
@@ -417,20 +356,20 @@ def perform_causal_analysis(
         eval_df = (
             eval_results
             if eval_df is None
-            else pd.concat([eval_results, eval_df], axis=0)
+            else pd.concat([eval_results, eval_df], axis=1)
         )
     return analysis_df, eval_df
 
-@ray.remote
-def print_eval_scores(name, env, policy_mapping_fn, is_recurrent):
-    is_recurrent = False
-    eval_stats = [] 
-    for i in range(500):
-        eval_stats.append(get_episode_record(env, policy_mapping_fn, is_recurrent)[1])
+# @ray.remote
+# def print_eval_scores(name, env, policy_mapping_fn, is_recurrent):
+#     is_recurrent = False
+#     eval_stats = [] 
+#     for i in range(500):
+#         eval_stats.append(get_episode_record(env, policy_mapping_fn, is_recurrent)[1])
     
-    eval_df = pd.DataFrame(eval_stats)
-    desc_str = f"{name} with env:\n{env.metadata}"
-    return desc_str, pd.concat([eval_df.mean(), eval_df.std()], axis=1)
+#     eval_df = pd.DataFrame(eval_stats)
+#     desc_str = f"{name} with env:\n{env.metadata}"
+#     return desc_str, pd.concat([eval_df.mean(), eval_df.std()], axis=1)
     
 def analyze_fixed_strategies(config, results):
     grouped_dfs = []
@@ -464,7 +403,7 @@ def analyze_fixed_strategies(config, results):
 
 if __name__ == "__main__":
     config_dict = CONFIG.copy()
-    env = discrete_pp_v1(**config_dict["env_config"])
+    env = wolfpack_discrete(**config_dict["env_config"])
     anaylze_agents = True 
     evaluate_agents = True
     eval_list = ['chaser_follower', 'fixed_follower', 'chaser_fixed']
@@ -477,8 +416,8 @@ if __name__ == "__main__":
                 for i, agent_class in enumerate(policy_name.split("_"))
             }
             analysis_df, eval_df = perform_causal_analysis(
-                num_trials=3,
-                use_ray=True,
+                num_trials=2,
+                use_ray=False,
                 analysis_df=get_analysis_df(
                     [policy_name], config_dict["dimensions"], config_dict["length_fac"]
                 ),
@@ -488,20 +427,17 @@ if __name__ == "__main__":
                 is_recurrent=config_dict["is_recurrent"],
                 dimensions=config_dict["dimensions"],
                 length_fac=config_dict["length_fac"],
-                ccm_tau=config_dict["ccm_tau"],
                 ccm_E=config_dict["ccm_E"],
                 gc_lag=config_dict["gc_lag"],
-                pref_ccm_analysis=config_dict["pref_ccm_analysis"],
-                pref_granger_analysis=config_dict["pref_granger_analysis"],
-                pref_spatial_ccm_analysis=config_dict["pref_spatial_ccm_analysis"],
-                pref_graph_analysis=config_dict["pref_graph_analysis"],
+                perform_ccm=config_dict['perform_ccm'],
+                perform_granger_linear=config_dict['perform_granger_linear'],
             )
             print(
                 f"Time taken for {policy_name}: {(time.time() - start_time)/60:.2f} minutes"
             )
             analysis_df.metadata = env.metadata
-            analysis_df.to_csv(f"./experiments/results/{policy_name}_analysis.csv")
-            eval_df.to_csv(f"./experiments/results/{policy_name}_eval.csv")
+            analysis_df.to_csv(f"./results/{policy_name}_analysis.csv")
+            eval_df.to_csv(f"./results/{policy_name}_eval.csv")
             results.append((policy_name, analysis_df, eval_df))
         analyze_fixed_strategies(config_dict, results)
 
@@ -534,6 +470,3 @@ if __name__ == "__main__":
     #     results = ray.get(ray_tasks)
     #     for result in results:
     #         print(f"""\n\n{result[0]}: \n{result[1]}""")
-
-
-

@@ -90,7 +90,7 @@ def create_algo(config):
             .debugging(
                 logger_config={
                     # Use the tune.logger.NoopLogger class for no logging.
-                    "type": ray.tune.logger.NoopLogger, 
+                    "type": ray.tune.logger.NoopLogger,
                 },
             )
         )
@@ -129,7 +129,7 @@ def create_algo(config):
             .debugging(
                 logger_config={
                     # Use the tune.logger.NoopLogger class for no logging.
-                    "type": ray.tune.logger.NoopLogger, 
+                    "type": ray.tune.logger.NoopLogger,
                 },
             )
         )
@@ -181,7 +181,7 @@ def create_algo(config):
             .debugging(
                 logger_config={
                     # Use the tune.logger.NoopLogger class for no logging.
-                    "type": ray.tune.logger.NoopLogger, 
+                    "type": ray.tune.logger.NoopLogger,
                 },
             )
         )
@@ -204,19 +204,25 @@ class episodeMetrics(DefaultCallbacks):
         env_index: int,
         **kwargs,
     ):
-        env = episode.worker.env.par_env 
-        episode.custom_metrics['rewards'] = env._game_history['total_rewards'].sum()
-        episode.custom_metrics['kills'] = env._game_history['total_kills'].sum()
-        episode.custom_metrics['assists'] = env._game_history['total_assists'].sum()
+        env = episode.worker.env.par_env
+        episode.custom_metrics["rewards"] = env._game_history["total_rewards"].sum()
+        episode.custom_metrics["kills"] = env._game_history["total_kills"].sum()
+        episode.custom_metrics["assists"] = env._game_history["total_assists"].sum()
         for agent_id in env.possible_agents:
-            episode.custom_metrics[f'{agent_id}_rewards'] = env._game_history[f"{agent_id}_rewards"].sum()
-            episode.custom_metrics[f'{agent_id}_kills'] = env._game_history[f"{agent_id}_kills"].sum()
-            episode.custom_metrics[f'{agent_id}_assists'] = env._game_history[f"{agent_id}_assists"].sum()
-
+            episode.custom_metrics[f"{agent_id}_rewards"] = env._game_history[
+                f"{agent_id}_rewards"
+            ].sum()
+            episode.custom_metrics[f"{agent_id}_kills"] = env._game_history[
+                f"{agent_id}_kills"
+            ].sum()
+            episode.custom_metrics[f"{agent_id}_assists"] = env._game_history[
+                f"{agent_id}_assists"
+            ].sum()
 
     def on_train_result(self, *, algorithm, result: dict, **kwargs):
         # you can mutate the result dict to add new fields to return
         result["callback_ok"] = True
+
 
 # define the Trainable
 def train_algo(config):
@@ -276,7 +282,7 @@ def train_algo(config):
                 eval_results = algo.evaluate()["evaluation"]
                 wandb.summary.update(
                     dict(
-                        eval_episodes=eval_results['episodes_this_iter'],
+                        eval_episodes=eval_results["episodes_this_iter"],
                         eval_reward=eval_results["episode_reward_mean"],
                         eval_episode_len=eval_results["episode_len_mean"],
                         eval_assists=eval_results["custom_metrics"]["assists_mean"],
@@ -330,13 +336,16 @@ def train_algo(config):
                         )
                         # create the two tables and store
                         analysis_df.columns = analysis_df.columns.astype(str)
-                        analysis_table = wandb.Table(dataframe=analysis_df.reset_index())
+                        analysis_table = wandb.Table(
+                            dataframe=analysis_df.reset_index()
+                        )
                         eval_table = wandb.Table(dataframe=eval_df)
                         wandb.log(
                             {
-                                f"{policy_name}_analysis_df" : analysis_table,
-                                f"{policy_name}_eval_df" : eval_table,
-                            })
+                                f"{policy_name}_analysis_df": analysis_table,
+                                f"{policy_name}_eval_df": eval_table,
+                            }
+                        )
                 wandb.finish()
                 train.report(results)
         if (
@@ -362,7 +371,7 @@ def main():
 
     config["stop_fn"] = stop_fn
     config["wandb"]["wandb_dir_path"] = str(Path("./wandb").absolute())
-    
+
     if config["tune"]["tune"]:
         # SET HYPERPARAMETERS for TUNING
         config["env_config"]["map_size"] = tune.grid_search([15, 20])
@@ -370,7 +379,7 @@ def main():
         #     ["independent", "shared", "centralized"]
         # )
         # config["env_config"]["reward_type"] = tune.grid_search(["type_1", "type_2", "type_3"])
-    
+
     storage_path = str(Path("./experiments").absolute())
     tuner = tune.Tuner(
         tune.with_resources(train_algo, {"cpu": 0.5}),
@@ -430,10 +439,11 @@ def get_policy_mapping_fn(policy_name, algo):
 
     return policy_maps
 
+
 def trail_name_creator(trail, *args, **kwargs):
     config = trail.config
     name = ""
-    name += "r-" if config['training']['model']['use_lstm'] else ""
+    name += "r-" if config["training"]["model"]["use_lstm"] else ""
     name = f"{config['algorithm_type'][0]}_"
     name += f"{config['env_config']['reward_type'][-1]}_"
     name += f"{config['env_config']['step_penalty']}_"

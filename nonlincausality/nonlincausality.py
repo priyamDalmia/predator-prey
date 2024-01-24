@@ -1168,6 +1168,7 @@ def nonlincausalityARIMA(x, maxlag, x_test=[], z=[], z_test=[], plot=True):
         # Printing the tests results
         print("Statistics value =", S, "p-value =", p_value)
         # Plotting the original X test signal along with the predicted values
+        plot = False
         if plot:
             if len(z) > 0:
                 plot_predicted(
