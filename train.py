@@ -86,7 +86,7 @@ def create_algo(config):
             .rl_module(_enable_rl_module_api=False)
             .reporting(keep_per_episode_custom_metrics=False)
             .offline_data(output=None)
-            .evaluation(evaluation_duration=500)
+            .evaluation(evaluation_duration=1000)
             .debugging(
                 logger_config={
                     # Use the tune.logger.NoopLogger class for no logging.
@@ -125,7 +125,7 @@ def create_algo(config):
             .rl_module(_enable_rl_module_api=False)
             .reporting(keep_per_episode_custom_metrics=False)
             .offline_data(output=None)
-            .evaluation(evaluation_duration=500)
+            .evaluation(evaluation_duration=1000)
             .debugging(
                 logger_config={
                     # Use the tune.logger.NoopLogger class for no logging.
@@ -177,7 +177,7 @@ def create_algo(config):
             )
             .rl_module(_enable_rl_module_api=False)
             .offline_data(output=None)
-            .evaluation(evaluation_duration=500)
+            .evaluation(evaluation_duration=1000)
             .debugging(
                 logger_config={
                     # Use the tune.logger.NoopLogger class for no logging.
@@ -375,9 +375,9 @@ def main():
     if config["tune"]["tune"]:
         # SET HYPERPARAMETERS for TUNING
         config["env_config"]["map_size"] = tune.grid_search([15, 20])
-        # config["algorithm_type"] = tune.grid_search(
-        #     ["independent", "shared", "centralized"]
-        # )
+        config["algorithm_type"] = tune.grid_search(
+            ["independent", "shared"]
+        )
         # config["env_config"]["reward_type"] = tune.grid_search(["type_1", "type_2", "type_3"])
 
     storage_path = str(Path("./experiments").absolute())

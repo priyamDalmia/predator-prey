@@ -2,14 +2,14 @@
 #SBATCH --nodes=1
 #SBTACH --ntasks=1
 #SBATCH --ntasks-per-node=1
-#SBATCH --cpus-per-task=4
+#SBATCH --cpus-per-task=8
 
-#SBATCH --gres=gpu:1
-#SBATCH --qos=gpgpudeeplearn
-#SBATCH --partition=deeplearn
+# SBATCH --gres=gpu:1
+# SBATCH --qos=gpgpudeeplearn
+# SBATCH --partition=deeplearn
 
-# SBATCH --mem-per-cpu=4G
-# SBATCH --partition=cascade
+#SBATCH --mem-per-cpu=4G
+#SBATCH --partition=cascade
 
 #SBATCH --time=02-00:00:00
 #SBATCH -o ./slurmoutput/train-%j.out
@@ -54,6 +54,6 @@ source ./.venv/bin/activate
 echo -e "\n\n\n PYTHON SCRIPT OUTPUT: \n"
 
 rm -rf ~/ray_results/*
-python3 ./analyze.py
+python3 ./train.py
 
 my-job-stats -a -n -s

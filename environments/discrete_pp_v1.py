@@ -9,11 +9,12 @@ import math
 from torch import rand
 path1 = '/home/priyam/projects/predator-prey'
 sys.path.append(path1)
+sys.path.append(os.getcwd())
 sys.path.append(os.path.join(path1, "environments"))
 import random
     # TODO move and build tests s 
 import numpy as np 
-from common import Agent
+from environments.common import Agent
 from typing import Any, Dict
 import gymnasium 
 from gymnasium import spaces

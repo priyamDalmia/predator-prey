@@ -41,16 +41,17 @@ _agent_type_dict = {
     "follower": FollowerAgent,
     "fixed": FixedSwingAgent,
 }
-POLICY_SETS = ["chaser_follower",] # "fixed_follower", "chaser_fixed",
-            #    "chaser_chaser", "follower_chaser", "fixed_chaser"]
+POLICY_SETS = ["chaser_follower",  "fixed_follower", "chaser_fixed",
+               "chaser_chaser", "follower_chaser", "fixed_chaser"]
+INTERVALS = [2, 5, 10]
 CONFIG = dict(
     policy_name=None,  # if none specficied, cycle through all in POLICY_SETS
     policy_mapping_fn=None,  # f none specified, will try to infer from policy name
     is_recurrent=False,
-    length_fac=200,
+    length_fac=1000,
     dimensions=["x", "y", "dx", "dy"],
     env_config=dict(
-        map_size=15,
+        map_size=20,
         npred=2,
         nprey=6,
         pred_vision=6,
@@ -273,7 +274,7 @@ def analyze_task(
     collected_data = pd.DataFrame()
     performance_metrics = []
     num_episodes = 0
-    for i in [i * length_fac for i in [2, 5]]:
+    for i in [i * length_fac for i in INTERVALS]:
         # 1. Generate epsiode data
         while len(collected_data) <= int(i):
             episode_data = play_episode(env, policy_mapping_fn, is_recurrent)
@@ -331,7 +332,7 @@ def get_analysis_df(policy_sets: list, dimensions: list, length_fac: int = 100):
     _df_index = pd.MultiIndex.from_tuples(
         _df_data, names=["run_id", "mode", "agent_a", "agent_b", "test", "dimension"]
     )
-    traj_length = [i * length_fac for i in [2, 5]]
+    traj_length = [i * length_fac for i in INTERVALS]
     analysis_df = pd.DataFrame(index=_df_index, columns=traj_length).fillna(0.0)
     return analysis_df
 
@@ -418,7 +419,7 @@ if __name__ == "__main__":
                 for i, agent_class in enumerate(policy_name.split("_"))
             }
             analysis_df, eval_df = perform_causal_analysis(
-                num_trials=2,
+                num_trials=3,
                 use_ray=False,
                 analysis_df=get_analysis_df(
                     [policy_name], config_dict["dimensions"], config_dict["length_fac"]

@@ -5,7 +5,7 @@ tune:
    tune: true # if true, tune hyperparameters in main!
    num_samples: 5
    max_episodes: 50000
-   max_concurrent_trials: 6
+   max_concurrent_trials: 16
 analysis:
    num_trials: 10
    analysis: false
@@ -32,7 +32,7 @@ training:
       fcnet_activation: "relu"
       conv_activation: "relu"
       conv_filters: [[16,[3,3],1], [16, [3,3], 1]]
-      use_lstm: false
+      use_lstm: true
       lstm_cell_size: 64
       max_seq_len: 5
       lstm_use_prev_reward: true
@@ -57,7 +57,8 @@ env_config:
    max_cycles: 100
    npred: 2
    nprey: 6
-   reward_type: "type_1"
+   reward_team: 1.0
+   reward_lone: 1.0
    step_penalty: 0.0
 ray:
    init_dashboard: false
