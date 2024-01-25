@@ -43,12 +43,12 @@ _agent_type_dict = {
 }
 POLICY_SETS = ["chaser_follower",  "fixed_follower", "chaser_fixed",
                "chaser_chaser", "follower_chaser", "fixed_chaser"]
-INTERVALS = [2, 5, 10]
+INTERVALS = [2, 5]
 CONFIG = dict(
     policy_name=None,  # if none specficied, cycle through all in POLICY_SETS
     policy_mapping_fn=None,  # f none specified, will try to infer from policy name
     is_recurrent=False,
-    length_fac=1000,
+    length_fac=100,
     dimensions=["x", "y", "dx", "dy", "PCA_1", "PCA_2"],
     env_config=dict(
         map_size=20,
@@ -360,7 +360,7 @@ def perform_causal_analysis(
             if eval_df is None
             else pd.concat([eval_results, eval_df], axis=1)
         )
-    return analysis_df, eval_df
+    return analysis_df, eval_df.T
 
 # @ray.remote
 # def print_eval_scores(name, env, policy_mapping_fn, is_recurrent):

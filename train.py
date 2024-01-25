@@ -284,6 +284,7 @@ def train_algo(config):
                     dict(
                         eval_episodes=eval_results["episodes_this_iter"],
                         eval_reward=eval_results["episode_reward_mean"],
+                        eval_kills=eval_results["custom_metrics"]["kills_mean"],
                         eval_episode_len=eval_results["episode_len_mean"],
                         eval_assists=eval_results["custom_metrics"]["assists_mean"],
                         eval_policy_reward_mean=eval_results["policy_reward_mean"],
@@ -292,7 +293,7 @@ def train_algo(config):
                         ],
                         eval_predator_1_assists=eval_results["custom_metrics"][
                             "predator_1_assists_mean"
-                        ],
+                        ]
                     )
                 )
                 if config["analysis"]["analysis"]:
