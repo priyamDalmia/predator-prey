@@ -440,7 +440,7 @@ def trail_name_creator(trail, *args, **kwargs):
     name = ""
     name += "r-" if config["training"]["model"]["use_lstm"] else ""
     name = f"{config['algorithm_type'][0]}_"
-    name += f"{config['env_config']['reward_type'][-1]}_"
+    name += f"{config['env_config']['reward_team']}_"
     name += f"{config['env_config']['step_penalty']}_"
     name += f"_{trail.trial_id}"
     return name

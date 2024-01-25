@@ -5,7 +5,7 @@ tune:
    tune: true # if true, tune hyperparameters in main!
    num_samples: 5
    max_episodes: 1000
-   max_concurrent_trials: 16
+   max_concurrent_trials: 8
 analysis:
    num_trials: 3
    analysis: true

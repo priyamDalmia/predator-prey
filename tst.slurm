@@ -2,7 +2,7 @@
 #SBATCH --nodes=1
 #SBTACH --ntasks=1
 #SBATCH --ntasks-per-node=1
-#SBATCH --cpus-per-task=8
+#SBATCH --cpus-per-task=4
 
 # SBATCH --gres=gpu:1
 # SBATCH --qos=gpgpudeeplearn
