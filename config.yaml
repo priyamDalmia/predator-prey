@@ -4,20 +4,19 @@ framework: "torch"
 tune:
    tune: true # if true, tune hyperparameters in main!
    num_samples: 5
-   max_episodes: 50000
+   max_episodes: 1000
    max_concurrent_trials: 16
 analysis:
-   num_trials: 10
-   analysis: false
-   policy_set: ['original', 'fixed', 'chaser']
-   dimensions: ['dx', 'dy', 'PCA_1', 'PCA_2']
-   length_fac: 500
+   num_trials: 3
+   analysis: true
+   policy_set: ['original', 'follower', 'chaser']
+   dimensions: ['x', 'y', 'PCA_1', 'PCA_2']
+   length_fac: 200
    ccm_tau: 1
    ccm_E: 4
-   pref_ccm_analysis: true
-   pref_granger_analysis: false
-   pref_graph_analysis: false
-   pref_spatial_ccm_analysis: false
+   gc_lag: 4
+   perform_ccm: true
+   perform_granger_linear: true 
 training:
    lr: 0.0001
    use_critic: true
@@ -32,7 +31,7 @@ training:
       fcnet_activation: "relu"
       conv_activation: "relu"
       conv_filters: [[16,[3,3],1], [16, [3,3], 1]]
-      use_lstm: true
+      use_lstm: false
       lstm_cell_size: 64
       max_seq_len: 5
       lstm_use_prev_reward: true
@@ -45,14 +44,14 @@ rollouts:
    batch_mode: "complete_episodes"
 wandb: 
    wandb_init: true
-   wandb_project: "wolf_1"
+   wandb_project: "wolf_sample"
    wandb_entity: "tpn"
    wandb_notes: "final training results"
    wandb_log_freq: 50
 env_name: "wolfpack_discrete"
 env_config:
-   map_size: 15
-   pred_vision: 2
+   map_size: 20
+   pred_vision: 3
    prey_type: "static"
    max_cycles: 100
    npred: 2

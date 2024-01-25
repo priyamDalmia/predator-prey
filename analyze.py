@@ -49,7 +49,7 @@ CONFIG = dict(
     policy_mapping_fn=None,  # f none specified, will try to infer from policy name
     is_recurrent=False,
     length_fac=1000,
-    dimensions=["x", "y", "dx", "dy"],
+    dimensions=["x", "y", "dx", "dy", "PCA_1", "PCA_2"],
     env_config=dict(
         map_size=20,
         npred=2,
@@ -109,26 +109,26 @@ def get_granger_linear(X, Y, lag):
         return []
 
 
-def get_granger_arima(X, Y, lag):
-    data = np.array([X, Y]).T.astype(np.float64)
-    try:
-        results = nonlincausalityARIMA(x=data, maxlag=[lag], x_test=data, plot=False)
-    except: 
-        return []
-    p_value = results[lag].p_value
-    test_statistic = results[lag]._test_statistic
+# def get_granger_arima(X, Y, lag):
+#     data = np.array([X, Y]).T.astype(np.float64)
+#     try:
+#         results = nonlincausalityARIMA(x=data, maxlag=[lag], x_test=data, plot=False)
+#     except: 
+#         return []
+#     p_value = results[lag].p_value
+#     test_statistic = results[lag]._test_statistic
 
-    best_errors_X = results[lag].best_errors_X
-    best_errors_XY = results[lag].best_errors_XY
-    cohens_d = np.abs(
-        (np.mean(np.abs(best_errors_X)) - np.mean(np.abs(best_errors_XY)))
-        / np.std([best_errors_X, best_errors_XY])
-    )
-    return [
-        ("arima_pval", p_value),
-        ("arima_stat", test_statistic),
-        ("arima_cohen", cohens_d),
-    ]
+#     best_errors_X = results[lag].best_errors_X
+#     best_errors_XY = results[lag].best_errors_XY
+#     cohens_d = np.abs(
+#         (np.mean(np.abs(best_errors_X)) - np.mean(np.abs(best_errors_XY)))
+#         / np.std([best_errors_X, best_errors_XY])
+#     )
+#     return [
+#         ("arima_pval", p_value),
+#         ("arima_stat", test_statistic),
+#         ("arima_cohen", cohens_d),
+#     ]
 
 def get_granger_mlp(X, Y, lag):
     nlen = len(X)
@@ -301,7 +301,7 @@ def analyze_task(
                 
                 if perform_granger_linear:
                     results.extend(get_granger_linear(Y, X, gc_lag))
-                    results.extend(get_granger_arima(Y, X, gc_lag))
+                    # results.extend(get_granger_arima(Y, X, gc_lag))
 
                 for result in results:
                     analysis_results.append(

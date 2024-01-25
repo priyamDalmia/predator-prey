@@ -321,17 +321,11 @@ def train_algo(config):
                             is_recurrent=config["training"]["model"]["use_lstm"],
                             dimensions=config["analysis"]["dimensions"],
                             length_fac=config["analysis"]["length_fac"],
-                            ccm_tau=config["analysis"]["ccm_tau"],
                             ccm_E=config["analysis"]["ccm_E"],
-                            pref_ccm_analysis=config["analysis"]["pref_ccm_analysis"],
-                            pref_granger_analysis=config["analysis"][
-                                "pref_granger_analysis"
-                            ],
-                            pref_spatial_ccm_analysis=config["analysis"][
-                                "pref_spatial_ccm_analysis"
-                            ],
-                            pref_graph_analysis=config["analysis"][
-                                "pref_graph_analysis"
+                            gc_lag=config["analysis"]["gc_lag"],
+                            perform_ccm=config["analysis"]["perform_ccm"],
+                            perform_granger_linear=config["analysis"][
+                                "perform_granger_linear"
                             ],
                         )
                         # create the two tables and store
@@ -374,10 +368,11 @@ def main():
 
     if config["tune"]["tune"]:
         # SET HYPERPARAMETERS for TUNING
-        config["env_config"]["map_size"] = tune.grid_search([15, 20])
         config["algorithm_type"] = tune.grid_search(
             ["independent", "shared"]
         )
+        config["env_config"]["nprey"] = tune.grid_search([2, 5, 10])
+        config["env_config"]["reward_team"] = tune.grid_search([0.5, 0.75, 1.0, 1.25, 1.5])
         # config["env_config"]["reward_type"] = tune.grid_search(["type_1", "type_2", "type_3"])
 
     storage_path = str(Path("./experiments").absolute())
