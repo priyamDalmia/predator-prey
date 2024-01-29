@@ -24,6 +24,7 @@ from sklearn.decomposition import PCA
 import warnings
 
 import ray
+from temp.analyze_ray import TRAJ_LENGTH
 from tests.test_multiagent_2d import CONFIG
 import nonlincausality as nlc 
 from nonlincausality.nonlincausality import nonlincausalityARIMA, nonlincausalityMLP
@@ -407,42 +408,65 @@ def analyze_fixed_strategies(config, results):
 if __name__ == "__main__":
     config_dict = CONFIG.copy()
     env = wolfpack_discrete(**config_dict["env_config"])
-    anaylze_agents = True 
-    evaluate_agents = True
-    eval_list = ['chaser_follower', 'fixed_follower', 'chaser_fixed']
-    if anaylze_agents:
-        results = []
-        for policy_name in POLICY_SETS:
-            start_time = time.time()
-            policy_mapping_fn = {
-                f"predator_{i}": _agent_type_dict[agent_class]()
-                for i, agent_class in enumerate(policy_name.split("_"))
-            }
-            analysis_df, eval_df = perform_causal_analysis(
-                num_trials=3,
-                use_ray=False,
-                analysis_df=get_analysis_df(
-                    [policy_name], config_dict["dimensions"], config_dict["length_fac"]
-                ),
-                env=env,
-                policy_name=policy_name,
-                policy_mapping_fn=policy_mapping_fn,
-                is_recurrent=config_dict["is_recurrent"],
-                dimensions=config_dict["dimensions"],
-                length_fac=config_dict["length_fac"],
-                ccm_E=config_dict["ccm_E"],
-                gc_lag=config_dict["gc_lag"],
-                perform_ccm=config_dict['perform_ccm'],
-                perform_granger_linear=config_dict['perform_granger_linear'],
-            )
-            print(
-                f"Time taken for {policy_name}: {(time.time() - start_time)/60:.2f} minutes"
-            )
-            analysis_df.metadata = env.metadata
-            analysis_df.to_csv(f"./results/{policy_name}_analysis.csv")
-            eval_df.to_csv(f"./results/{policy_name}_eval.csv")
-            results.append((policy_name, analysis_df, eval_df))
-        analyze_fixed_strategies(config_dict, results)
+    eval_list = ['chaser_follower']
+    start_time = time.time()
+    policy_mapping_fn = {
+        f"predator_{i}": _agent_type_dict[agent_class]()
+        for i, agent_class in enumerate(eval_list[0].split("_"))
+    }
+    TRAJ_LENGTH = 5000
+    collected_data = pd.DataFrame()
+    performance_metrics = [] 
+    is_recurrent = False
+    num_episodes = 0
+    while len(collected_data) <= int(TRAJ_LENGTH):
+        episode_data = play_episode(env, policy_mapping_fn, is_recurrent)
+        transformed_data, metadata = transform_epsiode_history(env.possible_agents, episode_data)
+        performance_metrics.append(metadata)
+        transformed_data['episode_num'] = num_episodes
+        num_episodes += 1
+        if len(collected_data) == 0:
+            collected_data = transformed_data
+        else:
+            collected_data = pd.concat([collected_data, transformed_data])
+        collected_data.reset_index(inplace=True, drop=True)
+    collected_data.to_csv("../temp/collected_data.csv", index=False)
+    # anaylze_agents = True 
+    # evaluate_agents = True
+    # eval_list = ['chaser_follower', 'fixed_follower', 'chaser_fixed']
+    # if anaylze_agents:
+    #     results = []
+    #     for policy_name in POLICY_SETS:
+    #         start_time = time.time()
+    #         policy_mapping_fn = {
+    #             f"predator_{i}": _agent_type_dict[agent_class]()
+    #             for i, agent_class in enumerate(policy_name.split("_"))
+    #         }
+    #         analysis_df, eval_df = perform_causal_analysis(
+    #             num_trials=3,
+    #             use_ray=False,
+    #             analysis_df=get_analysis_df(
+    #                 [policy_name], config_dict["dimensions"], config_dict["length_fac"]
+    #             ),
+    #             env=env,
+    #             policy_name=policy_name,
+    #             policy_mapping_fn=policy_mapping_fn,
+    #             is_recurrent=config_dict["is_recurrent"],
+    #             dimensions=config_dict["dimensions"],
+    #             length_fac=config_dict["length_fac"],
+    #             ccm_E=config_dict["ccm_E"],
+    #             gc_lag=config_dict["gc_lag"],
+    #             perform_ccm=config_dict['perform_ccm'],
+    #             perform_granger_linear=config_dict['perform_granger_linear'],
+    #         )
+    #         print(
+    #             f"Time taken for {policy_name}: {(time.time() - start_time)/60:.2f} minutes"
+    #         )
+    #         analysis_df.metadata = env.metadata
+    #         analysis_df.to_csv(f"./results/{policy_name}_analysis.csv")
+    #         eval_df.to_csv(f"./results/{policy_name}_eval.csv")
+    #         results.append((policy_name, analysis_df, eval_df))
+    #     analyze_fixed_strategies(config_dict, results)
 
     # evaluate_agents = True
     # if evaluate_agents:

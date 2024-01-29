@@ -7,6 +7,8 @@ tune:
    max_episodes: 1000
    max_concurrent_trials: 8
 analysis:
+   save_eval_history: true 
+   traj_length: 10000
    num_trials: 3
    analysis: true
    policy_set: ['original', 'follower', 'chaser']

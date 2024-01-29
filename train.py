@@ -34,10 +34,13 @@ from ray.rllib.evaluation import RolloutWorker, Episode
 from ray.rllib.policy import Policy
 from algorithms.centralized_ppo import TorchCentralizedCriticModel, CentralizedCritic
 from ray.rllib.models import ModelCatalog
+import pandas as pd 
 
 from analyze import (
     perform_causal_analysis,
     get_analysis_df,
+    play_episode,
+    transform_epsiode_history,
     _agent_type_dict,
     AlgoModel,
 )
@@ -296,51 +299,77 @@ def train_algo(config):
                         ]
                     )
                 )
-                if config["analysis"]["analysis"]:
-                    for policy_i in config["analysis"]["policy_set"]:
-                        policy_name = (
-                            config["algorithm_type"]
-                            if policy_i == "original"
-                            else f"{config['algorithm_type']}_{policy_i}"
-                        )
-                        analysis_df = get_analysis_df(
-                            [policy_name],
-                            config["analysis"]["dimensions"],
-                            config["analysis"]["length_fac"],
-                        )
+                if config["analysis"]["save_eval_history"]:
+                    policy_name = config['algorithm_type']
+                    policy_mapping_fn = get_policy_mapping_fn(config['algorithm_type'], algo)
+                    env = env_creator(config['env_config']).par_env
+                    start_time = time.time()
+                    collected_data = pd.DataFrame()
+                    performance_metrics = [] 
+                    is_recurrent = config['training']['model']['use_lstm'] 
+                    num_episodes = 0
+                    while len(collected_data) <= int(config['analysis']['traj_length']):
+                        episode_data = play_episode(env, policy_mapping_fn, is_recurrent)
+                        transformed_data, metadata = transform_epsiode_history(env.possible_agents, episode_data)
+                        performance_metrics.append(metadata)
+                        transformed_data['episode_num'] = num_episodes
+                        num_episodes += 1
+                        if len(collected_data) == 0:
+                            collected_data = transformed_data
+                        else:
+                            collected_data = pd.concat([collected_data, transformed_data])
+                        collected_data.reset_index(inplace=True, drop=True)
+                    performance_df = pd.DataFrame(performance_metrics)
+                    history_df = wandb.Table(dataframe=collected_data)
+                    wandb.log({
+                        f"{policy_name}_history_df": history_df,
+                        f"{policy_name}_performance_df": performance_df}
+                    )
+                    # collected_data.to_csv("../temp/collected_data.csv", index=False)
+                    # for policy_i in config["analysis"]["policy_set"]:
+                    #     policy_name = (
+                    #         config["algorithm_type"]
+                    #         if policy_i == "original"
+                    #         else f"{config['algorithm_type']}_{policy_i}"
+                    #     )
+                    #     analysis_df = get_analysis_df(
+                    #         [policy_name],
+                    #         config["analysis"]["dimensions"],
+                    #         config["analysis"]["length_fac"],
+                    #     )
 
-                        # build the policy mapping fn
-                        policy_mapping_fn = get_policy_mapping_fn(policy_name, algo)
-                        env = env_creator(config["env_config"]).par_env
-                        analysis_df, eval_df = perform_causal_analysis(
-                            num_trials=config["analysis"]["num_trials"],
-                            use_ray=False,
-                            analysis_df=analysis_df,
-                            env=env,
-                            policy_name=policy_name,
-                            policy_mapping_fn=policy_mapping_fn,
-                            is_recurrent=config["training"]["model"]["use_lstm"],
-                            dimensions=config["analysis"]["dimensions"],
-                            length_fac=config["analysis"]["length_fac"],
-                            ccm_E=config["analysis"]["ccm_E"],
-                            gc_lag=config["analysis"]["gc_lag"],
-                            perform_ccm=config["analysis"]["perform_ccm"],
-                            perform_granger_linear=config["analysis"][
-                                "perform_granger_linear"
-                            ],
-                        )
-                        # create the two tables and store
-                        analysis_df.columns = analysis_df.columns.astype(str)
-                        analysis_table = wandb.Table(
-                            dataframe=analysis_df.reset_index()
-                        )
-                        eval_table = wandb.Table(dataframe=eval_df)
-                        wandb.log(
-                            {
-                                f"{policy_name}_analysis_df": analysis_table,
-                                f"{policy_name}_eval_df": eval_table,
-                            }
-                        )
+                    #     # build the policy mapping fn
+                    #     policy_mapping_fn = get_policy_mapping_fn(policy_name, algo)
+                    #     env = env_creator(config["env_config"]).par_env
+                    #     analysis_df, eval_df = perform_causal_analysis(
+                    #         num_trials=config["analysis"]["num_trials"],
+                    #         use_ray=False,
+                    #         analysis_df=analysis_df,
+                    #         env=env,
+                    #         policy_name=policy_name,
+                    #         policy_mapping_fn=policy_mapping_fn,
+                    #         is_recurrent=config["training"]["model"]["use_lstm"],
+                    #         dimensions=config["analysis"]["dimensions"],
+                    #         length_fac=config["analysis"]["length_fac"],
+                    #         ccm_E=config["analysis"]["ccm_E"],
+                    #         gc_lag=config["analysis"]["gc_lag"],
+                    #         perform_ccm=config["analysis"]["perform_ccm"],
+                    #         perform_granger_linear=config["analysis"][
+                    #             "perform_granger_linear"
+                    #         ],
+                    #     )
+                    #     # create the two tables and store
+                    #     analysis_df.columns = analysis_df.columns.astype(str)
+                    #     analysis_table = wandb.Table(
+                    #         dataframe=analysis_df.reset_index()
+                    #     )
+                    #     eval_table = wandb.Table(dataframe=eval_df)
+                    #     wandb.log(
+                    #         {
+                    #             f"{policy_name}_analysis_df": analysis_table,
+                    #             f"{policy_name}_eval_df": eval_table,
+                    #         }
+                    #     )
                 wandb.finish()
                 train.report(results)
         if (
