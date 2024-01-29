@@ -51,7 +51,8 @@ class spatial_ccm(ccm):
                 for t2 in range(0, self.E-1 + 1): # get lags, we add 1 to E-1 because we want to include E
                     v_lag.append(V[a-t2*self.tau])
                 M[a] = v_lag
-        return M
+        filter_M = {k:v for k,v in M.items() if len(v) != 0} # filter out empty vectors
+        return filter_M
     
     # get pairwise distances between vectors in the time series
     def get_distances(self, M):
