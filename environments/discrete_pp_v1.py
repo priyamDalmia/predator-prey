@@ -530,23 +530,22 @@ class ChaserAgent:
             a = int(math.sqrt(observation.shape[0]/3))
             observation = observation.reshape(a,a,3)
 
-        center = observation.shape[0] // 2
-
+        center = list(zip(*np.where(observation[:, :, 3] == 1)))[0]
         if observation[:, :, discrete_pp_v1.PREY_CHANNEL].sum() > 0:
             positions = list(zip(*np.where(observation[:, :, discrete_pp_v1.PREY_CHANNEL])))
-            distance = lambda pos: abs(pos[0] - center) + abs(pos[1] - center)
+            distance = lambda pos: abs(pos[0] - center[0]) + abs(pos[1] - center[1])
             positions.sort(key=distance)
             for position in positions: 
-                if position[0] < center:
+                if position[0] < center[0]:
                     return discrete_pp_v1.STR_TO_ACTION["LEFT"]
-                elif position[0] > center:
+                elif position[0] > center[0]:
                     return discrete_pp_v1.STR_TO_ACTION["RIGHT"]
-                elif position[1] < center:
+                elif position[1] < center[1]:
                     return discrete_pp_v1.STR_TO_ACTION["UP"]
-                else:
+                elif position[1] > center[1]: 
                     return discrete_pp_v1.STR_TO_ACTION["DOWN"]
-        else:
-            return discrete_pp_v1.STR_TO_ACTION[random.choice(["UP", "DOWN", "LEFT", "RIGHT"])]
+                break
+        return np.random.randint(0,8)
     
     def compute_single_action(self, observation, *args, **kwargs):
         return self.get_action(observation), None, None
