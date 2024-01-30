@@ -21,9 +21,9 @@ from ray.tune.registry import register_env
 from ray.rllib.env import ParallelPettingZooEnv
 from algorithms.base_model import PPOModel
 from analyze import get_analysis_df, perform_causal_analysis
-from environments.wolfpack_discrete import wolfpack_discrete
-from environments.discrete_pp_v1 import discrete_pp_v1
-from environments.discrete_pp_v2 import discrete_pp_v2
+# from environments.wolfpack_discrete import wolfpack_discrete
+# from environments.discrete_pp_v1 import discrete_pp_v1
+# from environments.discrete_pp_v2 import discrete_pp_v2
 from ray.rllib.algorithms.ppo import PPOConfig
 from ray.rllib.algorithms import Algorithm
 from ray.air.integrations.wandb import setup_wandb
@@ -35,7 +35,7 @@ from ray.rllib.policy import Policy
 from algorithms.centralized_ppo import TorchCentralizedCriticModel, CentralizedCritic
 from ray.rllib.models import ModelCatalog
 import pandas as pd 
-
+from environments.wolfpack_v1 import wolfpack_v1
 from analyze import (
     perform_causal_analysis,
     get_analysis_df,
@@ -46,7 +46,8 @@ from analyze import (
 )
 
 warnings.filterwarnings("ignore")
-env_creator = lambda config: ParallelPettingZooEnv(wolfpack_discrete(**config))
+
+env_creator = lambda config: ParallelPettingZooEnv(wolfpack_v1(**config))
 
 
 # init the env and the algo
@@ -393,7 +394,9 @@ def main():
         stop = result["episodes_total"] > MAX_EXPISODES
         return stop
 
+    wandb_name = f"{config['wandb']['wandb_project']}_{config['env_name'].split('_')[0]}"
     config["stop_fn"] = stop_fn
+    config['wandb']['wandb_project'] = wandb_name
     config["wandb"]["wandb_dir_path"] = str(Path("./wandb").absolute())
 
     if config["tune"]["tune"]:
