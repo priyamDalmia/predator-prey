@@ -23,6 +23,7 @@ from ray.rllib.env import ParallelPettingZooEnv
 from algorithms.base_model import PPOModel
 from analyze import get_analysis_df, perform_causal_analysis
 from environments.wolfpack_discrete import wolfpack_discrete
+
 # from environments.discrete_pp_v1 import discrete_pp_v1
 # from environments.discrete_pp_v2 import discrete_pp_v2
 from ray.rllib.algorithms.ppo import PPOConfig
@@ -35,9 +36,9 @@ from ray.rllib.evaluation import RolloutWorker, Episode
 from ray.rllib.policy import Policy
 from algorithms.centralized_ppo import TorchCentralizedCriticModel, CentralizedCritic
 from ray.rllib.models import ModelCatalog
-import pandas as pd 
+import pandas as pd
 from environments.wolfpack_v1 import wolfpack_v1
-from environments.gather_v1 import gather_v1 
+from environments.gather_v1 import gather_v1
 from analyze import (
     perform_causal_analysis,
     get_analysis_df,
@@ -50,6 +51,7 @@ from analyze import (
 warnings.filterwarnings("ignore")
 
 env_creator = lambda config: ParallelPettingZooEnv(gather_v1(**config))
+
 
 # init the env and the algo
 def create_algo(config):
@@ -91,7 +93,7 @@ def create_algo(config):
             .rl_module(_enable_rl_module_api=False)
             .reporting(keep_per_episode_custom_metrics=False)
             .offline_data(output=None)
-            .evaluation(evaluation_duration=config['evaluate']['evaluation_duration'])
+            .evaluation(evaluation_duration=config["evaluate"]["evaluation_duration"])
             .debugging(
                 logger_config={
                     # Use the tune.logger.NoopLogger class for no logging.
@@ -130,7 +132,7 @@ def create_algo(config):
             .rl_module(_enable_rl_module_api=False)
             .reporting(keep_per_episode_custom_metrics=False)
             .offline_data(output=None)
-            .evaluation(evaluation_duration=config['evaluate']['evaluation_duration'])
+            .evaluation(evaluation_duration=config["evaluate"]["evaluation_duration"])
             .debugging(
                 logger_config={
                     # Use the tune.logger.NoopLogger class for no logging.
@@ -182,7 +184,7 @@ def create_algo(config):
             )
             .rl_module(_enable_rl_module_api=False)
             .offline_data(output=None)
-            .evaluation(evaluation_duration=config['evaluate']['evaluation_duration'])
+            .evaluation(evaluation_duration=config["evaluate"]["evaluation_duration"])
             .debugging(
                 logger_config={
                     # Use the tune.logger.NoopLogger class for no logging.
@@ -216,28 +218,28 @@ class episodeMetrics(DefaultCallbacks):
             episode.custom_metrics["hits"] = env._game_history["total_hits"].sum()
             for agent_id in env.possible_agents:
                 episode.custom_metrics[f"{agent_id}_rewards"] = env._game_history[
-                f"{agent_id}_rewards"
-            ].sum()
+                    f"{agent_id}_rewards"
+                ].sum()
                 episode.custom_metrics[f"{agent_id}_shots"] = env._game_history[
-                f"{agent_id}_shots"
-            ].sum()
+                    f"{agent_id}_shots"
+                ].sum()
                 episode.custom_metrics[f"{agent_id}_hits"] = env._game_history[
-                f"{agent_id}_hits"
-            ].sum()
+                    f"{agent_id}_hits"
+                ].sum()
         else:
             episode.custom_metrics["rewards"] = env._game_history["total_rewards"].sum()
             episode.custom_metrics["kills"] = env._game_history["total_kills"].sum()
             episode.custom_metrics["assists"] = env._game_history["total_assists"].sum()
             for agent_id in env.possible_agents:
                 episode.custom_metrics[f"{agent_id}_rewards"] = env._game_history[
-                f"{agent_id}_rewards"
-            ].sum()
+                    f"{agent_id}_rewards"
+                ].sum()
                 episode.custom_metrics[f"{agent_id}_kills"] = env._game_history[
-                f"{agent_id}_kills"
-            ].sum()
+                    f"{agent_id}_kills"
+                ].sum()
                 episode.custom_metrics[f"{agent_id}_assists"] = env._game_history[
-                f"{agent_id}_assists"
-            ].sum()
+                    f"{agent_id}_assists"
+                ].sum()
 
     def on_train_result(self, *, algorithm, result: dict, **kwargs):
         # you can mutate the result dict to add new fields to return
@@ -300,7 +302,6 @@ def train_algo(config):
             if config["wandb"]["wandb_init"]:
                 wandb.log(log_dict)
                 eval_results = algo.evaluate()["evaluation"]
-
                 if 'gather' in config['env_name']:
                     wandb.summary.update(
                         dict(
@@ -309,7 +310,7 @@ def train_algo(config):
                             eval_shots=eval_results["custom_metrics"]["shots_mean"],
                             eval_hits=eval_results["custom_metrics"]["hits_mean"],
                             eval_episode_len=eval_results["episode_len_mean"],
-                            **{f"eval_{k}": v for k, v in eval_results['evalutation']['custom_metrics'].items()},
+                            **{f"eval_{k}": v for k, v in eval_results['custom_metrics'].items()},
                         )
                         )
                 else:
@@ -330,24 +331,32 @@ def train_algo(config):
                     )
                 )
                 if config["analysis"]["save_eval_history"]:
-                    policy_name = config['algorithm_type']
-                    policy_mapping_fn = get_policy_mapping_fn(config['algorithm_type'], algo)
-                    env = env_creator(config['env_config']).par_env
+                    policy_name = config["algorithm_type"]
+                    policy_mapping_fn = get_policy_mapping_fn(
+                        config["algorithm_type"], algo
+                    )
+                    env = env_creator(config["env_config"]).par_env
                     start_time = time.time()
                     collected_data = pd.DataFrame()
-                    performance_metrics = [] 
-                    is_recurrent = config['training']['model']['use_lstm'] 
+                    performance_metrics = []
+                    is_recurrent = config["training"]["model"]["use_lstm"]
                     num_episodes = 0
-                    while len(collected_data) <= int(config['analysis']['traj_length']):
-                        episode_data = play_episode(env, policy_mapping_fn, is_recurrent)
-                        transformed_data, metadata = transform_epsiode_history(env.possible_agents, episode_data)
+                    while len(collected_data) <= int(config["analysis"]["traj_length"]):
+                        episode_data = play_episode(
+                            env, policy_mapping_fn, is_recurrent
+                        )
+                        transformed_data, metadata = transform_epsiode_history(
+                            config["env_name"], env.possible_agents, episode_data
+                        )
                         performance_metrics.append(metadata)
-                        transformed_data['episode_num'] = num_episodes
+                        transformed_data["episode_num"] = num_episodes
                         num_episodes += 1
                         if len(collected_data) == 0:
                             collected_data = transformed_data
                         else:
-                            collected_data = pd.concat([collected_data, transformed_data])
+                            collected_data = pd.concat(
+                                [collected_data, transformed_data]
+                            )
                         collected_data.reset_index(inplace=True, drop=True)
                     performance_df = pd.DataFrame(performance_metrics)
                     history_df = wandb.Table(dataframe=collected_data)
@@ -355,51 +364,51 @@ def train_algo(config):
                         f"{policy_name}_history_df": history_df,
                         f"{policy_name}_performance_df": performance_df}
                     )
-                    # collected_data.to_csv("../temp/collected_data.csv", index=False)
-                    # for policy_i in config["analysis"]["policy_set"]:
-                    #     policy_name = (
-                    #         config["algorithm_type"]
-                    #         if policy_i == "original"
-                    #         else f"{config['algorithm_type']}_{policy_i}"
-                    #     )
-                    #     analysis_df = get_analysis_df(
-                    #         [policy_name],
-                    #         config["analysis"]["dimensions"],
-                    #         config["analysis"]["length_fac"],
-                    #     )
+                    # collected_data.to_csv("../temp/collected_data.csv", index=false)
+                    for policy_i in config["analysis"]["policy_set"]:
+                        policy_name = (
+                            config["algorithm_type"]
+                            if policy_i == "original"
+                            else f"{config['algorithm_type']}_{policy_i}"
+                        )
+                        analysis_df = get_analysis_df(
+                            [policy_name],
+                            config["analysis"]["dimensions"],
+                            config["analysis"]["length_fac"],
+                        )
 
-                    #     # build the policy mapping fn
-                    #     policy_mapping_fn = get_policy_mapping_fn(policy_name, algo)
-                    #     env = env_creator(config["env_config"]).par_env
-                    #     analysis_df, eval_df = perform_causal_analysis(
-                    #         num_trials=config["analysis"]["num_trials"],
-                    #         use_ray=False,
-                    #         analysis_df=analysis_df,
-                    #         env=env,
-                    #         policy_name=policy_name,
-                    #         policy_mapping_fn=policy_mapping_fn,
-                    #         is_recurrent=config["training"]["model"]["use_lstm"],
-                    #         dimensions=config["analysis"]["dimensions"],
-                    #         length_fac=config["analysis"]["length_fac"],
-                    #         ccm_E=config["analysis"]["ccm_E"],
-                    #         gc_lag=config["analysis"]["gc_lag"],
-                    #         perform_ccm=config["analysis"]["perform_ccm"],
-                    #         perform_granger_linear=config["analysis"][
-                    #             "perform_granger_linear"
-                    #         ],
-                    #     )
-                    #     # create the two tables and store
-                    #     analysis_df.columns = analysis_df.columns.astype(str)
-                    #     analysis_table = wandb.Table(
-                    #         dataframe=analysis_df.reset_index()
-                    #     )
-                    #     eval_table = wandb.Table(dataframe=eval_df)
-                    #     wandb.log(
-                    #         {
-                    #             f"{policy_name}_analysis_df": analysis_table,
-                    #             f"{policy_name}_eval_df": eval_table,
-                    #         }
-                    #     )
+                        # build the policy mapping fn
+                        policy_mapping_fn = get_policy_mapping_fn(policy_name, algo)
+                        env = env_creator(config["env_config"]).par_env
+                        analysis_df, eval_df = perform_causal_analysis(
+                            num_trials=config["analysis"]["num_trials"],
+                            use_ray=False,
+                            analysis_df=analysis_df,
+                            env=env,
+                            policy_name=policy_name,
+                            policy_mapping_fn=policy_mapping_fn,
+                            is_recurrent=config["training"]["model"]["use_lstm"],
+                            dimensions=config["analysis"]["dimensions"],
+                            length_fac=config["analysis"]["length_fac"],
+                            ccm_E=config["analysis"]["ccm_E"],
+                            gc_lag=config["analysis"]["gc_lag"],
+                            perform_ccm=config["analysis"]["perform_ccm"],
+                            perform_granger_linear=config["analysis"][
+                                "perform_granger_linear"
+                            ],
+                        )
+                        # create the two tables and store
+                        analysis_df.columns = analysis_df.columns.astype(str)
+                        analysis_table = wandb.Table(
+                            dataframe=analysis_df.reset_index()
+                        )
+                        eval_table = wandb.Table(dataframe=eval_df)
+                        wandb.log(
+                            {
+                                f"{policy_name}_analysis_df": analysis_table,
+                                f"{policy_name}_eval_df": eval_table,
+                            }
+                        )
                 wandb.finish()
                 train.report(results)
         if (
@@ -412,6 +421,7 @@ def train_algo(config):
 # define the main function
 def main():
     start = time.time()
+    ray.init(num_cpus=1, local_mode=True)
     # load the yaml
     with open("config.yaml", "r") as f:
         config = yaml.load(f, Loader=yaml.FullLoader)
@@ -423,25 +433,25 @@ def main():
         stop = result["episodes_total"] > MAX_EXPISODES
         return stop
 
-    wandb_name = f"{config['wandb']['wandb_project']}_{config['env_name'].split('_')[0]}"
+    wandb_name = (
+        f"{config['wandb']['wandb_project']}_{config['env_name'].split('_')[0]}"
+    )
     config["stop_fn"] = stop_fn
-    config['wandb']['wandb_project'] = wandb_name
-    config["wandb"]["wandb_dir_path"] = str(Path("./wandb").absolute())
-
     if config["tune"]["tune"]:
         # SET HYPERPARAMETERS for TUNING
-        config["algorithm_type"] = tune.grid_search(
-            ["independent", "shared"]
-        )
+        config["algorithm_type"] = tune.grid_search(["independent", "shared"])
         if config["env_name"] == "wolfpack_v1":
             config["env_config"]["nprey"] = tune.grid_search([2, 5, 10])
-            config["env_config"]["reward_team"] = tune.grid_search([0.5, 0.75, 1.0, 1.25, 1.5])
-        elif config['env_name'] == 'gather_v1':
+            config["env_config"]["reward_team"] = tune.grid_search(
+                [0.5, 0.75, 1.0, 1.25, 1.5]
+            )
+        elif config["env_name"] == "gather_v1":
             config["env_config"]["nprey"] = tune.grid_search([2, 5, 10])
-            config['env_config']['pred_stun_rate'] = tune.grid_search([5, 10, 15, 20])
+            config["env_config"]["pred_stun_rate"] = tune.grid_search([5, 10, 15, 20])
         # config["env_config"]["nprey"] = tune.grid_search([2, 5, 10])
         # config["env_config"]["reward_team"] = tune.grid_search([0.5, 0.75, 1.0, 1.25, 1.5])
-
+    config["wandb"]["wandb_project"] = wandb_name
+    config["wandb"]["wandb_dir_path"] = str(Path("./wandb").absolute())
     storage_path = str(Path("./experiments").absolute())
     tuner = tune.Tuner(
         tune.with_resources(train_algo, {"cpu": 0.5}),
@@ -534,7 +544,7 @@ if __name__ == "__main__":
 
     # algo = create_algo(config)
     # # # for config define param space
-    # ray.init(num_cpus=1, 
+    # ray.init(num_cpus=1,
     #          local_mode=True,)
     # # wandb.init(
     # #     dir=config["wandb"]["wandb_dir_path"],

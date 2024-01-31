@@ -2,21 +2,21 @@ algorithm_type: "independent"
 algorithm_class: "ppo"
 framework: "torch"
 tune:
-   tune: true # if true, tune hyperparameters in main!
-   num_samples: 10
+   tune: false # if true, tune hyperparameters in main!
+   num_samples: 20
    max_episodes: 25000
    max_concurrent_trials: 16
 analysis:
-   save_eval_history: false 
-   traj_length: 10000
+   save_eval_history: True  
+   traj_length: 50000
    num_trials: 3
    analysis: false 
-   policy_set: ['original', 'follower', 'chaser']
-   dimensions: ['x', 'y', 'PCA_1', 'PCA_2']
-   length_fac: 200
+   policy_set: ['original']
+   dimensions: ['x', 'y', 'PCA_1', 'PCA_2', 'action']
+   length_fac: 2000
    ccm_tau: 1
-   ccm_E: 4
-   gc_lag: 4
+   ccm_E: 5
+   gc_lag: 5
    perform_ccm: true
    perform_granger_linear: true 
 training:
@@ -46,7 +46,7 @@ rollouts:
    batch_mode: "complete_episodes"
 wandb: 
    wandb_init: true 
-   wandb_project: "test_1"
+   wandb_project: "project"
    wandb_entity: "tpn"
    wandb_notes: "final training results"
    wandb_log_freq: 50

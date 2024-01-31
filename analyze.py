@@ -25,15 +25,16 @@ from sklearn.decomposition import PCA
 import warnings
 
 import ray
-import nonlincausality as nlc 
+import nonlincausality as nlc
 from nonlincausality.nonlincausality import nonlincausalityARIMA, nonlincausalityMLP
 
 from statsmodels.tsa.stattools import grangercausalitytests
 from spatial_ccm import spatial_ccm
 import tensorflow as tf
+
 tf.compat.v1.enable_eager_execution()
 
-# disable tensorflow cuda 
+# disable tensorflow cuda
 # os.environ["CUDA_VISIBLE_DEVICES"] = "-1"
 warnings.filterwarnings("ignore")
 _agent_type_dict = {
@@ -41,8 +42,14 @@ _agent_type_dict = {
     "follower": FollowerAgent,
     "fixed": FixedSwingAgent,
 }
-POLICY_SETS = ["chaser_follower",  "fixed_follower", "chaser_fixed",
-               "chaser_chaser", "follower_chaser", "fixed_chaser"]
+POLICY_SETS = [
+    "chaser_follower",
+    "fixed_follower",
+    "chaser_fixed",
+    "chaser_chaser",
+    "follower_chaser",
+    "fixed_chaser",
+]
 INTERVALS = [2, 5]
 CONFIG = dict(
     policy_name=None,  # if none specficied, cycle through all in POLICY_SETS
@@ -55,8 +62,8 @@ CONFIG = dict(
         npred=2,
         nprey=6,
         pred_vision=6,
-        reward_lone = 1.0,
-        reward_team = 1.5,
+        reward_lone=1.0,
+        reward_team=1.5,
     ),
     ccm_E=5,
     gc_lag=5,
@@ -80,7 +87,8 @@ class AlgoModel:
 
 # TIME SERIES ANALYSIS
 def get_correlation(X, Y):
-    return [("correlation", round(np.corrcoef(X, Y)[0][1],4))]
+    return [("correlation", round(np.corrcoef(X, Y)[0][1], 4))]
+
 
 def get_ccm(X, Y, lag):
     E = lag
@@ -89,7 +97,8 @@ def get_ccm(X, Y, lag):
     if pd.isna(corr):
         corr = 0.0
         pval = -1.0
-    return [("ccm_score", round(corr, 4)),  ("ccm_pval", round(pval, 4))]
+    return [("ccm_score", round(corr, 4)), ("ccm_pval", round(pval, 4))]
+
 
 def get_spatial_ccm(X, Y, lag, sample_index):
     E = lag
@@ -98,9 +107,10 @@ def get_spatial_ccm(X, Y, lag, sample_index):
     if pd.isna(corr):
         corr = 0.0
         pval = -1.0
-    return [("spccm_score", round(corr, 4)),  ("spccm_pval", round(pval, 4))]
+    return [("spccm_score", round(corr, 4)), ("spccm_pval", round(pval, 4))]
 
-# Returns the results from fitting an OLS model to the data 
+
+# Returns the results from fitting an OLS model to the data
 def get_granger_linear(X, Y, lag):
     try:
         data = np.array([X, Y]).T.astype(np.float64)
@@ -108,11 +118,11 @@ def get_granger_linear(X, Y, lag):
         ssr_ftest = results[lag][0]["ssr_ftest"]
         chi_test = results[lag][0]["ssr_chi2test"]
         return [
-        ("F-statistic", ssr_ftest[0]),
-        ("F-p", ssr_ftest[1]),
-        ("chi2", chi_test[0]),
-        ("chi-p", chi_test[1]),
-    ]
+            ("F-statistic", ssr_ftest[0]),
+            ("F-p", ssr_ftest[1]),
+            ("chi2", chi_test[0]),
+            ("chi-p", chi_test[1]),
+        ]
     except:
         return []
 
@@ -121,7 +131,7 @@ def get_granger_linear(X, Y, lag):
 #     data = np.array([X, Y]).T.astype(np.float64)
 #     try:
 #         results = nonlincausalityARIMA(x=data, maxlag=[lag], x_test=data, plot=False)
-#     except: 
+#     except:
 #         return []
 #     p_value = results[lag].p_value
 #     test_statistic = results[lag]._test_statistic
@@ -138,13 +148,14 @@ def get_granger_linear(X, Y, lag):
 #         ("arima_cohen", cohens_d),
 #     ]
 
+
 def get_granger_mlp(X, Y, lag):
     nlen = len(X)
     data = np.array([X, Y]).T.astype(np.float64)
-    data_train = data[:int(nlen*0.8)]
-    data_test = data[int(nlen*0.8):]
+    data_train = data[: int(nlen * 0.8)]
+    data_test = data[int(nlen * 0.8) :]
     results = nonlincausalityMLP(
-        x=data_train, 
+        x=data_train,
         maxlag=[lag],
         Dense_layers=2,
         Dense_neurons=[100, 100],
@@ -170,6 +181,7 @@ def get_granger_mlp(X, Y, lag):
         ("mlp_stat", test_statistic),
         ("mlp_cohen", cohens_d),
     ]
+
 
 def play_episode(env, policy_mapping_fn, is_recurrent):
     explore = False
@@ -202,8 +214,11 @@ def play_episode(env, policy_mapping_fn, is_recurrent):
                 actions[agent_id], rnn_states[agent_id], _ = policy_mapping_fn[
                     agent_id
                 ].compute_single_action(
-                    obs[agent_id], state=rnn_states[agent_id], explore=explore,
-                    prev_action=last_actions[agent_id], prev_reward=last_rewards[agent_id]
+                    obs[agent_id],
+                    state=rnn_states[agent_id],
+                    explore=explore,
+                    prev_action=last_actions[agent_id],
+                    prev_reward=last_rewards[agent_id],
                 )
             else:
                 actions[agent_id] = policy_mapping_fn[agent_id].compute_single_action(
@@ -215,55 +230,87 @@ def play_episode(env, policy_mapping_fn, is_recurrent):
         if is_recurrent:
             last_actions = actions
             last_rewards = rewards
-    
-    return env._game_history[:env._game_step - 1]
+
+    return env._game_history[: env._game_step - 1]
 
 
-def transform_epsiode_history(agents, episode_history):
+def transform_epsiode_history(env_name, agents, episode_history):
     col_list = ["x", "y", "action", "dx", "dy", "PCA_1", "PCA_2"]
-    selected_data = None  
+    selected_data = None
     for agent_id in agents:
-        episode_history[f'{agent_id}_x'] =\
-              episode_history[f'{agent_id}_position'].apply(eval).apply(lambda x: x[0]).astype(int)
-        episode_history[f'{agent_id}_y'] =\
-              episode_history[f'{agent_id}_position'].apply(eval).apply(lambda x: x[1]).astype(int)
-        episode_history[f'{agent_id}_dx'] =\
-              episode_history[f'{agent_id}_x'].diff(-1).fillna(0)
-        episode_history[f'{agent_id}_dy'] =\
-              episode_history[f'{agent_id}_y'].diff(-1).fillna(0)
-        episode_history[f'{agent_id}_action'] =\
-                episode_history[f'{agent_id}_action'].apply(lambda x: int(x))
-        
+        episode_history[f"{agent_id}_x"] = (
+            episode_history[f"{agent_id}_position"]
+            .apply(eval)
+            .apply(lambda x: x[0])
+            .astype(int)
+        )
+        episode_history[f"{agent_id}_y"] = (
+            episode_history[f"{agent_id}_position"]
+            .apply(eval)
+            .apply(lambda x: x[1])
+            .astype(int)
+        )
+        episode_history[f"{agent_id}_dx"] = (
+            episode_history[f"{agent_id}_x"].diff(-1).fillna(0)
+        )
+        episode_history[f"{agent_id}_dy"] = (
+            episode_history[f"{agent_id}_y"].diff(-1).fillna(0)
+        )
+        episode_history[f"{agent_id}_action"] = episode_history[
+            f"{agent_id}_action"
+        ].apply(lambda x: int(x))
+
         xy_data = episode_history.loc[:, [f"{agent_id}_x", f"{agent_id}_y"]].to_numpy()
-        episode_history[f'{agent_id}_PCA_1'] = (
+        episode_history[f"{agent_id}_PCA_1"] = (
             PCA(n_components=1).fit_transform(xy_data).flatten()
         )
 
-        xy_data = episode_history.loc[:, [f"{agent_id}_x", f"{agent_id}_y", f"{agent_id}_action"]].to_numpy()
-        episode_history[f'{agent_id}_PCA_2'] = (
+        xy_data = episode_history.loc[
+            :, [f"{agent_id}_x", f"{agent_id}_y", f"{agent_id}_action"]
+        ].to_numpy()
+        episode_history[f"{agent_id}_PCA_2"] = (
             PCA(n_components=1).fit_transform(xy_data).flatten()
         )
         if selected_data is None:
-            selected_data = episode_history.loc[:, [f"{agent_id}_{c}" for c in col_list]]
+            selected_data = episode_history.loc[
+                :, [f"{agent_id}_{c}" for c in col_list]
+            ]
         else:
-            selected_data = pd.concat([
-                selected_data,
-                episode_history.loc[:, [f"{agent_id}_{c}" for c in col_list]]
-            ], axis=1)
-    
-    selected_data['step'] = selected_data.index
-    metadata = dict(
-        episode_length = len(selected_data),
-        rewards = episode_history['total_rewards'].sum(),
-        kills = episode_history['total_kills'].sum(),
-        assists = episode_history['total_assists'].sum(),
-        predator_0_kills = episode_history['predator_0_kills'].sum(),
-        predator_1_kills = episode_history['predator_1_kills'].sum(),
-        predator_0_assists = episode_history['predator_0_assists'].sum(),
-        predator_1_assists = episode_history['predator_1_assists'].sum(),
-        predator_0_rewards = episode_history['predator_0_rewards'].sum(),
-        predator_1_rewards = episode_history['predator_1_rewards'].sum(),
-    )
+            selected_data = pd.concat(
+                [
+                    selected_data,
+                    episode_history.loc[:, [f"{agent_id}_{c}" for c in col_list]],
+                ],
+                axis=1,
+            )
+
+    selected_data["step"] = selected_data.index
+    if "wolfpack" in env_name:
+        metadata = dict(
+            episode_length=len(selected_data),
+            rewards=episode_history["total_rewards"].sum(),
+            kills=episode_history["total_kills"].sum(),
+            assists=episode_history["total_assists"].sum(),
+            predator_0_kills=episode_history["predator_0_kills"].sum(),
+            predator_1_kills=episode_history["predator_1_kills"].sum(),
+            predator_0_assists=episode_history["predator_0_assists"].sum(),
+            predator_1_assists=episode_history["predator_1_assists"].sum(),
+            predator_0_rewards=episode_history["predator_0_rewards"].sum(),
+            predator_1_rewards=episode_history["predator_1_rewards"].sum(),
+        )
+    else:
+        metadata = dict(
+            episode_length=len(selected_data),
+            rewards=episode_history["total_rewards"].sum(),
+            shots=episode_history["total_shots"].sum(),
+            hits=episode_history["total_hits"].sum(),
+            predator_0_shots=episode_history["predator_0_shots"].sum(),
+            predator_1_shots=episode_history["predator_1_shots"].sum(),
+            predator_0_hits=episode_history["predator_0_hits"].sum(),
+            predator_1_hits=episode_history["predator_1_hits"].sum(),
+            predator_0_rewards=episode_history["predator_0_rewards"].sum(),
+            predator_1_rewards=episode_history["predator_1_rewards"].sum(),
+        )
     return selected_data, metadata
 
 
@@ -288,41 +335,43 @@ def analyze_task(
         # 1. Generate epsiode data
         while len(collected_data) <= int(i):
             episode_data = play_episode(env, policy_mapping_fn, is_recurrent)
-            transformed_data, metadata = transform_epsiode_history(env.possible_agents, episode_data)
+            transformed_data, metadata = transform_epsiode_history(
+                str(env), env.possible_agents, episode_data
+            )
             performance_metrics.append(metadata)
-            transformed_data['episode_num'] = num_episodes
+            transformed_data["episode_num"] = num_episodes
             num_episodes += 1
             if len(collected_data) == 0:
                 collected_data = transformed_data
             else:
                 collected_data = pd.concat([collected_data, transformed_data])
                 collected_data.reset_index(inplace=True, drop=True)
-        
+
         # 1. For each fragment length, do causal analysis
         for pair in CAUSAL_PAIRS:
             for dim in dimensions:
                 X: pd.Series = collected_data.loc[:, f"{pair[0]}_{dim}"]
                 Y: pd.Series = collected_data.loc[:, f"{pair[1]}_{dim}"]
-                sample_index = collected_data.loc[:, 'episode_num']
+                sample_index = collected_data.loc[:, "episode_num"]
 
                 results = list()
                 results.extend(get_correlation(X, Y))
                 if perform_ccm:
                     results.extend(get_ccm(X, Y, ccm_E))
                     results.extend(get_spatial_ccm(X, Y, ccm_E, sample_index))
-                
+
                 if perform_granger_linear:
                     results.extend(get_granger_linear(Y, X, gc_lag))
                     # results.extend(get_granger_arima(Y, X, gc_lag))
 
                 for result in results:
                     analysis_results.append(
-                            [
-                                (trial_id, policy_name, *pair, result[0], dim),
-                                i,
-                                result[1],
-                            ]
-                        )
+                        [
+                            (trial_id, policy_name, *pair, result[0], dim),
+                            i,
+                            result[1],
+                        ]
+                    )
 
     performance_metrics = pd.DataFrame(performance_metrics).mean()
     return analysis_results, performance_metrics
@@ -374,39 +423,53 @@ def perform_causal_analysis(
         )
     return analysis_df, eval_df.T
 
+
 # @ray.remote
 # def print_eval_scores(name, env, policy_mapping_fn, is_recurrent):
 #     is_recurrent = False
-#     eval_stats = [] 
+#     eval_stats = []
 #     for i in range(500):
 #         eval_stats.append(get_episode_record(env, policy_mapping_fn, is_recurrent)[1])
-    
+
 #     eval_df = pd.DataFrame(eval_stats)
 #     desc_str = f"{name} with env:\n{env.metadata}"
 #     return desc_str, pd.concat([eval_df.mean(), eval_df.std()], axis=1)
-    
+
+
 def analyze_fixed_strategies(config, results):
     grouped_dfs = []
     eval_dfs = None
 
     for policy_set, analyis_df, eval_df in results:
-        col_list = list(analyis_df.groupby(['mode', 'agent_a', 'agent_b', 'test', 'dimension']).mean().columns)
+        col_list = list(
+            analyis_df.groupby(["mode", "agent_a", "agent_b", "test", "dimension"])
+            .mean()
+            .columns
+        )
         agg_funs = []
         for col in col_list:
-            if col != 'run_id':
+            if col != "run_id":
                 agg_funs.append((col, lambda x: round(x.mean(), 2)))
             else:
-                agg_funs.append((col, 'count'))
-        
-        df2 = analyis_df.groupby(['mode', 'agent_a', 'agent_b', 'test', 'dimension']).agg(dict(agg_funs))
-        grouped_dfs.append(df2) 
-        eval_dfs = pd.concat([
-            eval_dfs,
-            pd.DataFrame([dict(name=policy_set,**dict(eval_df.mean(1)))])
-                ]) if eval_dfs is not None else pd.DataFrame([dict(name=policy_set,**dict(eval_df.mean()))])
-    
-    eval_dfs.set_index('name', inplace=True)
-    config = config['env_config']
+                agg_funs.append((col, "count"))
+
+        df2 = analyis_df.groupby(
+            ["mode", "agent_a", "agent_b", "test", "dimension"]
+        ).agg(dict(agg_funs))
+        grouped_dfs.append(df2)
+        eval_dfs = (
+            pd.concat(
+                [
+                    eval_dfs,
+                    pd.DataFrame([dict(name=policy_set, **dict(eval_df.mean(1)))]),
+                ]
+            )
+            if eval_dfs is not None
+            else pd.DataFrame([dict(name=policy_set, **dict(eval_df.mean()))])
+        )
+
+    eval_dfs.set_index("name", inplace=True)
+    config = config["env_config"]
     filename = f"FA_{config['map_size']}r_{config['reward_lone']}.{config['reward_team']}_s_{config['pred_vision']}.txt"
     with open(f"./results/{filename}", "w") as f:
         f.write(f"""EVALUATION: ENV = {config}\n""")
@@ -415,6 +478,7 @@ def analyze_fixed_strategies(config, results):
         for df in grouped_dfs:
             f.write(df.to_string())
             f.write("\n\n")
+
 
 if __name__ == "__main__":
     config_dict = CONFIG.copy()
@@ -427,7 +491,7 @@ if __name__ == "__main__":
     # }
     # TRAJ_LENGTH = 5000
     # collected_data = pd.DataFrame()
-    # performance_metrics = [] 
+    # performance_metrics = []
     # is_recurrent = False
     # num_episodes = 0
     # while len(collected_data) <= int(TRAJ_LENGTH):
@@ -442,9 +506,9 @@ if __name__ == "__main__":
     #         collected_data = pd.concat([collected_data, transformed_data])
     #     collected_data.reset_index(inplace=True, drop=True)
     # collected_data.to_csv("../temp/collected_data.csv", index=False)
-    anaylze_agents = True 
+    anaylze_agents = True
     evaluate_agents = True
-    eval_list = ['chaser_follower', 'fixed_follower', 'chaser_fixed']
+    eval_list = ["chaser_follower", "fixed_follower", "chaser_fixed"]
     if anaylze_agents:
         results = []
         for policy_name in POLICY_SETS:
@@ -467,8 +531,8 @@ if __name__ == "__main__":
                 length_fac=config_dict["length_fac"],
                 ccm_E=config_dict["ccm_E"],
                 gc_lag=config_dict["gc_lag"],
-                perform_ccm=config_dict['perform_ccm'],
-                perform_granger_linear=config_dict['perform_granger_linear'],
+                perform_ccm=config_dict["perform_ccm"],
+                perform_granger_linear=config_dict["perform_granger_linear"],
             )
             print(
                 f"Time taken for {policy_name}: {(time.time() - start_time)/60:.2f} minutes"
