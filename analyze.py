@@ -48,8 +48,8 @@ CONFIG = dict(
     policy_name=None,  # if none specficied, cycle through all in POLICY_SETS
     policy_mapping_fn=None,  # f none specified, will try to infer from policy name
     is_recurrent=False,
-    length_fac=100,
-    dimensions=["x", "y", "dx", "dy", "PCA_1", "PCA_2"],
+    length_fac=1000,
+    dimensions=["x", "y", "dx", "dy", "PCA_1", "PCA_2", "action"],
     env_config=dict(
         map_size=20,
         npred=2,
@@ -61,7 +61,7 @@ CONFIG = dict(
     ccm_E=5,
     gc_lag=5,
     perform_ccm=True,
-    perform_granger_linear=True,
+    perform_granger_linear=False,
 )
 
 CAUSAL_PAIRS = [("predator_0", "predator_1"), ("predator_1", "predator_0")]
@@ -231,6 +231,8 @@ def transform_epsiode_history(agents, episode_history):
               episode_history[f'{agent_id}_x'].diff(-1).fillna(0)
         episode_history[f'{agent_id}_dy'] =\
               episode_history[f'{agent_id}_y'].diff(-1).fillna(0)
+        episode_history[f'{agent_id}_action'] =\
+                episode_history[f'{agent_id}_action'].apply(lambda x: int(x))
         
         xy_data = episode_history.loc[:, [f"{agent_id}_x", f"{agent_id}_y"]].to_numpy()
         episode_history[f'{agent_id}_PCA_1'] = (
@@ -401,7 +403,7 @@ def analyze_fixed_strategies(config, results):
         eval_dfs = pd.concat([
             eval_dfs,
             pd.DataFrame([dict(name=policy_set,**dict(eval_df.mean(1)))])
-                ]) if eval_dfs is not None else pd.DataFrame([dict(name=policy_set,**dict(eval_df.mean(1)))])
+                ]) if eval_dfs is not None else pd.DataFrame([dict(name=policy_set,**dict(eval_df.mean()))])
     
     eval_dfs.set_index('name', inplace=True)
     config = config['env_config']

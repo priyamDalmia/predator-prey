@@ -465,13 +465,13 @@ class wolfpack_discrete(ParallelEnv):
         return self._game_state.copy()
 
     def last(self):
-        return (
-            self._observations.copy(),
-            self._rewards_sum.copy(),
-            self._terminated.copy(),
-            self._truncated.copy(),
-            self._infos.copy(),
-        )
+        return ()
+        #     self._observations.copy(),
+        #     self._rewards_sum.copy(),
+        #     self._terminated.copy(),
+        #     self._truncated.copy(),
+        #     self._infos.copy(),
+        # )
 
     @property
     def unwrapped(self) -> ParallelEnv:

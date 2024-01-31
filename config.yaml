@@ -3,14 +3,14 @@ algorithm_class: "ppo"
 framework: "torch"
 tune:
    tune: true # if true, tune hyperparameters in main!
-   num_samples: 5
-   max_episodes: 1000
-   max_concurrent_trials: 8
+   num_samples: 10
+   max_episodes: 25000
+   max_concurrent_trials: 16
 analysis:
-   save_eval_history: true 
+   save_eval_history: false 
    traj_length: 10000
    num_trials: 3
-   analysis: true
+   analysis: false 
    policy_set: ['original', 'follower', 'chaser']
    dimensions: ['x', 'y', 'PCA_1', 'PCA_2']
    length_fac: 200
@@ -29,7 +29,7 @@ training:
    grad_clip: "norm"
    gamma: 0.90
    model: 
-      fcnet_hiddens: [128]
+      fcnet_hiddens: [128, 128]
       fcnet_activation: "relu"
       conv_activation: "relu"
       conv_filters: [[16,[3,3],1], [16, [3,3], 1]]
@@ -40,17 +40,17 @@ training:
       lstm_use_prev_action: true
       vf_share_layers: true
 evaluate:
-   eval_episodes: 500
+   evaluation_duration: 1000
 rollouts:
    num_rollout_workers: 0
    batch_mode: "complete_episodes"
 wandb: 
-   wandb_init: true
-   wandb_project: "wolf_sample"
+   wandb_init: true 
+   wandb_project: "test_1"
    wandb_entity: "tpn"
    wandb_notes: "final training results"
    wandb_log_freq: 50
-env_name: "wolfpack_discrete"
+env_name: "gather_v1"
 env_config:
    map_size: 20
    pred_vision: 3
@@ -61,5 +61,6 @@ env_config:
    reward_team: 1.0
    reward_lone: 1.0
    step_penalty: 0.0
+   pred_stun_rate: 10
 ray:
    init_dashboard: false

@@ -29,34 +29,34 @@ class AgressiveAgent:
             observation = observation.reshape(a,a,3)
         
         center = list(zip(*np.where(observation[:, :, 3] == 1)))[0]
-        if observation[:, :, gather_discrete.PREDATOR_CHANNEL].sum() > 1:
+        if observation[:, :, gather_v1.PREDATOR_CHANNEL].sum() > 1:
             c = observation.shape[0] // 2
             if center[0] > c:
-                if observation[:center[0], center[1], gather_discrete.PREDATOR_CHANNEL].sum() == 1:
-                    return gather_discrete.STR_TO_ACTION["SHOOT"]
+                if observation[:center[0], center[1], gather_v1.PREDATOR_CHANNEL].sum() == 1:
+                    return gather_v1.STR_TO_ACTION["SHOOT"]
             elif center[0] < c:
-                if observation[center[0]+1:, center[1], gather_discrete.PREDATOR_CHANNEL].sum() == 1:
-                    return gather_discrete.STR_TO_ACTION["SHOOT"]
+                if observation[center[0]+1:, center[1], gather_v1.PREDATOR_CHANNEL].sum() == 1:
+                    return gather_v1.STR_TO_ACTION["SHOOT"]
             elif center[1] > c:
-                if observation[center[0], :center[1], gather_discrete.PREDATOR_CHANNEL].sum() == 1:
-                    return gather_discrete.STR_TO_ACTION["SHOOT"]
+                if observation[center[0], :center[1], gather_v1.PREDATOR_CHANNEL].sum() == 1:
+                    return gather_v1.STR_TO_ACTION["SHOOT"]
             elif center[1] < c:
-                if observation[center[0], center[1]+1:, gather_discrete.PREDATOR_CHANNEL].sum() == 1:
-                    return gather_discrete.STR_TO_ACTION["SHOOT"]
+                if observation[center[0], center[1]+1:, gather_v1.PREDATOR_CHANNEL].sum() == 1:
+                    return gather_v1.STR_TO_ACTION["SHOOT"]
 
-        if observation[:, :, gather_discrete.PREY_CHANNEL].sum() > 0:
-            positions = list(zip(*np.where(observation[:, :, gather_discrete.PREY_CHANNEL])))
+        if observation[:, :, gather_v1.PREY_CHANNEL].sum() > 0:
+            positions = list(zip(*np.where(observation[:, :, gather_v1.PREY_CHANNEL])))
             distance = lambda pos: abs(pos[0] - center[0]) + abs(pos[1] - center[1])
             positions.sort(key=distance)
             for position in positions: 
                 if position[0] > center[0]:
-                    return gather_discrete.STR_TO_ACTION["DOWN"]
+                    return gather_v1.STR_TO_ACTION["DOWN"]
                 elif position[0] < center[0]:
-                    return gather_discrete.STR_TO_ACTION["UP"]
+                    return gather_v1.STR_TO_ACTION["UP"]
                 elif position[1] < center[1]:
-                    return gather_discrete.STR_TO_ACTION["LEFT"]
+                    return gather_v1.STR_TO_ACTION["LEFT"]
                 elif position[1] > center[1]: 
-                    return gather_discrete.STR_TO_ACTION["RIGHT"]
+                    return gather_v1.STR_TO_ACTION["RIGHT"]
                 break
         return np.random.randint(0,8)
     
@@ -85,7 +85,7 @@ class Predator:
         self._stun_count = 0
 
     def __repr__(self):
-        direction_str = gather_discrete.ACTION_TO_STR[self.direction+4][6:]
+        direction_str = gather_v1.ACTION_TO_STR[self.direction+4][6:]
         return f"{self.name} at {self.position} facing {direction_str}"
     
     @property
@@ -128,7 +128,7 @@ class Predator:
         else:
             raise Exception(f"{self.name} is not stunned!")
          
-class gather_discrete(ParallelEnv):
+class gather_v1(ParallelEnv):
     """Discerete Space (2D) Predator Prey Environment
     Predators and Preys are randomly placed on a 2D grid.
     Predators must capture Prey.
@@ -239,7 +239,7 @@ class gather_discrete(ParallelEnv):
 
         window_l = 2 * self.pred_vision + 1
         self._observation_space = Box(
-            low=0,
+            low=-1 * (self.pred_stun_rate + 1),
             high=1,
             shape=(window_l, window_l, self.NUM_CHANNELS+1),
             dtype=np.int32,
@@ -262,7 +262,7 @@ class gather_discrete(ParallelEnv):
             self._predators[agent_id] = agent 
 
         self._metadata = {
-            "name": "discrete_pp_v0",
+            "name": "gather_v1",
             "render.modes": ["human", "rgb_array"],
             "map_size": self.map_size,
             "max_cycles": self.max_cycles,
@@ -441,7 +441,7 @@ class gather_discrete(ParallelEnv):
                 terminated[agent_id] = True
                 truncated[agent_id] = True
             else:
-                terminated[agent_id] = self._predators[agent_id].is_alive 
+                terminated[agent_id] = not self._predators[agent_id].is_alive 
                 truncated[agent_id] = False
             
             if agent_id in shots_fired:
@@ -647,7 +647,7 @@ if __name__ == "__main__":
         render_mode=None,
     )
 
-    env = gather_discrete(**config)
+    env = gather_v1(**config)
     # fixed_agent = FixedSwingAgent(env)
     # follower_agent = FollowerAgent(env)
     from discrete_pp_v1 import ChaserAgent

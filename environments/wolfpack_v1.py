@@ -358,7 +358,7 @@ class wolfpack_v1(ParallelEnv):
                 terminated[agent_id] = True
                 truncated[agent_id] = True
             else:
-                terminated[agent_id] = self._predators[agent_id].is_alive 
+                terminated[agent_id] = not self._predators[agent_id].is_alive 
                 truncated[agent_id] = False
 
             if agent_id in curr_kills:
@@ -528,11 +528,14 @@ class wolfpack_v1(ParallelEnv):
     def last(self):
         return (
             self._observations.copy(),
-            self._rewards_sum.copy(),
-            self._terminated.copy(),
-            self._truncated.copy(),
-            self._infos.copy(),
         )
+
+        #     self._observations.copy(),
+        #     self._rewards_sum.copy(),
+        #     self._terminated.copy(),
+        #     self._truncated.copy(),
+        #     self._infos.copy(),
+        # )
 
     @property
     def unwrapped(self) -> ParallelEnv:
