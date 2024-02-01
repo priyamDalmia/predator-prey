@@ -2,12 +2,12 @@ algorithm_type: "independent"
 algorithm_class: "ppo"
 framework: "torch"
 tune:
-   tune: false # if true, tune hyperparameters in main!
+   tune: true  # if true, tune hyperparameters in main!
    num_samples: 20
    max_episodes: 25000
-   max_concurrent_trials: 16
+   max_concurrent_trials: 8
 analysis:
-   save_eval_history: True  
+   save_eval_history: true  
    traj_length: 50000
    num_trials: 3
    analysis: false 
@@ -46,7 +46,7 @@ rollouts:
    batch_mode: "complete_episodes"
 wandb: 
    wandb_init: true 
-   wandb_project: "project"
+   wandb_project: "test_2"
    wandb_entity: "tpn"
    wandb_notes: "final training results"
    wandb_log_freq: 50

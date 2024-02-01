@@ -421,7 +421,6 @@ def train_algo(config):
 # define the main function
 def main():
     start = time.time()
-    ray.init(num_cpus=1, local_mode=True)
     # load the yaml
     with open("config.yaml", "r") as f:
         config = yaml.load(f, Loader=yaml.FullLoader)
