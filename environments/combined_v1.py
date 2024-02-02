@@ -1,6 +1,6 @@
 from typing import Any
 import gymnasium as gym
-import os 
+import os
 from gymnasium import spaces
 from gymnasium.spaces import Box, Discrete
 from matplotlib.pylab import f
@@ -8,33 +8,39 @@ from pettingzoo.utils.env import ParallelEnv, ObsType, ActionType, AgentID
 import numpy as np
 import pandas as pd
 import random
-import time 
-import math 
+from common import * 
+import time
+import math
 
-TEST = True 
+TEST = True
+
 
 class Predator:
     def __init__(self, name, observation_space, action_space):
-        self.name = name 
+        self.name = name
         self.observation_space = observation_space
         self.action_space = action_space
         self._is_alive = False
-        self._position = None 
-        self._direction = None 
+        self._position = None
+        self._direction = None
+        self._is_stunned = False
+        self._stun_count = 0
 
-    def __call__(self, spawn_position:tuple):
-        self._is_alive = True 
-        self._position = spawn_position 
-        self._direction = np.random.randint(1,5)
+    def __call__(self, spawn_position: tuple):
+        self._is_alive = True
+        self._position = spawn_position
+        self._direction = np.random.randint(1, 5)
+        self._is_stunned = False
+        self._stun_count = 0
 
     def __repr__(self):
-        direction_str = gather_discrete.ACTION_TO_STR[self.direction+4][6:]
+        direction_str = ACTION_TO_STR[self.direction + 4][6:]
         return f"{self.name} at {self.position} facing {direction_str}"
-    
+
     @property
     def is_alive(self):
         return self._is_alive
-    
+
     @property
     def position(self):
         if self._position is None:
@@ -42,20 +48,37 @@ class Predator:
         return self._position
 
     @property
+    def is_stunned(self):
+        return self._is_stunned
+
+    @property
     def direction(self):
         return self._direction
-    
+
+    def stun(self, stun_rate):
+        self._is_stunned = True
+        self._stun_count = stun_rate
+
     def kill(self):
         self._is_alive = False
-        self._position = None 
+        self._position = None
 
     def move(self, new_position):
         self._position = new_position
 
     def rotate(self, new_direction):
         self._direction = new_direction
-         
-class gather_discrete(ParallelEnv):
+
+    def step_stunned(self):
+        if self._is_stunned:
+            self._stun_count -= 1
+            if self._stun_count == 0:
+                self._is_stunned = False
+        else:
+            raise Exception(f"{self.name} is not stunned!")
+
+
+class combined_v1(ParallelEnv):
     """Discerete Space (2D) Predator Prey Environment
     Predators and Preys are randomly placed on a 2D grid.
     Predators must capture Prey.
@@ -64,35 +87,66 @@ class gather_discrete(ParallelEnv):
     Game ends when all Preys are captured or max_cycles is reached.
     """
 
-    # GLOBAL STATE 
+    # GLOBAL STATE
     NUM_CHANNELS = 3
     GROUND_CHANNEL = 0
     PREDATOR_CHANNEL = 1
     PREY_CHANNEL = 2
-    
-    # AGENTS OBSERVE EXTRA CHANNEL 
+
+    # AGENTS OBSERVE EXTRA CHANNEL
     SELF_CHANNEL = 3
 
     # GRID (0, 0) : UPPER LEFT, (N , N) : LOWER RIGHT.
-    NUM_ACTIONS = 9
+    def BASE_STATE(self, size):
+        base = np.zeros((size, size), dtype=np.int32)
+        j = int(size/5)
+        x = j 
+        y = j
+        base[x][y] = 1
+        base[x][y+1] = 1
+        base[x+1][y] = 1
+
+        x = j
+        y = size - j - 1
+        base[x][y] = 1
+        base[x][y-1] = 1
+        base[x+1][y] = 1
+
+        x = size - j - 1
+        y = j
+        base[x][y] = 1
+        base[x][y+1] = 1
+        base[x-1][y] = 1
+
+        x = size - j - 1
+        y = size - j - 1
+        base[x][y] = 1
+        base[x][y-1] = 1
+        base[x-1][y] = 1
+        
+        return base 
+                   
+
+
+    NUM_ACTIONS = 10
     MOVE_ACTION = {
         0: lambda pos_x, pos_y: (pos_x, pos_y),  # STAY
-        1: lambda pos_x, pos_y: (pos_x - 1, pos_y),  # UP 
-        2: lambda pos_x, pos_y: (pos_x + 1, pos_y),  # DOWN 
+        1: lambda pos_x, pos_y: (pos_x - 1, pos_y),  # UP
+        2: lambda pos_x, pos_y: (pos_x + 1, pos_y),  # DOWN
         3: lambda pos_x, pos_y: (pos_x, pos_y + 1),  # RIGHT
         4: lambda pos_x, pos_y: (pos_x, pos_y - 1),  # LEFT
     }
-    
+
     ROTATE_ACTION = {
-        5: lambda direction: 1,  
-        6: lambda direction: 2, 
-        7: lambda direction: 3, 
-        8: lambda direction: 4, 
+        5: lambda direction: 1,
+        6: lambda direction: 2,
+        7: lambda direction: 3,
+        8: lambda direction: 4,
     }
 
     DIRECTION_TO_VECTOR = {
-        1: [(-1, -1), (0,0)],
-        2: [(1, 1), (0,0)],
+        1: [(-1, -1), (0, 0)],
+        2: [(1, 1), (0, 0)],
         3: [(0, 0), (1, 1)],
         4: [(0, 0), (-1, -1)],
     }
@@ -107,6 +161,7 @@ class gather_discrete(ParallelEnv):
         "ROTATE_DOWN": 6,
         "ROTATE_RIGHT": 7,
         "ROTATE_LEFT": 8,
+        "SHOOT": 9,
     }
 
     ACTION_TO_STR = {
@@ -119,6 +174,7 @@ class gather_discrete(ParallelEnv):
         6: "ROTATE_DOWN",
         7: "ROTATE_RIGHT",
         8: "ROTATE_LEFT",
+        9: "SHOOT",
     }
 
     # helper function to get the kill area slice
@@ -131,10 +187,12 @@ class gather_discrete(ParallelEnv):
         map_size: int = 20,
         max_cycles: int = 100,
         npred: int = 2,
-        nprey: int = 2,
-        pred_vision: int = 2,
-        prey_spawn_rate: int = 5,
+        nprey: int = 5,
+        pred_vision: int = 3,
         pred_stun_rate: int = 5,
+        reward_lone: float = 1.0,
+        reward_team: float = 0.5,
+        shot_penalty: float = 0.05,
         **kwargs,
     ) -> None:
         super().__init__()
@@ -143,8 +201,10 @@ class gather_discrete(ParallelEnv):
         self.npred = npred
         self.nprey = nprey
         self.pred_vision = pred_vision
-        self.prey_spawn_rate = prey_spawn_rate 
         self.pred_stun_rate = pred_stun_rate
+        self.reward_lone = reward_lone
+        self.reward_team = reward_team
+        self.shot_penalty = shot_penalty
         # build base game state here
         self.map_pad = self.pred_vision + 1
         arr = np.zeros((self.map_size, self.map_size), dtype=np.int32)
@@ -152,7 +212,7 @@ class gather_discrete(ParallelEnv):
         self._base_state = np.dstack(
             [
                 # a channel with 1s padded = ground channel
-                np.pad(arr, self.map_pad, "constant", constant_values=1),
+                np.pad(self.BASE_STATE(self.map_size), self.map_pad, "constant", constant_values=1),
                 # a channel with 0s padded = unit (predator channel)
                 np.pad(arr, self.map_pad, "constant", constant_values=0),
                 # a channel with 0s padded = unit (prey channel)
@@ -164,9 +224,9 @@ class gather_discrete(ParallelEnv):
 
         window_l = 2 * self.pred_vision + 1
         self._observation_space = Box(
-            low=0,
+            low=-1 * (self.pred_stun_rate + 1),
             high=1,
-            shape=(window_l, window_l, self.NUM_CHANNELS+1),
+            shape=(window_l, window_l, self.NUM_CHANNELS + 1),
             dtype=np.int32,
         )
         self._action_space = Discrete(self.NUM_ACTIONS)
@@ -180,22 +240,34 @@ class gather_discrete(ParallelEnv):
         self._predators = dict()
         for agent_id in self.possible_agents:
             agent = Predator(
-                agent_id, 
+                agent_id,
                 self._observation_spaces[agent_id],
-                self._action_spaces[agent_id]
+                self._action_spaces[agent_id],
             )
-            self._predators[agent_id] = agent 
+            self._predators[agent_id] = agent
 
+        lims = self.map_pad
+        render_array = self.BASE_STATE(self.map_size) 
+        render_array = render_array.astype(str)
+        render_array = np.char.replace(render_array, "0", ".")
+        render_array = render_array.astype("U11")
+        
+        for x, y in zip(*np.where(self.BASE_STATE(self.map_size))):
+            render_array[x, y] = "o"
+
+        self.base_render = render_array 
         self._metadata = {
-            "name": "discrete_pp_v0",
+            "name": "gather_v1",
             "render.modes": ["human", "rgb_array"],
             "map_size": self.map_size,
             "max_cycles": self.max_cycles,
             "npred": self.npred,
             "nprey": self.nprey,
             "pred_vision": self.pred_vision,
-            "prey_spawn_rate": self.prey_spawn_rate,
-            "pred_stun_rate": self.pred_stun_rate
+            "reward_lone": self.reward_lone,
+            "reward_team": self.reward_team,
+            "pred_stun_rate": self.pred_stun_rate,
+            "shot_penalty": self.shot_penalty,
         }
 
     def reset(
@@ -219,23 +291,27 @@ class gather_discrete(ParallelEnv):
             "step",
             "done",
             "total_rewards",
+            "total_shots",
+            "total_hits",
             "total_kills",
             "total_assists",
             "npred",
             "nprey",
         ] + [
             f"predator_{i}_{k}"
-            for k in ["rewards", "kills", "assists", "position", "action", "done"]
+            for k in ["rewards", "kills", "assists", "shots", "hits", "position", "action", "done"]
             for i in range(self.npred)
         ]
         self._game_history = pd.DataFrame(
-            np.zeros([self.max_cycles+1, len(columns)]), columns=columns, dtype=np.object_
+            np.zeros([self.max_cycles + 1, len(columns)]),
+            columns=columns,
+            dtype=np.object_,
         )
         start_positions = set()
         while len(list(start_positions)) < (self.npred + self.nprey):
             x = np.random.randint(self.map_pad, self.map_pad + self.map_size)
             y = np.random.randint(self.map_pad, self.map_pad + self.map_size)
-            if (x, y) not in start_positions:
+            if (x, y) not in start_positions and self._game_state[x, y, self.GROUND_CHANNEL] == 0:
                 start_positions.add((x, y))
 
         # add sanity check to ensure that all start positions are in the
@@ -276,7 +352,7 @@ class gather_discrete(ParallelEnv):
             agent_id: self.get_observation(agent_id) for agent_id in self._agents
         }
         return observations, infos
-    
+
     def step(
         self, actions: dict[AgentID, int]
     ) -> tuple[
@@ -299,6 +375,10 @@ class gather_discrete(ParallelEnv):
         truncated = {}
         infos = {}
         last_positions = {}
+        all_kills = []
+        all_assists = []
+        shots_fired = []
+        shots_hit = []
         actions_order = list(actions.items())
         random.shuffle(actions_order)
         for agent_id, action in actions_order:
@@ -309,42 +389,70 @@ class gather_discrete(ParallelEnv):
             if agent.position is None:
                 raise ValueError(f"Action given for DEAD agent {agent_id}")
 
+            if agent.is_stunned:
+                agent.step_stunned()
+                continue
+
             next_position, next_direction = self.take_action(
-                action,
-                agent.position,
-                agent.direction
+                action, agent.position, agent.direction
             )
-            # if action is to rotate; else move action  
-            if action > 4 and action < 9:
+            if action == 9:
+                # fires a stringht stun shot in the facing direction
+                # if hit, stun the predator for pred_stun_rate steps
+
+                fired, hit = self.predators_in_line_of_fire(
+                    agent.position, agent.direction
+                )
+                shots_fired.extend(fired)
+                shots_hit.extend(hit)
+                continue
+            # if action is to rotate; else move action
+            elif action > 4 and action < 9:
                 agent.rotate(next_direction)
             # if new position is wall or obstacle; do not take move and add zero reward
             elif (
                 self._game_state[
-                    next_position[0], next_position[1], self.GROUND_CHANNEL:self.PREY_CHANNEL
+                    next_position[0],
+                    next_position[1],
+                    self.GROUND_CHANNEL : self.PREY_CHANNEL,
                 ].sum()
                 == 1
             ):
                 continue
-            # if new position is at prey; kill prey and add reward 
+            # if new position is at prey; kill prey and add reward
             elif (
                 self._game_state[next_position[0], next_position[1], self.PREY_CHANNEL]
                 == 1
             ):
                 # kill the prey
                 # give reward acording to distribution
-                rewards[agent_id] += 1
-                self._game_state[next_position[0], next_position[1], self.PREY_CHANNEL] = 0
-                self._game_state[agent.position[0], agent.position[1], self.PREDATOR_CHANNEL] = 0
-                self._game_state[next_position[0], next_position[1], self.PREDATOR_CHANNEL] = 1
+                kills, assists = self.predators_around_kill(
+                    agent.position, next_position
+                )
+                all_kills.extend(kills)
+                all_assists.extend(assists)
+                self._game_state[
+                    next_position[0], next_position[1], self.PREY_CHANNEL
+                ] = 0
+                self._game_state[
+                    agent.position[0], agent.position[1], self.PREDATOR_CHANNEL
+                ] = 0
+                self._game_state[
+                    next_position[0], next_position[1], self.PREDATOR_CHANNEL
+                ] = 1
                 agent.move(next_position)
             else:
                 # update to new position
-                self._game_state[agent.position[0], agent.position[1], self.PREDATOR_CHANNEL] = 0
-                self._game_state[next_position[0], next_position[1], self.PREDATOR_CHANNEL] = 1
+                self._game_state[
+                    agent.position[0], agent.position[1], self.PREDATOR_CHANNEL
+                ] = 0
+                self._game_state[
+                    next_position[0], next_position[1], self.PREDATOR_CHANNEL
+                ] = 1
                 agent.move(next_position)
 
         # update rewards, log kills and assists, log game history
-        self._nprey = self._game_state[:, :, self.PREY_CHANNEL].sum() 
+        self._nprey = self._game_state[:, :, self.PREY_CHANNEL].sum()
         for agent_id in list(self._agents):
             if self.is_terminal:
                 self._agents.remove(agent_id)
@@ -352,50 +460,87 @@ class gather_discrete(ParallelEnv):
                 terminated[agent_id] = True
                 truncated[agent_id] = True
             else:
-                terminated[agent_id] = self._predators[agent_id].is_alive 
+                terminated[agent_id] = not self._predators[agent_id].is_alive
                 truncated[agent_id] = False
+
+            if agent_id in all_kills:
+                if len(all_assists) > 0:
+                    rewards[agent_id] = self.reward_team + rewards.get(agent_id, 0)
+                else:
+                    rewards[agent_id] = self.reward_lone + rewards.get(agent_id, 0)
+                self._game_history.loc[self._game_step, f"{agent_id}_kills"] = 1
+
+            if agent_id in all_assists:
+                rewards[agent_id] = self.reward_team + rewards.get(agent_id, 0)
+                self._game_history.loc[self._game_step, f"{agent_id}_assists"] = 1
+
+            if agent_id in shots_fired:
+                rewards[agent_id] = -self.shot_penalty + rewards.get(agent_id, 0)
+                self._game_history.loc[self._game_step, f"{agent_id}_shots"] = 1
+
+            if agent_id in shots_hit:
+                self._game_history.loc[self._game_step, f"{agent_id}_hits"] = 1
 
             self._game_history.loc[self._game_step, f"{agent_id}_rewards"] = rewards[
                 agent_id
             ]
-            self._game_history.loc[
-                self._game_step, f"{agent_id}_position"
-            ] = str(last_positions[agent_id])
-            self._game_history.loc[
-                self._game_step, f"{agent_id}_action"
-            ] = actions[agent_id]
+            self._game_history.loc[self._game_step, f"{agent_id}_position"] = str(
+                last_positions[agent_id]
+            )
+            self._game_history.loc[self._game_step, f"{agent_id}_action"] = actions[
+                agent_id
+            ]
             self._game_history.loc[self._game_step, f"{agent_id}_done"] = int(
                 terminated[agent_id] or truncated[agent_id]
             )
         self._game_history.loc[self._game_step, "step"] = self._game_step
         self._game_history.loc[self._game_step, "done"] = int(self.is_terminal)
         self._game_history.loc[self._game_step, "total_rewards"] = sum(rewards.values())
+        self._game_history.loc[self._game_step, "total_shots"] = len(shots_fired)
+        self._game_history.loc[self._game_step, "total_hits"] = len(shots_hit)
+        self._game_history.loc[self._game_step, "total_kills"] = len(all_kills)
+        self._game_history.loc[self._game_step, "total_assists"] = len(all_assists)
         self._game_step += 1
 
         # update infos
-        next_observations = {agent_id: self.get_observation(agent_id)\
-                              for agent_id in self._agents}
-        infos['__all__'] = dict() 
+        next_observations = {
+            agent_id: self.get_observation(agent_id) for agent_id in self._agents
+        }
+        infos["__all__"] = dict()
         return next_observations, rewards, terminated, truncated, infos
 
     def take_action(self, action, position, direction):
         if action <= 4:
-            next_position = self.MOVE_ACTION[action](*position) 
-            next_direction = direction 
+            next_position = self.MOVE_ACTION[action](*position)
+            next_direction = direction
         elif action > 4 and action < 8:
             next_direction = self.ROTATE_ACTION[action](direction)
-            next_position = position 
+            next_position = position
         else:
-            next_position = position 
-            next_direction = direction 
-        return next_position, next_direction 
+            next_position = position
+            next_direction = direction
+        return next_position, next_direction
 
+    def predators_around_kill(self, predator_position, prey_position):
+        kills = []
+        assists = []
+        for agent_id, agent in self._predators.items():
+            if not agent.is_alive:
+                continue
+            if agent.position == predator_position:
+                kills.append(agent_id)
+                continue
+            if math.dist(agent.position, predator_position) <= 2 or\
+            math.dist(agent.position, prey_position) <= 2:
+                assists.append(agent_id)
+        return kills, assists
+            
     @property
     def is_terminal(
         self,
     ) -> bool:
         if (
-            self._game_step > self.max_cycles-1
+            self._game_step > self.max_cycles - 1
             or len(self._agents) == 0
             or self._game_state[:, :, self.PREY_CHANNEL].sum() == 0
         ):
@@ -425,6 +570,50 @@ class gather_discrete(ParallelEnv):
     def metadata(self):
         return self._metadata
 
+    def predators_in_line_of_fire(self, position, direction):
+        # get the indices of all tiles in the line of fire
+        # check if any of the indices are occupied by a predator
+        # if yes, then stun the predator
+        shots_fired = []
+        shots_hit = []
+
+        tiles_affected = []
+        if direction == 1:  # UP
+            tiles_affected = [
+                (position[0] - i, position[1] + j)
+                for j in [-1, 0, 1]
+                for i in range(1, self.pred_vision + 1)
+            ]
+        elif direction == 2:  # DOWN
+            tiles_affected = [
+                (position[0] + i, position[1] + j)
+                for j in [-1, 0, 1]
+                for i in range(1, self.pred_vision + 1)
+            ]
+        elif direction == 3:  # RIGHT
+            tiles_affected = [
+                (position[0] + j, position[1] + i)
+                for j in [-1, 0, 1]
+                for i in range(1, self.pred_vision + 1)
+            ]
+        elif direction == 4:  # LEFT
+            tiles_affected = [
+                (position[0] + j, position[1] - i)
+                for j in [-1, 0, 1]
+                for i in range(1, self.pred_vision + 1)
+            ]
+
+        for agent_id, agent in self._predators.items():
+            if not agent.is_alive:
+                continue
+            if agent.position == position:
+                shots_fired.append(agent_id)
+                continue
+            if agent.position in tiles_affected:
+                shots_hit.append(agent_id)
+                agent.stun(self.pred_stun_rate)
+        return shots_fired, shots_hit
+
     def get_observation(self, agent_id):
         if agent_id not in self._agents:
             raise ValueError(f"Agent {agent_id} is not alive or does not exist.")
@@ -433,19 +622,29 @@ class gather_discrete(ParallelEnv):
         pos_x, pos_y = agent.position
         window_l = 2 * self.pred_vision + 1
         center = window_l // 2
-        observation = self._game_state[
-            (pos_x - self.pred_vision + offset_x[0]): (pos_x + self.pred_vision + offset_x[1]+ 1),
-            (pos_y - self.pred_vision + offset_y[0]): (pos_y + self.pred_vision + offset_y[1] + 1),
+        state = self._game_state.copy()
+        for k, v in self._predators.items():
+            if not v.is_alive:
+                continue
+            if v.is_stunned:
+                state[v.position[0], v.position[1], self.PREDATOR_CHANNEL] = -1 * (
+                    v._stun_count
+                )
+        observation = state[
+            (pos_x - self.pred_vision + offset_x[0]) : (
+                pos_x + self.pred_vision + offset_x[1] + 1
+            ),
+            (pos_y - self.pred_vision + offset_y[0]) : (
+                pos_y + self.pred_vision + offset_y[1] + 1
+            ),
             :,
         ].copy()
         self_channel = np.zeros((window_l, window_l), np.int32)
-        self_channel[
-            center - offset_x[0], center - offset_y[0]
-        ] = 1
+        self_channel[center - offset_x[0], center - offset_y[0]] = 1
         return np.dstack([observation, self_channel])
 
     def __name__(self):
-        return "discrete_pp_v1"
+        return "gather_v1"
 
     def render(self) -> None | np.ndarray | str | list:
         """Displays a rendered frame from the environment, if supported.
@@ -455,22 +654,18 @@ class gather_discrete(ParallelEnv):
         of classic, and `'ansi'` which returns the strings printed
         (specific to classic environments).
         """
-        lims = self.map_pad
-        render_array = self._game_state[
-            lims : (lims + self.map_size), lims : (lims + self.map_size), 0
-        ].copy()
-        render_array = render_array.astype(str)
-        render_array = np.char.replace(render_array, "0", ".")
-        render_array = render_array.astype("U11")
 
+        render_array = self.base_render.copy()
+        lims = self.map_pad
         for agent_id, agent in self._predators.items():
             if not agent.is_alive:
-                continue 
-            position = agent.position 
-            direction = agent.direction
-            render_array[position[0] - lims, position[1] - lims] =\
-                f"P{agent_id[-1]}{self.ACTION_TO_STR[direction+4][7]}"
-
+                continue
+            if not agent.is_stunned:
+                agent_str = f"P{agent_id[-1]}{self.ACTION_TO_STR[agent.direction+4][7]}"
+            else:
+                agent_str = f"S{agent._stun_count}"
+            position = agent.position
+            render_array[position[0] - lims, position[1] - lims] = agent_str
         for x, y in zip(*np.where(self._game_state[:, :, self.PREY_CHANNEL])):
             render_array[x - lims, y - lims] = "x"
 
@@ -508,17 +703,23 @@ if __name__ == "__main__":
         max_cycles=100,
         npred=2,
         pred_vision=3,
-        nprey=2,
+        nprey=5,
         reward_lone=1.0,
-        reward_team=1.0,
+        reward_team=0.5,
         render_mode=None,
+        pred_stun_rate=5,
     )
-
-    env = gather_discrete(**config)
-    # fixed_agent = FixedSwingAgent(env)
-    # follower_agent = FollowerAgent(env)
-    from discrete_pp_v1 import ChaserAgent
+    PRINT = True 
+    env = combined_v1(**config)
+    agents = dict()
+    fixed_agent = FixedSwingAgent(env)
+    follower_agent = FollowerAgent(env)
     chaser_agent = ChaserAgent(env)
+    agressive_agent = AgressiveAgent(env)
+    agents = {
+        "predator_0": chaser_agent,
+        "predator_1": chaser_agent, 
+    }
     print(f"Env name: {env.__name__()}, created!")
 
     # test action and observation spaces
@@ -531,7 +732,7 @@ if __name__ == "__main__":
     assert all(
         [
             env.observation_spaces[agent_id].shape
-            == (window_l, window_l, env.NUM_CHANNELS+1)
+            == (window_l, window_l, env.NUM_CHANNELS + 1)
             for agent_id in env.possible_agents
         ]
     )
@@ -542,9 +743,8 @@ if __name__ == "__main__":
         ]
     )
 
-    reward_hist = []
-    steps_hist = []
-    for i in range(100):
+    stats = []
+    for i in range(1000):
         # test reset
         obs, infos = env.reset()
         state = env.state()
@@ -552,54 +752,103 @@ if __name__ == "__main__":
         assert state.shape == env._state_space
         assert isinstance(obs, dict)
         assert isinstance(infos, dict)
-        os.system("clear")
+        # os.system("clear")
         while env.agents:
             state = env.state()
             assert all([agent_id in obs.keys() for agent_id in env._agents])
             pad_width = env.pred_vision
             for k, v in obs.items():
                 position = env._predators[k].position
-                assert env._observation_spaces[k].shape == v.shape,\
-                    f"observation_shape does not match for {k}"
-                assert state[position[0], position[1], env.PREDATOR_CHANNEL] == 1, "Predator not in the correct position"
-            
+                assert (
+                    env._observation_spaces[k].shape == v.shape
+                ), f"observation_shape does not match for {k}"
+                assert (
+                    state[position[0], position[1], env.PREDATOR_CHANNEL] == 1
+                ), "Predator not in the correct position"
+
             assert np.sum(env.state()[:, :, env.PREDATOR_CHANNEL]) == len(
                 env._agents
             ), "Predator count should be equal to number of agents"
             assert (
                 np.sum(env.state()[:, :, env.PREY_CHANNEL]) == env._nprey
             ), "Prey count should be equal to nprey"
-                # actions = {agent_id: env.action_spaces[agent_id].sample() \
-                #         for agent_id in env.agents}
+            # actions = {agent_id: env.action_spaces[agent_id].sample() \
+            #         for agent_id in env.agents}
             actions = {
-                "predator_0": chaser_agent.get_action(obs["predator_0"]),
-                "predator_1": chaser_agent.get_action(obs["predator_1"]),
+                "predator_0": agents['predator_0'].get_action(obs["predator_0"]),
+                "predator_1": agents['predator_1'].get_action(obs["predator_1"]),
             }
 
-            print(f"STEP: {env._game_step}")
-            for agent_id, agent in env._predators.items():
-                print(f"{agent}")
-                position = agent.position 
-                assert env._game_state[position[0], position[1], 1] == 1, "Predator at incoorect position"
+            if PRINT:
+                print(f"STEP: {env._game_step}")
+                for agent_id, agent in env._predators.items():
+                    print(f"{agent}")
+                    position = agent.position
+                    assert env._game_state[position[0], position[1], 1] == 1, "Predator at incoorect position"
 
-            print(env.render())
-            print(f"Actions: {[(k, env.ACTION_TO_STR[v]) for k, v in actions.items()]}")
+                print(env.render())
+                print(f"Actions: {[(k, env.ACTION_TO_STR[v]) for k, v in actions.items()]}")
             obs, rewards, terminated, truncated, infos = env.step(actions)
-            print(env.render())
-            print(f"Rewards: {[(k, v) for k, v in rewards.items()]}")
-            time.sleep(0.5)
-            # assert sum of 1s in the predator channel is equals len(env._agents)
-            # assert sum of 1s in the prey channel is equals len(env._nprey - env._kill_count)
-            os.system("clear")
+
+            if PRINT:
+                print(env.render())
+                print(f"Rewards: {[(k, v) for k, v in rewards.items()]}")
+                if env._game_history.loc[env._game_step-1, "total_assists"] > 0:
+                    print(f"Assists: {env._game_history.loc[env._game_step-1, 'total_assists']}")
+                    time.sleep(3.0)
+
+
+                if env._game_history.loc[env._game_step-1, "total_shots"] > 0:
+                    print(f"Shots fired: {env._game_history.loc[env._game_step-1, 'total_shots']}")
+                    print(f"Shots hit: {env._game_history.loc[env._game_step-1, 'total_hits']}")
+                    time.sleep(3.0)
+                time.sleep(0.5)
+                # assert sum of 1s in the predator channel is equals len(env._agents)
+                # assert sum of 1s in the prey channel is equals len(env._nprey - env._kill_count)
+                os.system("clear")
             global_state = env.state()
             assert np.sum(global_state[:, :, 2]) == env._nprey
 
         # observations, sum_rewards, terminated, truncated, infos = env.last()
-        
-        total_rewards = env._game_history['total_rewards'].sum()
-        p0_rewards = env._game_history['predator_0_rewards'].sum()
-        p1_rewards = env._game_history['predator_1_rewards'].sum()
+        total_rewards = env._game_history["total_rewards"].sum()
+        # total_rewards += (env._game_history['total_shots'] * -0.1).sum()
+        p0_rewards = env._game_history["predator_0_rewards"].sum()
+        p1_rewards = env._game_history["predator_1_rewards"].sum()
+        if round(total_rewards, 3) != round(p0_rewards + p1_rewards, 3):
+            breakpoint()
 
-        assert total_rewards == p0_rewards + p1_rewards, "incorrect rewards"
-    print(f"Average reward: {pd.DataFrame(reward_hist).mean()}")
-    print(f"Average steps: {np.mean(steps_hist)}")
+        stats.append(
+            [
+                env._game_step,
+                env._game_history["total_rewards"].sum(),
+                env._game_history["total_shots"].sum(),
+                env._game_history["total_hits"].sum(),
+                env._game_history["predator_0_rewards"].sum(),
+                env._game_history["predator_1_rewards"].sum(),
+                env._game_history["predator_0_shots"].sum(),
+                env._game_history["predator_1_shots"].sum(),
+                env._game_history["predator_0_hits"].sum(),
+                env._game_history["predator_1_hits"].sum(),
+                env._game_history["predator_0_done"].sum(),
+                env._game_history["predator_1_done"].sum(),
+            ]
+        )
+
+    stats = pd.DataFrame(
+        stats,
+        columns=[
+            "steps",
+            "total_rewards",
+            "total_shots",
+            "total_hits",
+            "p0_rewards",
+            "p1_rewards",
+            "p0_shots",
+            "p1_shots",
+            "p0_hits",
+            "p1_hits",
+            "p0_done",
+            "p1_done",
+        ],
+    )
+    print(stats.mean())

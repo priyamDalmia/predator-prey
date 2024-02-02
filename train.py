@@ -1,6 +1,6 @@
 from email import policy
 from ipaddress import _BaseNetwork
-from math import log
+from math import e, log
 from re import I
 import re
 import sys
@@ -22,10 +22,6 @@ from ray.tune.registry import register_env
 from ray.rllib.env import ParallelPettingZooEnv
 from algorithms.base_model import PPOModel
 from analyze import get_analysis_df, perform_causal_analysis
-from environments.wolfpack_discrete import wolfpack_discrete
-
-# from environments.discrete_pp_v1 import discrete_pp_v1
-# from environments.discrete_pp_v2 import discrete_pp_v2
 from ray.rllib.algorithms.ppo import PPOConfig
 from ray.rllib.algorithms import Algorithm
 from ray.air.integrations.wandb import setup_wandb
@@ -37,8 +33,7 @@ from ray.rllib.policy import Policy
 from algorithms.centralized_ppo import TorchCentralizedCriticModel, CentralizedCritic
 from ray.rllib.models import ModelCatalog
 import pandas as pd
-from environments.wolfpack_v1 import wolfpack_v1
-from environments.gather_v1 import gather_v1
+from environments.combined_v1 import combined_v1
 from analyze import (
     perform_causal_analysis,
     get_analysis_df,
@@ -50,7 +45,7 @@ from analyze import (
 
 warnings.filterwarnings("ignore")
 
-env_creator = lambda config: ParallelPettingZooEnv(gather_v1(**config))
+env_creator = lambda config: ParallelPettingZooEnv(combined_v1(**config))
 
 
 # init the env and the algo
@@ -212,34 +207,27 @@ class episodeMetrics(DefaultCallbacks):
         **kwargs,
     ):
         env = episode.worker.env.par_env
-        if "gather" in str(env):
-            episode.custom_metrics["rewards"] = env._game_history["total_rewards"].sum()
-            episode.custom_metrics["shots"] = env._game_history["total_shots"].sum()
-            episode.custom_metrics["hits"] = env._game_history["total_hits"].sum()
-            for agent_id in env.possible_agents:
-                episode.custom_metrics[f"{agent_id}_rewards"] = env._game_history[
-                    f"{agent_id}_rewards"
-                ].sum()
-                episode.custom_metrics[f"{agent_id}_shots"] = env._game_history[
-                    f"{agent_id}_shots"
-                ].sum()
-                episode.custom_metrics[f"{agent_id}_hits"] = env._game_history[
-                    f"{agent_id}_hits"
-                ].sum()
-        else:
-            episode.custom_metrics["rewards"] = env._game_history["total_rewards"].sum()
-            episode.custom_metrics["kills"] = env._game_history["total_kills"].sum()
-            episode.custom_metrics["assists"] = env._game_history["total_assists"].sum()
-            for agent_id in env.possible_agents:
-                episode.custom_metrics[f"{agent_id}_rewards"] = env._game_history[
-                    f"{agent_id}_rewards"
-                ].sum()
-                episode.custom_metrics[f"{agent_id}_kills"] = env._game_history[
-                    f"{agent_id}_kills"
-                ].sum()
-                episode.custom_metrics[f"{agent_id}_assists"] = env._game_history[
-                    f"{agent_id}_assists"
-                ].sum()
+        episode.custom_metrics["rewards"] = env._game_history["total_rewards"].sum()
+        episode.custom_metrics["kills"] = env._game_history["total_kills"].sum()
+        episode.custom_metrics["assists"] = env._game_history["total_assists"].sum()
+        episode.custom_metrics["shots"] = env._game_history["total_shots"].sum()
+        episode.custom_metrics["hits"] = env._game_history["total_hits"].sum()
+        for agent_id in env.possible_agents:
+            episode.custom_metrics[f"{agent_id}_rewards"] = env._game_history[
+                f"{agent_id}_rewards"
+            ].sum()
+            episode.custom_metrics[f"{agent_id}_kills"] = env._game_history[
+                f"{agent_id}_kills"
+            ].sum()
+            episode.custom_metrics[f"{agent_id}_assists"] = env._game_history[
+                f"{agent_id}_assists"
+            ].sum()
+            episode.custom_metrics[f"{agent_id}_shots"] = env._game_history[
+                f"{agent_id}_shots"
+            ].sum()
+            episode.custom_metrics[f"{agent_id}_hits"] = env._game_history[
+                f"{agent_id}_hits"
+            ].sum()
 
     def on_train_result(self, *, algorithm, result: dict, **kwargs):
         # you can mutate the result dict to add new fields to return
@@ -281,17 +269,8 @@ def train_algo(config):
             time_total_s=results["time_total_s"],
             policy_reward_mean=results["policy_reward_mean"],
             **results["custom_metrics"],
-            # episode_assists_mean=results["custom_metrics"]["assists_mean"],
-            # episode_kills_mean=results["custom_metrics"]["kills_mean"],
-            # predator_0_assists=results["custom_metrics"]["predator_0_assists_mean"],
-            # predator_0_kills=results["custom_metrics"]["predator_0_kills_mean"],
-            # predator_1_assists=results["custom_metrics"]["predator_1_assists_mean"],
-            # predator_1_kills=results["custom_metrics"]["predator_1_kills_mean"],
         )
 
-        # if config['wandb']['wandb_init'] and \
-        #     (results['training_iteration'] % config['wandb']['wandb_log_freq'] == 0
-        #      or results['training_iteration'] == 1):
         if config["wandb"]["wandb_init"] and (
             results["training_iteration"] % config["wandb"]["wandb_log_freq"] == 0
             or results["training_iteration"] == 1
@@ -302,8 +281,7 @@ def train_algo(config):
             if config["wandb"]["wandb_init"]:
                 wandb.log(log_dict)
                 eval_results = algo.evaluate()["evaluation"]
-                if 'gather' in config['env_name']:
-                    wandb.summary.update(
+                wandb.summary.update(
                         dict(
                             eval_episodes=eval_results["episodes_this_iter"],
                             eval_reward=eval_results["episode_reward_mean"],
@@ -313,30 +291,12 @@ def train_algo(config):
                             **{f"eval_{k}": v for k, v in eval_results['custom_metrics'].items()},
                         )
                         )
-                else:
-                    wandb.summary.update(
-                        dict(
-                            eval_episodes=eval_results["episodes_this_iter"],
-                            eval_reward=eval_results["episode_reward_mean"],
-                            eval_kills=eval_results["custom_metrics"]["kills_mean"],
-                            eval_episode_len=eval_results["episode_len_mean"],
-                            eval_assists=eval_results["custom_metrics"]["assists_mean"],
-                            eval_policy_reward_mean=eval_results["policy_reward_mean"],
-                            eval_predator_0_assists=eval_results["custom_metrics"][
-                                "predator_0_assists_mean"
-                            ],
-                            eval_predator_1_assists=eval_results["custom_metrics"][
-                                "predator_1_assists_mean"
-                            ]
-                    )
-                )
                 if config["analysis"]["save_eval_history"]:
                     policy_name = config["algorithm_type"]
                     policy_mapping_fn = get_policy_mapping_fn(
                         config["algorithm_type"], algo
                     )
                     env = env_creator(config["env_config"]).par_env
-                    start_time = time.time()
                     collected_data = pd.DataFrame()
                     performance_metrics = []
                     is_recurrent = config["training"]["model"]["use_lstm"]
@@ -441,12 +401,10 @@ def main():
         config["algorithm_type"] = tune.grid_search(["independent", "shared"])
         config['training']['model']['use_lstm'] = tune.grid_search([True, False])
         config["env_config"]["nprey"] = tune.grid_search([2, 5, 10])
-        if config["env_name"] == "wolfpack_v1":
-            config["env_config"]["reward_team"] = tune.grid_search(
+        config["env_config"]["reward_team"] = tune.grid_search(
                 [0.5, 0.75, 1.0, 1.25, 1.5]
             )
-        elif config["env_name"] == "gather_v1":
-            config["env_config"]["pred_stun_rate"] = tune.grid_search([10, 15, 20, 25])
+        config["env_config"]["pred_stun_rate"] = tune.grid_search([0, 10, 15, 20, 25])
         # config["env_config"]["nprey"] = tune.grid_search([2, 5, 10])
         # config["env_config"]["reward_team"] = tune.grid_search([0.5, 0.75, 1.0, 1.25, 1.5])
     config["wandb"]["wandb_project"] = wandb_name
