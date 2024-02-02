@@ -46,14 +46,14 @@ rollouts:
    batch_mode: "complete_episodes"
 wandb: 
    wandb_init: true 
-   wandb_project: "test_2"
+   wandb_project: "test_3"
    wandb_entity: "tpn"
    wandb_notes: "final training results"
    wandb_log_freq: 50
 env_name: "gather_v1"
 env_config:
    map_size: 20
-   pred_vision: 3
+   pred_vision: 4
    prey_type: "static"
    max_cycles: 100
    npred: 2
