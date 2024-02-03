@@ -224,13 +224,13 @@ class AgressiveAgent:
             distance = lambda pos: abs(pos[0] - center[0]) + abs(pos[1] - center[1])
             positions.sort(key=distance)
             for position in positions:
-                if position[0] > center[0]:
+                if position[0] > center[0] and observation[center[0]+1, center[1], 0] == 0:
                     return STR_TO_ACTION["DOWN"]
-                elif position[0] < center[0]:
+                elif position[0] < center[0] and observation[center[0]-1, center[1], 0] == 0:
                     return STR_TO_ACTION["UP"]
-                elif position[1] < center[1]:
+                elif position[1] < center[1] and observation[center[0], center[1]-1, 0] == 0:
                     return STR_TO_ACTION["LEFT"]
-                elif position[1] > center[1]:
+                elif position[1] > center[1] and observation[center[0], center[1]+1, 0] == 0:
                     return STR_TO_ACTION["RIGHT"]
                 break
         return np.random.randint(0, 8)
@@ -264,13 +264,14 @@ class ChaserAgent:
             distance = lambda pos: abs(pos[0] - center[0]) + abs(pos[1] - center[1])
             positions.sort(key=distance)
             for position in positions:
-                if position[0] > center[0]:
+                # check if next is not wall or obstacle 
+                if position[0] > center[0] and observation[center[0]+1, center[1], 0] == 0:
                     return STR_TO_ACTION["DOWN"]
-                elif position[0] < center[0]:
+                elif position[0] < center[0] and observation[center[0]-1, center[1], 0] == 0:
                     return STR_TO_ACTION["UP"]
-                elif position[1] < center[1]:
+                elif position[1] < center[1] and observation[center[0], center[1]-1, 0] == 0:
                     return STR_TO_ACTION["LEFT"]
-                elif position[1] > center[1]:
+                elif position[1] > center[1] and observation[center[0], center[1]+1, 0] == 0:
                     return STR_TO_ACTION["RIGHT"]
                 break
         return np.random.randint(0, 9)

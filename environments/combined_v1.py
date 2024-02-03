@@ -8,6 +8,9 @@ from pettingzoo.utils.env import ParallelEnv, ObsType, ActionType, AgentID
 import numpy as np
 import pandas as pd
 import random
+import os 
+import sys 
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), os.path.pardir)))
 from environments.common import * 
 import time
 import math
@@ -56,6 +59,8 @@ class Predator:
         return self._direction
 
     def stun(self, stun_rate):
+        if self._is_stunned or stun_rate == 0:
+            return
         self._is_stunned = True
         self._stun_count = stun_rate
 
@@ -577,30 +582,33 @@ class combined_v1(ParallelEnv):
         shots_fired = []
         shots_hit = []
 
+        if self.pred_stun_rate == 0:
+            return shots_fired, shots_hit
+
         tiles_affected = []
         if direction == 1:  # UP
             tiles_affected = [
                 (position[0] - i, position[1] + j)
                 for j in [-1, 0, 1]
-                for i in range(1, self.pred_vision + 1)
+                for i in range(1, self.pred_vision + 2)
             ]
         elif direction == 2:  # DOWN
             tiles_affected = [
                 (position[0] + i, position[1] + j)
                 for j in [-1, 0, 1]
-                for i in range(1, self.pred_vision + 1)
+                for i in range(1, self.pred_vision + 2)
             ]
         elif direction == 3:  # RIGHT
             tiles_affected = [
                 (position[0] + j, position[1] + i)
                 for j in [-1, 0, 1]
-                for i in range(1, self.pred_vision + 1)
+                for i in range(1, self.pred_vision + 2)
             ]
         elif direction == 4:  # LEFT
             tiles_affected = [
                 (position[0] + j, position[1] - i)
                 for j in [-1, 0, 1]
-                for i in range(1, self.pred_vision + 1)
+                for i in range(1, self.pred_vision + 2)
             ]
 
         for agent_id, agent in self._predators.items():
@@ -627,7 +635,6 @@ class combined_v1(ParallelEnv):
             if not v.is_alive:
                 continue
             if v.is_stunned:
-                print(f"Stunned: {v._stun_count}")
                 state[v.position[0], v.position[1], self.PREDATOR_CHANNEL] = -1 * (
                     v._stun_count
                 )
@@ -700,7 +707,7 @@ class combined_v1(ParallelEnv):
 
 if __name__ == "__main__":
     config = dict(
-        map_size=10,
+        map_size=15,
         max_cycles=100,
         npred=2,
         pred_vision=3,
@@ -708,7 +715,7 @@ if __name__ == "__main__":
         reward_lone=1.0,
         reward_team=0.5,
         render_mode=None,
-        pred_stun_rate=5,
+        pred_stun_rate=0,
     )
     PRINT = True 
     env = combined_v1(**config)
@@ -718,8 +725,8 @@ if __name__ == "__main__":
     chaser_agent = ChaserAgent(env)
     agressive_agent = AgressiveAgent(env)
     agents = {
-        "predator_0": chaser_agent,
-        "predator_1": chaser_agent, 
+        "predator_0": agressive_agent,
+        "predator_1": agressive_agent, 
     }
     print(f"Env name: {env.__name__()}, created!")
 

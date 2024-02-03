@@ -4,8 +4,8 @@ framework: "torch"
 tune:
    tune: true  # if true, tune hyperparameters in main!
    num_samples: 20
-   max_episodes: 50000
-   max_concurrent_trials: 8
+   max_episodes: 50
+   max_concurrent_trials: 4
 analysis:
    save_eval_history: true  
    traj_length: 50000
@@ -45,7 +45,7 @@ rollouts:
    num_rollout_workers: 0
    batch_mode: "complete_episodes"
 wandb: 
-   wandb_init: true 
+   wandb_init: false 
    wandb_project: "test"
    wandb_entity: "tpn"
    wandb_notes: "final training results"
