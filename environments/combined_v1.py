@@ -8,7 +8,7 @@ from pettingzoo.utils.env import ParallelEnv, ObsType, ActionType, AgentID
 import numpy as np
 import pandas as pd
 import random
-from common import * 
+from environments.common import * 
 import time
 import math
 
@@ -257,7 +257,7 @@ class combined_v1(ParallelEnv):
 
         self.base_render = render_array 
         self._metadata = {
-            "name": "gather_v1",
+            "name": "combined_v1",
             "render.modes": ["human", "rgb_array"],
             "map_size": self.map_size,
             "max_cycles": self.max_cycles,
@@ -627,6 +627,7 @@ class combined_v1(ParallelEnv):
             if not v.is_alive:
                 continue
             if v.is_stunned:
+                print(f"Stunned: {v._stun_count}")
                 state[v.position[0], v.position[1], self.PREDATOR_CHANNEL] = -1 * (
                     v._stun_count
                 )
