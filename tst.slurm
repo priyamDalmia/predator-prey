@@ -2,13 +2,13 @@
 #SBATCH --nodes=1
 #SBTACH --ntasks=1
 #SBATCH --ntasks-per-node=1
-#SBATCH --cpus-per-task=4
+#SBATCH --cpus-per-task=16
 
 # SBATCH --gres=gpu:1
 # SBATCH --qos=gpgpudeeplearn
 # SBATCH --partition=deeplearn
 
-#SBATCH --mem-per-cpu=4G
+#SBATCH --mem-per-cpu=6G
 #SBATCH --partition=cascade
 
 #SBATCH --time=02-00:00:00

@@ -399,14 +399,12 @@ def main():
     if config["tune"]["tune"]:
         # SET HYPERPARAMETERS for TUNING
         config["algorithm_type"] = tune.grid_search(["independent", "shared"])
-        config['training']['model']['use_lstm'] = tune.grid_search([True, False])
+        # config['training']['model']['use_lstm'] = tune.grid_search([True, False])
         config["env_config"]["nprey"] = tune.grid_search([2, 5, 10])
-        config["env_config"]["reward_team"] = tune.grid_search(
-                [0.5, 0.75, 1.0, 1.25, 1.5]
-            )
-        config["env_config"]["pred_stun_rate"] = tune.grid_search([0, 10, 15, 20, 25])
-        # config["env_config"]["nprey"] = tune.grid_search([2, 5, 10])
-        # config["env_config"]["reward_team"] = tune.grid_search([0.5, 0.75, 1.0, 1.25, 1.5])
+        # config["env_config"]["reward_team"] = tune.grid_search(
+        #         [1.25, 1.5]
+        #     )
+        config["env_config"]["pred_stun_rate"] = tune.grid_search([15, 20, 25, 30])
     config["wandb"]["wandb_project"] = wandb_name
     config["wandb"]["wandb_dir_path"] = str(Path("./wandb").absolute())
     storage_path = str(Path("./experiments").absolute())

@@ -3,9 +3,9 @@ algorithm_class: "ppo"
 framework: "torch"
 tune:
    tune: true  # if true, tune hyperparameters in main!
-   num_samples: 20
-   max_episodes: 50
-   max_concurrent_trials: 4
+   num_samples: 5
+   max_episodes: 50000
+   max_concurrent_trials: 32
 analysis:
    save_eval_history: true  
    traj_length: 50000
@@ -45,22 +45,23 @@ rollouts:
    num_rollout_workers: 0
    batch_mode: "complete_episodes"
 wandb: 
-   wandb_init: false 
-   wandb_project: "test"
+   wandb_init: true  
+   wandb_project: "gather_2"
    wandb_entity: "tpn"
    wandb_notes: "final training results"
    wandb_log_freq: 50
 env_name: "combined_v1"
 env_config:
    map_size: 20
-   pred_vision: 3
+   pred_vision: 5
    prey_type: "static"
    max_cycles: 100
    npred: 2
    nprey: 6
-   reward_team: 1.0
+   reward_team: 0.5
    reward_lone: 1.0
-   step_penalty: 0.0
-   pred_stun_rate: 5 
+   step_penalty: 0.01
+   shot_penalty: 0.01
+   pred_stun_rate: 0 
 ray:
    init_dashboard: false

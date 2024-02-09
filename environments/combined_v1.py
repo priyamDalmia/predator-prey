@@ -710,12 +710,12 @@ if __name__ == "__main__":
         map_size=15,
         max_cycles=100,
         npred=2,
-        pred_vision=3,
+        pred_vision=5,
         nprey=5,
         reward_lone=1.0,
         reward_team=0.5,
         render_mode=None,
-        pred_stun_rate=0,
+        pred_stun_rate=25,
     )
     PRINT = True 
     env = combined_v1(**config)
@@ -801,6 +801,8 @@ if __name__ == "__main__":
             if PRINT:
                 print(env.render())
                 print(f"Rewards: {[(k, v) for k, v in rewards.items()]}")
+                print(f"Total R, P0: {env._game_history.loc[:env._game_step-1, 'predator_0_rewards'].sum()}")
+                print(f"Total R, P1: {env._game_history.loc[:env._game_step-1, 'predator_1_rewards'].sum()}")
                 if env._game_history.loc[env._game_step-1, "total_assists"] > 0:
                     print(f"Assists: {env._game_history.loc[env._game_step-1, 'total_assists']}")
                     time.sleep(3.0)
@@ -809,7 +811,9 @@ if __name__ == "__main__":
                 if env._game_history.loc[env._game_step-1, "total_shots"] > 0:
                     print(f"Shots fired: {env._game_history.loc[env._game_step-1, 'total_shots']}")
                     print(f"Shots hit: {env._game_history.loc[env._game_step-1, 'total_hits']}")
+                    breakpoint()
                     time.sleep(3.0)
+
                 time.sleep(0.5)
                 # assert sum of 1s in the predator channel is equals len(env._agents)
                 # assert sum of 1s in the prey channel is equals len(env._nprey - env._kill_count)
